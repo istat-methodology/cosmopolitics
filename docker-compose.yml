@@ -1,0 +1,53 @@
+version: '3'
+services:
+  web-app:
+   image: node
+   command:
+        sh -c "cd app &&
+             apt-get update &&
+             apt-get install -y libgif-dev &&
+             npm install  &&
+             npm run serve"
+   volumes:
+    - ./cosmo-frontend/:/app/
+    - /app/node_modules
+   ports:
+    - 8070:8070
+  python-service:
+   image: python:latest
+   command:
+      sh -c "cd app &&
+             pip install -r requirements.txt &&
+             python3 app.py"
+   volumes:
+    - ./cosmo-backend/python-server/app.py:/app/app.py
+    - ./cosmo-backend/python-server/data/:/app/data/
+    - ./cosmo-backend/python-server/requirements.txt:/app/requirements.txt
+   ports:
+    - 5500:5500
+  r-service:
+   image: rocker/r-base:3.6.3
+   command:
+        sh -c "cd app &&
+             apt-get update &&
+             apt-get install -y libcurl4-openssl-dev &&
+             Rscript libraries.R &&
+             Rscript api-controller.R"
+   volumes:
+    - ./cosmo-backend/R-server/api-controller.R:/app/api-controller.R
+    - ./cosmo-backend/R-server/libraries.R:/app/libraries.R
+    - ./cosmo-backend/R-server/data/:/app/data/
+    - ./cosmo-backend/R-server/rscript/:/app/rscript/
+   ports:
+    - 5000:5000
+  json-service:
+   image: node:alpine    
+   command:
+      sh -c "cd app &&
+             npm install  &&
+             node json-server/server.js"
+   volumes:
+    - ./cosmo-backend/json-server/package.json:/app/package.json
+    - ./cosmo-backend/json-server/json-server/:/app/json-server/
+   ports:
+    - 5300:5300

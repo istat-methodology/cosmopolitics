@@ -1,0 +1,9 @@
+{
+  "name": "cosmopolitics",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "json-server": "^0.16.3"
+  }
+}

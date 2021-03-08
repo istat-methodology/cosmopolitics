@@ -1,0 +1,220 @@
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+@import "vue-select/src/scss/vue-select.scss";
+
+/* Layout */
+.c-header.c-header-fixed {
+  border: 0;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(60, 75, 100, 0.14),
+    0 3px 1px -2px rgba(60, 75, 100, 0.12), 0 1px 5px 0 rgba(60, 75, 100, 0.2);
+  box-shadow: 0 2px 2px 0 rgba(60, 75, 100, 0.14),
+    0 3px 1px -2px rgba(60, 75, 100, 0.12), 0 1px 5px 0 rgba(60, 75, 100, 0.2);
+  -webkit-clip-path: inset(0 0 -1000px 0);
+  clip-path: inset(0 0 -1000px 0);
+}
+.c-header .c-header-toggler-icon:focus {
+  outline: none;
+}
+.header-link {
+  padding-left: 0.2rem;
+}
+.c-app:not(.c-legacy-theme):not(.c-dark-theme) .card {
+  border: 0;
+  box-shadow: 0 1px 1px 0 rgba(60,75,100,.14), 0 2px 1px -1px rgba(60,75,100,.12), 0 1px 3px 0 rgba(60,75,100,.2);
+}
+
+.c-app:not(.c-dark-theme) .btn:not([class*=ghost]):not([class*=link]):not([class*=outline]):not([class*=transparent]) {
+  border: 0;
+  box-shadow: 0 1px 1px 0 rgba(60,75,100,.14), 0 2px 1px -1px rgba(60,75,100,.12), 0 1px 3px 0 rgba(60,75,100,.2);
+}
+
+.card-header:not(.content-center) > .c-icon:first-child {
+  margin-right: 0.1rem;
+  margin-top: 0.1rem;
+  vertical-align: top;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 1.2rem;
+}
+
+button:focus {
+  outline: none;
+}
+
+.c-icon:not(.c-icon-c-s):not(.c-icon-custom-size){
+  height: 1.1rem!important;
+}
+
+.icon-link{
+  color:$primary;
+}
+
+.table thead th {
+  border-top: none;
+  border-bottom: none;
+}
+
+.section-link {
+  margin-top: 15px;
+}
+
+.section-link a {
+  padding-right: 0.3rem;
+}
+
+.section-link-disabled {
+  color: $secondary;
+}
+
+.section-link-disabled > .theme--light.v-icon {
+  color: $secondary;
+}
+
+/* Cards */
+.card-header-actions {
+  margin-right: 0;
+}
+.card-header-actions .material-design-icon > .material-design-icon__svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  bottom: auto;
+}
+.card-label {
+  color: #321fdb;
+  font-size: 0.9em;
+}
+.card-no-border {
+  padding: 0;
+  border: none;
+}
+.card-no-shadow{
+  box-shadow: none !important;
+}
+
+/* Forms */
+
+.form-group {
+  margin-bottom: 0.2rem;
+}
+
+.form-mandatory {
+  margin-top: 0.4rem;
+  color: $primary;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: $light;
+  opacity: 1;
+  margin-bottom: 1rem;
+}
+
+/* Validation styles */
+
+.help-block {
+  visibility: hidden;
+  font-size: 80%;
+  color: $danger;
+  font-style: italic;
+}
+
+.invalid {
+  border-color: $danger !important;
+}
+
+.show {
+  visibility: visible;
+}
+
+/* V-Select*/
+.vs__search::placeholder{
+  color: #768192;
+}
+.vs__dropdown-toggle{
+  border: 1px solid #ced2d8;
+}
+.vs__selected, .vs__dropdown-option{
+  color: #768192;
+}
+.vs__dropdown-option--highlight{
+  color: white;
+  background-color:	#321fdb;
+}
+.vs__selected-options {
+  padding: 2px 3px 2px 6px;
+}
+.vs_actions{
+  padding: 3px 6px 0 3px;
+}
+.vs__clear{
+  padding-bottom: 5px;
+}
+.is-invalid > .vs__dropdown-toggle {
+  border-color: $danger;
+}
+
+/* Spinner */
+.spinner > div {
+  background-color: $primary !important;
+}
+
+/* Map */
+.info {
+  line-height: 15px;
+  color: #555;
+  padding: 6px 8px;
+  font: 16px/18px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  width: auto;
+  height: auto;
+  margin-right: 6px;
+  opacity: 0.7;
+}
+.info h4 {
+  margin: 0 0 5px;
+  color: #777;
+}
+.legend {
+  line-height: 15px;
+  color: #555;
+  padding: 6px 8px;
+  font: 16px/18px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  width: auto;
+  height: auto;
+  margin-right: 6px;
+  opacity: 0.7;
+}
+.legend ul {
+  display: block;
+  padding-inline-start: 25px !important;
+  padding-inline-end: 25px !important;
+}
+.legend li {
+  list-style-type: none;
+}
+
+.tooltip-span{
+  padding: 1rem 1rem;
+}
+
+/*Slider */
+/* Theme color */
+$themeColor: #321fdb;
+
+/* Style */
+@import "~vue-slider-component/lib/theme/material.scss";
+
+.vue-slider {
+  margin: 1rem 0.5rem;
+}
+
+.vue-slider-mark-label {
+  font-size: 12px !important;
+}

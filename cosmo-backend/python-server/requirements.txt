@@ -1,0 +1,8 @@
+flask
+flask_restful
+flask_cors
+networkx
+pandas
+matplotlib
+openpyxl
+
