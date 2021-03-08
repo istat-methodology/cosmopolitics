@@ -26,16 +26,17 @@ services:
    ports:
     - 5500:5500
   r-service:
-   image: rocker/r-base:3.6.3
+   image: rocker/r-base
    command:
         sh -c "cd app &&
              apt-get update &&
-             apt-get install -y libcurl4-openssl-dev &&
+             cat libraries-bin.txt | xargs apt-get install -y -qq &&
              Rscript libraries.R &&
              Rscript api-controller.R"
    volumes:
     - ./cosmo-backend/R-server/api-controller.R:/app/api-controller.R
     - ./cosmo-backend/R-server/libraries.R:/app/libraries.R
+    - ./cosmo-backend/R-server/libraries-bin.txt:/app/libraries-bin.txt
     - ./cosmo-backend/R-server/data/:/app/data/
     - ./cosmo-backend/R-server/rscript/:/app/rscript/
    ports:

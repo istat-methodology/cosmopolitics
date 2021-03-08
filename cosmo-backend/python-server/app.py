@@ -32,6 +32,7 @@ def load_files_available():
                 df=pd.read_csv(DATA_AVAILABLE+os.sep+f,sep=SEP)
                 
                 print ("\t","shape",df.shape)
+                #break
                 continue
             appo=pd.read_csv(DATA_AVAILABLE+os.sep+f,sep=SEP)        
             print ("\t","shape",appo.shape)
@@ -99,36 +100,32 @@ prod_NTSR_dict=prod_NTSR_dict.set_index("AGRICULTURAL PRODUCTS AND LIVE ANIMALS"
 #tg_country paese di interesse di cui elimino un edge
 #G_prod = b (Grafo delle importazioni)
 #G_all = G  (Grafo delle importazioni)
+def delete_link(GG_prod, GG_all,tg_country,country_del):
 
-
-
-def delete_link(G_prod, G_all, tg_country, country_del):
-
-    deg_all = nx.out_degree_centrality(G_all)
-    poss_root = nx.out_degree_centrality(G_prod)
-    roots = { key: value for key, value in poss_root.items() if value == 0.0 }
-    lista_roots = list(roots.keys())
+    deg_all = nx.out_degree_centrality(GG_all)
     
-    if country_del in lista_roots:
-        lista_roots.remove(country_del)
+    poss_source = nx.in_degree_centrality(GG_prod)
     
-    print("Lista:")
-    print(lista_roots)
-    #print(deg_all)
-    
+    source = { key: value for key, value in poss_source.items() if value == 0.0 }
+
+    lista_source = list(source.keys())
+
+    lista_source=set(lista_source)-set([country_del])
+
     Out_suggestions = {}
     
-    for r in lista_roots:  
-        print(r)
-        
+    for r in lista_source:  
+ 
         if r in deg_all.keys():        
             try:
-                path_actual = nx.shortest_path(G_prod, source=tg_country, target=r, weight="value")      
+                Gu=Graph_prod.to_undirected()
+                path_actual = nx.shortest_path(Gu, source=tg_country, target=r, weight="weight")      
             except nx.NetworkXNoPath:
                 path_actual ='No actual path'
                 
             try:
-                path_all = nx.shortest_path(G_all, source=tg_country, target=r, weight="value")
+                Ga=Graph_all.to_undirected()
+                path_all = nx.shortest_path(Ga, source=tg_country, target=r, weight="weight")
             except nx.NetworkXNoPath:
                 path_all='No path'
             
@@ -139,8 +136,9 @@ def delete_link(G_prod, G_all, tg_country, country_del):
                 }          
         else:
             print(r + " not present")
-    
+
     return Out_suggestions
+
 
 
 
@@ -204,14 +202,24 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     def calc_metrics(Grafo,FlagWeight): 
         in_deg = nx.in_degree_centrality(Grafo)
 
-        Metrics={
+
+        vulner={}
+        for k, v in in_deg.items():
+
+            if v!=0:      
+                vulner[k]=1-v
+            else:
+                vulner[k]=0            
+            Metrics={
             "degree_centrality":nx.degree_centrality(Grafo),
             "density":nx.density(Grafo),
-            "vulnerability":dict((k, (1-v)) for k, v in in_deg.items()),
+            "vulnerability":vulner,
             "degree_centrality":nx.out_degree_centrality(Grafo),
             "exportation strenght":nx.out_degree_centrality(Grafo),
-            "hubness":nx.betweenness_centrality(Grafo)#, weight="value")
+            "hubness":nx.closeness_centrality(Grafo.to_undirected())
+            #"hubness":nx.betweenness_centrality(Grafo, weight="weight")
             }
+
 
 
         return Metrics 
