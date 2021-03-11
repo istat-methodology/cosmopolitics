@@ -278,6 +278,7 @@ export default {
     this.$store.dispatch("classification/getTransports");
     this.$store.dispatch("classification/getProducts");
     this.$store.dispatch("classification/getProductPlus");
+    this.$store.dispatch("graphVisjs/clear");
   }
 };
 </script>

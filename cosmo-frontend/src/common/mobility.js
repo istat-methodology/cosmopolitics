@@ -1,4 +1,5 @@
 export const timeStep = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9"];
+export const nowCast = ["T10", "T11", "T12"];
 export const chartType = ["tend", "pred_tp", "pred_tp_c", "covid"];
 export const forecastType = ["tend", "nowcast"];
 
@@ -22,8 +23,8 @@ export function buildCharts(dataR) {
         chartDataArray.push({
           dataName: type,
           data: [
-            { x: 122, y: 100 },
-            { x: 122, y: -100 }
+            { x: 122, y: 3000 },
+            { x: 122, y: -4000 }
           ]
         });
       } else {
@@ -47,46 +48,27 @@ export function buildCharts(dataR) {
         data: getCoordinates(forecastRaw[type])
       });
     });
-    forecastDataArray.push({
-      dataName: "covid",
-      data: [
-        { x: 122, y: 100 },
-        { x: 122, y: -100 }
-      ]
-    });
     timeLapse.push({
       time: "Forecast",
       charts: forecastDataArray
     });
   }
-  return timeLapse;
-}
 
-export function getChart(mobilityCharts, chartType) {
-  var chartData = {};
-  chartData.datasets = [];
-  chartData.labels = mobilityCharts[chartType].Date;
-  chartData.datasets.push({
-    type: "bar",
-    label: "Grocery Pharmacy",
-    fill: false,
-    backgroundColor: "#06188a",
-    borderColor: "#06188a",
-    data: mobilityCharts[chartType].Values,
-    showLine: false,
-    pointRadius: 3
+  var rawCharts = timeLapse.find(element => {
+    return element.time == "T9";
   });
-  chartData.datasets.push({
-    type: "line",
-    label: "Grocery Pharmacy",
-    fill: false,
-    backgroundColor: "red", //color.background,
-    borderColor: "red", //color.border,
-    data: mobilityCharts[chartType].Smooth,
-    showLine: true,
-    pointRadius: 0
+  var chartDataArray = rawCharts ? rawCharts.charts : [];
+  var index = chartDataArray[0].data.length;
+  //Nowcasting
+  nowCast.forEach(step => {
+    timeLapse.push({
+      time: step,
+      charts: pushForecastData(chartDataArray, forecastDataArray, index)
+    });
+    index++;
   });
-  return chartData;
+
+  return timeLapse;
 }
 
 export function getBecChart(timeLapse, timeStep) {
@@ -101,7 +83,7 @@ export function getBecChart(timeLapse, timeStep) {
       switch (chart.dataName) {
         case "tend":
           chartObj = {
-            label: chart.dataName,
+            label: "Yearly variation series",
             fill: false,
             backgroundColor: "rgba(46, 184, 92, 0.2)",
             borderColor: "rgba(46, 184, 92, 1)",
@@ -112,7 +94,7 @@ export function getBecChart(timeLapse, timeStep) {
           break;
         case "pred_tp":
           chartObj = {
-            label: chart.dataName,
+            label: "Model estimation",
             fill: false,
             backgroundColor: "red", //color.background,
             borderColor: "red", // color.border,
@@ -124,7 +106,7 @@ export function getBecChart(timeLapse, timeStep) {
           break;
         case "pred_tp_c":
           chartObj = {
-            label: chart.dataName,
+            label: "Counterfactual",
             fill: false,
             backgroundColor: "red", //color.background,
             borderColor: "red", // color.border,
@@ -137,7 +119,7 @@ export function getBecChart(timeLapse, timeStep) {
           break;
         case "covid":
           chartObj = {
-            label: chart.dataName,
+            label: "Covid Start",
             fill: false,
             backgroundColor: "blue", //color.background,
             borderColor: "blue", // color.border,
@@ -164,4 +146,10 @@ export function getBecChart(timeLapse, timeStep) {
     });
   }
   return chartData;
+}
+
+export function pushForecastData(chartDataArray, forecastDataArray, index) {
+  console.log(index);
+  chartDataArray[2].data.push(forecastDataArray[0].data[index]);
+  return chartDataArray;
 }

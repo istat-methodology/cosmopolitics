@@ -12,6 +12,7 @@ import { chartjsScatter } from "./modules/chartjsScatter/chartjsScatter";
 import { chartjsLine } from "./modules/chartjsLine/chartjsLine";
 import { classification } from "./modules/classification/classification";
 import { mobility } from "./modules/mobility/mobility";
+import { policyIndicator } from "./modules/policyIndicator/policyIndicator";
 
 Vue.use(Vuex);
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     chartjsScatter,
     chartjsLine,
     classification,
-    mobility
+    mobility,
+    policyIndicator
   }
 });

@@ -40,7 +40,7 @@
             <strong>COMEXT transport data</strong>, along with relevant global
             and local measures detailing the structure of countries relations.
             The panel is interactive, providing the possibility to apply several
-            the data and to see how the graph structure and measures change
+            filters and to see how the graph structure and measures change
             accordingly.
           </p>
           <p class="mt-2">
@@ -75,9 +75,7 @@
           </p>
           <p class="section-link">
             <router-link tag="a" :to="{ name: 'GraphPlus' }"
-              ><span
-                >Go to graph on COMEXT and ITGS<chevron-right-icon
-              /></span>
+              ><span>Go to graph on COMEXT and ITGS<chevron-right-icon /></span>
             </router-link>
           </p>
         </div>
@@ -97,9 +95,9 @@
             Workplaces, Residential
           </p>
           <p class="mt-1">
-            Provide a daily and a monthly mobility policy indicator whose value
-            rage is 0 – 1 representing the level of restriction imposed by the
-            selected country government.
+            Provide a daily and a monthly mobility policy indicator whose is 0 –
+            1 representing the level of restriction imposed by the selected
+            country government.
           </p>
           <p class="section-link">
             <router-link tag="a" :to="{ name: 'Mobility' }"
@@ -118,11 +116,11 @@
           >
         </header>
         <div class="card-body">
-          Covid-19 <strong>impact evaluation on international trade</strong>.
-          Given a Country and Partner we will get a set of descriptive
-          statistics representing the trade situation between the two countries
-          in the period before and after a specific reference date (suggested by
-          the user).
+          In this section we analyse covid pandemic effect by computing the
+          Covid-19 monthly impact on import and export time series in value,
+          using the interrupted time series model with a counterfactual
+          approach. The selected model is use to get nowcasting and forecasting
+          of import and export series as well.
           <br />
           <p class="section-link">
             <router-link tag="a" :to="{ name: 'Policy' }"

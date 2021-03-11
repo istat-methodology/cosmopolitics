@@ -27,10 +27,11 @@ export default {
         ],
         yAxes: [
           {
-            ticks: {
+            /*ticks: {
               min: -100,
-              max: 200
+              max: 100
             },
+            */
             display: true,
             scaleLabel: {
               display: true,

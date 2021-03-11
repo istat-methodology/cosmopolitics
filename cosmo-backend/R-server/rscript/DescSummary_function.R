@@ -11,7 +11,7 @@ descSummary <- function(region, subregion) {
   gmr<-as.data.frame(gmr)
   gmr$Region<-ifelse(gmr$Region=="",region,gmr$Region)
  # var<-c("Dates","Retail","Grocery_Pharmacy","Parks","Transit_Station","Workplaces","Residential")
-  var<-c("Dates","Retail","Pharmacy","Parks","Station","Workplaces","Residential")
+  var<-c("Dates","Retail","Grocery_Pharmacy","Parks","Transit_Station","Workplaces","Residential")
   db_stat<-gmr[(gmr$Region==subregion),]
   db_stat<-db_stat[,4:10]
   db_stat[is.na(db_stat)]<-0

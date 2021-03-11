@@ -118,13 +118,13 @@ def delete_link(GG_prod, GG_all,tg_country,country_del):
  
         if r in deg_all.keys():        
             try:
-                Gu=Graph_prod.to_undirected()
+                Gu=GG_prod.to_undirected()
                 path_actual = nx.shortest_path(Gu, source=tg_country, target=r, weight="weight")      
             except nx.NetworkXNoPath:
                 path_actual ='No actual path'
                 
             try:
-                Ga=Graph_all.to_undirected()
+                Ga=GG_all.to_undirected()
                 path_all = nx.shortest_path(Ga, source=tg_country, target=r, weight="weight")
             except nx.NetworkXNoPath:
                 path_all='No path'
@@ -202,7 +202,7 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     def calc_metrics(Grafo,FlagWeight): 
         in_deg = nx.in_degree_centrality(Grafo)
 
-
+        Metrics ={}
         vulner={}
         for k, v in in_deg.items():
 

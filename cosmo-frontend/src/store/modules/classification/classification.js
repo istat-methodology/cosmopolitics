@@ -31,6 +31,15 @@ const state = {
     { id: 7, descr: "October 2021", value: "202110" },
     { id: 8, descr: "November 2021", value: "202111" },
     { id: 9, descr: "December 2021", value: "202112" }
+  ],
+  mobilityTypes: [
+    { id: 1, name: "Retail", descr: "Retail" },
+    { id: 2, name: "Grocery_Pharmacy", descr: "Grocery pharmacy" },
+    { id: 3, name: "Parks", descr: "Parks" },
+    { id: 4, name: "Transit_Station", descr: "Station" },
+    { id: 5, name: "Workplaces", descr: "Workplaces" },
+    { id: 6, name: "Residential", descr: "Residential" },
+    { id: 7, name: "Policy Indicator", descr: "Policy Indicator" }
   ]
 };
 
@@ -148,6 +157,9 @@ const getters = {
   },
   timeNext: state => {
     return state.timeNext;
+  },
+  mobilityTypes: state => {
+    return state.mobilityTypes;
   }
 };
 export const classification = {

@@ -84,7 +84,7 @@ const actions = {
       });
   },
   clear({ commit }) {
-    commit("SET_GRAPHS", []);
+    commit("SET_GRAPH", null);
   }
 };
 const getters = {

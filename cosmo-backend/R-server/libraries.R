@@ -1,8 +1,4 @@
 
-checkAndInstall <- function(mypkg){
-   if (! is.element(mypkg, installed.packages()[,1]))  install.packages(mypkg)
-
-  } 
 
 options(repos = "https://cran.mirror.garr.it/CRAN/")
 
@@ -16,16 +12,16 @@ print("Loading libraries...")
 #install.packages("VIM")
 #install.packages("rspa")
 #install.packages("varhandle")
-checkAndInstall("factoextra")
-checkAndInstall("RestRserve")
-checkAndInstall("jsonlite")
-checkAndInstall("data.table")
-checkAndInstall("plyr")
-checkAndInstall("dplyr")
-checkAndInstall("ggplot2")
-checkAndInstall("sandwich")
-checkAndInstall("zoo")
-checkAndInstall("its.analysis")
-checkAndInstall("lmtest")
+install.packages("RestRserve")
+install.packages("jsonlite")
+install.packages("data.table")
+install.packages("factoextra")
+install.packages("plyr")
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("sandwich")
+install.packages("zoo")
+install.packages("its.analysis")
+install.packages("lmtest")
 
 print("Loading libraries...ok ")

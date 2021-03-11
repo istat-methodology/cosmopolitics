@@ -28,8 +28,7 @@ export default {
       { id: "202011", name: "Nov 20" },
       { id: "202012", name: "Dec 20" },
       { id: "202101", name: "Jan 21" },
-      { id: "202102", name: "Feb 21" },
-      { id: "202103", name: "Mar 21" }
+      { id: "202102", name: "Feb 21" }
     ],
     periodTimeMap: [
       { id: "202003", time: "T1" },
@@ -40,7 +39,10 @@ export default {
       { id: "202008", time: "T6" },
       { id: "202009", time: "T7" },
       { id: "202010", time: "T8" },
-      { id: "202011", time: "T9" }
+      { id: "202011", time: "T9" },
+      { id: "202012", time: "T10" },
+      { id: "202101", time: "T11" },
+      { id: "202102", time: "T12" }
     ]
   }),
   methods: {

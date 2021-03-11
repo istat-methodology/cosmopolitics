@@ -8,7 +8,7 @@ export default {
         text: ""
       },
       tooltips: {
-        mode: "index",
+        //mode: "index",
         intersect: true
       },
       hover: {
