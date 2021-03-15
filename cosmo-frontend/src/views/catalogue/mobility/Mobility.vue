@@ -4,7 +4,7 @@
       <CCard>
         <CCardHeader>
           <b
-            >{{ this.countrySelected.name }} <span>{{ this.report }} </span></b
+            >{{ this.countrySelected.name }} <span>{{ this.report }}  </span></b
           >
         </CCardHeader>
         <CCardBody>
