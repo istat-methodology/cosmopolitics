@@ -1,0 +1,4 @@
+node_modules
+dist
+.gitignore
+json-server/varq_exp.txt
