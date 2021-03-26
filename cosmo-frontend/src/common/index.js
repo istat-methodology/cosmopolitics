@@ -4,4 +4,4 @@ export * from "./context";
 export * from "./headers";
 export * from "./map";
 export * from "./graphVisjs";
-export * from "./mobility";
+export * from "./bec";

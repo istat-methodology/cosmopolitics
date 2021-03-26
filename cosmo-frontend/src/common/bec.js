@@ -23,8 +23,8 @@ export function buildCharts(dataR) {
         chartDataArray.push({
           dataName: type,
           data: [
-            { x: 122, y: 3000 },
-            { x: 122, y: -4000 }
+            { x: 122, y: 100 },
+            { x: 122, y: -100 }
           ]
         });
       } else {
@@ -39,6 +39,7 @@ export function buildCharts(dataR) {
       charts: chartDataArray
     });
   });
+
   if (dataR["Forecast"]) {
     var forecastRaw = dataR["Forecast"];
     var forecastDataArray = [];
@@ -53,20 +54,19 @@ export function buildCharts(dataR) {
       charts: forecastDataArray
     });
   }
-
-  var rawCharts = timeLapse.find(element => {
-    return element.time == "T9";
-  });
-  var chartDataArray = rawCharts ? rawCharts.charts : [];
-  var index = chartDataArray[0].data.length;
-  //Nowcasting
-  nowCast.forEach(step => {
-    timeLapse.push({
-      time: step,
-      charts: pushForecastData(chartDataArray, forecastDataArray, index)
+    var rawCharts = timeLapse.find(element => {
+      return element.time == "T9";
     });
-    index++;
-  });
+    var chartDataArray = rawCharts ? rawCharts.charts : [];
+    var index = chartDataArray[0].data.length;
+    //Nowcasting
+    nowCast.forEach(step => {
+      timeLapse.push({
+        time: step,
+        charts: pushForecastData(chartDataArray, forecastDataArray, index)
+      });
+      index++;
+    });
 
   return timeLapse;
 }
@@ -150,6 +150,8 @@ export function getBecChart(timeLapse, timeStep) {
 
 export function pushForecastData(chartDataArray, forecastDataArray, index) {
   console.log(index);
+  if (forecastDataArray) {
   chartDataArray[2].data.push(forecastDataArray[0].data[index]);
+  }
   return chartDataArray;
 }

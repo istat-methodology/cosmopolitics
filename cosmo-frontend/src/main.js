@@ -13,10 +13,14 @@ import VueCytoscape from "vue-cytoscape";
 //CoreUI components
 import "@/coreui";
 
+import VueSpinners from "vue-spinners";
+
 //Icons
 import { iconsSet as icons } from "@/assets/icons/coreui.js";
 import "@/assets/icons/material";
 import { Icon } from "leaflet";
+
+Vue.use(VueSpinners);
 
 //Leaflet - icon (bug fixing)
 delete Icon.Default.prototype._getIconUrl;

@@ -61,7 +61,7 @@
           :class="{ 'c-active c-active-primary': isMobility }"
         >
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Mobility
-          analisys
+          analysis
         </router-link>
       </li>
       <li class="c-sidebar-nav-item">
