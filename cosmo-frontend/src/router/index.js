@@ -80,6 +80,12 @@ const routes = [
         meta: { authorize: [] }
       },
       {
+        path: "catalogue/bec",
+        name: "Bec",
+        component: () => import("../views/catalogue/bec/Bec"),
+        meta: { authorize: [] }
+      },
+      {
         path: "catalogue/mobility",
         name: "Mobility",
         component: () => import("../views/catalogue/mobility/Mobility"),

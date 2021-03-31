@@ -54,19 +54,19 @@ export function buildCharts(dataR) {
       charts: forecastDataArray
     });
   }
-    var rawCharts = timeLapse.find(element => {
-      return element.time == "T9";
+  var rawCharts = timeLapse.find(element => {
+    return element.time == "T9";
+  });
+  var chartDataArray = rawCharts ? rawCharts.charts : [];
+  var index = chartDataArray[0].data.length;
+  //Nowcasting
+  nowCast.forEach(step => {
+    timeLapse.push({
+      time: step,
+      charts: pushForecastData(chartDataArray, forecastDataArray, index)
     });
-    var chartDataArray = rawCharts ? rawCharts.charts : [];
-    var index = chartDataArray[0].data.length;
-    //Nowcasting
-    nowCast.forEach(step => {
-      timeLapse.push({
-        time: step,
-        charts: pushForecastData(chartDataArray, forecastDataArray, index)
-      });
-      index++;
-    });
+    index++;
+  });
 
   return timeLapse;
 }
@@ -151,7 +151,7 @@ export function getBecChart(timeLapse, timeStep) {
 export function pushForecastData(chartDataArray, forecastDataArray, index) {
   console.log(index);
   if (forecastDataArray) {
-  chartDataArray[2].data.push(forecastDataArray[0].data[index]);
+    chartDataArray[2].data.push(forecastDataArray[0].data[index]);
   }
   return chartDataArray;
 }

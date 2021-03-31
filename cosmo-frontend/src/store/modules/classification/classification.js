@@ -145,7 +145,7 @@ const getters = {
   },
   timeNext: state => {
     return state.timeNext;
-  }  
+  }
 };
 export const classification = {
   namespaced: true,

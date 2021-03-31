@@ -218,11 +218,7 @@ export default {
     },
     handleOverNode(event) {
       const nodeId = event.node;
-      this.nodeMetric = this.getCentrality(
-        this.network,
-        nodeId,
-        this.metrics
-      );
+      this.nodeMetric = this.getCentrality(this.network, nodeId, this.metrics);
     },
     applyConstraints() {
       const constraints = [];

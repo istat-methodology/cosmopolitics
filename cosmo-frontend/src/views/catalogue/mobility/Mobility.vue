@@ -117,4 +117,5 @@ export default {
   position: absolute;
   top: 20%;
   left: 50%;
-}</style>
+}
+</style>

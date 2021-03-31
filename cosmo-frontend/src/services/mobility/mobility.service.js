@@ -20,8 +20,7 @@ function findByName(filter) {
   return axiosR
     .get(
       "/desc-summary?region=" + filter.region + "&subregion=" + filter.subregion
-    )
-    .then(res => {
+    ).then(res => {
       var data = res.data ? res.data : {};
       console.log(data);
       return data;

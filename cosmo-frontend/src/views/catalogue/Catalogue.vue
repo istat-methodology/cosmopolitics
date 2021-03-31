@@ -123,7 +123,7 @@
           of import and export series as well.
           <br />
           <p class="section-link">
-            <router-link tag="a" :to="{ name: 'Policy' }"
+            <router-link tag="a" :to="{ name: 'Bec' }"
               ><span>Go to policy indicator <chevron-right-icon /></span>
             </router-link>
           </p>

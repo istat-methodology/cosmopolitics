@@ -17,8 +17,8 @@ library(lmtest)
 #setwd("C:\\Users\\ibuku\\git\\hack-backend\\R-server")
 #basedir = ("C:\\Users\\ibuku\\git\\hack-backend\\R-server\\rscript")
 #basedirData=("C:\\Users\\ibuku\\git\\hack-backend\\R-server\\data")
-basedir = ("/home/is2admin/hackathon/git/hack-backend/R-server/rscript")
-basedirData=("/home/is2admin/hackathon/git/hack-backend/R-server/data")
+basedir = ("d:/development/cosmopolitics/cosmo-backend/R-server/rscript")
+basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
 FILE_Global_Mobility_Report=paste(basedirData,"Global_Mobility_Report.csv",sep="/")
 FILE_DB_Mobility=paste(basedirData,"DB_GoogleMobility.csv",sep="/")
 
@@ -112,7 +112,7 @@ app$add_get(
 # Da questa funzione esce un oggetto contenente 6 data-frame uguali in ciascuno sono 
 # contenuti 3 vettori: Date: le date (asse x), Value (i valori della serie da plottare come
 # linee che partono dallo zero fino al punto indicato), Smooth(y di una linea rossa leggermente
-# più spessa) - I 6 grafici avranno i seguenti nomi:
+# piï¿½ spessa) - I 6 grafici avranno i seguenti nomi:
 # Frame 1: Region (parametro dinamico) Retail
 # Frame 2: Region (parametro dinamico) Grocery and Pharmacy 
 # Frame 3: Region (parametro dinamico) Parks

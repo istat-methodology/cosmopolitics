@@ -5,7 +5,6 @@ module.exports = {
     port: 8070,
     compress: true,
     disableHostCheck: true
-
   },
   configureWebpack: {
     resolve: {

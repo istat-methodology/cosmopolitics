@@ -27,7 +27,7 @@ const actions = {
         console.log(err);
       });
   },
-  findByTime({ commit }, time){
+  findByTime({ commit }, time) {
     var scatterCharts = getBecChart(this.state.chartjsScatter.charts, time);
     commit("SET_SCATTER_CHARTS", scatterCharts);
   }

@@ -7,3 +7,4 @@ export * from "./chartjsLine/chartjsLine.service";
 export * from "./classification/classification.service";
 export * from "./mobility/mobility.service";
 export * from "./policyIndicator/policyIndicator.service";
+export * from "./bec/bec.service";

@@ -31,18 +31,18 @@ export default {
       { id: "202102", name: "Feb 21" }
     ],
     periodTimeMap: [
-      { id: "202003", time: "T1" },
-      { id: "202004", time: "T2" },
-      { id: "202005", time: "T3" },
-      { id: "202006", time: "T4" },
-      { id: "202007", time: "T5" },
-      { id: "202008", time: "T6" },
-      { id: "202009", time: "T7" },
-      { id: "202010", time: "T8" },
-      { id: "202011", time: "T9" },
-      { id: "202012", time: "T10" },
-      { id: "202101", time: "T11" },
-      { id: "202102", time: "T12" }
+      { id: "202003", time: "T1", val:0},
+      { id: "202004", time: "T2", val:1},
+      { id: "202005", time: "T3", val:2},
+      { id: "202006", time: "T4", val:3},
+      { id: "202007", time: "T5", val:4},
+      { id: "202008", time: "T6", val:5},
+      { id: "202009", time: "T7", val:6},
+      { id: "202010", time: "T8", val:7},
+      { id: "202011", time: "T9", val:8},
+      { id: "202012", time: "T10", val:9},
+      { id: "202101", time: "T11", val:10},
+      { id: "202102", time: "T12", val:11 }
     ]
   }),
   methods: {
@@ -58,6 +58,12 @@ export default {
         return element.id == value;
       });
       return obj ? obj.time : null;
+    },
+    getVal(value) {
+      var obj = this.periodTimeMap.find(element => {
+        return element.id == value;
+      });
+      return obj ? obj.val : null;
     }
   }
 };

@@ -55,8 +55,8 @@ export default {
       { id: 7, name: "Policy Indicator", descr: "Policy Indicator" }
     ]
   }),
-  methods: {    
-    getMobility(){
+  methods: {
+    getMobility() {
       this.report = "";
       this.$store
         .dispatch("mobility/findByName", {
@@ -65,7 +65,7 @@ export default {
         })
         .then(() => {
           this.tableData = this.mobilities;
-      });
+        });
       this.$store
         .dispatch("mobility/chartsByName", {
           region: this.countrySelected.name,
@@ -75,8 +75,8 @@ export default {
           this.chartData = this.getMobilityChart(
             this.mobilityCharts,
             this.mobilitySelected
-        );
-      });
+          );
+        });
     },
     getMobilityChart(mobilityCharts, chartType) {
       var chartData = {};
@@ -104,19 +104,19 @@ export default {
       });
       return chartData;
     },
-    getPolicyIndicator(){
+    getPolicyIndicator() {
       this.report = " - PCAResult";
       this.$store
         .dispatch("policyIndicator/findByName", {
           region: this.countrySelected.name,
           subregion: this.countrySelected.name
-      })
-      .then(() => {
-        this.tableData = this.getPolicyIndicatorTable(
-          this.policyIndicators,
-          this.mobilitySelected
-        );
-      });
+        })
+        .then(() => {
+          this.tableData = this.getPolicyIndicatorTable(
+            this.policyIndicators,
+            this.mobilitySelected
+          );
+        });
       this.$store
         .dispatch("policyIndicator/chartsByName", {
           region: this.countrySelected.name,
@@ -127,7 +127,7 @@ export default {
             this.policyIndicatorCharts,
             this.mobilitySelected
           );
-      });
+        });
     },
     getPolicyIndicatorTable(policyIndicators) {
       var tableData = [];
@@ -170,5 +170,5 @@ export default {
       });
       return chartData;
     }
-  },
+  }
 };

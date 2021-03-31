@@ -2,7 +2,7 @@ export default {
   data: () => ({
     options: {
       scales: {
-        /*yAxes: [
+        yAxes: [
             {
               ticks: {
                 beginAtZero: true
@@ -11,8 +11,7 @@ export default {
                 display: true
               }
             }
-          ],
-          */
+        ],          
         xAxes: [
           {
             ticks: {

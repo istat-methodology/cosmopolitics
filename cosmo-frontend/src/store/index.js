@@ -13,6 +13,7 @@ import { chartjsLine } from "./modules/chartjsLine/chartjsLine";
 import { classification } from "./modules/classification/classification";
 import { mobility } from "./modules/mobility/mobility";
 import { policyIndicator } from "./modules/policyIndicator/policyIndicator";
+import { bec } from "./modules/bec/bec";
 
 Vue.use(Vuex);
 
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     chartjsLine,
     classification,
     mobility,
-    policyIndicator
+    policyIndicator,
+    bec
   }
 });
