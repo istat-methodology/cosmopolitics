@@ -1,9 +1,6 @@
 export default {
   data: () => ({
-    timeStep: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9"],
-    nowCast: ["T10", "T11", "T12"],
-    chartType: ["tend", "pred_tp", "pred_tp_c", "covid"],
-    forecastType: ["tend", "nowcast"]
+    timeStep: [],
   }),
   methods: {
     
@@ -18,12 +15,12 @@ export default {
       return dataMap;    
     },
 
-    buildCharts(
-      
-    ) {     
-      
+    buildCharts(dataR) {     
+      var t=0;
       for (var name in dataR) {
         if (name != "Covid_Estimation" && name != "Forecast" && name != "Model") {
+          this.timeStep.push({ id: "202003", time: "T" & t , val:t});
+          t++;
           this.timeLapse.push(dataR[name]);
         }
       }
