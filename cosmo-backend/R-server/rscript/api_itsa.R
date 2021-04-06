@@ -3,18 +3,18 @@
 # modello y=t+d+td+polind+tpolind con dati tendenziali e 1 lag
 ####GRAFICI PER TIMELAPSE
 ###############################################
-
-itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
+#ITSA  <- itsa_diag(2,7,"IT","US",1,1) 
+itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   #decido anno e mese di trattamento (123 = MARZO 2020)
   year  = 2020 
   month = 3    # marzo
-  djsonfcst<-NA
-  dati<-data_function(flow,VAR,country,partner)
-  dati<-dati[order(dati$year,dati$month),]
+  #djsonfcst<-NA
+  dati<-data_function(flow,var_bec,country_code,partner_code)
+  #dati<-dati[order(dati$year,dati$month),]
   
-  region = country
-  subregion = country
+  region = country_code
+  subregion = country_code
   
   treat <- which(dati$year == as.numeric(year))[[1]] + as.numeric(month) - 1
   
@@ -22,73 +22,9 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
   l<-length(dati$VAR)
   ################################################################
   
-  
-  #CARICO I DATI DEL POLICY INDICATOR
-  
-  #GMR <- read.csv(paste(basedir, "DB_GoogleMobility.csv", sep='/'),row.names=1)
-  gmr<-subset(GMR,Country_Code=country)
-  gmr<-as.data.frame(gmr)
-  gmr$Region<-ifelse(gmr$Region=="",region,gmr$Region)
-  var<-c("Dates","Retail","Grocery_Pharmacy","Parks","Transit_Station","Workplaces","Residential")
-  db_stat<-gmr[(gmr$Region==subregion),]
-  db_stat<-db_stat[,4:10]
-  db_stat[is.na(db_stat)]<-0
-  colnames(db_stat)<-var        
-  
-  
-  ######### BARBARA  ####################
-  PCAest <-prcomp(db_stat[,c(2:7)],scale=TRUE)
-  
-  PC1 <- PCAest$x[,'PC1']
-  
-  dates <- db_stat[,1];
-  
-  #dev.new()
-  #plot(dates,PC1,type="h",ylim=c((min(PC1,na.rm=TRUE)),(max(PC1,na.rm=TRUE))),xlab="",ylab="Policy Indicator -PC1")
-  
-  minI = min(PC1);
-  maxI = max(PC1);
-  
-  PolInd = (PC1-minI)/(maxI-minI)
-  
-  db_stat$PolInd <- PolInd
-  
- 
-  x <- as.POSIXct(db_stat$Dates,format="%Y-%m-%d")
-  mo <- strftime(x, "%m")
-  yr <- strftime(x, "%Y")
-  PolInd_M <- db_stat$PolInd
-  dd <- data.frame(mo, yr, PolInd_M)
-  dfM <- aggregate(PolInd_M ~ mo + yr, dd, FUN = mean)
-  strdate = paste("01",paste(dfM$mo[1],dfM$yr[1],sep="/"),sep="/")
-  enddate = paste("01",paste(dfM$mo[length(dfM$mo)],dfM$yr[length(dfM$yr)],sep="/"),sep="/")
-  DatePolindM = seq.Date(from =as.Date(strdate, "%d/%m/%Y"), 
-                         to=as.Date(enddate, "%d/%m/%Y"),by="month")
-  
-  dfM$Date <- DatePolindM
-  rm(strdate,enddate,DatePolindM)
-  gc()
-  #polind ha dati piu recenti, 
-  #lo allineo e aggiungo al tempo del dataset dati
-  
-  
-  #strdate = paste("01",paste(db$month[1],db$year[1],sep="/"),sep="/")
-  #enddate = paste("01",paste(db$month[length(db$month)],db$year[length(db$year)],sep="/"),sep="/")
-  
-  #date = seq.Date(from =as.Date(strdate, "%d/%m/%Y"), 
-  #                to=as.Date(enddate, "%d/%m/%Y"),by="month")
-  
-  
-  # verificare bene dftime e sostituire con vettore di date
-  #dfM$time<-c((treat-1):((treat-2)+length(dfM$PolInd_M)))
-  
-  #rm(strdate,enddate,DatePolindM)
-  
-  #dfMest<-dfM[which(dfM$time<=l),]
-  #dati$polind<-c(rep(0,(l-length(dfM$PolInd_M))),dfM$PolInd_M)
-  #dati$polind[c(1:12)]<-NA
-  
-  polind<-c(rep(0,(which(dati$date == dfM$Date[1]))),dfM$PolInd_M)
+  col_polind<-POLIND_DB %>% select(starts_with(country_code))
+  col_polind<-as_vector(col_polind)
+  polind<-c(rep(0,(which(dati$date == POLIND_DB$Date[1]))),col_polind)
   
   
   #### calcolo i valori della serie tendenziale
@@ -102,8 +38,8 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
   dati$polind <- polind[1:l]
   
   
-  ndate         <- which(dfM$Date == dati$date[length(dati$date)])
-  ncdate        <- dfM$Date[(ndate):length(dfM$Date)]
+  ndate         <- which(POLIND_DB$Date == dati$date[length(dati$date)])
+  ncdate        <- POLIND_DB$Date[(ndate):length(POLIND_DB$Date)]
   nwcst         <- data.frame(ncdate)
   nwcst$polind  <- polind[(l+1):length(polind)]
   
@@ -150,7 +86,7 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
   #par(mar = rep(2, 4))
   #par(mfrow=c(4,2))
   
-  
+  reslist<-list()
   ris<-list()
 
   for (i in 1:n)
@@ -202,9 +138,7 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
     ris[[i]]<-data.frame(yearly_var,month_eff)
     #print(i)
   
-    
-    assign(paste0("djson",i),d[,c(7,4,8,9)]) 
-
+    reslist[[paste0("T",i)]]<-assign(paste0("djson",i),d[,c(7,4,8,9)])
   }
   
  
@@ -226,7 +160,7 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
   colnames(stats_tpolind)<-paste("T",1:n,sep="")
   #View(stats_tpolind)
   
-  rm(a,b)
+  #rm(a,b)
   gc()
   
   
@@ -259,15 +193,11 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
     }
     nwcst$tend = ncstend
     
-    #nwcst <- subset(nwcst,select=c(t,d,td,tend,polind,tpolind))
-    #nwcst <- subset(nwcst,select=c(t,d,tend,polind))
-    
     nwcst$date <- ndate
     nwcst <- nwcst[,c(-1)]
     d1 <- rbind(d1,nwcst)
     
     # Nowcast
-    #lm_tend_tp<-lm(tend~t+d+td+polind+tpolind,data=d1)
     
     lm_tend_tp<-lm(tend~t+d+polind,data=d1)
     
@@ -275,16 +205,30 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
     lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, verbose=T))
     d1$nowcast  <- predict(lm_tend_tp,type="response",d1)
     
-    djsonfcst    <- as.data.frame(d1[,c(5,3,6)])
+    #djsonfcst    <- as.data.frame(d1[,c(5,3,6)])
     
-    #nowcast<-predict(lm_tend_tp,newdata=nwcst,se.fit=TRUE)
-    #nowcast<- predict(lm_tend_tp,newdata=nwcst,type="response")
+    ##########   aggiungo stima pred_tp_c
     
-    # SECONDO TE PUO' AVERE SENSO QUESTA DISTRIBUZIONE FUTURA!! NOWCASTING?
+    trend<-c(1:(length(pred_tp_c)))
+    beta<-lm(pred_tp_c~trend)
+    coef<-beta$coefficients[2]
+    c_new<-c(1:nobs)
+    for (i in 1:nobs) {
+      c_new[i]<-pred_tp_c[length(pred_tp_c)]+(coef*i)
+    }
+    d1$pred_tp_c<-c(pred_tp_c,c_new)
+    
+    #################
+    colnames(d1)[6]<-"pred_tp"
+    
+    for (i in 1:nobs) {
+      reslist[[paste0("NOW",i)]]<-assign(paste("djson",n+i,sep = ""),as.data.frame(d1[c(1:(h+i)),c(5,3,6,7)]))
+    }
+    
     
   } else if (fcst==2)
   {
-    # Import Esterno
+    # Input Esterno
     fcstpolind <-as.numeric(unlist(strsplit(fcstpolind,",")))
     
     d2<-subset(dati,select=c(t,d,tend,polind,date))
@@ -294,8 +238,6 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
     fdate = seq.Date(from =as.Date(strdate, "%d/%m/%Y"), 
                      length.out = nobsf,by="month")
     
-    #strdate = paste("01",paste(db$month[1],db$year[1],sep="/"),sep="/")
-    #fdate = seq.Date(from =as.Date(dfM$Date[(ndate+1)], "%d/%m/%Y"),length.out=nobsf,by="month")
     fcst         <- data.frame(fdate)
     fcst$polind  <- c(nwcst$polind,fcstpolind)
     
@@ -315,9 +257,7 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
       
     }
     fcst$tend = fcstend
-    
     fcst <- subset(fcst,select=c(t,d,tend,polind))
-    
     fcst$date <- fdate
     
     d2 <- rbind(d2,fcst)
@@ -326,8 +266,31 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
     # Mettere qui funzione di fcst ma chiedere parametri futuri
     # L'utente deve inserire i parametri futuri oppure vanno tutti 
     # zero ed 1 dobbiamo farlo costruire esternamente
-    djsonfcst    <- as.data.frame(d2[,c(5,3,6)])
+    #djsonfcst    <- as.data.frame(d2[,c(5,3,6)])
     
+    ##########   aggiungo stima pred_tp_c
+    
+    trend<-c(1:(length(pred_tp_c)))
+    beta<-lm(pred_tp_c~trend)
+    coef<-beta$coefficients[2]
+    c_new<-c(1:nobsf)
+    for (i in 1:nobsf) {
+      c_new[i]<-pred_tp_c[length(pred_tp_c)]+(coef*i)
+    }
+    d2$pred_tp_c<-c(pred_tp_c,c_new)
+    
+    
+    #################
+    colnames(d2)[6]<-"pred_tp"
+    
+    for (i in 1:nobsf) {
+      reslist[[paste0("FOR",i)]]<-assign(paste("djson",n+i,sep = ""),as.data.frame(d2[c(1:(h+i)),c(5,3,6,7)]))
+    } 
+  #  
+  # else if (fcst==0) {
+  #   djson = NA
+  #   
+  # }
   }
   
   
@@ -348,23 +311,17 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
     #View(beta_tpolind)
     
     
-    ###############################################################
-    #diagnostica
-    dati$t <- as.numeric(dati$t)
-    a<-itsa.model(data=dati, time="t", depvar="tend", interrupt_var = "d", covariates ="polind",
-                  alpha=0.05, no.plots = TRUE)
-    
-    # vedere questo errore
-    b<-itsa.postest(model = a, alpha = 0.05,print = FALSE,no.plots=TRUE)
-    
-   # Estimated Model Results
+    # Estimated Model Results
    regmod <- as.data.frame(beta_tpolind)
-   rownames(regmod)[rownames(regmod) == "t"] <- "trend"
+   rownames(regmod)[rownames(regmod) == "t"] <- "Trend"
    rownames(regmod)[rownames(regmod) == "d"] <- "Covid Dummy"
    rownames(regmod)[rownames(regmod) == "polind"] <- "Mobility Policy Indicator"
    
    regmod<-cbind( "row"=rownames(regmod),regmod)
    colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
+  
+   
+   reslist[["Model"]]<-regmod
    
    # Covid Effect (mln. of Euro)
    coveff <- as.data.frame(stats_tpolind)
@@ -379,12 +336,55 @@ itsa_diag <- function(flow,VAR,country,partner,fcst,fcstpolind ){
    names(coveff)[names(coveff) == "T9"] <- "Nov_2020"
    
    coveff<-cbind( "row"=rownames(coveff),coveff)
-
-   reslist <-list("Model"=regmod,"Covid_Estimation"=coveff,
-                  "T1"=djson1,"T2"=djson2,"T3"=djson3,"T4"=djson4,"T5"=djson5,
-                  "T6"=djson6,"T7"=djson7,"T8"=djson8,"T9"=djson9,"Forecast"=djsonfcst)
+   reslist[["Covid_Estimation"]]<-coveff
    
-   #rm(ris)
+   ###############################################################
+   #diagnostica
+   
+   #grafico residui
+   res <- residuals(lm_tend_tp,type="response",d)
+   res_date<-dati$date[c(13:l)]
+   res_line<-c(rep(0,length(res)))
+   residual <- data.frame(res_date,res,res_line)
+
+   reslist[["DIAG_RES"]]<-residual
+   # # 
+   # #grafico actf
+   # dev.new()
+   # require(graphics)
+   # acf<-acf(dati$tend)
+   # plot(acf)
+   # 
+   #grafico qq_norm
+   # dev.new()
+   # a<-qqnorm(dati$tend[c(13:l)], pch = 1, frame = FALSE)
+   # point_x<-a[[1]]
+   # point_y<-a[[2]]
+   # mean(point_y)
+   # #qqline(dati$tend, lwd = 2)
+   # # Find 1st and 3rd quartile for the Alto 1 data
+   # y <- quantile(dati$tend[c(13:l)], c(0.25, 0.75), type = 5)
+   # # Find the 1st and 3rd quartile of the normal distribution
+   # x <- qnorm( c(0.25, 0.75))
+   # # Now we can compute the intercept and slope of the line that passes
+   # # through these points
+   # slope <- diff(y) / diff(x)
+   # int   <- y[1] - slope * x[1]
+   # abline(a = int, b = slope )
+   # 
+   # qq_line<-c(1:(length(res)))
+   # qq_line<-qq_line*slope
+   # 
+   # 
+   # for (i in 1:(l-12)) {
+   #   qq_line[i]<-x[1]+(slope*i)
+   # }
+   # 
+   # 
+   # normal <- data.frame(point_x,point_y,qq_line)
+   # 
+   # reslist[["DIAG_NORM"]]<-normal
+   
   return(reslist)    
   #### OUTPUT BETA-POLIND STATS_TPOLIND DATI PER GRAFICO DINAMICO
   

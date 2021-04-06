@@ -1,14 +1,14 @@
 ################################################
 #grafici serie tendenziali e serie originale
 
-sa<-function(flow,VAR,country,partner,year,month){
+sa<-function(flow,var_bec,country_code,partner_code,year,month){
   
   #decido anno e mese di trattamento (123 = MARZO 2020)
   #year  = 2020 
   #month = 3    # marzo
    #print("----------------------------------PIPPO ----------------- ")
 
-  dati<-data_function(flow,VAR,country,partner)
+  dati<-data_function(flow,var_bec,country_code,partner_code)
   dati<-dati[order(dati$year,dati$month),]
 
   treat <- which(dati$year == as.numeric(year))[[1]] +as.numeric(month) - 1

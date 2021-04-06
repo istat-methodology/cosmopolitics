@@ -9,45 +9,40 @@ library(sandwich)
 library(zoo)
 library(its.analysis)
 library(lmtest)
+library(tidyverse)
 # Input che l'utente volendo pu� impostare
 
 #basedir=("C:\\Users\\ibuku\\git\\hack-backend\\R-server")
 
 #setwd("/home/is2admin/hackathon/git/hack-backend/R-server")
 #setwd("C:\\Users\\ibuku\\git\\hack-backend\\R-server")
-#basedir = ("C:\\Users\\ibuku\\git\\hack-backend\\R-server\\rscript")
-#basedirData=("C:\\Users\\ibuku\\git\\hack-backend\\R-server\\data")
-basedir = ("d:/development/cosmopolitics/cosmo-backend/R-server/rscript")
-basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
+basedir = ("/home/is2admin/hackathon/git/hack-backend/R-server/rscript")
+basedirData=("/home/is2admin/hackathon/git/hack-backend/R-server/data")
+
+#basedir = ("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
+#basedirData=("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
+
+#basedir = ("d:/development/cosmopolitics/cosmo-backend/R-server/rscript")
+#basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
+
 FILE_Global_Mobility_Report=paste(basedirData,"Global_Mobility_Report.csv",sep="/")
 FILE_DB_Mobility=paste(basedirData,"DB_GoogleMobility.csv",sep="/")
+FILE_POLIND_DB=paste(basedirData,"POLIND_DB.csv",sep="/")
+FILE_COMEXT_IMP=paste(basedirData,"COMEXT_IMP.csv",sep="/")
+FILE_COMEXT_EXP=paste(basedirData,"COMEXT_EXP.csv",sep="/")
 
 source(paste(basedir,"MobData_function.R",sep="/"))
 source(paste(basedir,"DescSummary_function.R",sep="/"))
-# PLOT MOBILITY COMPONENTS
-# CARICO LA SOURCE
 source(paste(basedir,"PlotMobComp_function.R",sep="/"))
-# POLICY INDICATOR
-# CARICO LA SOURCE
 source(paste(basedir,"PolicyIndicator_function.R",sep="/"))
-source(paste(basedir,"api_SummaryBec.R",sep="/"))
+
+source(paste(basedir,"create_aggr.r",sep="/"))
 source(paste(basedir,"api_loadcomext_function.r",sep="/"))
 source(paste(basedir,"api_data_function.R",sep="/"))
+source(paste(basedir,"polind_batch.r",sep="/"))
+source(paste(basedir,"api_SummaryBec.R",sep="/"))
 source(paste(basedir,"api_sa_function.r",sep="/"))
 source(paste(basedir,"api_itsa.R",sep="/"))
-
-#region="Italy"
-#subregion="Italy"
-#DescSummRes<-descSummary("Italy","Italy")
-#PlotCompRes<-PlotMobComp("Italy","Italy")
-#Indicator  <-PolInd("Italy","Italy")
-
-
-#ResBEC   <- BEC(2,"IT","US",2020,2) 
-# PARAM 2 - BEC - SPECIFICO O TOTALE
-#SARES <- sa(2,1,"IT","US",2020,2)
-
-#ITSA  <- itsa_diag(1,3,"IT","WO",1,1) 
 
 
 ##
@@ -59,10 +54,32 @@ app = Application$new()
 #db <- NULL
 GMR<-loadData()
 head(GMR)
+POLIND_DB<-polind_batch()
+head(POLIND_DB)
+#create_aggr()
 
-COMEXT_IMP<-loadcomext("1")
-COMEXT_EXP<-loadcomext("2")
+COMEXT_IMP<-load_comext("1")
+COMEXT_EXP<-load_comext("2")
 
+
+#region="Italy"
+#subregion="Italy"
+#DescSummRes<-descSummary("Italy","Italy")
+#PlotCompRes<-PlotMobComp("Italy","Italy")
+#Indicator  <-PolInd("Italy","Italy")
+
+# flow<-2
+# country_code<-"IT"
+# partner_code<-"US"
+# var_bec<-7
+# year<-2020
+# month<-2
+
+# ResBEC   <- BEC(2,"IT","US",2020,3)
+# PARAM 2 - BEC - SPECIFICO O TOTALE
+# SARES <- sa(2,1,"IT","US",2020,2)
+
+#ITSA  <- itsa_diag(2,7,"IT","WO",1,1)
 
 app$add_get(
   path = "/load-data", 
@@ -161,6 +178,21 @@ app$add_get(
   })
 
 ###############  FUNZIONI FEDERICO ###################
+### CREA AGGREGATI
+
+app$add_get(
+  path = "/create-aggr", 
+  FUN = function(.req, .res) {
+    
+    #db<-loadcomext(.req$get_param_query("flow"))
+    .res$set_body(create_aggr())
+    .res$set_header("Access-Control-Allow-Origin", "*")
+    .res$set_header("Access-Control-Allow-Methods","*")
+    .res$set_header("Access-Control-Allow-Headers", "*")
+    
+    .res$set_content_type("application/json")
+  })
+
 ### CARICAMENTO DATI COMMERCIO ESTERO (I DATI AL MOMENTO
 ### SONO DIVISI TRA IMPORT ED EXPORT VERIFICARE SUCCESSIVAMENTE LA
 ### BASE DATI DEFINITIVA)
@@ -178,8 +210,6 @@ app$add_get(
     
     .res$set_content_type("application/json")
   })
-
-
 # OUTPUT: 6 DATA FRAME - CON CIASCUNO VA COMPOSTO UN SUBPLOT
 # IL CUI NOME DINAMICO E' COMPOSTO DA:
 # TITOLO: "Flow sigla country- sigla partner, nome del bec % tot"
@@ -194,14 +224,14 @@ app$add_get(
 # data di trattamento fissata con year e month
 
 #flow=2
-#country="IT"
-#partner="US"
+#country_code="IT"
+#partner_code="US"
 #year=2020
 #month=3
 #VAR=1
 
 
-# http://localhost:5000/bec?flow=2&country=IT&partner=US&year=2020&month=3
+# http://localhost:5000/bec?flow=2&country=IT&partner=US&year=2020&month=2
 app$add_get(
   path = "/bec", 
   FUN = function(.req, .res) {
@@ -227,7 +257,7 @@ app$add_get(
 # I PUNTI CON UNA LINEA.
 # CIASCUN DATAFRAME COMPORRA' UN SUBPLOT DI UNA FIGURA UNICA
 #(2,1,"IT","US",2020,2)
-# http://localhost:5000/sa?flow=2&VAR=1&country=IT&partner=US&year=2020&month=2
+# http://localhost:5000/sa?flow=2&var=1&country=IT&partner=US&year=2020&month=2
 
 #SARES <- sa(2,1,"IT","US",2020,2)
 
@@ -251,12 +281,12 @@ app$add_get(
 
 #ITSA  <- itsa_diag(1,3,"IT","WO",1,1) 
 
-# http://localhost:5000/itsa?flow=2&var=1&country=IT&partner=US&fcst=1&fcstpolind=0.1,0.3,0.4
+# http://localhost:5000/itsa?flow=2&var=7&country=IT&partner=US&fcst=1&fcstpolind=0.1,0.3,0.4
 #http://localhost:5000/itsa?flow=2&var=1&country=IT&partner=US&fcst=2&fcstpolind=0.1,0.3,0.4
 app$add_get(
   path = "/itsa", 
   FUN = function(.req, .res) {
-    print("/itssa")
+    print("/itsa")
     resp<-itsa_diag(.req$get_param_query("flow"),.req$get_param_query("var"),
                     .req$get_param_query("country"),.req$get_param_query("partner"),
                     .req$get_param_query("fcst"),.req$get_param_query("fcstpolind")) 
