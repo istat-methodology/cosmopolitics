@@ -1,8 +1,6 @@
 
 data_function<-function(flow,VAR,country,partner){
-  #print("----------------------------------PIPPO 2 ----------------- ")
-  #print(db)
-  
+
    if (flow==1) {
      db <- COMEXT_IMP
    } else if (flow==2) {
@@ -81,9 +79,7 @@ data_function<-function(flow,VAR,country,partner){
 }
 
 data_function_bec<-function(flow,country,partner){
-  #print("----------------------------------PIPPO 2 ----------------- ")
-  #print(db)
-  
+ 
   if (flow==1) {
     db <- COMEXT_IMP
   } else if (flow==2) {
