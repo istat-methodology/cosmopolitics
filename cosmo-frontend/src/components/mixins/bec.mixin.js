@@ -1,9 +1,9 @@
 export default {
   data: () => ({
-    timeStep: [],
+    timeStep: null,
+    maxTimeStep:0
   }),
-  methods: {
-    
+  methods: {    
     getCoordinates(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
@@ -14,83 +14,28 @@ export default {
       });
       return dataMap;    
     },
-
-    buildCharts(dataR) {     
-      var t=0;
+    buildCharts(dataR) {         
       for (var name in dataR) {
-        if (name != "Covid_Estimation" && name != "Forecast" && name != "Model") {
-          this.timeStep.push({ id: "202003", time: "T" & t , val:t});
-          t++;
-          this.timeLapse.push(dataR[name]);
+        if (name != "Covid_Estimation" && name != "Forecast" && name != "Model") {   
+         this.timeLapse.push(dataR[name]);
         }
       }
-      
+      this.maxTimeStep = this.timeLapse.length;
       /*
-      this.timeStep.forEach(step => {
-        const rawData = dataR[step];
-        var chartDataArray = [];
-        this.chartType.forEach(type => {
-          if (type == "covid") {
-            chartDataArray.push({
-              dataName: type,
-              data: [
-                { x: 122, y: 100 },
-                { x: 122, y: -100 }
-              ]
-            });
-          } else {
-            chartDataArray.push({
-              dataName: type,
-              data: this.getCoordinates(rawData[type])
-            });
-          }
-        });
-        this.timeLapse.push({
-          time: step,
-          charts: chartDataArray
-        });
-      });
-      if (dataR["Forecast"]) {
-        var forecastRaw = dataR["Forecast"];
-        var forecastDataArray = [];
-        this.forecastType.forEach(type => {
-          forecastDataArray.push({
-            dataName: type,
-            data: this.getCoordinates(forecastRaw[type])
-          });
-        });
-        this.timeLapse.push({
-          time: "Forecast",
-          charts: forecastDataArray
-        });
-      }
-      var rawCharts = this.timeLapse.find(element => {
-        return element.time == "T9";
-      });
+      var indexStart = this.timeLapse[0].date.length - 2;
+      var indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
       
-      var chartDataArray = rawCharts ? rawCharts.charts : [];
-      var index = chartDataArray[0].data.length;
-      
-      //Nowcasting
-      if (dataR["Forecast"]) {
-        this.nowCast.forEach(step => {
-          this.timeLapse.push({
-            time: step,
-            charts: this.pushForecastData(
-              chartDataArray,
-              forecastDataArray,
-              index
-            )
-          });
-          index++;
-        });
+      var periodSlider = [];
+      var v = 0;
+      for (var i = indexStart; i<= indexEnd; i++){        
+        periodSlider.push({"id": this.timeLapse[this.maxTimeStep].date[i], "val": v });
+        v++;
       }
       */
       return this.timeLapse;
-    },
-    
-    getBecChart(timeLapse, time) {
 
+    },    
+    getBecChart(timeLapse, time) {
       var chartData = {};
       chartData.datasets = [];  
       if (timeLapse) {
@@ -168,92 +113,7 @@ export default {
         chartData.datasets.push(chartObj);
 
       }
-      return chartData;
-      
-      
-      /*
-      var chartData = {};
-      chartData.datasets = [];      
-      var rawCharts = timeLapse.find(element => {
-        return element.time == timeStep;
-      });
-      if (rawCharts) {
-        rawCharts.charts.forEach(chart => {
-          var chartObj = {};
-          switch (chart.dataName) {
-            case "tend":
-              chartObj = {
-                label: "Yearly variation series",
-                fill: false,
-                backgroundColor: "rgba(46, 184, 92, 0.2)",
-                borderColor: "rgba(46, 184, 92, 1)",
-                data: chart.data,
-                showLine: false,
-                pointRadius: 12
-              };
-              break;
-            case "pred_tp":
-              chartObj = {
-                label: "Model estimation",
-                fill: false,
-                backgroundColor: "red", //color.background,
-                borderColor: "red", // color.border,
-                data: chart.data,
-                showLine: true,
-                lineTension: 0,
-                pointRadius: 0
-              };
-              break;
-            case "pred_tp_c":
-              chartObj = {
-                label: "Counterfactual",
-                fill: false,
-                backgroundColor: "red", //color.background,
-                borderColor: "red", // color.border,
-                data: chart.data,
-                showLine: true,
-                lineTension: 0,
-                pointRadius: 0,
-                borderDash: [5, 5]
-              };
-              break;
-            case "covid":
-              chartObj = {
-                label: "Covid Start",
-                fill: false,
-                backgroundColor: "blue", //color.background,
-                borderColor: "blue", // color.border,
-                data: chart.data,
-                showLine: true,
-                lineTension: 0,
-                pointRadius: 0,
-                borderDash: [5, 5]
-              };
-              break;
-            default:
-              chartObj = {
-                label: chart.dataName,
-                fill: false,
-                backgroundColor: "red", //color.background,
-                borderColor: "red", // color.border,
-                data: chart.data,
-                showLine: true,
-                lineTension: 0,
-                pointRadius: 0
-              };
-          }
-          chartData.datasets.push(chartObj);
-        });
-      }
-      return chartData;
-      */
-    },
-    pushForecastData(chartDataArray, forecastDataArray, index) {
-      console.log(index);
-      if (forecastDataArray) {
-        chartDataArray[2].data.push(forecastDataArray[0].data[index]);
-      }
-      return chartDataArray;
-    } 
+      return chartData;   
+    }
   }
 };

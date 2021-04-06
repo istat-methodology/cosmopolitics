@@ -150,13 +150,10 @@ export default {
   methods: {  
 
     handleCounterChange(val) {
-      //var time = this.getTime(val);
-      //console.log("Time " + time);
-      //this.$store.dispatch("bec/findByTime", time);
       var iVal = this.getVal(val);
-
-      this.chartData = this.getBecChart(this.timeLapse, iVal);
-
+      if (iVal < this.maxTimeStep){
+        this.chartData = this.getBecChart(this.timeLapse, iVal);
+      }
     },
 
     handleSubmit() {
