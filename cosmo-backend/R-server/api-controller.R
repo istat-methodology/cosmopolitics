@@ -79,7 +79,7 @@ COMEXT_EXP<-load_comext("2")
 # PARAM 2 - BEC - SPECIFICO O TOTALE
 # SARES <- sa(2,1,"IT","US",2020,2)
 
-#ITSA  <- itsa_diag(2,7,"IT","WO",1,1)
+#ITSA  <- itsa_diag(2,7,"IT","US",1,1)
 
 app$add_get(
   path = "/load-data", 

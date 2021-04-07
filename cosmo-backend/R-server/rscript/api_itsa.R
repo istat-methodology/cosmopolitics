@@ -1,6 +1,9 @@
 ######### ITSA ################################
-# modello y=t+d+td+polind+tpolind con dati tendenziali e 1 lag
-#
+# modello y=t+d+polind con dati tendenziali e 1 lag
+# 1. Interrupted time series analysis su effetto del covid-19 per export/import
+# 2. Tabella e grafici diagnostica del modello
+# 3. Nowcast con utilizzo dei dati del policy indicator
+# 4. Forecast con livello di restrizioni decise dall'utente
 ###############################################
 
 itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
@@ -8,7 +11,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   #decido anno e mese di trattamento (123 = MARZO 2020)
   year  = 2020 
   month = 2    # FEBBRAIO
-  #djsonfcst<-NA
+  
   dati<-data_function(flow,var_bec,country_code,partner_code)
   #dati<-dati[order(dati$year,dati$month),]
   
@@ -43,6 +46,9 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   nwcst         <- data.frame(ncdate)
   nwcst$polind  <- polind[(l+2):length(polind)]
   
+##############################################
+# INTERRUPTED TIME SERIES ANALYSIS
+##############################################  
   #creo trend lineare che inizia con zero e arriva a t-1, partendo dalla 13a osservazione
   dati$t<-NA
   dati$t[13:l]<-c(0:(l-13))
@@ -57,8 +63,6 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   dati$td[c(1:12)]<-NA
   dati$tpolind<-dati$td*dati$polind
   dati$tpolind[c(1:12)]<-NA
-  
-  #numero di grafici=mesi post trattamento
   
   n<-l-treat
  
@@ -123,24 +127,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   #rm(a,b)
   gc()
-  
-  #################################################
-  # beta del modello
-  beta_tpolind<-list()
-  
-  lm_tend_tp<-lm(tend~t+d+polind,data=dati)
-  #lm_tend_tp<-lm(tend~t+d+td+polind+tpolind,data=dati)
-  lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, 
-                                                      verbose=T))
-  #lm_tend_corr
-  
-  beta_tpolind[[1]]<-lm_tend_tp_corr
-  beta_tpolind <-do.call("rbind", beta_tpolind)
-  beta_tpolind[,4]<-round(beta_tpolind[,4],digits = 3)
-  
-  #View(beta_tpolind)
-  
-  
+
   # Estimated Model Results
   regmod <- as.data.frame(beta_tpolind)
   rownames(regmod)[rownames(regmod) == "t"] <- "Trend"
@@ -149,7 +136,6 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   regmod<-cbind( "row"=rownames(regmod),regmod)
   colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
-  
   
   reslist[["Model"]]<-regmod
   
@@ -168,8 +154,70 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   coveff<-cbind( "row"=rownames(coveff),coveff)
   reslist[["Covid_Estimation"]]<-coveff
   
-  ##############################################à
-  ########################## NOWCAST
+###############################################################
+#DIAGNOSTICA DEL MODELLO
+#################################################
+  # parametri e test
+  beta_tpolind<-list()
+  
+  lm_tend_tp<-lm(tend~t+d+polind,data=dati)
+  #lm_tend_tp<-lm(tend~t+d+td+polind+tpolind,data=dati)
+  lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, 
+                                                      verbose=T))
+  
+  beta_tpolind[[1]]<-lm_tend_tp_corr
+  beta_tpolind <-do.call("rbind", beta_tpolind)
+  beta_tpolind[,4]<-round(beta_tpolind[,4],digits = 3)
+  
+  #View(beta_tpolind)
+  
+  #####################
+  #grafico residui
+  res <- residuals(lm_tend_tp,type="response",dati)
+  res_date<-dati$date[c(13:l)]
+  res_line<-c(rep(0,length(res)))
+  residual <- data.frame(res_date,res,res_line)
+  
+  reslist[["DIAG_RES"]]<-residual
+  # # 
+  # #grafico actf
+  # dev.new()
+  # require(graphics)
+  # acf<-acf(dati$tend[c(13:l)])
+  # plot(acf)
+  # 
+  #grafico qq_norm
+  # dev.new()
+  # a<-qqnorm(dati$tend[c(13:l)], pch = 1, frame = FALSE)
+  # point_x<-a[[1]]
+  # point_y<-a[[2]]
+  # mean(point_y)
+  # #qqline(dati$tend, lwd = 2)
+  # # Find 1st and 3rd quartile for the Alto 1 data
+  # y <- quantile(dati$tend[c(13:l)], c(0.25, 0.75), type = 5)
+  # # Find the 1st and 3rd quartile of the normal distribution
+  # x <- qnorm( c(0.25, 0.75))
+  # # Now we can compute the intercept and slope of the line that passes
+  # # through these points
+  # slope <- diff(y) / diff(x)
+  # int   <- y[1] - slope * x[1]
+  # abline(a = int, b = slope )
+  # 
+  # qq_line<-c(1:(length(res)))
+  # qq_line<-qq_line*slope
+  # 
+  # 
+  # for (i in 1:(l-12)) {
+  #   qq_line[i]<-x[1]+(slope*i)
+  # }
+  # 
+  # 
+  # normal <- data.frame(point_x,point_y,qq_line)
+  # 
+  # reslist[["DIAG_NORM"]]<-normal
+  
+##############################################à
+########################## NOWCAST
   
   if (fcst==1) {
     
@@ -226,7 +274,9 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
     }
     
   } 
-  ########################## FORECAST
+
+###########################################################  
+########################## FORECAST
   else if (fcst==2)
   {
     # Input Esterno
@@ -292,64 +342,6 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   }
    
-   ###############################################################
-   #diagnostica
-   
-   #grafico residui
-   res <- residuals(lm_tend_tp,type="response",d)
-   res_date<-dati$date[c(13:l)]
-   res_line<-c(rep(0,length(res)))
-   residual <- data.frame(res_date,res,res_line)
-
-   reslist[["DIAG_RES"]]<-residual
-   # # 
-   # #grafico actf
-   # dev.new()
-   # require(graphics)
-   # acf<-acf(dati$tend[c(13:l)])
-   # plot(acf)
-   # 
-   #grafico qq_norm
-   # dev.new()
-   # a<-qqnorm(dati$tend[c(13:l)], pch = 1, frame = FALSE)
-   # point_x<-a[[1]]
-   # point_y<-a[[2]]
-   # mean(point_y)
-   # #qqline(dati$tend, lwd = 2)
-   # # Find 1st and 3rd quartile for the Alto 1 data
-   # y <- quantile(dati$tend[c(13:l)], c(0.25, 0.75), type = 5)
-   # # Find the 1st and 3rd quartile of the normal distribution
-   # x <- qnorm( c(0.25, 0.75))
-   # # Now we can compute the intercept and slope of the line that passes
-   # # through these points
-   # slope <- diff(y) / diff(x)
-   # int   <- y[1] - slope * x[1]
-   # abline(a = int, b = slope )
-   # 
-   # qq_line<-c(1:(length(res)))
-   # qq_line<-qq_line*slope
-   # 
-   # 
-   # for (i in 1:(l-12)) {
-   #   qq_line[i]<-x[1]+(slope*i)
-   # }
-   # 
-   # 
-   # normal <- data.frame(point_x,point_y,qq_line)
-   # 
-   # reslist[["DIAG_NORM"]]<-normal
-   
   return(reslist)    
-  #### OUTPUT BETA-POLIND STATS_TPOLIND DATI PER GRAFICO DINAMICO
   
 }
-
-
-
-
-
-
-
-
-
-
