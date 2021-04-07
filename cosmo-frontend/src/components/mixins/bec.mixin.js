@@ -21,6 +21,8 @@ export default {
     ],
     policyPeriodValue: "", 
     policyPeriod: [],
+    minBec:0,
+    maxBec:0
   }),
   methods: {    
     getBecSlider() {
@@ -71,9 +73,12 @@ export default {
         var month = this.months[iMonth];
         month = month.substr(0, 3);   
         var labelSlider = month + "-" + year;
-        this.policyPeriod.push({"id": this.timeLapse[this.maxTimeStep].date[i],  "name" : labelSlider, "val": this.v });
+        this.policyPeriod.push({"id": this.timeLapse[this.maxTimeStep].date[i],  "name" : labelSlider, "val": this.v });                
         this.v++;
       }      
+      this.maxBec = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
+      this.minBec = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
+
     },    
     getBecChart(time) {
       var chartData = {};
@@ -143,8 +148,8 @@ export default {
           backgroundColor: "blue", //color.background,
           borderColor: "blue", // color.border,
           data: [
-            { x: 122, y: 100 },
-            { x: 122, y: -100 }],
+            { x: 122, y: this.maxBec },
+            { x: 122, y: this.minBec }],
           showLine: true,
           lineTension: 0,
           pointRadius: 0,
