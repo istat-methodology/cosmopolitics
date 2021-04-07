@@ -7,7 +7,6 @@ create_aggr <- function(){
     db <- fread(paste(basedirData,"exp.csv",sep="/"))
   } 
   
-  
   db<-as.data.frame(db)
   colnames(db)[1] <- "country_sh"
   colnames(db)[5] <- "bec3"

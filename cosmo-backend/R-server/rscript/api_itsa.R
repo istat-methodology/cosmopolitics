@@ -1,14 +1,13 @@
 ######### ITSA ################################
-# modello base y=t+d+td con dati tendenziali e 1 lag
 # modello y=t+d+td+polind+tpolind con dati tendenziali e 1 lag
-####GRAFICI PER TIMELAPSE
+#
 ###############################################
-#ITSA  <- itsa_diag(2,7,"IT","US",1,1) 
+
 itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   #decido anno e mese di trattamento (123 = MARZO 2020)
   year  = 2020 
-  month = 3    # marzo
+  month = 2    # FEBBRAIO
   #djsonfcst<-NA
   dati<-data_function(flow,var_bec,country_code,partner_code)
   #dati<-dati[order(dati$year,dati$month),]
@@ -37,11 +36,12 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   dati$tend[c(1:12)]<-NA
   dati$polind <- polind[1:l]
   
-  
+  #imposta date per nowcast successivo
   ndate         <- which(POLIND_DB$Date == dati$date[length(dati$date)])
+  ndate         <- ndate+1
   ncdate        <- POLIND_DB$Date[(ndate):length(POLIND_DB$Date)]
   nwcst         <- data.frame(ncdate)
-  nwcst$polind  <- polind[(l+1):length(polind)]
+  nwcst$polind  <- polind[(l+2):length(polind)]
   
   #creo trend lineare che inizia con zero e arriva a t-1, partendo dalla 13a osservazione
   dati$t<-NA
@@ -58,34 +58,10 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   dati$tpolind<-dati$td*dati$polind
   dati$tpolind[c(1:12)]<-NA
   
-  ############# GRAFICO STATICO EFFETTO GENERALE ED EFFETTO POLICY INDICATOR
-  
-  #modellI itsa  con e senza polind
-  #lm_tend<-lm(tend~t+d+td,data=dati)
-  #summary(lm_tend)
-  #lm_tend_tp<-lm(tend~t+d+td+polind+tpolind,data=dati)
-  #lm_tend_tp<-lm(tend~t+d+td+polind,data=dati)
-  #summary(lm_tend_tp)
-  
-  #correggo standard error per autocorrelazione a un lag
-  #lm_tend_corr<-coeftest(lm_tend,vcov=NeweyWest(lm_tend,lag = 1, prewhite = 0, adjust = TRUE, verbose=T))
-  #lm_tend_corr
-  #lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, verbose=T))
-  #lm_tend_tp_corr
-  
-  #################################################################à
-  ####### script per grafici timelapse
-  ## più tabella risultati stima effetti
-  # più tabella risultati coefficienti dei modelli (no output, serve a noi)
-  
   #numero di grafici=mesi post trattamento
   
   n<-l-treat
-  #dev.off()
-  #dev.new()
-  #par(mar = rep(2, 4))
-  #par(mfrow=c(4,2))
-  
+ 
   reslist<-list()
   ris<-list()
 
@@ -100,27 +76,12 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
     a<-c[,1]
     b<-c[,2]
     
-    
-    #lm_tend_tp<-lm(tend~t+d+td+polind+tpolind,data=d)
-    # Provo ad eliminare td
     lm_tend_tp<-lm(tend~t+d+polind,data=d)
-    
-    
-    #lm_tend<-lm(tend~t+d+td,data=d)
     
     lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, verbose=T))
     
     pred_tp <- predict(lm_tend_tp,type="response",d)
     d$pred_tp<-pred_tp
-    
-    #plot(a,b,type="n",ylab=flow, xlab="Time", xlim = c(l-50,l),
-    #     main = paste(country,"-",partner,"@ T +",i,";",VAR,"(mln. euro)",sep =" "))
-    #points(b,cex=1.5, col=35)
-    #abline(v=treat-1, lty=3)
-    #lines(pred_tp,col=2)
-    
-    
-    
     
     # generate predictions under the counterfactual scenario and add it to the plot
     d$d<-0
@@ -163,15 +124,59 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   #rm(a,b)
   gc()
   
+  #################################################
+  # beta del modello
+  beta_tpolind<-list()
+  
+  lm_tend_tp<-lm(tend~t+d+polind,data=dati)
+  #lm_tend_tp<-lm(tend~t+d+td+polind+tpolind,data=dati)
+  lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, 
+                                                      verbose=T))
+  #lm_tend_corr
+  
+  beta_tpolind[[1]]<-lm_tend_tp_corr
+  beta_tpolind <-do.call("rbind", beta_tpolind)
+  beta_tpolind[,4]<-round(beta_tpolind[,4],digits = 3)
+  
+  #View(beta_tpolind)
   
   
-  # Mettere qui la funzione di nowcasting
+  # Estimated Model Results
+  regmod <- as.data.frame(beta_tpolind)
+  rownames(regmod)[rownames(regmod) == "t"] <- "Trend"
+  rownames(regmod)[rownames(regmod) == "d"] <- "Covid Dummy"
+  rownames(regmod)[rownames(regmod) == "polind"] <- "Mobility Policy Indicator"
+  
+  regmod<-cbind( "row"=rownames(regmod),regmod)
+  colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
+  
+  
+  reslist[["Model"]]<-regmod
+  
+  # Covid Effect (mln. of Euro)
+  coveff <- as.data.frame(stats_tpolind)
+  names(coveff)[names(coveff) == "T1"] <- "Mar_2020"
+  names(coveff)[names(coveff) == "T2"] <- "Apr_2020"
+  names(coveff)[names(coveff) == "T3"] <- "May_2020"
+  names(coveff)[names(coveff) == "T4"] <- "Jun_2020"
+  names(coveff)[names(coveff) == "T5"] <- "Jul_2020"
+  names(coveff)[names(coveff) == "T6"] <- "Aug_2020"
+  names(coveff)[names(coveff) == "T7"] <- "Sep_2020"
+  names(coveff)[names(coveff) == "T8"] <- "Opt_2020"
+  names(coveff)[names(coveff) == "T9"] <- "Nov_2020"
+  
+  coveff<-cbind( "row"=rownames(coveff),coveff)
+  reslist[["Covid_Estimation"]]<-coveff
+  
+  ##############################################à
+  ########################## NOWCAST
+  
   if (fcst==1) {
     
     d1<-subset(dati,select=c(t,d,tend,polind,date))
     nobs          = length(nwcst$polind)
     
-    strdate = d1$date[length(d1$date)]
+    strdate = ncdate[1]
     ndate = seq.Date(from =as.Date(strdate, "%d/%m/%Y"), 
                     length.out = nobs,by="month")
     
@@ -197,15 +202,10 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
     nwcst <- nwcst[,c(-1)]
     d1 <- rbind(d1,nwcst)
     
-    # Nowcast
-    
     lm_tend_tp<-lm(tend~t+d+polind,data=d1)
     
-    #lm_tend<-lm(tend~t+d+td,data=d)
     lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, verbose=T))
     d1$nowcast  <- predict(lm_tend_tp,type="response",d1)
-    
-    #djsonfcst    <- as.data.frame(d1[,c(5,3,6)])
     
     ##########   aggiungo stima pred_tp_c
     
@@ -225,16 +225,19 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
       reslist[[paste0("NOW",i)]]<-assign(paste("djson",n+i,sep = ""),as.data.frame(d1[c(1:(h+i)),c(5,3,6,7)]))
     }
     
-    
-  } else if (fcst==2)
+  } 
+  ########################## FORECAST
+  else if (fcst==2)
   {
     # Input Esterno
     fcstpolind <-as.numeric(unlist(strsplit(fcstpolind,",")))
+    #fcstpolind = c(0.1, 0.5, 0.4)
     
     d2<-subset(dati,select=c(t,d,tend,polind,date))
     nobsf      = length(nwcst$polind) + length(fcstpolind)
     
-    strdate = d2$date[length(d2$date)]
+    strdate = ncdate[1]
+    #strdate = d2$date[length(d2$date)]
     fdate = seq.Date(from =as.Date(strdate, "%d/%m/%Y"), 
                      length.out = nobsf,by="month")
     
@@ -286,57 +289,8 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
     for (i in 1:nobsf) {
       reslist[[paste0("FOR",i)]]<-assign(paste("djson",n+i,sep = ""),as.data.frame(d2[c(1:(h+i)),c(5,3,6,7)]))
     } 
-  #  
-  # else if (fcst==0) {
-  #   djson = NA
-  #   
-  # }
+  
   }
-  
-  
-  #################################################
-    # beta del modello
-    beta_tpolind<-list()
-    
-    lm_tend_tp<-lm(tend~t+d+polind,data=dati)
-    #lm_tend_tp<-lm(tend~t+d+td+polind+tpolind,data=dati)
-    lm_tend_tp_corr<-coeftest(lm_tend_tp,vcov=NeweyWest(lm_tend_tp,lag = 1, prewhite = 0, adjust = TRUE, 
-                                                        verbose=T))
-    #lm_tend_corr
-    
-    beta_tpolind[[1]]<-lm_tend_tp_corr
-    beta_tpolind <-do.call("rbind", beta_tpolind)
-    beta_tpolind[,4]<-round(beta_tpolind[,4],digits = 3)
-    
-    #View(beta_tpolind)
-    
-    
-    # Estimated Model Results
-   regmod <- as.data.frame(beta_tpolind)
-   rownames(regmod)[rownames(regmod) == "t"] <- "Trend"
-   rownames(regmod)[rownames(regmod) == "d"] <- "Covid Dummy"
-   rownames(regmod)[rownames(regmod) == "polind"] <- "Mobility Policy Indicator"
-   
-   regmod<-cbind( "row"=rownames(regmod),regmod)
-   colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
-  
-   
-   reslist[["Model"]]<-regmod
-   
-   # Covid Effect (mln. of Euro)
-   coveff <- as.data.frame(stats_tpolind)
-   names(coveff)[names(coveff) == "T1"] <- "Mar_2020"
-   names(coveff)[names(coveff) == "T2"] <- "Apr_2020"
-   names(coveff)[names(coveff) == "T3"] <- "May_2020"
-   names(coveff)[names(coveff) == "T4"] <- "Jun_2020"
-   names(coveff)[names(coveff) == "T5"] <- "Jul_2020"
-   names(coveff)[names(coveff) == "T6"] <- "Aug_2020"
-   names(coveff)[names(coveff) == "T7"] <- "Sep_2020"
-   names(coveff)[names(coveff) == "T8"] <- "Opt_2020"
-   names(coveff)[names(coveff) == "T9"] <- "Nov_2020"
-   
-   coveff<-cbind( "row"=rownames(coveff),coveff)
-   reslist[["Covid_Estimation"]]<-coveff
    
    ###############################################################
    #diagnostica
@@ -352,7 +306,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
    # #grafico actf
    # dev.new()
    # require(graphics)
-   # acf<-acf(dati$tend)
+   # acf<-acf(dati$tend[c(13:l)])
    # plot(acf)
    # 
    #grafico qq_norm

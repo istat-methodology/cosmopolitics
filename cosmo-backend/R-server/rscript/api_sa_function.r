@@ -5,9 +5,8 @@ sa<-function(flow,var_bec,country_code,partner_code,year,month){
   
   #decido anno e mese di trattamento (123 = MARZO 2020)
   #year  = 2020 
-  #month = 3    # marzo
-   #print("----------------------------------PIPPO ----------------- ")
-
+  #month = 2    # FEBBRAIO
+  
   dati<-data_function(flow,var_bec,country_code,partner_code)
   dati<-dati[order(dati$year,dati$month),]
 
