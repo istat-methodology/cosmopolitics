@@ -16,11 +16,11 @@ library(tidyverse)
 
 #setwd("/home/is2admin/hackathon/git/hack-backend/R-server")
 #setwd("C:\\Users\\ibuku\\git\\hack-backend\\R-server")
-# basedir = ("/home/is2admin/hackathon/git/hack-backend/R-server/rscript")
-# basedirData=("/home/is2admin/hackathon/git/hack-backend/R-server/data")
+basedir = ("/home/is2admin/hackathon/git/hack-backend/R-server/rscript")
+basedirData=("/home/is2admin/hackathon/git/hack-backend/R-server/data")
 
-basedir = ("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
-basedirData=("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
+# basedir = ("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
+# basedirData=("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
 
 #basedir = ("d:/development/cosmopolitics/cosmo-backend/R-server/rscript")
 #basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
