@@ -98,7 +98,6 @@ import { mapGetters } from "vuex";
 import { Context } from "@/common";
 import paletteMixin from "@/components/mixins/palette.mixin";
 import scatterMixin from "@/components/mixins/scatter.mixin";
-import sliderMixin from "@/components/mixins/slider.mixin";
 import becMixin from "@/components/mixins/bec.mixin";
 import ScatterChart from "@/components/charts/ScatterChart";
 import VueSlider from "vue-slider-component";
@@ -109,7 +108,7 @@ export default {
     ScatterChart,
     VueSlider
   },
-  mixins: [paletteMixin, scatterMixin, sliderMixin, becMixin],
+  mixins: [paletteMixin, scatterMixin, becMixin],
   data: () => ({
     //Form fields
     flowSelected: null,
@@ -120,10 +119,8 @@ export default {
     timeSelected: null,
     restriction: 0,
     showSlider: false,
-
     chartData: null,
-    timeLapse : []
-
+    timeLapse : null
   }),
   computed: {
     ...mapGetters("classification", [
@@ -142,21 +139,17 @@ export default {
       return forecast;
     },
     sliderPeriod() {
-      return this.timeSelected
-        ? this.getSliderPeriod(this.timeSelected.value)
-        : this.getSliderPeriod("202103");
+      return this.getBecSlider();
     }    
   }, 
   methods: {  
-
     handleCounterChange(val) {
-      var iVal = this.getVal(val);
-      if (iVal < this.maxTimeStep){
-        this.chartData = this.getBecChart(this.timeLapse, iVal);
+      var iVal = this.getBecSliderVal(val);
+      if (iVal <= this.maxTimeStep){
+        this.chartData = this.getBecChart(iVal);
       }
     },
-
-    handleSubmit() {
+    handleSubmit() {      
       const form = {
         flow: this.flowSelected.id,
         var: this.becSelected.id,
@@ -169,9 +162,9 @@ export default {
       }      
       this.$store.dispatch("bec/findByFilters", form)
       .then(() => {
-        var timeLapse = this.buildCharts(this.becCharts);
-        if (timeLapse){
-          this.chartData = this.getBecChart(timeLapse, 0);
+        this.buildCharts(this.becCharts);
+        if (this.timeLapse){
+          this.chartData = this.getBecChart(0);
           this.showSlider = true;
         }
       });
