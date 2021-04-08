@@ -120,7 +120,12 @@ export default {
     restriction: 0,
     showSlider: false,
     chartData: null,
-    timeLapse : null
+    timeLapse : null,
+    maxTimeStep:0,
+    policyPeriodValue: "", 
+    policyPeriod: [],
+    minBec:0,
+    maxBec:0
   }),
   computed: {
     ...mapGetters("classification", [
@@ -162,8 +167,9 @@ export default {
       }      
       this.$store.dispatch("bec/findByFilters", form)
       .then(() => {
-        this.buildCharts(this.becCharts);
+        this.buildBecCharts(this.becCharts);
         if (this.timeLapse){
+          this.buildBecSlider();
           this.chartData = this.getBecChart(0);
           this.showSlider = true;
         }

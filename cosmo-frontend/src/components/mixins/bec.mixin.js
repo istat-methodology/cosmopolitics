@@ -1,10 +1,5 @@
 export default {
-  data: () => ({
-    timeStep: null,
-    maxTimeStep:0,
-    indexStart:0,
-    indexEnd:0,
-    v:0,
+  data: () => ({   
     months: [
       "January",
       "February",
@@ -18,11 +13,7 @@ export default {
       "October",
       "November",
       "December"
-    ],
-    policyPeriodValue: "", 
-    policyPeriod: [],
-    minBec:0,
-    maxBec:0
+    ]
   }),
   methods: {    
     getBecSlider() {
@@ -48,37 +39,35 @@ export default {
       });
       return dataMap;    
     },
-    buildCharts(dataR) {         
-      
+    buildBecCharts(dataR) {  
       this.timeLapse = [];
-      this.policyPeriod = [];
-      this.maxTimeStep = 0;
-      this.indexStart = 0;
-      this.indexEnd = 0;
-
       for (var name in dataR) {
         if (name != "Covid_Estimation" &&  name != "Model" && name != "DIAG_RES") {   
          this.timeLapse.push(dataR[name]);
         }
-      }      
-      this.maxTimeStep = this.timeLapse.length-1;      
-      this.indexStart = this.timeLapse[0].date.length - 1;
-      this.indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
-      this.v = 0;
-      this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[this.indexStart];
-      for (var i = this.indexStart; i<= this.indexEnd; i++){        
+      }
+      this.maxTimeStep = this.timeLapse.length-1;   
+    },
+    buildBecSlider() {       
+      this.policyPeriod = [];    
+      var indexStart = 0;
+      var indexEnd = 0;           
+      var v = 0;      
+      indexStart = this.timeLapse[0].date.length - 1;
+      indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
+      this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[indexStart];
+      for (var i = indexStart; i<= indexEnd; i++){        
         var tmp = this.timeLapse[this.maxTimeStep].date[i];
         var year = tmp.substr(2,2);        
         var iMonth = parseInt(tmp.substr(5, 2)) - 1;
         var month = this.months[iMonth];
         month = month.substr(0, 3);   
         var labelSlider = month + "-" + year;
-        this.policyPeriod.push({"id": this.timeLapse[this.maxTimeStep].date[i],  "name" : labelSlider, "val": this.v });                
-        this.v++;
+        this.policyPeriod.push({"id": this.timeLapse[this.maxTimeStep].date[i],  "name" : labelSlider, "val": v });                
+        v++;
       }      
       this.maxBec = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
       this.minBec = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
-
     },    
     getBecChart(time) {
       var chartData = {};
