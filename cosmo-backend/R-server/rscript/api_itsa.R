@@ -128,17 +128,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   #rm(a,b)
   gc()
 
-  # Estimated Model Results
-  regmod <- as.data.frame(beta_tpolind)
-  rownames(regmod)[rownames(regmod) == "t"] <- "Trend"
-  rownames(regmod)[rownames(regmod) == "d"] <- "Covid Dummy"
-  rownames(regmod)[rownames(regmod) == "polind"] <- "Mobility Policy Indicator"
-  
-  regmod<-cbind( "row"=rownames(regmod),regmod)
-  colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
-  
-  reslist[["Model"]]<-regmod
-  
+########################## Tabella covid effect
   # Covid Effect (mln. of Euro)
   coveff <- as.data.frame(stats_tpolind)
   names(coveff)[names(coveff) == "T1"] <- "Mar_2020"
@@ -154,10 +144,11 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   coveff<-cbind( "row"=rownames(coveff),coveff)
   reslist[["Covid_Estimation"]]<-coveff
   
+  
 ###############################################################
 #DIAGNOSTICA DEL MODELLO
 #################################################
-  # parametri e test
+  # tabella parametri modello e test
   beta_tpolind<-list()
   
   lm_tend_tp<-lm(tend~t+d+polind,data=dati)
@@ -171,6 +162,16 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   #View(beta_tpolind)
   
+  regmod <- as.data.frame(beta_tpolind)
+  rownames(regmod)[rownames(regmod) == "t"] <- "Trend"
+  rownames(regmod)[rownames(regmod) == "d"] <- "Covid Dummy"
+  rownames(regmod)[rownames(regmod) == "polind"] <- "Mobility Policy Indicator"
+  
+  regmod<-cbind( "row"=rownames(regmod),regmod)
+  colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
+  
+  reslist[["Model"]]<-regmod
+  
   #####################
   #grafico residui
   res <- residuals(lm_tend_tp,type="response",dati)
@@ -179,7 +180,8 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   residual <- data.frame(res_date,res,res_line)
   
   reslist[["DIAG_RES"]]<-residual
-  # # 
+ 
+   # # 
   # #grafico actf
   # dev.new()
   # require(graphics)
@@ -215,6 +217,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   # normal <- data.frame(point_x,point_y,qq_line)
   # 
   # reslist[["DIAG_NORM"]]<-normal
+  
   
 ##############################################à
 ########################## NOWCAST
