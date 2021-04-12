@@ -40,13 +40,35 @@ export default {
       return dataMap;    
     },
     buildBecCharts(dataR) {  
+      
       this.timeLapse = [];
+      this.covidEstimationDataTable = [];
+      this.modelDataTable = [];      
+      var covidEstimation = [];
+      var model = [];
+      var diagRes = [];
+
       for (var name in dataR) {
-        if (name != "Covid_Estimation" &&  name != "Model" && name != "DIAG_RES") {   
-         this.timeLapse.push(dataR[name]);
+        switch (name) {
+          case "Covid_Estimation":
+            covidEstimation.push(dataR[name]);
+            break;
+          case "Model":
+            model.push(dataR[name]);
+            break;
+          case "DIAG_RES":
+              diagRes.push(dataR[name]);
+              break;    
+          default:            
+            this.timeLapse.push(dataR[name]);        
         }
       }
+      //
       this.maxTimeStep = this.timeLapse.length-1;   
+      //
+      this.covidEstimationDataTable = this.getBecTable(covidEstimation[0]);
+      //
+      this.modelDataTable =  this.getBecTable(model[0]);      
     },
     buildBecSlider() {       
       this.policyPeriod = [];    
@@ -148,6 +170,38 @@ export default {
 
       }
       return chartData;   
+    },
+    _getBecTable(objects) {
+      var tableData = [];
+      var keys = objects.row;
+      for (var dat in objects) {
+        var rowObject = {};
+        if (dat != "row" && dat != "_row") {
+          rowObject["row"] = dat;
+          objects[dat].forEach(function(item, index) {
+            rowObject[keys[index]] = item;
+          });
+          tableData.push(rowObject);
+        }
+      }
+      console.log(tableData);
+      return tableData;
+    },
+    getBecTable(objects) {
+      var tableData = [];
+      var keys = objects.row;
+      keys.forEach(function(item, index) {
+        var rowObject = {};
+        for (var dat in objects) {
+          if (dat != "_row") {
+            rowObject[dat] = dat;
+            rowObject[dat] = objects[dat][index];
+          }           
+        }
+        tableData.push(rowObject);
+    });
+    console.log(tableData);
+    return tableData;
     }
   }
 };

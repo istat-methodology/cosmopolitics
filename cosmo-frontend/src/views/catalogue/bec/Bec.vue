@@ -8,6 +8,10 @@
             {{ this.partnerSelected.descr }}</span
           ><span v-else>BEC analysis</span>
         </header>
+        <!--circle-spin
+            v-bind:loading="isLoading"
+            class="circle-spin"
+          ></circle-spin-->
         <CCardBody>
           <scatter-chart :chartData="chartData" :options="options" />
           <vue-slider
@@ -22,6 +26,12 @@
           />
         </CCardBody>
       </div>
+      <CCard>
+        <CCardBody>                    
+          <CDataTable :items="covidEstimationDataTable" hover />
+          <CDataTable :items="modelDataTable" hover />
+        </CCardBody>
+      </CCard>
     </div>
     <div class="col-3">
       <CCard>
@@ -121,11 +131,34 @@ export default {
     showSlider: false,
     chartData: null,
     timeLapse : null,
+    covidEstimationDataTable:null,
+    modelDataTable:null,
     maxTimeStep:0,
     policyPeriodValue: "", 
     policyPeriod: [],
     minBec:0,
-    maxBec:0
+    maxBec:0,
+    options: {
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }, 
+      scales: {
+        yAxes: [{ 
+          scaleLabel: {
+            display: true,
+            labelString: "Happiness"
+          }
+        }],
+        xAxes: [{ 
+          scaleLabel: {
+            display: true,
+            labelString: "GDP (PPP)"
+          }
+        }],
+        x : {  min: 40,   max: 50 }
+        }
+     }
   }),
   computed: {
     ...mapGetters("classification", [
