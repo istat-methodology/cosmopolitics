@@ -39,7 +39,7 @@
             </label>
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
-          <CDataTable  :items="covidEstimationDataTable" hover />
+          <CDataTable  :items="covidEstimationDataTable" :fields="covidEstimationTableFileds" hover />
         </CCardBody>
       </CCard>
       <CCard v-if="modelDataTable">
@@ -51,7 +51,8 @@
             </label>
         </CCardHeader>
         <CCardBody v-show="isModel">
-          <CDataTable  :items="modelDataTable" hover />
+          <CDataTable  :items="modelDataTable" :fields="modelTableFileds" hover />
+          <!--CDataTable  :items="modelDataTable" hover /-->
         </CCardBody>
       </CCard>
     </div>
@@ -152,16 +153,20 @@ export default {
     showSlider: false,
     chartData: null,
     timeLapse: null,
-    covidEstimationDataTable: null,
-    modelDataTable: null,
     maxTimeStep: 0,
     policyPeriodValue: "",
     policyPeriod: [],
+
+    covidEstimationDataTable: null,
     covidEstimationTableTitle: null,
+    
+    modelDataTable: null,
     modelTableTitle: null,
+    
+    isMainChart:true,
     isCovidEstimation:false,
     isModel:false,
-    isMainChart:true,
+    
     options: {
       title: {
         display: true,

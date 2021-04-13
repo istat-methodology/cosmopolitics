@@ -18,8 +18,9 @@ export default {
     treatX: 0,
     minTreatY: 0,
     maxTreatY: 0,
-    headerTablePeriod: null,
-
+    timePeriod: [],
+    covidEstimationTableFileds: [],
+    modelTableFileds: []     
   }),
   methods: {
     getBecSlider() {
@@ -58,13 +59,19 @@ export default {
       for (var name in dataR) {
         switch (name) {
           case "Covid_Estimation":
-            covidEstimation.push(dataR[name]);
+          
+            covidEstimation.push(dataR[name]);          
             this.covidEstimationTableTitle = "Covid Estimation";
+            this.covidEstimationTableFileds = this.getHeaderTable(dataR[name]);
             break;
-          case "Model":
-            model.push(dataR[name]);            
+          
+            case "Model":
+            
+          model.push(dataR[name]);            
             this.modelTableTitle = "Model";
+            this.modelTableFileds =this.getHeaderTable(dataR[name]);            
             break;
+
           case "DIAG_NORM":
             diagNorm.push(dataR[name]);
             break;
@@ -86,9 +93,9 @@ export default {
       //
       this.buildBecSlider();
       //
-      this.covidEstimationDataTable = this.getBecTable(covidEstimation[0]);
+      this.covidEstimationDataTable = this.getTable(covidEstimation[0]);
       //
-      this.modelDataTable = this.getBecTable(model[0]);
+      this.modelDataTable = this.getTable(model[0]);
     },
     buildBecSlider() {
       this.policyPeriod = [];
@@ -96,6 +103,7 @@ export default {
       var indexStart = 0;
       var indexEnd = 0;
       var v = 0;      
+      this.timePeriod = [];
       indexStart = this.timeLapse[0].date.length - 1;
       indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
       this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[
@@ -108,11 +116,17 @@ export default {
         var month = this.months[iMonth];
         month = month.substr(0, 3);
         var label = month + "-" + year;
-
+        
         this.policyPeriod.push({
           id: this.timeLapse[this.maxTimeStep].date[i],
           name: label,
-          val: v
+          val: v          
+        });
+
+        
+        this.timePeriod.push({ 
+          key: "T" + (v + 1), 
+          label: label 
         });
         v++;
       }
@@ -215,7 +229,7 @@ export default {
       console.log(tableData);
       return tableData;
     },
-    getBecTable(objects) {
+    getTable(objects) {
       var tableData = [];      
       var keys = objects.row;      
       keys.forEach(function(item, index) {
@@ -230,6 +244,16 @@ export default {
       });      
       console.log(keys);
       return tableData;
+    },
+    getHeaderTable(objects) {      
+      var tableFields = [];
+      tableFields.push({ key: "row", label: "" });
+      for (var dat in objects) {
+        if (dat != "row" && dat != "_row") {
+          tableFields.push({ key: dat, label: dat  });
+        }
+      }
+      return tableFields;
     }
   }
 };
