@@ -26,10 +26,14 @@
           />
         </CCardBody>
       </div>
+      <CCard v-if="covidEstimationDataTable">
+        <CCardBody>
+          <CDataTable  :items="covidEstimationDataTable" hover />
+        </CCardBody>
+      </CCard>
       <CCard>
-        <CCardBody>                    
-          <CDataTable :items="covidEstimationDataTable" hover />
-          <CDataTable :items="modelDataTable" hover />
+        <CCardBody v-if="modelDataTable">
+          <CDataTable  :items="modelDataTable" hover />
         </CCardBody>
       </CCard>
     </div>
@@ -75,7 +79,6 @@
             v-model="previsionSelected"
           />
           <template v-if="isForecasting">
-        
             <label for="country" class="card-label mt-3">Time:</label>
             <v-select
               label="descr"
@@ -130,35 +133,39 @@ export default {
     restriction: 0,
     showSlider: false,
     chartData: null,
-    timeLapse : null,
-    covidEstimationDataTable:null,
-    modelDataTable:null,
-    maxTimeStep:0,
-    policyPeriodValue: "", 
+    timeLapse: null,
+    covidEstimationDataTable: null,
+    modelDataTable: null,
+    maxTimeStep: 0,
+    policyPeriodValue: "",
     policyPeriod: [],
-    minBec:0,
-    maxBec:0,
+    minBec: 0,
+    maxBec: 0,
     options: {
       title: {
         display: true,
-        text: 'Predicted world population (millions) in 2050'
-      }, 
+        text: "Predicted world population (millions) in 2050"
+      },
       scales: {
-        yAxes: [{ 
-          scaleLabel: {
-            display: true,
-            labelString: "Happiness"
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "Happiness"
+            }
           }
-        }],
-        xAxes: [{ 
-          scaleLabel: {
-            display: true,
-            labelString: "GDP (PPP)"
+        ],
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "GDP (PPP)"
+            }
           }
-        }],
-        x : {  min: 40,   max: 50 }
-        }
-     }
+        ],
+        x: { min: 40, max: 50 }
+      }
+    }
   }),
   computed: {
     ...mapGetters("classification", [
@@ -169,7 +176,7 @@ export default {
       "previsions",
       "timeNext"
     ]),
-    ...mapGetters("bec", ["becCharts"]), 
+    ...mapGetters("bec", ["becCharts"]),
     isForecasting() {
       var forecast = false;
       if (this.previsionSelected)
@@ -178,16 +185,16 @@ export default {
     },
     sliderPeriod() {
       return this.getBecSlider();
-    }    
-  }, 
-  methods: {  
+    }
+  },
+  methods: {
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
-      if (iVal <= this.maxTimeStep){
+      if (iVal <= this.maxTimeStep) {
         this.chartData = this.getBecChart(iVal);
       }
     },
-    handleSubmit() {      
+    handleSubmit() {
       const form = {
         flow: this.flowSelected.id,
         var: this.becSelected.id,
@@ -197,11 +204,10 @@ export default {
       };
       if (this.isForecasting) {
         form.fcstpolind = this.restriction;
-      }      
-      this.$store.dispatch("bec/findByFilters", form)
-      .then(() => {
+      }
+      this.$store.dispatch("bec/findByFilters", form).then(() => {
         this.buildBecCharts(this.becCharts);
-        if (this.timeLapse){
+        if (this.timeLapse) {
           this.buildBecSlider();
           this.chartData = this.getBecChart(0);
           this.showSlider = true;
@@ -215,5 +221,5 @@ export default {
     this.$store.dispatch("classification/getPartners");
     this.$store.dispatch("classification/getBecs");
   }
-}
+};
 </script>

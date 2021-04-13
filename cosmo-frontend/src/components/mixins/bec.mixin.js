@@ -1,5 +1,5 @@
 export default {
-  data: () => ({   
+  data: () => ({
     months: [
       "January",
       "February",
@@ -15,7 +15,7 @@ export default {
       "December"
     ]
   }),
-  methods: {    
+  methods: {
     getBecSlider() {
       var period = [];
       this.policyPeriod.forEach(element => {
@@ -37,13 +37,12 @@ export default {
           y: element
         });
       });
-      return dataMap;    
+      return dataMap;
     },
-    buildBecCharts(dataR) {  
-      
+    buildBecCharts(dataR) {
       this.timeLapse = [];
       this.covidEstimationDataTable = [];
-      this.modelDataTable = [];      
+      this.modelDataTable = [];
       var covidEstimation = [];
       var model = [];
       var diagRes = [];
@@ -57,45 +56,51 @@ export default {
             model.push(dataR[name]);
             break;
           case "DIAG_RES":
-              diagRes.push(dataR[name]);
-              break;    
-          default:            
-            this.timeLapse.push(dataR[name]);        
+            diagRes.push(dataR[name]);
+            break;
+          default:
+            this.timeLapse.push(dataR[name]);
         }
       }
       //
-      this.maxTimeStep = this.timeLapse.length-1;   
+      this.maxTimeStep = this.timeLapse.length - 1;
       //
       this.covidEstimationDataTable = this.getBecTable(covidEstimation[0]);
       //
-      this.modelDataTable =  this.getBecTable(model[0]);      
+      this.modelDataTable = this.getBecTable(model[0]);
     },
-    buildBecSlider() {       
-      this.policyPeriod = [];    
+    buildBecSlider() {
+      this.policyPeriod = [];
       var indexStart = 0;
-      var indexEnd = 0;           
-      var v = 0;      
+      var indexEnd = 0;
+      var v = 0;
       indexStart = this.timeLapse[0].date.length - 1;
       indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
-      this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[indexStart];
-      for (var i = indexStart; i<= indexEnd; i++){        
+      this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[
+        indexStart
+      ];
+      for (var i = indexStart; i <= indexEnd; i++) {
         var tmp = this.timeLapse[this.maxTimeStep].date[i];
-        var year = tmp.substr(2,2);        
+        var year = tmp.substr(2, 2);
         var iMonth = parseInt(tmp.substr(5, 2)) - 1;
         var month = this.months[iMonth];
-        month = month.substr(0, 3);   
+        month = month.substr(0, 3);
         var labelSlider = month + "-" + year;
-        this.policyPeriod.push({"id": this.timeLapse[this.maxTimeStep].date[i],  "name" : labelSlider, "val": v });                
+        this.policyPeriod.push({
+          id: this.timeLapse[this.maxTimeStep].date[i],
+          name: labelSlider,
+          val: v
+        });
         v++;
-      }      
+      }
       this.maxBec = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
       this.minBec = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
-    },    
+    },
     getBecChart(time) {
       var chartData = {};
-      chartData.datasets = [];  
+      chartData.datasets = [];
       if (this.timeLapse) {
-        for (var chartType  in this.timeLapse[time]) {          
+        for (var chartType in this.timeLapse[time]) {
           var chartObj = {};
           switch (chartType) {
             case "date":
@@ -149,7 +154,7 @@ export default {
                 pointRadius: 0
               };
           }
-          if (chartType!="date"){
+          if (chartType != "date") {
             chartData.datasets.push(chartObj);
           }
         }
@@ -160,16 +165,16 @@ export default {
           borderColor: "blue", // color.border,
           data: [
             { x: 122, y: this.maxBec },
-            { x: 122, y: this.minBec }],
+            { x: 122, y: this.minBec }
+          ],
           showLine: true,
           lineTension: 0,
           pointRadius: 0,
           borderDash: [5, 5]
         };
         chartData.datasets.push(chartObj);
-
       }
-      return chartData;   
+      return chartData;
     },
     _getBecTable(objects) {
       var tableData = [];
@@ -196,12 +201,12 @@ export default {
           if (dat != "_row") {
             rowObject[dat] = dat;
             rowObject[dat] = objects[dat][index];
-          }           
+          }
         }
         tableData.push(rowObject);
-    });
-    console.log(tableData);
-    return tableData;
+      });
+      console.log(tableData);
+      return tableData;
     }
   }
 };

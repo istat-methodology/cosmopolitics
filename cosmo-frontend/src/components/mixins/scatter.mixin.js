@@ -3,15 +3,15 @@ export default {
     options: {
       scales: {
         yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
-              }
+          {
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              display: true
             }
-        ],          
+          }
+        ],
         xAxes: [
           {
             ticks: {
