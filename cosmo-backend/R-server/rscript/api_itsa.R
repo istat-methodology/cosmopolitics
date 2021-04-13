@@ -135,6 +135,13 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
 ########################## Tabella covid effect
   # Covid Effect (mln. of Euro)
   coveff <- as.data.frame(stats_tpolind)
+  
+  rownames(coveff)[rownames(coveff) == "Yearly variation"] <- "Yearly variation"
+  rownames(coveff)[rownames(coveff) == "Monthly Covid effect"] <- "Monthly Covid effect"
+  rownames(coveff)[rownames(coveff) == "Cumulative Covid effect"] <- "Cumulative Covid effect"
+  
+  coveff<-cbind( "row"=rownames(coveff),coveff)
+  
   reslist[["Covid_Estimation"]]<-coveff
   
   
@@ -161,7 +168,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   rownames(regmod)[rownames(regmod) == "polind"] <- "Mobility Policy Indicator"
   
   regmod<-cbind( "row"=rownames(regmod),regmod)
-  colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
+  colnames(regmod)<-c("Model Parameters","Estimate", "Std_error", "T_value","Pr_t")
   
   reslist[["Model"]]<-regmod
   
