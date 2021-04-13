@@ -157,11 +157,7 @@ export default {
     policyPeriodValue: "",
     policyPeriod: [],
 
-    covidEstimationDataTable: null,
-    covidEstimationTableTitle: null,
-    
-    modelDataTable: null,
-    modelTableTitle: null,
+   
     
     isMainChart:true,
     isCovidEstimation:false,

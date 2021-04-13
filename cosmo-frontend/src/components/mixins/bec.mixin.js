@@ -18,9 +18,18 @@ export default {
     treatX: 0,
     minTreatY: 0,
     maxTreatY: 0,
+
     timePeriod: [],
-    covidEstimationTableFileds: [],
-    modelTableFileds: []     
+    
+    covidEstimationTableTitle: null,
+    covidEstimationTableFileds: null,
+    covidEstimationDataTable: null,
+        
+    modelTableTitle: null,
+    modelTableFileds: null,
+    modelDataTable: null
+    
+    
   }),
   methods: {
     getBecSlider() {
@@ -65,9 +74,9 @@ export default {
             this.covidEstimationTableFileds = this.getHeaderTable(dataR[name]);
             break;
           
-            case "Model":
+          case "Model":
             
-          model.push(dataR[name]);            
+            model.push(dataR[name]);            
             this.modelTableTitle = "Model";
             this.modelTableFileds =this.getHeaderTable(dataR[name]);            
             break;
@@ -122,7 +131,6 @@ export default {
           name: label,
           val: v          
         });
-
         
         this.timePeriod.push({ 
           key: "T" + (v + 1), 
@@ -229,6 +237,7 @@ export default {
       console.log(tableData);
       return tableData;
     },
+    
     getTable(objects) {
       var tableData = [];      
       var keys = objects.row;      
