@@ -13,7 +13,13 @@ export default {
       "October",
       "November",
       "December"
-    ]
+    ],
+
+    treatX: 0,
+    minTreatY: 0,
+    maxTreatY: 0,
+    headerTablePeriod: null,
+
   }),
   methods: {
     getBecSlider() {
@@ -45,8 +51,10 @@ export default {
       this.modelDataTable = [];
       var covidEstimation = [];
       var model = [];
+      var diagNorm = [];
+      var diagACF = [];
       var diagRes = [];
-
+      
       for (var name in dataR) {
         switch (name) {
           case "Covid_Estimation":
@@ -55,9 +63,18 @@ export default {
           case "Model":
             model.push(dataR[name]);
             break;
+          case "DIAG_NORM":
+            diagNorm.push(dataR[name]);
+            break;
+          case "DIAG_ACF":
+            diagACF.push(dataR[name]);
+            break;
           case "DIAG_RES":
             diagRes.push(dataR[name]);
             break;
+          case "Treat_number":
+            this.treatX = dataR[name];
+            break;  
           default:
             this.timeLapse.push(dataR[name]);
         }
@@ -65,15 +82,18 @@ export default {
       //
       this.maxTimeStep = this.timeLapse.length - 1;
       //
+      this.buildBecSlider();
+      //
       this.covidEstimationDataTable = this.getBecTable(covidEstimation[0]);
       //
       this.modelDataTable = this.getBecTable(model[0]);
     },
     buildBecSlider() {
       this.policyPeriod = [];
+      this.headerTablePeriod = [];
       var indexStart = 0;
       var indexEnd = 0;
-      var v = 0;
+      var v = 0;      
       indexStart = this.timeLapse[0].date.length - 1;
       indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
       this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[
@@ -85,16 +105,17 @@ export default {
         var iMonth = parseInt(tmp.substr(5, 2)) - 1;
         var month = this.months[iMonth];
         month = month.substr(0, 3);
-        var labelSlider = month + "-" + year;
+        var label = month + "-" + year;
+
         this.policyPeriod.push({
           id: this.timeLapse[this.maxTimeStep].date[i],
-          name: labelSlider,
+          name: label,
           val: v
         });
         v++;
       }
-      this.maxBec = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
-      this.minBec = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
+      this.maxTreatY = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
+      this.minTreatY = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
     },
     getBecChart(time) {
       var chartData = {};
@@ -164,8 +185,8 @@ export default {
           backgroundColor: "blue", //color.background,
           borderColor: "blue", // color.border,
           data: [
-            { x: 122, y: this.maxBec },
-            { x: 122, y: this.minBec }
+            { x: this.treatX, y: this.maxTreatY },
+            { x: this.treatX, y: this.minTreatY }
           ],
           showLine: true,
           lineTension: 0,
@@ -193,8 +214,8 @@ export default {
       return tableData;
     },
     getBecTable(objects) {
-      var tableData = [];
-      var keys = objects.row;
+      var tableData = [];      
+      var keys = objects.row;      
       keys.forEach(function(item, index) {
         var rowObject = {};
         for (var dat in objects) {
@@ -204,8 +225,8 @@ export default {
           }
         }
         tableData.push(rowObject);
-      });
-      console.log(tableData);
+      });      
+      console.log(keys);
       return tableData;
     }
   }

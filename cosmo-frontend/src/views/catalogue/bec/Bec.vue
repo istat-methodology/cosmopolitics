@@ -26,7 +26,7 @@
           />
         </CCardBody>
       </div>
-      <CCard v-if="covidEstimationDataTable">
+      <CCard v-if="covidEstimationDataTable" >
         <CCardBody>
           <CDataTable  :items="covidEstimationDataTable" hover />
         </CCardBody>
@@ -139,8 +139,6 @@ export default {
     maxTimeStep: 0,
     policyPeriodValue: "",
     policyPeriod: [],
-    minBec: 0,
-    maxBec: 0,
     options: {
       title: {
         display: true,
@@ -207,8 +205,7 @@ export default {
       }
       this.$store.dispatch("bec/findByFilters", form).then(() => {
         this.buildBecCharts(this.becCharts);
-        if (this.timeLapse) {
-          this.buildBecSlider();
+        if (this.timeLapse) {         
           this.chartData = this.getBecChart(0);
           this.showSlider = true;
         }

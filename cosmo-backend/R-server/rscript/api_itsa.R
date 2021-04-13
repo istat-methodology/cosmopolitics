@@ -168,7 +168,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   rownames(regmod)[rownames(regmod) == "polind"] <- "Mobility Policy Indicator"
   
   regmod<-cbind( "row"=rownames(regmod),regmod)
-  colnames(regmod)<-c("Model Parameters","Estimate", "Std_error", "T_value","Pr_t")
+  colnames(regmod)<-c("row","estimate", "std_error", "t_value","pr_t")
   
   reslist[["Model"]]<-regmod
   
@@ -212,7 +212,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   reslist[["DIAG_NORM"]]<-normal
 
   
-##############################################à
+##############################################ï¿½
 ########################## NOWCAST
   
   if (fcst==1) {
@@ -311,7 +311,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
     
     d2 <- rbind(d2,fcst)
     
-    # L'utente deve inserire i parametri futuri del livello di restrizioni alla mobilità
+    # L'utente deve inserire i parametri futuri del livello di restrizioni alla mobilitï¿½
     d2$forecast  <- predict(lm_tend_tp,type="response",d2)
     
     
