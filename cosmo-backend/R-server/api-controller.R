@@ -61,25 +61,24 @@ head(POLIND_DB)
 COMEXT_IMP<-load_comext("1")
 COMEXT_EXP<-load_comext("2")
 
-
+###PARAMETRI 
 #region="Italy"
 #subregion="Italy"
 #DescSummRes<-descSummary("Italy","Italy")
 #PlotCompRes<-PlotMobComp("Italy","Italy")
 #Indicator  <-PolInd("Italy","Italy")
 
-flow<-2
-country_code<-"IT"
-partner_code<-"US"
-var_bec<-7
-year<-2020
-month<-2
+# flow<-2
+# country_code<-"IT"
+# partner_code<-"US"
+# var_bec<-7
+# year<-2020
+# month<-2
 
+#### FUNZIONI
 # ResBEC   <- BEC(2,"IT","US",2020,2)
-# PARAM 2 - BEC - SPECIFICO O TOTALE
 # SARES <- sa(2,1,"IT","US",2020,2)
-
-#ITSA  <- itsa_diag(2,7,"IT","US",1,1)
+# ITSA  <- itsa_diag(2,7,"IT","US",1,1)
 
 app$add_get(
   path = "/load-data", 
@@ -177,7 +176,7 @@ app$add_get(
     #   .res$set_content_type("text/html")
   })
 
-###############  FUNZIONI FEDERICO ###################
+
 ### CREA AGGREGATI
 
 app$add_get(
@@ -222,13 +221,6 @@ app$add_get(
 # CI SONO POI DUE TABELLE STATS E STATST che rappresentano 
 # statistiche descrittive per il periodo pre e dopo la 
 # data di trattamento fissata con year e month
-
-#flow=2
-#country_code="IT"
-#partner_code="US"
-#year=2020
-#month=3
-#VAR=1
 
 
 # http://localhost:5000/bec?flow=2&country=IT&partner=US&year=2020&month=2
@@ -279,10 +271,28 @@ app$add_get(
     .res$set_content_type("application/json")
   })
 
-#ITSA  <- itsa_diag(1,3,"IT","WO",1,1) 
+#ITSA  <- itsa_diag(1,3,"IT","US",1,1) 
+
+# http://localhost:5000/lastdate?flow=2&country=IT&partner=US
+
+app$add_get(
+  path = "/lastdate", 
+  FUN = function(.req, .res) {
+    print("/lastdate")
+    resp<-lastdate(.req$get_param_query("flow"),
+                    .req$get_param_query("country"),.req$get_param_query("partner")) 
+    
+    #.res$set_body(resp)
+    .res$set_body(toJSON(resp))
+    print("/last date ok")
+    .res$set_header("Access-Control-Allow-Origin", "*")
+    .res$set_header("Access-Control-Allow-Methods","*")
+    .res$set_header("Access-Control-Allow-Headers", "*")
+    
+    #.res$set_content_type("application/json")
+  })
 
 # http://localhost:5000/itsa?flow=2&var=7&country=IT&partner=US&fcst=1&fcstpolind=0.1,0.3,0.4
-#http://localhost:5000/itsa?flow=2&var=1&country=IT&partner=US&fcst=2&fcstpolind=0.1,0.3,0.4
 app$add_get(
   path = "/itsa", 
   FUN = function(.req, .res) {

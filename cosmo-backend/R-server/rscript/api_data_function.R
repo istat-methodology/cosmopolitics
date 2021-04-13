@@ -85,3 +85,33 @@ data_function_bec<-function(flow,country_code,partner_code){
   return(res)
 
 }
+
+
+lastdate<-function(flow,country_code,partner_code){
+  
+  l_date<-ls()
+  if (flow==1) {
+    dati <- COMEXT_IMP
+  } else if (flow==2) {
+    dati <- COMEXT_EXP
+  }
+  
+  dati<-dati[,-1]
+  # seleziono un country
+  dati <- dati[which(dati$country==country_code),]
+  dati$PARTNER<-ifelse(dati$PARTNER=="WORLD","WO",dati$PARTNER)
+  
+  #seleziono un partner
+  dati <- dati[which(dati$PARTNER==partner_code),]
+  
+  dati<-dati[order(dati$year,dati$month),]
+  
+  strdate = paste("01",paste(dati$month[1],min(dati$year),sep="/"),sep="/")
+  enddate = paste("01",paste(dati$month[length(dati$month)],max(dati$year),sep="/"),sep="/")
+  date = seq.Date(from =as.Date(strdate, "%d/%m/%Y"),
+                  to=as.Date(enddate, "%d/%m/%Y"),by="month")
+  
+  l_date<-date[length(date)]
+  return(l_date)
+  
+}

@@ -1,6 +1,6 @@
 ######### ITSA ################################
 # modello y=t+d+polind con dati tendenziali e 1 lag
-# 1. Interrupted time series analysis su effetto del covid-19 per export/import
+# 1. Interrupted time series analysis per calcolo dell'effetto del covid-19 su export/import (mln. euro)
 # 2. Tabella e grafici diagnostica del modello
 # 3. Nowcast con utilizzo dei dati del policy indicator
 # 4. Forecast con livello di restrizioni decise dall'utente
@@ -8,22 +8,27 @@
 
 itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
+  #creo lista dei risultati per il return
+  reslist<-list()
+  
   #decido anno e mese di trattamento (123 = MARZO 2020)
   year  = 2020 
   month = 2    # FEBBRAIO
-  
+
+  #carico il dataset 
   dati<-data_function(flow,var_bec,country_code,partner_code)
   #dati<-dati[order(dati$year,dati$month),]
+  
+  treat <- which(dati$year == as.numeric(year))[[1]] + as.numeric(month) - 1
+  reslist[["Treat_number"]]<-treat
   
   region = country_code
   subregion = country_code
   
-  treat <- which(dati$year == as.numeric(year))[[1]] + as.numeric(month) - 1
-  
   #lunghezza db
   l<-length(dati$VAR)
   ################################################################
-  
+  # richiamo i policy indicator
   col_polind<-POLIND_DB %>% select(starts_with(country_code))
   col_polind<-as_vector(col_polind)
   polind<-c(rep(0,(which(dati$date == POLIND_DB$Date[1]))),col_polind)
@@ -66,7 +71,6 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   n<-l-treat
  
-  reslist<-list()
   ris<-list()
 
   for (i in 1:n)
@@ -131,24 +135,13 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
 ########################## Tabella covid effect
   # Covid Effect (mln. of Euro)
   coveff <- as.data.frame(stats_tpolind)
-  names(coveff)[names(coveff) == "T1"] <- "Mar_2020"
-  names(coveff)[names(coveff) == "T2"] <- "Apr_2020"
-  names(coveff)[names(coveff) == "T3"] <- "May_2020"
-  names(coveff)[names(coveff) == "T4"] <- "Jun_2020"
-  names(coveff)[names(coveff) == "T5"] <- "Jul_2020"
-  names(coveff)[names(coveff) == "T6"] <- "Aug_2020"
-  names(coveff)[names(coveff) == "T7"] <- "Sep_2020"
-  names(coveff)[names(coveff) == "T8"] <- "Opt_2020"
-  names(coveff)[names(coveff) == "T9"] <- "Nov_2020"
-  
-  coveff<-cbind( "row"=rownames(coveff),coveff)
   reslist[["Covid_Estimation"]]<-coveff
   
   
 ###############################################################
 #DIAGNOSTICA DEL MODELLO
 #################################################
-  # tabella parametri modello e test
+########################## tabella parametri modello e test
   beta_tpolind<-list()
   
   lm_tend_tp<-lm(tend~t+d+polind,data=dati)
@@ -172,8 +165,7 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   reslist[["Model"]]<-regmod
   
-  #####################
-  #grafico residui
+  ####################################################grafico residui
   res <- residuals(lm_tend_tp,type="response",dati)
   res_date<-dati$date[c(13:l)]
   res_line<-c(rep(0,length(res)))
@@ -181,43 +173,37 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   
   reslist[["DIAG_RES"]]<-residual
  
-   # # 
-  # #grafico actf
-  # dev.new()
-  # require(graphics)
-  # acf<-acf(dati$tend[c(13:l)])
-  # plot(acf)
-  # 
-  #grafico qq_norm
-  # dev.new()
-  # a<-qqnorm(dati$tend[c(13:l)], pch = 1, frame = FALSE)
-  # point_x<-a[[1]]
-  # point_y<-a[[2]]
-  # mean(point_y)
-  # #qqline(dati$tend, lwd = 2)
-  # # Find 1st and 3rd quartile for the Alto 1 data
-  # y <- quantile(dati$tend[c(13:l)], c(0.25, 0.75), type = 5)
-  # # Find the 1st and 3rd quartile of the normal distribution
-  # x <- qnorm( c(0.25, 0.75))
-  # # Now we can compute the intercept and slope of the line that passes
-  # # through these points
-  # slope <- diff(y) / diff(x)
-  # int   <- y[1] - slope * x[1]
-  # abline(a = int, b = slope )
-  # 
-  # qq_line<-c(1:(length(res)))
-  # qq_line<-qq_line*slope
-  # 
-  # 
-  # for (i in 1:(l-12)) {
-  #   qq_line[i]<-x[1]+(slope*i)
-  # }
-  # 
-  # 
-  # normal <- data.frame(point_x,point_y,qq_line)
-  # 
-  # reslist[["DIAG_NORM"]]<-normal
+  ############################grafico acf
+  acf_list<-list()
+  acf<-acf(dati$tend[c(13:l)],plot = FALSE)
+  acf_list[["y_points"]]<-as.vector(acf[["acf"]])
+  acf_list[["x_points"]]<-as.vector(acf[["lag"]])
   
+  conf_int_pos<-qnorm((1 + 0.95)/2)/sqrt(l-13)
+  acf_list[["yline_conf_int_pos"]]<- conf_int_pos
+  acf_list[["yline_conf_int_neg"]]<- -conf_int_pos
+
+  reslist[["DIAG_ACF"]]<-acf_list
+  
+  ##############################grafico qq_norm
+  a<-qqnorm(dati$tend[c(13:l)], pch = 1, frame = FALSE, plot.it = FALSE)
+  point_x<-a[[1]]
+  point_y<-a[[2]]
+  #qqline(dati$tend[c(13:l)], lwd = 2)
+  # Find 1st and 3rd quartile for the Alto 1 data
+  y <- quantile(dati$tend[c(13:l)], c(0.25, 0.75), type = 5)
+  # Find the 1st and 3rd quartile of the normal distribution
+  x <- qnorm( c(0.25, 0.75))
+  # Now we can compute the intercept and slope of the line that passes through these points/
+  slope <- diff(y) / diff(x)
+  int   <- y[1] - slope * x[1]
+  #abline(a = int, b = slope )
+  line_y<-int+(slope*point_x)
+  #plot(point_x,qq)
+  normal <- data.frame(point_x,point_y,line_y)
+
+  reslist[["DIAG_NORM"]]<-normal
+
   
 ##############################################à
 ########################## NOWCAST
@@ -318,11 +304,9 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
     
     d2 <- rbind(d2,fcst)
     
+    # L'utente deve inserire i parametri futuri del livello di restrizioni alla mobilità
     d2$forecast  <- predict(lm_tend_tp,type="response",d2)
-    # Mettere qui funzione di fcst ma chiedere parametri futuri
-    # L'utente deve inserire i parametri futuri oppure vanno tutti 
-    # zero ed 1 dobbiamo farlo costruire esternamente
-    #djsonfcst    <- as.data.frame(d2[,c(5,3,6)])
+    
     
     ##########   aggiungo stima pred_tp_c
     
