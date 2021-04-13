@@ -59,9 +59,11 @@ export default {
         switch (name) {
           case "Covid_Estimation":
             covidEstimation.push(dataR[name]);
+            this.covidEstimationTableTitle = "Covid Estimation";
             break;
           case "Model":
-            model.push(dataR[name]);
+            model.push(dataR[name]);            
+            this.modelTableTitle = "Model";
             break;
           case "DIAG_NORM":
             diagNorm.push(dataR[name]);

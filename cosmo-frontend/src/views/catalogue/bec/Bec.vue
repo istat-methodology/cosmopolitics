@@ -1,18 +1,22 @@
 <template>
   <div class="row">
     <div class="col-9">
-      <div class="card">
-        <header class="card-header">
-          <span v-if="this.countrySelected && this.partnerSelected"
+      <CCard> 
+        <CCardHeader>
+          <b><span v-if="this.countrySelected && this.partnerSelected"
             >{{ this.countrySelected.country }} -
             {{ this.partnerSelected.descr }}</span
-          ><span v-else>BEC analysis</span>
-        </header>
+          ><span v-else>BEC analysis</span></b>
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+              <input type="checkbox" class="c-switch-input form-check-input" checked @click="handleMainChart">
+              <span class="c-switch-slider"></span>
+           </label>
+        </CCardHeader>
         <!--circle-spin
             v-bind:loading="isLoading"
             class="circle-spin"
           ></circle-spin-->
-        <CCardBody>
+        <CCardBody v-show="isMainChart">
           <scatter-chart :chartData="chartData" :options="options" />
           <vue-slider
             v-if="showSlider"
@@ -25,14 +29,28 @@
             @change="handleCounterChange"
           />
         </CCardBody>
-      </div>
+      </CCard>
       <CCard v-if="covidEstimationDataTable" >
-        <CCardBody>
+        <CCardHeader>
+            <b> {{ this.covidEstimationTableTitle }}</b>
+            <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleCovidEstimation">
+              <span class="c-switch-slider"></span>
+            </label>
+        </CCardHeader>
+        <CCardBody v-show="isCovidEstimation">
           <CDataTable  :items="covidEstimationDataTable" hover />
         </CCardBody>
       </CCard>
-      <CCard>
-        <CCardBody v-if="modelDataTable">
+      <CCard v-if="modelDataTable">
+        <CCardHeader >
+            <b>{{ this.modelTableTitle }}</b>
+            <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleModel">
+              <span class="c-switch-slider"></span>
+            </label>
+        </CCardHeader>
+        <CCardBody v-show="isModel">
           <CDataTable  :items="modelDataTable" hover />
         </CCardBody>
       </CCard>
@@ -139,17 +157,22 @@ export default {
     maxTimeStep: 0,
     policyPeriodValue: "",
     policyPeriod: [],
+    covidEstimationTableTitle: null,
+    modelTableTitle: null,
+    isCovidEstimation:false,
+    isModel:false,
+    isMainChart:true,
     options: {
       title: {
         display: true,
-        text: "Predicted world population (millions) in 2050"
+        text: ""
       },
       scales: {
         yAxes: [
           {
             scaleLabel: {
               display: true,
-              labelString: "Happiness"
+              labelString: ""
             }
           }
         ],
@@ -157,7 +180,7 @@ export default {
           {
             scaleLabel: {
               display: true,
-              labelString: "GDP (PPP)"
+              labelString: ""
             }
           }
         ],
@@ -191,6 +214,15 @@ export default {
       if (iVal <= this.maxTimeStep) {
         this.chartData = this.getBecChart(iVal);
       }
+    },
+    handleMainChart(){
+      this.isMainChart = !this.isMainChart;     
+    },
+    handleCovidEstimation(){
+      this.isCovidEstimation = !this.isCovidEstimation;     
+    },
+    handleModel(){
+      this.isModel = !this.isModel;     
     },
     handleSubmit() {
       const form = {
