@@ -12,10 +12,6 @@
               <span class="c-switch-slider"></span>
            </label>
         </CCardHeader>
-        <!--circle-spin
-            v-bind:loading="isLoading"
-            class="circle-spin"
-          ></circle-spin-->
         <CCardBody v-show="isMainChart">
           <scatter-chart :chartData="chartData" :options="options" />
           <vue-slider
@@ -30,6 +26,7 @@
           />
         </CCardBody>
       </CCard>
+      
       <CCard v-if="covidEstimationDataTable" >
         <CCardHeader>
             <b> {{ this.covidEstimationTableTitle }}</b>
@@ -42,6 +39,7 @@
           <CDataTable  :items="covidEstimationDataTable" :fields="covidEstimationTableFileds" hover />
         </CCardBody>
       </CCard>
+      
       <CCard v-if="modelDataTable">
         <CCardHeader >
             <b>{{ this.modelTableTitle }}</b>
@@ -51,10 +49,48 @@
             </label>
         </CCardHeader>
         <CCardBody v-show="isModel">
-          <CDataTable  :items="modelDataTable" :fields="modelTableFileds" hover />
-          <!--CDataTable  :items="modelDataTable" hover /-->
+          <CDataTable  :items="modelDataTable" :fields="modelTableFileds" hover />         
         </CCardBody>
       </CCard>
+
+
+      <CCard v-if="chartDataDiagNorm"> 
+        <CCardHeader>
+          <b>{{ this.diagNormTitle }}</b>
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagNorm">
+              <span class="c-switch-slider"></span>
+           </label>
+        </CCardHeader>
+        <CCardBody v-if="isDiagNorm">
+          <scatter-chart :chartData="chartDataDiagNorm" :options="options" />
+        </CCardBody>
+      </CCard>
+      <CCard v-if="chartDataDiagRes"> 
+        <CCardHeader>
+          <b>{{ this.diagResTitle }}</b>
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagRes">
+              <span class="c-switch-slider"></span>
+           </label>
+        </CCardHeader>
+        <CCardBody v-if="isDiagRes">
+          <scatter-chart :chartData="chartDataDiagRes" :options="options" />
+        </CCardBody>
+      </CCard>
+      <CCard v-if="chartDataDiagACF">
+        <CCardHeader>
+          <b>{{ this.diagACFTitle }}</b>
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagACF">
+              <span class="c-switch-slider"></span>
+           </label>
+        </CCardHeader>
+        <CCardBody v-if="isDiagACF">
+          <scatter-chart :chartData="chartDataDiagACF" :options="options" />
+        </CCardBody>
+      </CCard>
+        
     </div>
     <div class="col-3">
       <CCard>
@@ -124,6 +160,13 @@
       </CCard>
     </div>
   </div>
+
+      <!--circle-spin
+          v-bind:loading="isLoading"
+          class="circle-spin"
+        ></circle-spin-->
+
+
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -132,12 +175,14 @@ import paletteMixin from "@/components/mixins/palette.mixin";
 import scatterMixin from "@/components/mixins/scatter.mixin";
 import becMixin from "@/components/mixins/bec.mixin";
 import ScatterChart from "@/components/charts/ScatterChart";
+//import LineChart from "@/components/charts/LineChart";
 import VueSlider from "vue-slider-component";
 
 export default {
   name: "Bec",
   components: {
     ScatterChart,
+    //LineChart,
     VueSlider
   },
   mixins: [paletteMixin, scatterMixin, becMixin],
@@ -151,17 +196,27 @@ export default {
     timeSelected: null,
     restriction: 0,
     showSlider: false,
+    
     chartData: null,
+
+    chartDataDiagNorm: null,
+    chartDataDiagRes: null,
+    chartDataDiagACF: null,
+
     timeLapse: null,
     maxTimeStep: 0,
+    
     policyPeriodValue: "",
-    policyPeriod: [],
-
-   
+    policyPeriod: [],   
     
     isMainChart:true,
+
     isCovidEstimation:false,
     isModel:false,
+    
+    isDiagNorm:false,
+    isDiagRes:false,
+    isDiagACF:false,
     
     options: {
       title: {
@@ -219,6 +274,15 @@ export default {
     handleMainChart(){
       this.isMainChart = !this.isMainChart;     
     },
+    handleDiagRes(){
+      this.isDiagRes = !this.isDiagRes;     
+    },
+    handleDiagNorm(){
+      this.isDiagNorm = !this.isDiagNorm;     
+    },
+    handleDiagACF(){
+      this.isDiagACF = !this.isDiagACF;     
+    },
     handleCovidEstimation(){
       this.isCovidEstimation = !this.isCovidEstimation;     
     },
@@ -242,14 +306,14 @@ export default {
           this.chartData = this.getBecChart(0);
           this.showSlider = true;
         }
-      });
-    }
+      });     
+    }, 
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
-    this.$store.dispatch("classification/getBecs");
+    this.$store.dispatch("classification/getBecs");      
   }
 };
 </script>

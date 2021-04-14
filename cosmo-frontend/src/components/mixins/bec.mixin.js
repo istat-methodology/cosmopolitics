@@ -83,12 +83,15 @@ export default {
 
           case "DIAG_NORM":
             diagNorm.push(dataR[name]);
+            this.diagNormTitle = "DiagNorm";
             break;
           case "DIAG_ACF":
             diagACF.push(dataR[name]);
+            this.diagACFTitle = "DiagACF";
             break;
           case "DIAG_RES":
             diagRes.push(dataR[name]);
+            this.diagResTitle = "DiagRes";
             break;
           case "Treat_number":
             this.treatX = dataR[name];
@@ -105,6 +108,15 @@ export default {
       this.covidEstimationDataTable = this.getTable(covidEstimation[0]);
       //
       this.modelDataTable = this.getTable(model[0]);
+      
+      //
+
+      this.chartDataDiagNorm = this.setDataChart("DiagNorm");
+      
+      //this.chartDataDiagRes = this.setDataChart("DiagRes");
+      this.chartDataDiagRes = this.getDiagResChart(diagRes[0])
+      this.chartDataDiagACF = this.setDataChart("DiagACF");
+
     },
     buildBecSlider() {
       this.policyPeriod = [];
@@ -221,6 +233,61 @@ export default {
       }
       return chartData;
     },
+    getDiagResChart(diag) {
+      var chartData = {};
+      chartData.datasets = [];
+      if (diag) {
+        for (var chartType in diag) {
+          var chartObj = {};
+          switch (chartType) {
+            case "date":
+              chartData.labels = diag[chartType];
+              break;
+            case "res":
+                chartObj = {
+                  label: "res",
+                  fill: false,
+                  backgroundColor: "red", //color.background,
+                  borderColor: "red", // color.border,
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: true,
+                  lineTension: 0,
+                  pointRadius: 0,
+                  borderDash: [5, 5]
+                };
+                break;  
+            case "res_line":
+                chartObj = {
+                  label: "res_line",
+                  fill: false,
+                  backgroundColor: "red", //color.background,
+                  borderColor: "red", // color.border,
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: true,
+                  lineTension: 0,
+                  pointRadius: 0,
+                  borderDash: [5, 5]
+                };
+                break;  
+            default:
+              chartObj = {
+                label: chartType,
+                fill: false,
+                backgroundColor: "red", //color.background,
+                borderColor: "red", // color.border,
+                data: this.getCoordinates(diag[chartType]),
+                showLine: true,
+                lineTension: 0,
+                pointRadius: 0
+              };
+          }
+          if (chartType != "res_date") {
+            chartData.datasets.push(chartObj);
+          }
+        }
+      }
+      return chartData;
+    },
     _getBecTable(objects) {
       var tableData = [];
       var keys = objects.row;
@@ -263,6 +330,34 @@ export default {
         }
       }
       return tableFields;
+    },
+    setDataChart(name) {
+      var chartData = {}
+      chartData.datasets = [];
+      chartData.datasets.push({
+        label: name,
+        fill: false,
+        backgroundColor: "red", //color.background,
+        borderColor: "red", // color.border,
+        data: [{
+              x: -10,
+              y: 0
+            }, {
+              x: 0,
+              y: 10
+            }, {
+              x: 10,
+              y: 5
+            }, {
+              x: 0.5,
+              y: 5.5
+        }],
+        showLine: true,
+        lineTension: 0,
+        pointRadius: 0      
+      });
+      return chartData;
     }
+
   }
 };
