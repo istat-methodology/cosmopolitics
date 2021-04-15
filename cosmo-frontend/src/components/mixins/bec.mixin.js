@@ -111,11 +111,10 @@ export default {
       
       //
 
-      this.chartDataDiagNorm = this.setDataChart("DiagNorm");
-      
-      //this.chartDataDiagRes = this.setDataChart("DiagRes");
+      this.chartDataDiagNorm = this.getDiagNormChart(diagNorm[0]);      
       this.chartDataDiagRes = this.getDiagResChart(diagRes[0])
-      this.chartDataDiagACF = this.setDataChart("DiagACF");
+      this.chartDataDiagACF = this.getDiagACFChart(diagACF[0])
+      
 
     },
     buildBecSlider() {
@@ -247,13 +246,11 @@ export default {
                 chartObj = {
                   label: "res",
                   fill: false,
-                  backgroundColor: "red", //color.background,
-                  borderColor: "red", // color.border,
+                  backgroundColor: "rgba(46, 184, 92, 0.2)",
+                  borderColor: "rgba(46, 184, 92, 1)",
                   data: this.getCoordinates(diag[chartType]),
-                  showLine: true,
-                  lineTension: 0,
-                  pointRadius: 0,
-                  borderDash: [5, 5]
+                  showLine: false,
+                  pointRadius: 12
                 };
                 break;  
             case "res_line":
@@ -265,8 +262,7 @@ export default {
                   data: this.getCoordinates(diag[chartType]),
                   showLine: true,
                   lineTension: 0,
-                  pointRadius: 0,
-                  borderDash: [5, 5]
+                  pointRadius: 0
                 };
                 break;  
             default:
@@ -284,6 +280,133 @@ export default {
           if (chartType != "res_date") {
             chartData.datasets.push(chartObj);
           }
+        }
+      }
+      return chartData;
+    },
+    getDiagNormChart(diag) {
+      var chartData = {};
+      chartData.datasets = [];
+      if (diag) {
+        for (var chartType in diag) {
+          var chartObj = {};
+          switch (chartType) {
+            case "date":
+              chartData.labels = diag[chartType];
+              break;
+            case "line_y":
+                chartObj = {
+                  label: "line_y",
+                  fill: false,
+                  backgroundColor: "rgba(46, 184, 92, 0.2)",
+                  borderColor: "rgba(46, 184, 92, 1)",
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: false,
+                  pointRadius: 12
+                };
+                break;  
+            case "point_y":
+                chartObj = {
+                  label: "point_y",
+                  fill: false,
+                  backgroundColor: "red", //color.background,
+                  borderColor: "red", // color.border,
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: true,
+                  lineTension: 0,
+                  pointRadius: 0
+                };
+                break;  
+            default:
+              chartObj = {
+                label: chartType,
+                fill: false,
+                backgroundColor: "red", //color.background,
+                borderColor: "red", // color.border,
+                data: this.getCoordinates(diag[chartType]),
+                showLine: true,
+                lineTension: 0,
+                pointRadius: 0
+              };
+          }          
+          chartData.datasets.push(chartObj);
+          
+        }
+      }
+      return chartData;
+    },
+    getDiagACFChart(diag) {
+      var chartData = {};
+      chartData.datasets = [];
+      if (diag) {
+        for (var chartType in diag) {
+          var chartObj = {};
+          switch (chartType) {
+            case "date":
+              chartData.labels = diag[chartType];
+              break;
+            case "y_points":
+                chartObj = {
+                  label: "y_points",
+                  fill: false,
+                  backgroundColor: "rgba(46, 184, 92, 0.2)",
+                  borderColor: "rgba(46, 184, 92, 1)",
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: false,
+                  pointRadius: 12
+                };
+                break;  
+            case "x_points":
+                chartObj = {
+                  label: "x_points",
+                  fill: false,
+                  backgroundColor: "red", //color.background,
+                  borderColor: "red", // color.border,
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: true,
+                  lineTension: 0,
+                  pointRadius: 0
+                };
+                break;  
+              case "yline_conf_int_neg":
+                  chartObj = {
+                    label: "yline_conf_int_neg",
+                    fill: false,
+                    backgroundColor: "red", //color.background,
+                    borderColor: "red", // color.border,
+                    data: diag[chartType],
+                    showLine: true,
+                    lineTension: 0,
+                    pointRadius: 0
+                  };
+                  break;  
+               case "yline_conf_int_pos":
+                    chartObj = {
+                      label: "yline_conf_int_pos",
+                      fill: false,
+                      backgroundColor: "red", //color.background,
+                      borderColor: "red", // color.border,
+                      data: diag[chartType],
+                      showLine: true,
+                      lineTension: 0,
+                      pointRadius: 0
+                    };
+                    break;  
+        
+            default:
+              chartObj = {
+                label: chartType,
+                fill: false,
+                backgroundColor: "red", //color.background,
+                borderColor: "red", // color.border,
+                data: this.getCoordinates(diag[chartType]),
+                showLine: true,
+                lineTension: 0,
+                pointRadius: 0
+              };
+          }
+          chartData.datasets.push(chartObj);
+          
         }
       }
       return chartData;
