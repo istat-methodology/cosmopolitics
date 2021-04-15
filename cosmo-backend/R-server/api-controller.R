@@ -68,12 +68,12 @@ COMEXT_EXP<-load_comext("2")
 #PlotCompRes<-PlotMobComp("Italy","Italy")
 #Indicator  <-PolInd("Italy","Italy")
 
-flow<-2
-country_code<-"IT"
-partner_code<-"US"
-var_bec<-7
-year<-2020
-month<-2
+# flow<-2
+# country_code<-"IT"
+# partner_code<-"US"
+# var_bec<-7
+# year<-2020
+# month<-2
 
 #### FUNZIONI
 # ResBEC   <- BEC(2,"IT","US",2020,2)

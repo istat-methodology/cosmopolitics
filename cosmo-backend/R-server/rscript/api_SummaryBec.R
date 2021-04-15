@@ -72,6 +72,6 @@ stats<- as.data.frame(stats)
 statsT<- as.data.frame(statsT)
 
 
-return(list("Pre_Date"=stats,"Post_Date"=statsT,"Plots"="d"))
+return(list("Pre_Date"=stats,"Post_Date"=statsT,"Plots"=d))
 
 }

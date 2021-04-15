@@ -173,41 +173,44 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   reslist[["Model"]]<-regmod
   
   ####################################################grafico residui
-  res <- residuals(lm_tend_tp,type="response",dati)
-  res_date<-dati$date[c(13:l)]
-  res_line<-c(rep(0,length(res)))
-  residual <- data.frame(res_date,res,res_line)
+  pnt_y <- residuals(lm_tend_tp,type="response",dati)
+  pnt_x <-dati$date[c(13:l)]
+  lne_y <-c(rep(0,length(pnt_y)))
+  lne_x <-dati$date[c(13:l)]
+  residual <- data.frame(pnt_x,pnt_y,lne_x,lne_y)
   
   reslist[["DIAG_RES"]]<-residual
  
   ############################grafico acf
   acf_list<-list()
   acf<-acf(dati$tend[c(13:l)],plot = FALSE)
-  acf_list[["y_points"]]<-as.vector(acf[["acf"]])
-  acf_list[["x_points"]]<-as.vector(acf[["lag"]])
+  acf_list[["lne_y"]]<-as.vector(acf[["acf"]])
+  acf_list[["lne_x"]]<-as.vector(acf[["lag"]])
   
-  conf_int_pos<-qnorm((1 + 0.95)/2)/sqrt(l-13)
-  acf_list[["yline_conf_int_pos"]]<- conf_int_pos
-  acf_list[["yline_conf_int_neg"]]<- -conf_int_pos
-
+  conf_int_pos<-qnorm((1 + 0.95)/2)/sqrt(l-12)
+  acf_list[["dsh_y_pos"]]<- rep(conf_int_pos,length(acf[["lag"]]))
+  acf_list[["dsh_x_pos"]]<- as.vector(acf[["lag"]])
+  acf_list[["dsh_y_neg"]]<- rep(-conf_int_pos,length(acf[["lag"]]))
+  acf_list[["dsh_x_neg"]]<- as.vector(acf[["lag"]])
+  
   reslist[["DIAG_ACF"]]<-acf_list
   
   ##############################grafico qq_norm
-  a<-qqnorm(dati$tend[c(13:l)], pch = 1, frame = FALSE, plot.it = FALSE)
-  point_x<-a[[1]]
-  point_y<-a[[2]]
-  #qqline(dati$tend[c(13:l)], lwd = 2)
-  # Find 1st and 3rd quartile for the Alto 1 data
+  qq<-qqnorm(dati$tend[c(13:l)], pch = 1, frame = FALSE, plot.it = FALSE)
+  pnt_x<-qq[[1]]
+  pnt_y<-qq[[2]]
+  
+  # Find 1st and 3rd quartile o data
   y <- quantile(dati$tend[c(13:l)], c(0.25, 0.75), type = 5)
   # Find the 1st and 3rd quartile of the normal distribution
   x <- qnorm( c(0.25, 0.75))
-  # Now we can compute the intercept and slope of the line that passes through these points/
+  # Now we can compute the intercept and slope of the line that passes through these points
   slope <- diff(y) / diff(x)
   int   <- y[1] - slope * x[1]
-  #abline(a = int, b = slope )
-  line_y<-int+(slope*point_x)
-  #plot(point_x,qq)
-  normal <- data.frame(point_x,point_y,line_y)
+  
+  lne_y<-int+(slope*pnt_x)
+  lne_x<-pnt_x
+  normal <- data.frame(pnt_x,pnt_y,lne_x,lne_y)
 
   reslist[["DIAG_NORM"]]<-normal
 
