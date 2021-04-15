@@ -13,7 +13,23 @@ export default {
       "October",
       "November",
       "December"
-    ]
+    ],
+
+    treatX: 0,
+    minTreatY: 0,
+    maxTreatY: 0,
+
+    timePeriod: [],
+    
+    covidEstimationTableTitle: null,
+    covidEstimationTableFileds: null,
+    covidEstimationDataTable: null,
+        
+    modelTableTitle: null,
+    modelTableFileds: null,
+    modelDataTable: null
+    
+    
   }),
   methods: {
     getBecSlider() {
@@ -45,19 +61,41 @@ export default {
       this.modelDataTable = [];
       var covidEstimation = [];
       var model = [];
+      var diagNorm = [];
+      var diagACF = [];
       var diagRes = [];
-
+      
       for (var name in dataR) {
         switch (name) {
           case "Covid_Estimation":
-            covidEstimation.push(dataR[name]);
+          
+            covidEstimation.push(dataR[name]);          
+            this.covidEstimationTableTitle = "Covid Estimation";
+            this.covidEstimationTableFileds = this.getHeaderTable(dataR[name]);
             break;
+          
           case "Model":
-            model.push(dataR[name]);
+            
+            model.push(dataR[name]);            
+            this.modelTableTitle = "Model";
+            this.modelTableFileds =this.getHeaderTable(dataR[name]);            
+            break;
+
+          case "DIAG_NORM":
+            diagNorm.push(dataR[name]);
+            this.diagNormTitle = "DiagNorm";
+            break;
+          case "DIAG_ACF":
+            diagACF.push(dataR[name]);
+            this.diagACFTitle = "DiagACF";
             break;
           case "DIAG_RES":
             diagRes.push(dataR[name]);
+            this.diagResTitle = "DiagRes";
             break;
+          case "Treat_number":
+            this.treatX = dataR[name];
+            break;  
           default:
             this.timeLapse.push(dataR[name]);
         }
@@ -65,15 +103,28 @@ export default {
       //
       this.maxTimeStep = this.timeLapse.length - 1;
       //
-      this.covidEstimationDataTable = this.getBecTable(covidEstimation[0]);
+      this.buildBecSlider();
       //
-      this.modelDataTable = this.getBecTable(model[0]);
+      this.covidEstimationDataTable = this.getTable(covidEstimation[0]);
+      //
+      this.modelDataTable = this.getTable(model[0]);
+      
+      //
+
+      this.chartDataDiagNorm = this.setDataChart("DiagNorm");
+      
+      //this.chartDataDiagRes = this.setDataChart("DiagRes");
+      this.chartDataDiagRes = this.getDiagResChart(diagRes[0])
+      this.chartDataDiagACF = this.setDataChart("DiagACF");
+
     },
     buildBecSlider() {
       this.policyPeriod = [];
+      this.headerTablePeriod = [];
       var indexStart = 0;
       var indexEnd = 0;
-      var v = 0;
+      var v = 0;      
+      this.timePeriod = [];
       indexStart = this.timeLapse[0].date.length - 1;
       indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
       this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[
@@ -85,16 +136,22 @@ export default {
         var iMonth = parseInt(tmp.substr(5, 2)) - 1;
         var month = this.months[iMonth];
         month = month.substr(0, 3);
-        var labelSlider = month + "-" + year;
+        var label = month + "-" + year;
+        
         this.policyPeriod.push({
           id: this.timeLapse[this.maxTimeStep].date[i],
-          name: labelSlider,
-          val: v
+          name: label,
+          val: v          
+        });
+        
+        this.timePeriod.push({ 
+          key: "T" + (v + 1), 
+          label: label 
         });
         v++;
       }
-      this.maxBec = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
-      this.minBec = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
+      this.maxTreatY = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
+      this.minTreatY = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
     },
     getBecChart(time) {
       var chartData = {};
@@ -164,8 +221,8 @@ export default {
           backgroundColor: "blue", //color.background,
           borderColor: "blue", // color.border,
           data: [
-            { x: 122, y: this.maxBec },
-            { x: 122, y: this.minBec }
+            { x: this.treatX, y: this.maxTreatY },
+            { x: this.treatX, y: this.minTreatY }
           ],
           showLine: true,
           lineTension: 0,
@@ -173,6 +230,61 @@ export default {
           borderDash: [5, 5]
         };
         chartData.datasets.push(chartObj);
+      }
+      return chartData;
+    },
+    getDiagResChart(diag) {
+      var chartData = {};
+      chartData.datasets = [];
+      if (diag) {
+        for (var chartType in diag) {
+          var chartObj = {};
+          switch (chartType) {
+            case "date":
+              chartData.labels = diag[chartType];
+              break;
+            case "res":
+                chartObj = {
+                  label: "res",
+                  fill: false,
+                  backgroundColor: "red", //color.background,
+                  borderColor: "red", // color.border,
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: true,
+                  lineTension: 0,
+                  pointRadius: 0,
+                  borderDash: [5, 5]
+                };
+                break;  
+            case "res_line":
+                chartObj = {
+                  label: "res_line",
+                  fill: false,
+                  backgroundColor: "red", //color.background,
+                  borderColor: "red", // color.border,
+                  data: this.getCoordinates(diag[chartType]),
+                  showLine: true,
+                  lineTension: 0,
+                  pointRadius: 0,
+                  borderDash: [5, 5]
+                };
+                break;  
+            default:
+              chartObj = {
+                label: chartType,
+                fill: false,
+                backgroundColor: "red", //color.background,
+                borderColor: "red", // color.border,
+                data: this.getCoordinates(diag[chartType]),
+                showLine: true,
+                lineTension: 0,
+                pointRadius: 0
+              };
+          }
+          if (chartType != "res_date") {
+            chartData.datasets.push(chartObj);
+          }
+        }
       }
       return chartData;
     },
@@ -192,9 +304,10 @@ export default {
       console.log(tableData);
       return tableData;
     },
-    getBecTable(objects) {
-      var tableData = [];
-      var keys = objects.row;
+    
+    getTable(objects) {
+      var tableData = [];      
+      var keys = objects.row;      
       keys.forEach(function(item, index) {
         var rowObject = {};
         for (var dat in objects) {
@@ -204,9 +317,47 @@ export default {
           }
         }
         tableData.push(rowObject);
-      });
-      console.log(tableData);
+      });      
+      console.log(keys);
       return tableData;
+    },
+    getHeaderTable(objects) {      
+      var tableFields = [];
+      tableFields.push({ key: "row", label: "" });
+      for (var dat in objects) {
+        if (dat != "row" && dat != "_row") {
+          tableFields.push({ key: dat, label: dat  });
+        }
+      }
+      return tableFields;
+    },
+    setDataChart(name) {
+      var chartData = {}
+      chartData.datasets = [];
+      chartData.datasets.push({
+        label: name,
+        fill: false,
+        backgroundColor: "red", //color.background,
+        borderColor: "red", // color.border,
+        data: [{
+              x: -10,
+              y: 0
+            }, {
+              x: 0,
+              y: 10
+            }, {
+              x: 10,
+              y: 5
+            }, {
+              x: 0.5,
+              y: 5.5
+        }],
+        showLine: true,
+        lineTension: 0,
+        pointRadius: 0      
+      });
+      return chartData;
     }
+
   }
 };
