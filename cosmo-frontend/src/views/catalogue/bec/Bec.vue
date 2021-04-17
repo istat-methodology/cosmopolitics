@@ -87,7 +87,7 @@
            </label>
         </CCardHeader>
         <CCardBody v-if="isDiagACF">
-          <scatter-chart :chartData="chartDataDiagACF" :options="options" />
+          <line-chart :chartData="chartDataDiagACF" :options="optionsLine" />
         </CCardBody>
       </CCard>
         
@@ -175,14 +175,14 @@ import paletteMixin from "@/components/mixins/palette.mixin";
 import scatterMixin from "@/components/mixins/scatter.mixin";
 import becMixin from "@/components/mixins/bec.mixin";
 import ScatterChart from "@/components/charts/ScatterChart";
-//import LineChart from "@/components/charts/LineChart";
+import LineChart from "@/components/charts/LineChart";
 import VueSlider from "vue-slider-component";
 
 export default {
   name: "Bec",
   components: {
     ScatterChart,
-    //LineChart,
+    LineChart,
     VueSlider
   },
   mixins: [paletteMixin, scatterMixin, becMixin],
@@ -218,31 +218,56 @@ export default {
     isDiagRes:false,
     isDiagACF:false,
     
-    options: {
-      title: {
-        display: true,
-        text: ""
-      },
-      scales: {
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              labelString: ""
+    
+    optionsLine:{
+
+        responsive: true,
+        maintainAspectRatio: false,
+        legend:{
+            display:true
+           
+        },
+        
+        title: {
+            display: true,
+            text: "AUTOCORRELATION",
+            fontColor: "#404040",
+            fontSize: 16,
+            fontWeight: "bold",
+            verticalAlign: "top",
+            horizontalAlign: "center",
+            padding: 0,
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
+        },
+      scales: {            
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                fontSize: 16,
+                fontWeight: "bold",
+                fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",                                  
+                labelString: "Lag"
+              },
+              ticks: {
+                stepSize: 0.1
+              }
             }
-          }
-        ],
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              labelString: ""
+          ],
+          yAxes: [{       
+              scaleLabel: {
+                display: true,
+                fontSize: 16,
+                fontWeight: "bold",
+                fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",                
+                labelString: "ACF"
+              },
+              ticks: {
+                stepSize: 0.1
+              }
             }
-          }
-        ],
-        x: { min: 40, max: 50 }
-      }
-    }
+         ],       
+       }
+     }
   }),
   computed: {
     ...mapGetters("classification", [

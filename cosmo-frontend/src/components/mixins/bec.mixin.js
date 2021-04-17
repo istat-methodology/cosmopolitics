@@ -55,6 +55,37 @@ export default {
       });
       return dataMap;
     },
+
+    getCoordinatesACF(dataArray) {
+      const dataMap = [];
+      dataArray.forEach((element, index) => {
+        dataMap.push({
+          x: index,
+          y: index
+        },{
+          x: index,
+          y: element
+        });
+      });
+      return dataMap;
+    },
+    
+    getCoordinatesNorm(n, m) {      
+      console.log("=>START");     
+      const dataMap = [];
+      n.forEach((num1, index) => {
+        const num2 = m[index];
+        const obj = {
+          x: num1,
+          y: num2        
+        }        
+        console.log(obj);
+        dataMap.push(obj);
+      });
+      console.log("=>END");     
+      return dataMap;
+    },
+
     buildBecCharts(dataR) {
       this.timeLapse = [];
       this.covidEstimationDataTable = [];
@@ -242,9 +273,9 @@ export default {
             case "date":
               chartData.labels = diag[chartType];
               break;
-            case "res":
+            case "pnt_y":
                 chartObj = {
-                  label: "res",
+                  label: "pnt_y",
                   fill: false,
                   backgroundColor: "rgba(46, 184, 92, 0.2)",
                   borderColor: "rgba(46, 184, 92, 1)",
@@ -252,10 +283,11 @@ export default {
                   showLine: false,
                   pointRadius: 12
                 };
+                chartData.datasets.push(chartObj);
                 break;  
-            case "res_line":
+            case "lne_y":
                 chartObj = {
-                  label: "res_line",
+                  label: "lne_y",
                   fill: false,
                   backgroundColor: "red", //color.background,
                   borderColor: "red", // color.border,
@@ -264,151 +296,135 @@ export default {
                   lineTension: 0,
                   pointRadius: 0
                 };
+                chartData.datasets.push(chartObj);
                 break;  
-            default:
-              chartObj = {
-                label: chartType,
-                fill: false,
-                backgroundColor: "red", //color.background,
-                borderColor: "red", // color.border,
-                data: this.getCoordinates(diag[chartType]),
-                showLine: true,
-                lineTension: 0,
-                pointRadius: 0
-              };
           }
-          if (chartType != "res_date") {
-            chartData.datasets.push(chartObj);
-          }
-        }
-      }
-      return chartData;
-    },
-    getDiagNormChart(diag) {
-      var chartData = {};
-      chartData.datasets = [];
-      if (diag) {
-        for (var chartType in diag) {
-          var chartObj = {};
-          switch (chartType) {
-            case "date":
-              chartData.labels = diag[chartType];
-              break;
-            case "line_y":
-                chartObj = {
-                  label: "line_y",
-                  fill: false,
-                  backgroundColor: "rgba(46, 184, 92, 0.2)",
-                  borderColor: "rgba(46, 184, 92, 1)",
-                  data: this.getCoordinates(diag[chartType]),
-                  showLine: false,
-                  pointRadius: 12
-                };
-                break;  
-            case "point_y":
-                chartObj = {
-                  label: "point_y",
-                  fill: false,
-                  backgroundColor: "red", //color.background,
-                  borderColor: "red", // color.border,
-                  data: this.getCoordinates(diag[chartType]),
-                  showLine: true,
-                  lineTension: 0,
-                  pointRadius: 0
-                };
-                break;  
-            default:
-              chartObj = {
-                label: chartType,
-                fill: false,
-                backgroundColor: "red", //color.background,
-                borderColor: "red", // color.border,
-                data: this.getCoordinates(diag[chartType]),
-                showLine: true,
-                lineTension: 0,
-                pointRadius: 0
-              };
-          }          
-          chartData.datasets.push(chartObj);
           
         }
       }
       return chartData;
     },
+    
+    getDiagNormChart(diag) {
+      
+      var chartData = {};
+      chartData.datasets = [];
+      var chartObj = {};
+      
+      if (diag) {
+        //"lne_y"
+        chartObj = {};  
+        chartObj = {
+          label: "(pnt_x,pnt_y)",
+          fill: false,
+          backgroundColor: "rgba(46, 184, 92, 0.2)",
+          borderColor: "rgba(46, 184, 92, 1)",
+          data: this.getCoordinatesNorm(diag["pnt_x"],diag["pnt_y"]),
+          showLine: false,
+          pointRadius: 12
+        };
+        chartData.datasets.push(chartObj);
+        //"pnt_y"
+        
+        chartObj = {};  
+        chartObj = {
+          label: "(lne_x, lne_y)",
+          fill: false,
+          backgroundColor: "red", //color.background,
+          borderColor: "red", // color.border,
+          data: this.getCoordinatesNorm(diag["lne_x"],diag["lne_y"]),
+          showLine: true,
+          lineTension: 0,
+          pointRadius: 2
+        };
+        chartData.datasets.push(chartObj);          
+      }
+      return chartData;
+    },
+
+
     getDiagACFChart(diag) {
       var chartData = {};
       chartData.datasets = [];
+      chartData.labels = diag["lne_x"];
+      var maxDsh = "";
+      var data = [];                
+
       if (diag) {
         for (var chartType in diag) {
           var chartObj = {};
           switch (chartType) {
-            case "date":
-              chartData.labels = diag[chartType];
-              break;
-            case "y_points":
+            
+            case "dsh_y_pos":                
+                maxDsh = diag[chartType].length - 1;
+                data = [{ x: 0, y: diag[chartType][0] },{ x: maxDsh, y: diag[chartType][maxDsh] }];                
                 chartObj = {
-                  label: "y_points",
-                  fill: false,
-                  backgroundColor: "rgba(46, 184, 92, 0.2)",
-                  borderColor: "rgba(46, 184, 92, 1)",
-                  data: this.getCoordinates(diag[chartType]),
-                  showLine: false,
-                  pointRadius: 12
-                };
-                break;  
-            case "x_points":
-                chartObj = {
-                  label: "x_points",
+                  type: "line",
+                  label: "pos",
                   fill: false,
                   backgroundColor: "red", //color.background,
                   borderColor: "red", // color.border,
-                  data: this.getCoordinates(diag[chartType]),
+                  data: data,
                   showLine: true,
                   lineTension: 0,
-                  pointRadius: 0
+                  pointRadius: 0,
+                  borderDash: [5, 5]
                 };
-                break;  
-              case "yline_conf_int_neg":
-                  chartObj = {
-                    label: "yline_conf_int_neg",
-                    fill: false,
-                    backgroundColor: "red", //color.background,
-                    borderColor: "red", // color.border,
-                    data: diag[chartType],
-                    showLine: true,
-                    lineTension: 0,
-                    pointRadius: 0
-                  };
-                  break;  
-               case "yline_conf_int_pos":
-                    chartObj = {
-                      label: "yline_conf_int_pos",
+                chartData.datasets.push(chartObj);
+            break;
+            case "dsh_y_neg":              
+            maxDsh = diag[chartType].length - 1;
+            data = [{ x: 0, y: diag[chartType][0] },{ x: maxDsh, y: diag[chartType][maxDsh] }];                
+            chartObj = {
+              type: "line",
+              label: "neg",
+              fill: false,
+              backgroundColor: "red", //color.background,
+              borderColor: "red", // color.border,
+              data: data,
+              showLine: true,
+              lineTension: 0,
+              pointRadius: 0,
+              borderDash: [5, 5]
+            };
+            chartData.datasets.push(chartObj);
+            break;
+            case "lne_y":
+              var n = 0;
+              diag[chartType].forEach((element, index) => {
+                var data = [{ x: index, y: 0 },{ x: index, y: element }];
+                console.log(data);
+                chartObj = {
+                      type: "line",
+                      label: n++,
                       fill: false,
-                      backgroundColor: "red", //color.background,
-                      borderColor: "red", // color.border,
-                      data: diag[chartType],
+                      backgroundColor: "#06188a",
+                      borderColor: "#06188a",
+                      data: data,
                       showLine: true,
                       lineTension: 0,
-                      pointRadius: 0
-                    };
-                    break;  
-        
-            default:
-              chartObj = {
-                label: chartType,
-                fill: false,
-                backgroundColor: "red", //color.background,
-                borderColor: "red", // color.border,
-                data: this.getCoordinates(diag[chartType]),
-                showLine: true,
-                lineTension: 0,
-                pointRadius: 0
-              };
+                      pointRadius: 1                 
+                 };
+                 chartData.datasets.push(chartObj);
+                });
+                /*          
+                chartObj = {
+                    type:"bar",
+                    label: "line_y",
+                    fill: false,
+                    backgroundColor: "rgba(46, 184, 92, 0.2)",
+                    borderColor: "rgba(46, 184, 92, 1)",
+                    data: diag[chartType],
+                    showLine: false,
+                    //pointRadius: 12
+                };
+                chartData.datasets.push(chartObj);
+                break;  
+                */
           }
-          chartData.datasets.push(chartObj);
-          
         }
       }
+      console.log(chartData);
       return chartData;
     },
     _getBecTable(objects) {

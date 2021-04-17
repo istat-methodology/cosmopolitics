@@ -1,6 +1,5 @@
 import { Line, mixins } from "vue-chartjs";
 const { reactiveProp } = mixins;
-
 export default {
   extends: Line,
   mixins: [reactiveProp],
@@ -14,12 +13,12 @@ export default {
       default: () => {
         return {
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false 
         };
       }
     }
   },
   mounted() {
-    this.renderChart(this.chartData, this.options);
+    this.renderChart(this.chartData, this.options);    
   }
 };
