@@ -141,13 +141,19 @@
               placeholder="Prevision"
               v-model="timeSelected"
             />
-            <CInput
-              label="Restriction"
+            <!--CInput 
+              :id="item"
+              :label="item"
               placeholder="Set restriction"
               class="card-label mt-2"
-              v-model="restriction"
-            />
+              v-model="restriction"            
+            /-->
+            <label class="mt-3">Time & Restriction:</label>
+            <div class="row">  
+              <InputBox v-for="item in months" :id="item" :key="item" :label="item.substr(0,3)" :value="0" />
+            </div>
           </template>
+
           <CButton
             color="primary"
             shape="square"
@@ -171,6 +177,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { Context } from "@/common";
+import InputBox from '@/components/InputBox';
 import paletteMixin from "@/components/mixins/palette.mixin";
 import scatterMixin from "@/components/mixins/scatter.mixin";
 import becMixin from "@/components/mixins/bec.mixin";
@@ -183,11 +190,13 @@ export default {
   components: {
     ScatterChart,
     LineChart,
-    VueSlider
+    VueSlider,
+    InputBox
   },
   mixins: [paletteMixin, scatterMixin, becMixin],
-  data: () => ({
-    //Form fields
+  data: () => ({   
+    
+      //Form fields
     flowSelected: null,
     countrySelected: null,
     partnerSelected: null,
