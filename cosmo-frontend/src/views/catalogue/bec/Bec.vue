@@ -152,28 +152,21 @@
             <label class="mt-3">Time & Restriction:</label>
               <div class="row">  
                  
-                    <div v-for="(item, index) in months" v-bind:key="index">
-                        <!--div class="col-6"-->
-                            <label for="index" >{{item.substr(0,3)}}</label>                         
-                            <input
-                            id="index" 
+                    <div v-for="(item, index) in prevision" v-bind:key="index">                        
+                       <label>{{item.month.substr(0,3)}}</label>                         
+                       <input
                             type="number" 
                             placeholder="0" 
                             step="0.01" 
-                            min="0" max="1" 
+                            min="0" 
+                            max="1" 
                             class="form-control" 
-                            v-model="restriction[index]"                             
-                            @mousewheel="true"/>{{restriction[index]}}
-                         <!--
-                         v-on:input="$emit('input', $event.target.value)"
-                         -->
-
+                            v-model="item.restriction"                            
+                       />        
                     </div>
-                    <button @click="viewRestriction" >view restriction</button>
-                 
+                    <pre>{{ prevision }}</pre>
               </div>
           </template>
-
           <CButton
             color="primary"
             shape="square"
@@ -226,6 +219,7 @@ export default {
     timeSelected: null,
     
     restriction:[],
+    prevision:[],
 
     showSlider: false,
     
@@ -274,16 +268,22 @@ export default {
     }
   },
   methods: {
+    createForecast(){
+        
+        this.prevision = [];
+        this.months.forEach(element => {         
+          this.prevision.push({
+            month: element,
+            restriction: 0
+          });
+        });
+    },
     viewRestriction(){
 
-        this.restriction.array.forEach(element => {
-
-          alert(element);
-          
-        });
-
-
-
+        for (var name in this.prevision) {
+          alert(name);
+          //alert(this.prevision[name]);
+        }
     },
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
@@ -333,7 +333,8 @@ export default {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
-    this.$store.dispatch("classification/getBecs");      
+    this.$store.dispatch("classification/getBecs");
+    this.createForecast();      
   }
 };
 </script>
