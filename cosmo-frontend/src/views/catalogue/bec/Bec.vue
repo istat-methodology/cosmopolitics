@@ -162,14 +162,14 @@
                             step="0.01" 
                             min="0" max="1" 
                             class="form-control" 
-                            v-model="restriction[index]" 
-                            
-                            @mousewheel="true"/>
+                            v-model="restriction[index]"                             
+                            @mousewheel="true"/>{{restriction[index]}}
                          <!--
                          v-on:input="$emit('input', $event.target.value)"
                          -->
 
                     </div>
+                    <button @click="viewRestriction" >view restriction</button>
                  
               </div>
           </template>
@@ -274,6 +274,17 @@ export default {
     }
   },
   methods: {
+    viewRestriction(){
+
+        this.restriction.array.forEach(element => {
+
+          alert(element);
+          
+        });
+
+
+
+    },
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
       if (iVal <= this.maxTimeStep) {
