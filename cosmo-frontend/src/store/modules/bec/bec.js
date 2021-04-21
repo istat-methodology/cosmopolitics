@@ -2,7 +2,8 @@ import { becService } from "@/services";
 
 const state = {
   becChart: null,
-  becCharts: null
+  becCharts: null,
+  becDate:null
 };
 
 const mutations = {
@@ -11,8 +12,12 @@ const mutations = {
   },
   SET_BEC_CHARTS(state, becCharts) {
     state.becCharts = becCharts;
+  },
+  SET_LAST_DATE(state, becDate) {
+    state.becDate = becDate;
   }
 };
+
 const actions = {
   findByFilters({ commit }, form) {
     return becService
@@ -24,11 +29,11 @@ const actions = {
         console.log(err);
       });
   },
-  findByTime({ commit }, time) {
+  findLastDate({ commit }, form) {
     return becService
-      .findByTime(time)
+      .findLastDate(form)
       .then(data => {
-        commit("SET_BEC_CHART", data);
+        commit("SET_LAST_DATE", data);
       })
       .catch(err => {
         console.log(err);
@@ -42,7 +47,11 @@ const getters = {
   },
   becCharts: state => {
     return state.becCharts;
+  },
+  becDate: state => {
+    return state.becDate;
   }
+
 };
 export const bec = {
   namespaced: true,

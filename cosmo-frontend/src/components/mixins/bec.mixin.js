@@ -55,7 +55,6 @@ export default {
       });
       return dataMap;
     },
-
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
@@ -354,8 +353,7 @@ export default {
         for (var chartType in diag) {
           var chartObj = {};
           switch (chartType) {
-            
-            case "dsh_y_pos":                
+           case "dsh_y_pos":                
                 maxDsh = diag[chartType].length - 1;
                 data = [{ x: 0, y: diag[chartType][0] },{ x: maxDsh, y: diag[chartType][maxDsh] }];                
                 chartObj = {
@@ -372,7 +370,7 @@ export default {
                 };
                 chartData.datasets.push(chartObj);
             break;
-            case "dsh_y_neg":              
+          case "dsh_y_neg":              
             maxDsh = diag[chartType].length - 1;
             data = [{ x: 0, y: diag[chartType][0] },{ x: maxDsh, y: diag[chartType][maxDsh] }];                
             chartObj = {
@@ -389,38 +387,24 @@ export default {
             };
             chartData.datasets.push(chartObj);
             break;
-            case "lne_y":
-              var n = 0;
-              diag[chartType].forEach((element, index) => {
-                var data = [{ x: index, y: 0 },{ x: index, y: element }];
-                console.log(data);
-                chartObj = {
-                      type: "line",
-                      label: n++,
-                      fill: false,
-                      backgroundColor: "#06188a",
-                      borderColor: "#06188a",
-                      data: data,
-                      showLine: true,
-                      lineTension: 0,
-                      pointRadius: 1                 
-                 };
-                 chartData.datasets.push(chartObj);
-                });
-                /*          
-                chartObj = {
-                    type:"bar",
-                    label: "line_y",
+          case "lne_y":
+            var n = 0;
+            diag[chartType].forEach((element, index) => {
+              var data = [{ x: index, y: 0 },{ x: index, y: element }];
+              console.log(data);
+              chartObj = {
+                    type: "line",
+                    label: n++,
                     fill: false,
-                    backgroundColor: "rgba(46, 184, 92, 0.2)",
-                    borderColor: "rgba(46, 184, 92, 1)",
-                    data: diag[chartType],
-                    showLine: false,
-                    //pointRadius: 12
+                    backgroundColor: "#06188a",
+                    borderColor: "#06188a",
+                    data: data,
+                    showLine: true,
+                    lineTension: 0,
+                    pointRadius: 1                 
                 };
                 chartData.datasets.push(chartObj);
-                break;  
-                */
+            });
           }
         }
       }
@@ -469,34 +453,6 @@ export default {
         }
       }
       return tableFields;
-    },
-    setDataChart(name) {
-      var chartData = {}
-      chartData.datasets = [];
-      chartData.datasets.push({
-        label: name,
-        fill: false,
-        backgroundColor: "red", //color.background,
-        borderColor: "red", // color.border,
-        data: [{
-              x: -10,
-              y: 0
-            }, {
-              x: 0,
-              y: 10
-            }, {
-              x: 10,
-              y: 5
-            }, {
-              x: 0.5,
-              y: 5.5
-        }],
-        showLine: true,
-        lineTension: 0,
-        pointRadius: 0      
-      });
-      return chartData;
     }
-
   }
 };

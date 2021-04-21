@@ -149,22 +149,24 @@
               v-model="restriction"            
             /-->
             <!--InputBox v-for="(item in months" :id="item" :key="item" :label="item.substr(0,3)" v-model="restriction[index]"/-->
+            <div class="col-12">
             <label class="mt-3">Time & Restriction:</label>
-              <div class="row">  
-                 
-                    <div v-for="(item, index) in prevision" v-bind:key="index">                        
-                       <label>{{item.month.substr(0,3)}}</label>                         
-                       <input
-                            type="number" 
-                            placeholder="0" 
-                            step="0.01" 
-                            min="0" 
-                            max="1" 
-                            class="form-control" 
-                            v-model="item.restriction"                            
-                       />        
-                    </div>
-                    <pre>{{ prevision }}</pre>
+              <div class="row">
+                  <div v-for="(item, index) in prevision" v-bind:key="index">                        
+                    
+                      <label>{{item.month}}</label>                         
+                      <input
+                          type="number" 
+                          placeholder="0" 
+                          step="0.01" 
+                          min="0" 
+                          max="1" 
+                          class="form-control" 
+                          v-model="item.restriction"                            
+                      />        
+                  </div>
+                  </div>
+                  <!--div><pre>{{ prevision }}</pre></div-->
               </div>
           </template>
           <CButton
@@ -180,11 +182,10 @@
     </div>
   </div>
 
-      <!--circle-spin
-          v-bind:loading="isLoading"
-          class="circle-spin"
-        ></circle-spin-->
-
+  <!--circle-spin
+    v-bind:loading="isLoading"
+    class="circle-spin"
+  ></circle-spin-->
 
 </template>
 <script>
@@ -256,35 +257,79 @@ export default {
       "previsions",
       "timeNext"
     ]),
-    ...mapGetters("bec", ["becCharts"]),
+    ...mapGetters("bec", ["becCharts","becDate"]),
     isForecasting() {
       var forecast = false;
-      if (this.previsionSelected)
-        forecast = this.previsionSelected.id == 2 ? true : false;
+      if (this.previsionSelected && this.flowSelected && this.countrySelected && this.partnerSelected){
+        if (this.previsionSelected.id == 2){                  
+          this.createForecast();    
+          forecast = true;
+
+        }else{
+          forecast = false;
+        }  
+      }  
       return forecast;
-    },
+    },    
     sliderPeriod() {
       return this.getBecSlider();
     }
   },
   methods: {
-    createForecast(){
+
+     createForecast(){   
+      
+      const form = {
+        flow: this.flowSelected.id,
+        country: this.countrySelected.country,
+        partner: this.partnerSelected.id
+      };
+     
+
+     this.$store.dispatch("bec/findLastDate", form).then(() => {         
         
+        
+        console.log(this.becDate[0]);        
+        var tmp = this.becDate[0];
+        var year = tmp.substr(2, 2);
+         
+        var iMonth = parseInt(tmp.substr(5, 2));
+        if (iMonth == 12){
+          iMonth = -1
+          year= parseInt(year) + 1;
+        }else{
+          iMonth = iMonth-1
+        }
+        
+        /*        
+        var month = this.months[iMonth];
+        month = month.substr(0, 3);
+        var label = month + "-" + year;
+        console.log(label);
+        */
+
         this.prevision = [];
+        for (var i = 1 ; i <=6; i++){       
+          var month = this.months[iMonth + i];
+          month = month.substr(0, 3);
+          var element = month + "-" + year;
+          this.prevision.push({
+            month: element,
+            restriction: 0
+          });
+        }
+        
+        /*
         this.months.forEach(element => {         
           this.prevision.push({
             month: element,
             restriction: 0
           });
         });
-    },
-    viewRestriction(){
+        */
 
-        for (var name in this.prevision) {
-          alert(name);
-          //alert(this.prevision[name]);
-        }
-    },
+      }); 
+    },       
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
       if (iVal <= this.maxTimeStep) {
@@ -318,7 +363,7 @@ export default {
         fcst: this.previsionSelected.id
       };
       if (this.isForecasting) {
-        form.fcstpolind = this.restriction;
+        //form.fcstpolind = this.restriction;
       }
       this.$store.dispatch("bec/findByFilters", form).then(() => {
         this.buildBecCharts(this.becCharts);
@@ -334,7 +379,7 @@ export default {
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
     this.$store.dispatch("classification/getBecs");
-    this.createForecast();      
+    
   }
 };
 </script>

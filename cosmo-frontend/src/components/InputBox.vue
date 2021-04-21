@@ -9,8 +9,7 @@
                 step="0.01" 
                 min="0" max="1" 
                 class="form-control" 
-                id="InputBox" 
-                @mousewheel="true"
+                id="InputBox"                
                 v-bind:value="value"
                 v-on:input="$emit('input', $event.target.value)"/> {{value}}
             </div>
