@@ -133,27 +133,14 @@
             placeholder="Prevision"
             v-model="previsionSelected"
           />
-          <template v-if="isForecasting">
-            <!--label for="country" class="card-label mt-3">Time:</label>
-            <v-select
-              label="descr"
-              :options="timeNext"
-              placeholder="Prevision"
-              v-model="timeSelected"
-            /-->
-            <!--CInput 
-              :id="item"
-              :label="item"
-              placeholder="Set restriction"
-              class="card-label mt-2"
-              v-model="restriction"            
-            /-->
+          <template v-if="isForecasting">          
             <!--InputBox v-for="(item in months" :id="item" :key="item" :label="item.substr(0,3)" v-model="restriction[index]"/-->
             <div class="col-12">
-            <label class="mt-3">Time & Restriction:</label>
               <div class="row">
-                  <div v-for="(item, index) in prevision" v-bind:key="index">                        
-                    
+                  <label for="country" class="card-label mt-3">Time & Restriction:</label>
+              </div>
+              <div class="row">                  
+                  <div v-for="(item, index) in prevision" v-bind:key="index">                                            
                       <label>{{item.month}}</label>                         
                       <input
                           type="number" 
@@ -264,8 +251,7 @@ export default {
         if (this.previsionSelected.id == 2){                  
           this.createForecast();    
           forecast = true;
-
-        }else{
+        } else {
           forecast = false;
         }  
       }  
@@ -276,47 +262,41 @@ export default {
     }
   },
   methods: {
-
-     createForecast(){   
-      
+     createForecast(){         
       const form = {
         flow: this.flowSelected.id,
         country: this.countrySelected.country,
         partner: this.partnerSelected.id
-      };
-     
-
-     this.$store.dispatch("bec/findLastDate", form).then(() => {         
-        
+      };    
+     this.$store.dispatch("bec/findLastDate", form).then(() => { 
         
         console.log(this.becDate[0]);        
-        var tmp = this.becDate[0];
-        var year = tmp.substr(2, 2);
-         
-        var iMonth = parseInt(tmp.substr(5, 2));
-        if (iMonth == 12){
-          iMonth = -1
-          year= parseInt(year) + 1;
-        }else{
-          iMonth = iMonth-1
-        }
         
-        /*        
-        var month = this.months[iMonth];
-        month = month.substr(0, 3);
-        var label = month + "-" + year;
-        console.log(label);
-        */
+        var yearOfBec = this.becDate[0].substr(2, 2);                 
+        var monthOfBec = parseInt(this.becDate[0].substr(5, 2));
+        var month = monthOfBec + 1;
+        var year = parseInt(yearOfBec);                              
+        
 
-        this.prevision = [];
-        for (var i = 1 ; i <=6; i++){       
-          var month = this.months[iMonth + i];
-          month = month.substr(0, 3);
-          var element = month + "-" + year;
+        this.prevision = [];               
+        // loop to draw 6 month
+        for (var i = 1 ; i <= 6; i++){     
+          
+          if (month > 12 ){                        
+              month = 1;
+              year = (parseInt(year) + 1);  
+          }
+
+          var iMonth = month-1;
+          var monthName = this.months[iMonth];
+          var monthShortName = monthName.substr(0, 3);
+          var element = monthShortName + "-" + year;
+
           this.prevision.push({
             month: element,
             restriction: 0
-          });
+          });          
+          month = month + 1;
         }
         
         /*
