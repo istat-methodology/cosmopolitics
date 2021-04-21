@@ -63,7 +63,7 @@
            </label>
         </CCardHeader>
         <CCardBody v-if="isDiagNorm">
-          <scatter-chart :chartData="chartDataDiagNorm" :options="options" />
+          <scatter-chart :chartData="chartDataDiagNorm" :options="optionsNorm" />
         </CCardBody>
       </CCard>
       <CCard v-if="chartDataDiagRes"> 
@@ -75,7 +75,7 @@
            </label>
         </CCardHeader>
         <CCardBody v-if="isDiagRes">
-          <scatter-chart :chartData="chartDataDiagRes" :options="options" />
+          <scatter-chart :chartData="chartDataDiagRes" :options="optionsRes" />
         </CCardBody>
       </CCard>
       <CCard v-if="chartDataDiagACF">
@@ -87,7 +87,7 @@
            </label>
         </CCardHeader>
         <CCardBody v-if="isDiagACF">
-          <line-chart :chartData="chartDataDiagACF" :options="optionsLine" />
+          <line-chart :chartData="chartDataDiagACF" :options="optionsACF" />
         </CCardBody>
       </CCard>
         
@@ -134,13 +134,13 @@
             v-model="previsionSelected"
           />
           <template v-if="isForecasting">
-            <label for="country" class="card-label mt-3">Time:</label>
+            <!--label for="country" class="card-label mt-3">Time:</label>
             <v-select
               label="descr"
               :options="timeNext"
               placeholder="Prevision"
               v-model="timeSelected"
-            />
+            /-->
             <!--CInput 
               :id="item"
               :label="item"
@@ -148,10 +148,30 @@
               class="card-label mt-2"
               v-model="restriction"            
             /-->
+            <!--InputBox v-for="(item in months" :id="item" :key="item" :label="item.substr(0,3)" v-model="restriction[index]"/-->
             <label class="mt-3">Time & Restriction:</label>
-            <div class="row">  
-              <InputBox v-for="item in months" :id="item" :key="item" :label="item.substr(0,3)" :value="0" />
-            </div>
+              <div class="row">  
+                 
+                    <div v-for="(item, index) in months" v-bind:key="index">
+                        <!--div class="col-6"-->
+                            <label for="index" >{{item.substr(0,3)}}</label>                         
+                            <input
+                            id="index" 
+                            type="number" 
+                            placeholder="0" 
+                            step="0.01" 
+                            min="0" max="1" 
+                            class="form-control" 
+                            v-model="restriction[index]" 
+                            
+                            @mousewheel="true"/>
+                         <!--
+                         v-on:input="$emit('input', $event.target.value)"
+                         -->
+
+                    </div>
+                 
+              </div>
           </template>
 
           <CButton
@@ -177,10 +197,11 @@
 <script>
 import { mapGetters } from "vuex";
 import { Context } from "@/common";
-import InputBox from '@/components/InputBox';
+//import InputBox from '@/components/InputBox';
 import paletteMixin from "@/components/mixins/palette.mixin";
 import scatterMixin from "@/components/mixins/scatter.mixin";
 import becMixin from "@/components/mixins/bec.mixin";
+import becDiagMixin from "@/components/mixins/becDiag.mixin";
 import ScatterChart from "@/components/charts/ScatterChart";
 import LineChart from "@/components/charts/LineChart";
 import VueSlider from "vue-slider-component";
@@ -191,9 +212,9 @@ export default {
     ScatterChart,
     LineChart,
     VueSlider,
-    InputBox
+    //InputBox
   },
-  mixins: [paletteMixin, scatterMixin, becMixin],
+  mixins: [paletteMixin, scatterMixin, becMixin, becDiagMixin],
   data: () => ({   
     
       //Form fields
@@ -203,7 +224,9 @@ export default {
     becSelected: null,
     previsionSelected: null,
     timeSelected: null,
-    restriction: 0,
+    
+    restriction:[],
+
     showSlider: false,
     
     chartData: null,
@@ -226,57 +249,9 @@ export default {
     isDiagNorm:false,
     isDiagRes:false,
     isDiagACF:false,
-    
-    
-    optionsLine:{
 
-        responsive: true,
-        maintainAspectRatio: false,
-        legend:{
-            display:true
-           
-        },
-        
-        title: {
-            display: true,
-            text: "AUTOCORRELATION",
-            fontColor: "#404040",
-            fontSize: 16,
-            fontWeight: "bold",
-            verticalAlign: "top",
-            horizontalAlign: "center",
-            padding: 0,
-            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
-        },
-      scales: {            
-            xAxes: [{
-              scaleLabel: {
-                display: true,
-                fontSize: 16,
-                fontWeight: "bold",
-                fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",                                  
-                labelString: "Lag"
-              },
-              ticks: {
-                stepSize: 0.1
-              }
-            }
-          ],
-          yAxes: [{       
-              scaleLabel: {
-                display: true,
-                fontSize: 16,
-                fontWeight: "bold",
-                fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",                
-                labelString: "ACF"
-              },
-              ticks: {
-                stepSize: 0.1
-              }
-            }
-         ],       
-       }
-     }
+
+
   }),
   computed: {
     ...mapGetters("classification", [

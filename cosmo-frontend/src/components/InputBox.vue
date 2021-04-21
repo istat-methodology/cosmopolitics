@@ -1,30 +1,25 @@
 <template>
     <div class="col-4">
-        <form>            
-            
-            <label  class="lbl" for="InputBox">{{label}}</label>
-            <input  class="chk" type="checkbox" />
-            <input  class="form-control" type="number" id="InputBox" name="InputBox" value="0" @mousewheel="mousewheel"/>             
+        <form>       
+            <div id='InputBox'>
+            <label for="InputBox">{{label}}</label>
+            <input 
+                type="number" 
+                placeholder="0" 
+                step="0.01" 
+                min="0" max="1" 
+                class="form-control" 
+                id="InputBox" 
+                @mousewheel="true"
+                v-bind:value="value"
+                v-on:input="$emit('input', $event.target.value)"/> {{value}}
+            </div>
         </form>
     </div>
 </template>
-
+ 
 <script>
-   export default {   
-        props: {
-         label: { required: true, type: String },   
-         value: { required: true, type: String },   
-         done: { default: false, type: Boolean },
-
-        },
-        data: () => ({   
-            counter: 0            
-        }),
-        methods:{
-            mousewheel(){
-                this.counter = this.counter +1;
-                return this.counter;
-            }
-        }
-    }
+export default {
+ props: ['value', 'label']
+}
 </script>
