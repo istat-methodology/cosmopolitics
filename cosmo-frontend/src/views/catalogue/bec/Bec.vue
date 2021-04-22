@@ -134,15 +134,26 @@
             v-model="previsionSelected"
           />
           <template v-if="isForecasting">          
-            <!--InputBox v-for="(item in months" :id="item" :key="item" :label="item.substr(0,3)" v-model="restriction[index]"/-->
-            <div class="col-12">
-              <div class="row">
-                  <label for="country" class="card-label mt-3">Time & Restriction:</label>
-              </div>
-              <div class="row">                  
-                  <div v-for="(item, index) in prevision" v-bind:key="index">                                            
-                      <label>{{item.month}}</label>                         
-                      <input
+              <!--InputBox v-for="(item in months" :id="item" :key="item" :label="item.substr(0,3)" v-model="restriction[index]"/-->
+              <div class="col-12">                  
+                  <div class="row">
+                      <label for="country" class="card-label mt-3">Time & Restriction:</label>
+                  </div>
+                  <div class="row">
+                    <div v-for="(item, index) in prevision" v-bind:key="index">  
+                      <div role="group" class="custom-control custom-checkbox">
+                          <input  
+                            type="checkbox"  
+                            class="custom-control-input" 
+                            v-bind:id="item.month" 
+                            v-bind:name="item.month" 
+                            v-bind:value="item.restriction"
+                            v-model="item.selected" 
+                           
+                          />
+                          <label  v-bind:for="item.month" class="custom-control-label">{{item.month}}</label>                   
+                        </div>                
+                        <input
                           type="number" 
                           placeholder="0" 
                           step="0.01" 
@@ -150,10 +161,12 @@
                           max="1" 
                           class="form-control" 
                           v-model="item.restriction"                            
-                      />        
+                        />        
+                    </div>
                   </div>
-                  </div>
-                  <!--div><pre>{{ prevision }}</pre></div-->
+                  <!--div class="row">
+                      <pre>{{ prevision }}</pre>
+                  </div-->
               </div>
           </template>
           <CButton
@@ -198,17 +211,16 @@ export default {
   mixins: [paletteMixin, scatterMixin, becMixin, becDiagMixin],
   data: () => ({   
     
-      //Form fields
+    //Form fields
     flowSelected: null,
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
     previsionSelected: null,
     timeSelected: null,
-    
-    restriction:[],
+   
     prevision:[],
-
+    
     showSlider: false,
     
     chartData: null,
@@ -221,7 +233,7 @@ export default {
     maxTimeStep: 0,
     
     policyPeriodValue: "",
-    policyPeriod: [],   
+    policyPeriod: [],      
     
     isMainChart:true,
 
@@ -231,8 +243,6 @@ export default {
     isDiagNorm:false,
     isDiagRes:false,
     isDiagACF:false,
-
-
 
   }),
   computed: {
@@ -262,52 +272,41 @@ export default {
     }
   },
   methods: {
+      handelCheck(month,event){
+        console.log(event);
+        alert(month);
+      },     
      createForecast(){         
       const form = {
         flow: this.flowSelected.id,
         country: this.countrySelected.country,
         partner: this.partnerSelected.id
       };    
-     this.$store.dispatch("bec/findLastDate", form).then(() => { 
-        
-        console.log(this.becDate[0]);        
-        
+     this.$store.dispatch("bec/findLastDate", form).then(() => {         
+        console.log(this.becDate[0]);                
         var yearOfBec = this.becDate[0].substr(2, 2);                 
         var monthOfBec = parseInt(this.becDate[0].substr(5, 2));
         var month = monthOfBec + 1;
-        var year = parseInt(yearOfBec);                              
-        
+        var year = parseInt(yearOfBec);    
 
         this.prevision = [];               
         // loop to draw 6 month
-        for (var i = 1 ; i <= 6; i++){     
-          
+        for (var i = 1 ; i <= 6; i++){               
           if (month > 12 ){                        
               month = 1;
               year = (parseInt(year) + 1);  
           }
-
           var iMonth = month-1;
           var monthName = this.months[iMonth];
           var monthShortName = monthName.substr(0, 3);
           var element = monthShortName + "-" + year;
-
           this.prevision.push({
+            selected:false,
             month: element,
             restriction: 0
           });          
           month = month + 1;
         }
-        
-        /*
-        this.months.forEach(element => {         
-          this.prevision.push({
-            month: element,
-            restriction: 0
-          });
-        });
-        */
-
       }); 
     },       
     handleCounterChange(val) {
@@ -334,7 +333,7 @@ export default {
     handleModel(){
       this.isModel = !this.isModel;     
     },
-    handleSubmit() {
+    handleSubmit() {      
       const form = {
         flow: this.flowSelected.id,
         var: this.becSelected.id,
@@ -343,8 +342,16 @@ export default {
         fcst: this.previsionSelected.id
       };
       if (this.isForecasting) {
-        //form.fcstpolind = this.restriction;
+          var restriction = [];
+          this.prevision.forEach(element => {
+              if (element.selected){
+                restriction.push(element.restriction);
+              }
+          });          
+          //console.log(restriction.join(','));
+          form.fcstpolind = restriction.join(',');
       }
+      
       this.$store.dispatch("bec/findByFilters", form).then(() => {
         this.buildBecCharts(this.becCharts);
         if (this.timeLapse) {         
@@ -352,6 +359,7 @@ export default {
           this.showSlider = true;
         }
       });     
+      
     }, 
   },
   created() {

@@ -4,17 +4,34 @@ export const becService = {
   findLastDate
 };
 function findByFilters(form) {
-  const params = {
-    flow: form.flow,
-    var: form.var,
-    country: form.country,
-    partner: form.partner,
-    fcst: form.fcst
-  };
+  
+  var object = {};  
+  if (form.fcst!="2"){
+
+    object = {      
+      flow: form.flow,
+      var: form.var,
+      country: form.country,
+      partner: form.partner,
+      fcst: form.fcst
+    };
+
+  } else {
+    
+    object = {      
+      flow: form.flow,
+      var: form.var,
+      country: form.country,
+      partner: form.partner,
+      fcst: form.fcst,
+      fcstpolind: form.fcstpolind    
+    };
+  }
+  const params = object;
+
   return (
     axiosR
       .get("/itsa", { params: params })
-      //.get( "/itsa?flow=" + form.flow + "&var=" + form.var + "&country=" + form.country + "&partner=" + form.partner + "&fcst=" + form.fcst )*/
       .then(res => {
         var data = res.data ? res.data : {};
         console.log(data);
@@ -34,7 +51,6 @@ function findLastDate(form) {
   return (
     axiosR
       .get("/lastdate", { params: params })
-      //.get( "/itsa?flow=" + form.flow + "&var=" + form.var + "&country=" + form.country + "&partner=" + form.partner + "&fcst=" + form.fcst )*/
       .then(res => {
         var data = res.data ? res.data : {};
         console.log(data);
