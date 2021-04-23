@@ -16,11 +16,11 @@ library(tidyverse)
 
 #setwd("/home/is2admin/hackathon/git/hack-backend/R-server")
 #setwd("C:\\Users\\ibuku\\git\\hack-backend\\R-server")
-basedir = ("/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/rscript")
-basedirData=("/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/data")
+# basedir = ("/home/is2admin/hackathon/git/hack-backend/R-server/rscript")
+# basedirData=("/home/is2admin/hackathon/git/hack-backend/R-server/data")
 
-#basedir = ("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
-#basedirData=("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
+basedir = ("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
+basedirData=("C:\\Users\\federico\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
 
 #basedir = ("d:/development/cosmopolitics/cosmo-backend/R-server/rscript")
 #basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
@@ -68,26 +68,17 @@ COMEXT_EXP<-load_comext("2")
 #PlotCompRes<-PlotMobComp("Italy","Italy")
 #Indicator  <-PolInd("Italy","Italy")
 
-<<<<<<< HEAD
 # flow<-2
-# country_code<-"IT"
+# country_code<-"BE"
 # partner_code<-"US"
 # var_bec<-7
 # year<-2020
 # month<-2
-=======
-#flow<-2
-#country_code<-"IT"
-#partner_code<-"US"
-#var_bec<-7
-#year<-2020
-#month<-2
->>>>>>> 9e039c1ee852fb513b172f918bd6d8b68e12432f
 
 #### FUNZIONI
 # ResBEC   <- BEC(2,"IT","US",2020,2)
 # SARES <- sa(2,1,"IT","US",2020,2)
-# ITSA  <- itsa_diag(2,7,"IT","US",1,1)
+# ITSA  <- itsa_diag(2,2,"BE","AE",1,1)
 
 app$add_get(
   path = "/load-data", 
@@ -282,14 +273,13 @@ app$add_get(
 
 #ITSA  <- itsa_diag(1,3,"IT","US",1,1) 
 
-# http://localhost:5000/lastdate?flow=2&country=IT&partner=US
+# http://localhost:5000/lastdate
 
 app$add_get(
   path = "/lastdate", 
   FUN = function(.req, .res) {
     print("/lastdate")
-    resp<-lastdate(.req$get_param_query("flow"),
-                    .req$get_param_query("country"),.req$get_param_query("partner")) 
+    resp<-lastdate() 
     
     #.res$set_body(resp)
     .res$set_body(toJSON(resp))
@@ -301,7 +291,8 @@ app$add_get(
     #.res$set_content_type("application/json")
   })
 
-# http://localhost:5000/itsa?flow=2&var=7&country=IT&partner=US&fcst=1&fcstpolind=0.1,0.3,0.4
+# 54§
+
 app$add_get(
   path = "/itsa", 
   FUN = function(.req, .res) {
