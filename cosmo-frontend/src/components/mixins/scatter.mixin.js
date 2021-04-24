@@ -1,8 +1,13 @@
-export default {
-  
+export default {  
   data: () => ({
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: true
+      },
       scales: {
+
         yAxes: [
           {
             ticks: {
@@ -13,24 +18,24 @@ export default {
             }
           }
         ],
-        xAxes: [
-          {
+        xAxes: [          
+          { 
             ticks: {
-              beginAtZero: true
+              min: 60,             
+              stepSize: 12,                                 
+              callback: function(value, index) {                                                
+                  var year = 2015 + index;
+                  return year;
+              }
             },
             gridLines: {
-              display: false
-            },
+              display: true
+            },            
             type: "linear",
             position: "bottom"
           }
         ]
-      },
-      legend: {
-        display: true
-      },
-      responsive: true,
-      maintainAspectRatio: false
+      }      
     }
    
   })

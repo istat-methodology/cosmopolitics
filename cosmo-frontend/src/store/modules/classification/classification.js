@@ -12,7 +12,7 @@ const state = {
     { id: 2, descr: "Export" }
   ],
   previsions: [
-    { id: 0, descr: "Nothing" },
+    { id: 0, descr: "Interrupted Time Series" },
     { id: 1, descr: "Nowcasting" },
     { id: 2, descr: "Forecasting" }
   ],

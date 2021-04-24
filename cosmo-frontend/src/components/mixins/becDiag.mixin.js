@@ -16,9 +16,10 @@ export default {
           horizontalAlign: "center",
           padding: 0,
           fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
-    },
-    scales: {            
-          xAxes: [{
+      },
+      scales: {            
+          xAxes: [
+            {
             scaleLabel: {
               display: true,
               fontSize: 16,
@@ -31,18 +32,19 @@ export default {
             }
           }
         ],
-        yAxes: [{       
+        yAxes: [
+          {       
             scaleLabel: {
               display: true,
               fontSize: 16,
               fontWeight: "bold",
               fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",                
               labelString: "SAMPLE QUANTILIES"
-            },
-            ticks: {
+           },
+           ticks: {
               stepSize: 1
-            }
-          }
+           }
+         }
        ],       
      }
    },
@@ -64,7 +66,8 @@ export default {
           fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
     },
     scales: {            
-          xAxes: [{
+          xAxes: [
+            {
             scaleLabel: {
               display: true,
               fontSize: 16,
@@ -77,7 +80,8 @@ export default {
             }
           }
         ],
-        yAxes: [{       
+        yAxes: [
+          {       
             scaleLabel: {
               display: true,
               fontSize: 16,
@@ -88,17 +92,17 @@ export default {
             ticks: {
               stepSize: 1
             }
-          }
-       ],       
+         }
+       ]       
      }
    },
    optionsACF:{
       responsive: true,
       maintainAspectRatio: false,
       legend:{
-          display:false
-      },
-      title: {
+            display:false
+        },
+        title: {
           display: true,
           text: "AUTOCORRELATION",
           fontColor: "#404040",
@@ -108,8 +112,8 @@ export default {
           horizontalAlign: "center",
           padding: 0,
           fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
-    },
-    scales: {            
+        },
+        scales: {            
           xAxes: [{
             scaleLabel: {
               display: true,
@@ -121,9 +125,8 @@ export default {
             ticks: {
               stepSize: 0.1
             }
-          }
-        ],
-        yAxes: [{       
+          }],
+          yAxes: [{       
             scaleLabel: {
               display: true,
               fontSize: 16,
@@ -134,10 +137,22 @@ export default {
             ticks: {
               stepSize: 0.1
             }
-          }
-       ],       
-     }
-   }
-    
+          }],       
+        }
+      }
   })
 };
+/*
+  plugins: {
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy'
+        },
+      zoom: {
+        enabled: true,
+        mode: 'xy',
+      }
+    }
+  },
+*/   

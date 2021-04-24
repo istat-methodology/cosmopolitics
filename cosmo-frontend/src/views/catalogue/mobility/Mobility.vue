@@ -65,7 +65,7 @@ import { mapGetters } from "vuex";
 import { Context } from "@/common";
 import mobilityMixin from "@/components/mixins/mobility.mixin";
 import LineChart from "@/components/charts/LineChart";
-import chartMixin from "@/components/mixins/chart.mixin";
+//import chartMixin from "@/components/mixins/chart.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 
 export default {
@@ -73,7 +73,7 @@ export default {
   components: {
     LineChart
   },
-  mixins: [mobilityMixin, chartMixin, spinnerMixin],
+  mixins: [mobilityMixin, spinnerMixin],
   data: () => ({
     report: "",
     countrySelected: { name: "Italy" },

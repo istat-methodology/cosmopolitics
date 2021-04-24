@@ -19,17 +19,24 @@ export default {
     minTreatY: 0,
     maxTreatY: 0,
 
-    timePeriod: [],
+    timeLapse: null,
+    timePeriod: null,
     
+    maxTimeStep: 0,
+
     covidEstimationTableTitle: null,
     covidEstimationTableFileds: null,
     covidEstimationDataTable: null,
         
     modelTableTitle: null,
     modelTableFileds: null,
-    modelDataTable: null
+    modelDataTable: null,    
     
-    
+    cast:{
+      isCast: false,
+      indexCast: 0,
+      indexStartCast: 0
+    }  
   }),
   methods: {
     getBecSlider() {
@@ -45,6 +52,7 @@ export default {
       });
       return obj ? obj.val : null;
     },
+
     getCoordinates(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
@@ -55,16 +63,29 @@ export default {
       });
       return dataMap;
     },
+
+    getXY(arrX, arrY) {      
+      console.log("=>START");     
+      const dataMap = [];
+      arrX.forEach((num1, index) => {
+        const num2 = arrY[index];
+        const obj = {
+          x: num1,
+          y: num2        
+        }        
+        console.log(obj);
+        dataMap.push(obj);
+      });
+      console.log("=>END");     
+      return dataMap;
+    },
+
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
-        dataMap.push({
-          x: index,
-          y: index
-        },{
-          x: index,
-          y: element
-        });
+        dataMap.push(
+          { x: index, y: index },
+          { x: index, y: element });
       });
       return dataMap;
     },
@@ -95,6 +116,10 @@ export default {
       var diagACF = [];
       var diagRes = [];
       
+      var indexT = 0;
+      this.cast.isCast = false;              
+      this.cast.indexCast = 0;
+
       for (var name in dataR) {
         switch (name) {
           case "Covid_Estimation":
@@ -127,9 +152,31 @@ export default {
             this.treatX = dataR[name];
             break;  
           default:
+            
+            if (name.substr(0,1) == "T") {             
+              console.log("Nothing found");
+            }
+            if (name.substr(0,1) == "F") {
+              console.log("Forcasting found: " + indexT );
+              if (!this.cast.isCast){
+                this.cast.isCast = true;              
+                this.cast.indexCast = indexT;              
+                this.cast.indexStartCast = dataR[name]["date"].length - 1;
+              }
+            }    
+            if (name.substr(0,1) == "N") {
+              console.log("Nowcasting found: " + indexT );
+              if (!this.cast.isCast){
+                this.cast.isCast = true;              
+                this.cast.indexCast = indexT;
+                this.cast.indexStartCast = dataR[name]["date"].length - 1;
+              }              
+            }
             this.timeLapse.push(dataR[name]);
+            indexT = indexT + 1;
         }
       }
+      console.log(this.cast);
       //
       this.maxTimeStep = this.timeLapse.length - 1;
       //
@@ -137,13 +184,11 @@ export default {
       //
       this.covidEstimationDataTable = this.getTable(covidEstimation[0]);
       //
-      this.modelDataTable = this.getTable(model[0]);
-      
+      this.modelDataTable = this.getTable(model[0]);      
       //
-
       this.chartDataDiagNorm = this.getDiagNormChart(diagNorm[0]);      
-      this.chartDataDiagRes = this.getDiagResChart(diagRes[0])
-      this.chartDataDiagACF = this.getDiagACFChart(diagACF[0])
+      this.chartDataDiagRes = this.getDiagResChart(diagRes[0]);
+      this.chartDataDiagACF = this.getDiagACFChart(diagACF[0]);
       
 
     },
@@ -156,9 +201,7 @@ export default {
       this.timePeriod = [];
       indexStart = this.timeLapse[0].date.length - 1;
       indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
-      this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[
-        indexStart
-      ];
+      this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[indexStart];
       for (var i = indexStart; i <= indexEnd; i++) {
         var tmp = this.timeLapse[this.maxTimeStep].date[i];
         var year = tmp.substr(2, 2);
@@ -183,33 +226,60 @@ export default {
       this.minTreatY = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
     },
     getBecChart(time) {
+       
       var chartData = {};
       chartData.datasets = [];
+
+      if (this.cast.isCast == true){
+        if (this.cast.indexCast == time){
+          console.log("ciao") 
+          //var isCast = this.cast.isCast;
+          //var iStartCast = this.cast.indexStartCast
+       }
+      }
       if (this.timeLapse) {
-        for (var chartType in this.timeLapse[time]) {
+        for (var chartType in this.timeLapse[time]) {       
+          
+          var data = this.timeLapse[time][chartType];
+          var dataXY = this.getCoordinates(data);
           var chartObj = {};
+          this.labels = this.timeLapse[time]["date"]; 
+
           switch (chartType) {
-            case "date":
-              chartData.labels = this.timeLapse[time][chartType];
+            case "date":             
+              chartData.labels = data;
               break;
             case "tend":
+            
               chartObj = {
                 label: "Yearly variation series",
-                fill: false,
-                backgroundColor: "rgba(46, 184, 92, 0.2)",
+                fill: true,
                 borderColor: "rgba(46, 184, 92, 1)",
-                data: this.getCoordinates(this.timeLapse[time][chartType]),
+                data: dataXY,                
                 showLine: false,
-                pointRadius: 12
+                pointRadius: 12,
+                backgroundColor: function(context) {                
+
+                    var index = context.dataIndex;
+                    var value = context.dataset.data[index];                  
+                    if (value){                   
+                        //if (value.x > iStartCast) {
+                          if (value.x > 131) {
+                            return "rgba(255,128,0,0.6)";
+                        } else {
+                          return "rgba(46, 184, 92, 0.6)";
+                      }
+                  }
+                }
               };
               break;
-            case "pred_tp":
+            case "pred_tp":              
               chartObj = {
                 label: "Model estimation",
                 fill: false,
                 backgroundColor: "red", //color.background,
                 borderColor: "red", // color.border,
-                data: this.getCoordinates(this.timeLapse[time][chartType]),
+                data: dataXY,
                 showLine: true,
                 lineTension: 0,
                 pointRadius: 0
@@ -221,7 +291,7 @@ export default {
                 fill: false,
                 backgroundColor: "red", //color.background,
                 borderColor: "red", // color.border,
-                data: this.getCoordinates(this.timeLapse[time][chartType]),
+                data: dataXY,
                 showLine: true,
                 lineTension: 0,
                 pointRadius: 0,
@@ -234,11 +304,11 @@ export default {
                 fill: false,
                 backgroundColor: "red", //color.background,
                 borderColor: "red", // color.border,
-                data: this.getCoordinates(this.timeLapse[time][chartType]),
+                data: dataXY,
                 showLine: true,
                 lineTension: 0,
                 pointRadius: 0
-              };
+              };              
           }
           if (chartType != "date") {
             chartData.datasets.push(chartObj);
@@ -263,14 +333,20 @@ export default {
       return chartData;
     },
     getDiagResChart(diag) {
-      var chartData = {};
+
+      var chartData = {};      
       chartData.datasets = [];
+
       if (diag) {
-        for (var chartType in diag) {
+        for (var chartType in diag) {        
+                    
+          var data = diag[chartType];
+          var dataXY = this.getCoordinates(data);
           var chartObj = {};
+    
           switch (chartType) {
             case "date":
-              chartData.labels = diag[chartType];
+              chartData.labels = data;
               break;
             case "pnt_y":
                 chartObj = {
@@ -278,7 +354,7 @@ export default {
                   fill: false,
                   backgroundColor: "rgba(46, 184, 92, 0.2)",
                   borderColor: "rgba(46, 184, 92, 1)",
-                  data: this.getCoordinates(diag[chartType]),
+                  data: dataXY,
                   showLine: false,
                   pointRadius: 12
                 };
@@ -290,7 +366,7 @@ export default {
                   fill: false,
                   backgroundColor: "red", //color.background,
                   borderColor: "red", // color.border,
-                  data: this.getCoordinates(diag[chartType]),
+                  data: dataXY,
                   showLine: true,
                   lineTension: 0,
                   pointRadius: 0
@@ -311,14 +387,15 @@ export default {
       var chartObj = {};
       
       if (diag) {
-        //"lne_y"
+        var pointXY = this.getCoordinatesNorm(diag["pnt_x"],diag["pnt_y"]);
+        var lineXY = this.getCoordinatesNorm(diag["lne_x"],diag["lne_y"]);
         chartObj = {};  
         chartObj = {
           label: "(pnt_x,pnt_y)",
           fill: false,
           backgroundColor: "rgba(46, 184, 92, 0.2)",
           borderColor: "rgba(46, 184, 92, 1)",
-          data: this.getCoordinatesNorm(diag["pnt_x"],diag["pnt_y"]),
+          data: pointXY,
           showLine: false,
           pointRadius: 12
         };
@@ -331,7 +408,7 @@ export default {
           fill: false,
           backgroundColor: "red", //color.background,
           borderColor: "red", // color.border,
-          data: this.getCoordinatesNorm(diag["lne_x"],diag["lne_y"]),
+          data: lineXY,
           showLine: true,
           lineTension: 0,
           pointRadius: 2
@@ -340,7 +417,6 @@ export default {
       }
       return chartData;
     },
-
 
     getDiagACFChart(diag) {
       var chartData = {};

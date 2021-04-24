@@ -98,35 +98,35 @@
           Trade filter
         </CCardHeader>
         <CCardBody>
-          <label for="country" class="card-label">Flows:</label>
+          <label class="card-label">Flows:</label>
           <v-select
             label="descr"
             :options="flows"
             placeholder="Flows"
             v-model="flowSelected"
           />
-          <label for="country" class="card-label mt-3">Country:</label>
+          <label class="card-label mt-3">Country:</label>
           <v-select
             label="name"
             :options="countries"
             placeholder="Country"
             v-model="countrySelected"
           />
-          <label for="country" class="card-label mt-3">Partner:</label>
+          <label class="card-label mt-3">Partner:</label>
           <v-select
             label="descr"
             :options="partners"
             placeholder="Partner"
             v-model="partnerSelected"
           />
-          <label for="country" class="card-label mt-3">Bec:</label>
+          <label class="card-label mt-3">Bec:</label>
           <v-select
             label="descr"
             :options="becs"
             placeholder="Bec"
             v-model="becSelected"
           />
-          <label for="country" class="card-label mt-3">Prevision:</label>
+          <label class="card-label mt-3">Prevision:</label>
           <v-select
             label="descr"
             :options="previsions"
@@ -151,7 +151,7 @@
                             v-model="item.selected" 
                            
                           />
-                          <label  v-bind:for="item.month" class="custom-control-label">{{item.month}}</label>                   
+                          <label v-bind:for="item.month" class="custom-control-label">{{item.month}}</label>                   
                         </div>                
                         <input
                           type="number" 
@@ -229,17 +229,13 @@ export default {
     chartDataDiagRes: null,
     chartDataDiagACF: null,
 
-    timeLapse: null,
-    maxTimeStep: 0,
     
     policyPeriodValue: "",
     policyPeriod: [],      
     
     isMainChart:true,
-
     isCovidEstimation:false,
-    isModel:false,
-    
+    isModel:false,    
     isDiagNorm:false,
     isDiagRes:false,
     isDiagACF:false,
@@ -311,7 +307,7 @@ export default {
     },       
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
-      if (iVal <= this.maxTimeStep) {
+      if (iVal <= this.maxTimeStep) {        
         this.chartData = this.getBecChart(iVal);
       }
     },
@@ -350,24 +346,21 @@ export default {
           });          
           //console.log(restriction.join(','));
           form.fcstpolind = restriction.join(',');
-      }
-      
+      }      
       this.$store.dispatch("bec/findByFilters", form).then(() => {
         this.buildBecCharts(this.becCharts);
         if (this.timeLapse) {         
           this.chartData = this.getBecChart(0);
           this.showSlider = true;
         }
-      });     
-      
+      });           
     }, 
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
-    this.$store.dispatch("classification/getBecs");
-    
+    this.$store.dispatch("classification/getBecs");    
   }
 };
 </script>

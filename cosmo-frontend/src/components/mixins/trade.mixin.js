@@ -37,8 +37,8 @@ export default {
               labelString: "Value"
             }
           }
-        ]
-      }
+        ]      
+     },
     }
   })
 };
