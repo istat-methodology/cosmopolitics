@@ -15,7 +15,7 @@
         <CCardBody v-show="isMainChart">
           <scatter-chart :chartData="chartData" :options="options" />
           <vue-slider
-            v-if="showSlider"
+            v-if="isSlider"
             :adsorb="true"
             :tooltip="'none'"
             v-model="policyPeriodValue"
@@ -209,8 +209,7 @@ export default {
     //InputBox
   },
   mixins: [paletteMixin, scatterMixin, becMixin, becDiagMixin],
-  data: () => ({   
-    
+  data: () => ({    
     //Form fields
     flowSelected: null,
     countrySelected: null,
@@ -221,7 +220,7 @@ export default {
    
     prevision:[],
     
-    showSlider: false,
+    
     
     chartData: null,
 
@@ -231,8 +230,10 @@ export default {
 
     
     policyPeriodValue: "",
-    policyPeriod: [],      
+    policyPeriod: [],
     
+    isSlider: false,
+
     isMainChart:true,
     isCovidEstimation:false,
     isModel:false,    
@@ -249,12 +250,12 @@ export default {
       "flows",
       "previsions",
       "timeNext"
-    ]),
+    ]),    
     ...mapGetters("bec", ["becCharts","becDate"]),
     isForecasting() {
       var forecast = false;
       if (this.previsionSelected && this.flowSelected && this.countrySelected && this.partnerSelected){
-        if (this.previsionSelected.id == 2){                  
+        if (this.previsionSelected.id == 2){    
           this.createForecast();    
           forecast = true;
         } else {
@@ -265,6 +266,9 @@ export default {
     },    
     sliderPeriod() {
       return this.getBecSlider();
+    },
+    options() {
+      return this.getOptions(this.startSeries.min, this.startSeries.year); 
     }
   },
   methods: {
@@ -272,14 +276,14 @@ export default {
         console.log(event);
         alert(month);
       },     
-     createForecast(){         
-      const form = {
-        flow: this.flowSelected.id,
-        country: this.countrySelected.country,
-        partner: this.partnerSelected.id
-      };    
-     this.$store.dispatch("bec/findLastDate", form).then(() => {         
-        console.log(this.becDate[0]);                
+      createForecast(){         
+        const form = {
+          flow: this.flowSelected.id,
+          country: this.countrySelected.country,
+          partner: this.partnerSelected.id
+        };    
+        this.$store.dispatch("bec/findLastDate", form).then(() => {        
+
         var yearOfBec = this.becDate[0].substr(2, 2);                 
         var monthOfBec = parseInt(this.becDate[0].substr(5, 2));
         var month = monthOfBec + 1;
@@ -344,14 +348,13 @@ export default {
                 restriction.push(element.restriction);
               }
           });          
-          //console.log(restriction.join(','));
           form.fcstpolind = restriction.join(',');
       }      
       this.$store.dispatch("bec/findByFilters", form).then(() => {
         this.buildBecCharts(this.becCharts);
         if (this.timeLapse) {         
           this.chartData = this.getBecChart(0);
-          this.showSlider = true;
+          this.isSlider = true;
         }
       });           
     }, 

@@ -1,4 +1,5 @@
 export default {
+ 
   data: () => ({
     months: [
       "January",
@@ -37,6 +38,7 @@ export default {
       indexCast: 0,
       indexStartCast: 0
     }  
+
   }),
   methods: {
     getBecSlider() {
@@ -52,7 +54,6 @@ export default {
       });
       return obj ? obj.val : null;
     },
-
     getCoordinates(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
@@ -63,7 +64,6 @@ export default {
       });
       return dataMap;
     },
-
     getXY(arrX, arrY) {      
       console.log("=>START");     
       const dataMap = [];
@@ -72,24 +72,20 @@ export default {
         const obj = {
           x: num1,
           y: num2        
-        }        
+        };        
         console.log(obj);
         dataMap.push(obj);
       });
       console.log("=>END");     
       return dataMap;
     },
-
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
-        dataMap.push(
-          { x: index, y: index },
-          { x: index, y: element });
+        dataMap.push({ x: index, y: index },{ x: index, y: element });
       });
       return dataMap;
-    },
-    
+    },    
     getCoordinatesNorm(n, m) {      
       console.log("=>START");     
       const dataMap = [];
@@ -98,7 +94,7 @@ export default {
         const obj = {
           x: num1,
           y: num2        
-        }        
+        };        
         console.log(obj);
         dataMap.push(obj);
       });
@@ -176,6 +172,9 @@ export default {
             indexT = indexT + 1;
         }
       }
+
+      console.log(this.timeLapse);      
+
       console.log(this.cast);
       //
       this.maxTimeStep = this.timeLapse.length - 1;
@@ -222,21 +221,38 @@ export default {
         });
         v++;
       }
+
+      console.log(this.policyPeriod);
+      console.log(this.timePeriod);
       this.maxTreatY = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
       this.minTreatY = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend);
-    },
+
+      var yearSeries = 0;
+      tmp = 0;
+      for (var s = 0; s <= this.timeLapse[this.maxTimeStep].date[s].lenght - 1 ; s++) {
+        tmp = this.timeLapse[this.maxTimeStep].date[s];
+        if (tmp.substr(2, 4) != yearSeries){          
+          this.startSeries.push({
+            year: yearSeries,
+            min: s
+          });  
+        }
+      }
+    },   
+
     getBecChart(time) {
        
       var chartData = {};
       chartData.datasets = [];
 
-      if (this.cast.isCast == true){
-        if (this.cast.indexCast == time){
-          console.log("ciao") 
+      //if (this.cast.isCast == true){
+        //if (this.cast.indexCast == time){          
           //var isCast = this.cast.isCast;
-          //var iStartCast = this.cast.indexStartCast
-       }
-      }
+          //var iStartCast = this.cast.indexStartCast;
+          //console.log(isCast + "....." + iStartCast); 
+       //}
+      //}
+
       if (this.timeLapse) {
         for (var chartType in this.timeLapse[time]) {       
           
@@ -258,17 +274,16 @@ export default {
                 data: dataXY,                
                 showLine: false,
                 pointRadius: 12,
-                backgroundColor: function(context) {                
-
-                    var index = context.dataIndex;
-                    var value = context.dataset.data[index];                  
-                    if (value){                   
-                        //if (value.x > iStartCast) {
-                          if (value.x > 131) {
-                            return "rgba(255,128,0,0.6)";
-                        } else {
-                          return "rgba(46, 184, 92, 0.6)";
-                      }
+                pointBackgroundColor:function(context){
+                  var index = context.dataIndex;
+                  var value = context.dataset.data[index];                  
+                  if (value){ 
+                    if (value.x > 131) {
+                    //if (value.x > this.getStartCast()) {
+                        return "rgba(255,128,0,0.6)";
+                    } else {
+                        return "rgba(46, 184, 92, 0.2)";
+                    }
                   }
                 }
               };
@@ -373,8 +388,7 @@ export default {
                 };
                 chartData.datasets.push(chartObj);
                 break;  
-          }
-          
+          }          
         }
       }
       return chartData;
@@ -530,5 +544,6 @@ export default {
       }
       return tableFields;
     }
-  }
+  },
+  
 };
