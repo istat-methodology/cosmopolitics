@@ -12,7 +12,7 @@ data_function<-function(flow,var_bec,country_code,partner_code){
   dati <- dati[which(dati$country==country_code),]
   dati$PARTNER<-ifelse(dati$PARTNER=="WORLD","WO",dati$PARTNER)
   
-  #seleziono un partner
+  #seleziono un partner 
   dati <- dati[which(dati$PARTNER==partner_code),]
   
   #seleziono la bec

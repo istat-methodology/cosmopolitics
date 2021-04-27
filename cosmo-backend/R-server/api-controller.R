@@ -70,8 +70,8 @@ COMEXT_EXP<-load_comext("2")
 
 # flow<-2
 # country_code<-"BE"
-# partner_code<-"US"
-# var_bec<-7
+# partner_code<-"AE"
+# var_bec<-2
 # year<-2020
 # month<-2
 
