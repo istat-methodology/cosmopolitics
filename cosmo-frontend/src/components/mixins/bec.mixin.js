@@ -406,7 +406,7 @@ export default {
       tableFields.push({ key: "row", label: "" });
       for (var dat in objects) {
         if (dat != "row" && dat != "_row") {
-          tableFields.push({ key: dat, label: dat  });
+          tableFields.push({ key: dat, label: dat , _classes: 'align-right' });
         }
       }
       return tableFields;
@@ -446,7 +446,8 @@ export default {
 
         this.timePeriod.push({ 
           key: "T" + (v + 1), 
-          label: label 
+          label: label, 
+          _classes: 'align-right'
         });
         v++;       
       }

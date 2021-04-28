@@ -368,3 +368,8 @@ export default {
   }
 };
 </script>
+<style>
+ .align-right  {
+    text-align: right;
+ }
+</style>>
