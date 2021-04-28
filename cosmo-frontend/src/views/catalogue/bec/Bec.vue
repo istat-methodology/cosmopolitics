@@ -37,6 +37,7 @@
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
           <CDataTable  :items="covidEstimationDataTable" :fields="covidEstimationTableFileds" hover />
+          <!--CDataTable  :items="covidEstimationDataTable" :fields="timePeriod" hover /-->
         </CCardBody>
       </CCard>
       
