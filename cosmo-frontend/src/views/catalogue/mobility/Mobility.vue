@@ -21,7 +21,7 @@
             v-bind:loading="this.isLoading"
             class="circle-spin"
           ></circle-spin>
-          <line-chart :chartData="chartData" :options="options" />
+          <line-chart :chartData="chartData" :options="optionsMobility" />
         </CCardBody>
       </CCard>
     </div>
@@ -64,8 +64,8 @@
 import { mapGetters } from "vuex";
 import { Context } from "@/common";
 import mobilityMixin from "@/components/mixins/mobility.mixin";
+import mobilityDiagMixin from "@/components/mixins/mobilityDiag.mixin";
 import LineChart from "@/components/charts/LineChart";
-//import chartMixin from "@/components/mixins/chart.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 
 export default {
@@ -73,7 +73,7 @@ export default {
   components: {
     LineChart
   },
-  mixins: [mobilityMixin, spinnerMixin],
+  mixins: [mobilityMixin, mobilityDiagMixin, spinnerMixin],
   data: () => ({
     report: "",
     countrySelected: { name: "Italy" },
@@ -112,10 +112,13 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 .circle-spin {
   position: absolute;
   top: 20%;
   left: 50%;
 }
+.align-right  {
+    text-align: right;
+} 
 </style>

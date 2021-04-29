@@ -1,5 +1,4 @@
-export default {
- 
+export default { 
   data: () => ({
     months: [
       "January",
@@ -15,28 +14,22 @@ export default {
       "November",
       "December"
     ],
-
     treatX: 0,
     minTreatY: 0,
     maxTreatY: 0,
-
     timeLapse: null,
     timePeriod: null,
     timeNothing:-1,
     maxTimeStep: 0,
-
     covidEstimationTableTitle: null,
     covidEstimationTableFileds: null,
-    covidEstimationDataTable: null,
-        
+    covidEstimationDataTable: null,        
     modelTableTitle: null,
     modelTableFileds: null,
-    modelDataTable: null,    
-    
+    modelDataTable: null, 
     cast:{    
       indexStart: 0
     }  
-
   }),
   methods: {
     getBecSlider() {
@@ -98,17 +91,14 @@ export default {
       });
       console.log("=>END");     
       return dataMap;
-    },
-    
+    },    
     getCoordinatesTreat() {      
       this.maxTreatY = Math.max.apply(null, this.timeLapse[this.maxTimeStep].tend);
       this.minTreatY = Math.min.apply(null, this.timeLapse[this.maxTimeStep].tend); 
       var data = [{ x: this.treatX, y: this.maxTreatY },{ x: this.treatX, y: this.minTreatY } ];
       return data;
     },
-
-    buildBecCharts(dataR) {
-      
+    buildBecCharts(dataR) {      
       this.timeLapse = [];
       this.covidEstimationDataTable = [];
       this.modelDataTable = [];
@@ -117,10 +107,8 @@ export default {
       var diagNorm = [];
       var diagACF = [];
       var diagRes = [];      
-      var indexT = 0;
-    
+      var indexT = 0;    
       this.buildNothingTimePeriod(dataR);
-
       for (var name in dataR) {
         switch (name) {
           case "Covid_Estimation":          
@@ -170,7 +158,6 @@ export default {
       this.maxTimeStep = this.timeLapse.length - 1;
       this.buildBecSlider();        
     },  
-
     buildBecSlider() {
       this.policyPeriod = [];      
       var indexStart = 0;
@@ -182,7 +169,6 @@ export default {
       var month;
       var label;
       var yearSeries;
-
       indexStart = this.timeLapse[0].date.length - 1;
       indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;      
       this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[indexStart];
@@ -199,8 +185,7 @@ export default {
           val: v          
         });             
         v++;       
-      }
-             
+      }             
       yearSeries = 0;
       tmp = 0;
       for (var s = 0; s <= this.timeLapse[this.maxTimeStep].date[s].lenght - 1 ; s++) {
@@ -212,8 +197,7 @@ export default {
           });  
         }
       }
-    },   
-
+    },
     buildObject(label, fill, backgroundColor, borderColor, data, showLine, lineTension, pointRadius,borderDash){
       var chartObj = {}
       chartObj = {
@@ -255,23 +239,18 @@ export default {
       };
       return chartObj;
     },
-
-    getBecChart(time) {
-       
+    getBecChart(time) {       
       var chartData = {};
       var borderDash = 0;      
       var data=[];
       var dataXY=[];      
       var chartObj= {};
-
       chartData.datasets = [];
-
       if (this.timeLapse) {        
         for (var chartType in this.timeLapse[time]) { 
           data = this.timeLapse[time][chartType];
           dataXY = this.getCoordinates(data);
-          chartObj = {};
-          
+          chartObj = {};          
           this.labels = this.timeLapse[time]["date"]; 
           switch (chartType) {
             case "date":             
@@ -339,7 +318,6 @@ export default {
         dataXY = this.getCoordinatesNorm(diag["pnt_x"],diag["pnt_y"]);        
         chartObj = this.buildObject("(pnt_x, pnt_y)",false,"rgba(46, 184, 92, 0.2)","rgba(46, 184, 92, 1)", dataXY, false, 0, 12, 0);  
         chartData.datasets.push(chartObj);
-
         chartObj = {};
         dataXY = this.getCoordinatesNorm(diag["lne_x"],diag["lne_y"]);       
         chartObj = this.buildObject("(lne_x, lne_y)",false,"red","red", dataXY, true,0,2,0);  
@@ -403,16 +381,26 @@ export default {
     },
     getHeaderTable(objects) {      
       var tableFields = [];
-      tableFields.push({ key: "row", label: "" });
-      for (var dat in objects) {
+      tableFields.push(
+        { 
+          key: "row", 
+          label: "" ,
+          _classes: 'font-prop'
+      });
+      for (var dat in objects) {     
         if (dat != "row" && dat != "_row") {
-          tableFields.push({ key: dat, label: dat , _classes: 'align-right' });
+          tableFields.push(
+            { 
+              key: dat, 
+              label: dat , 
+              _classes: 'align-right' 
+            }
+          );
         }
       }
       return tableFields;
     },
-    buildNothingTimePeriod(dataR) {
-      
+    buildNothingTimePeriod(dataR) {      
       var maxTimeStep;      
       var indexStart;      
       var indexEnd;
@@ -421,10 +409,13 @@ export default {
       var iMonth;
       var month;
       var label;
-      var v = 0;     
-
+      var v = 0;
       this.timePeriod = [];
-      this.timePeriod.push({ key: "row", label: "" });             
+      this.timePeriod.push(
+        { 
+          key: "row", 
+          label: "" 
+      });             
       for (var name in dataR) {
           if (name.substr(0,1) == "T") {
             if (name!="Treat_number"){             
@@ -443,7 +434,6 @@ export default {
         month = this.months[iMonth];
         month = month.substr(0, 3);
         label = month + "-" + year;       
-
         this.timePeriod.push({ 
           key: "T" + (v + 1), 
           label: label, 

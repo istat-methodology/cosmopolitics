@@ -1,34 +1,34 @@
-import { chartjsBarService } from "@/services";
+import { tradeService } from "@/services";
 
 const state = {
-  charts: [],
+  charts: null,
   chart: null
 };
 
 const mutations = {
-  SET_CHARTS(state, charts) {
+  SET_LINE_CHARTS(state, charts) {
     state.charts = charts;
   },
-  SET_CHART(state, chart) {
+  SET_LINE_CHART(state, chart) {
     state.chart = chart;
   }
 };
 const actions = {
   findAll({ commit }) {
-    return chartjsBarService
+    return tradeService
       .findAll()
       .then(data => {
-        commit("SET_CHARTS", data);
+        commit("SET_LINE_CHARTS", data);
       })
       .catch(err => {
         console.log(err);
       });
   },
-  findByName({ commit }, name) {
-    return chartjsBarService
-      .findByName(name)
+  findByName({ commit }, filter) {
+    return tradeService
+      .findByName(filter)
       .then(data => {
-        commit("SET_CHARTS", data);
+        commit("SET_LINE_CHARTS", data);
       })
       .catch(err => {
         console.log(err);
@@ -44,7 +44,7 @@ const getters = {
     return state.chart;
   }
 };
-export const chartjsBar = {
+export const trade = {
   namespaced: true,
   state,
   mutations,

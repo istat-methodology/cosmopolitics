@@ -7,9 +7,9 @@ import { coreui } from "./modules/coreui";
 import { message } from "./modules/message";
 import { geomap } from "./modules/geomap/geomap";
 import { graphVisjs } from "./modules/graphVisjs/graphVisjs";
-import { chartjsBar } from "./modules/chartjsBar/chartjsBar";
-import { chartjsScatter } from "./modules/chartjsScatter/chartjsScatter";
-import { chartjsLine } from "./modules/chartjsLine/chartjsLine";
+//import { chartjsBar } from "./modules/chartjsBar/chartjsBar";
+//import { chartjsScatter } from "./modules/chartjsScatter/chartjsScatter";
+import { trade } from "./modules/trade/trade";
 import { classification } from "./modules/classification/classification";
 import { mobility } from "./modules/mobility/mobility";
 import { policyIndicator } from "./modules/policyIndicator/policyIndicator";
@@ -25,9 +25,9 @@ export default new Vuex.Store({
     message,
     geomap,
     graphVisjs,
-    chartjsBar,
-    chartjsScatter,
-    chartjsLine,
+    //chartjsBar,
+    //chartjsScatter,
+    trade,
     classification,
     mobility,
     policyIndicator,

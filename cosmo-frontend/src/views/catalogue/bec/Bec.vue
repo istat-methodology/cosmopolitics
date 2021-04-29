@@ -4,10 +4,10 @@
       <CCard> 
         <CCardHeader>
           <b><span v-if="this.countrySelected && this.partnerSelected"
-            >{{ this.countrySelected.country }} -
+            >{{ this.countrySelected.name }} -
             {{ this.partnerSelected.descr }}</span
           ><span v-else>BEC analysis</span></b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
               <input type="checkbox" class="c-switch-input form-check-input" checked @click="handleMainChart">
               <span class="c-switch-slider"></span>
            </label>
@@ -30,21 +30,20 @@
       <CCard v-if="covidEstimationDataTable" >
         <CCardHeader>
             <b> {{ this.covidEstimationTableTitle }}</b>
-            <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+            <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
               <input type="checkbox" class="c-switch-input form-check-input"  @click="handleCovidEstimation">
               <span class="c-switch-slider"></span>
             </label>
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
-          <CDataTable  :items="covidEstimationDataTable" :fields="covidEstimationTableFileds" hover />
-          <!--CDataTable  :items="covidEstimationDataTable" :fields="timePeriod" hover /-->
+          <CDataTable  :items="covidEstimationDataTable" :fields="covidEstimationTableFileds" hover />        
         </CCardBody>
       </CCard>
       
       <CCard v-if="modelDataTable">
         <CCardHeader >
             <b>{{ this.modelTableTitle }}</b>
-            <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+            <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
               <input type="checkbox" class="c-switch-input form-check-input"  @click="handleModel">
               <span class="c-switch-slider"></span>
             </label>
@@ -53,12 +52,10 @@
           <CDataTable  :items="modelDataTable" :fields="modelTableFileds" hover />         
         </CCardBody>
       </CCard>
-
-
       <CCard v-if="chartDataDiagNorm"> 
         <CCardHeader>
           <b>{{ this.diagNormTitle }}</b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
               <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagNorm">
               <span class="c-switch-slider"></span>
            </label>
@@ -70,7 +67,7 @@
       <CCard v-if="chartDataDiagRes"> 
         <CCardHeader>
           <b>{{ this.diagResTitle }}</b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
               <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagRes">
               <span class="c-switch-slider"></span>
            </label>
@@ -82,7 +79,7 @@
       <CCard v-if="chartDataDiagACF">
         <CCardHeader>
           <b>{{ this.diagACFTitle }}</b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-info">
+          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
               <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagACF">
               <span class="c-switch-slider"></span>
            </label>
@@ -90,8 +87,7 @@
         <CCardBody v-if="isDiagACF">
           <line-chart :chartData="chartDataDiagACF" :options="optionsACF" />
         </CCardBody>
-      </CCard>
-        
+      </CCard>        
     </div>
     <div class="col-3">
       <CCard>
@@ -134,8 +130,7 @@
             placeholder="Prevision"
             v-model="previsionSelected"
           />
-          <template v-if="isForecasting">          
-              <!--InputBox v-for="(item in months" :id="item" :key="item" :label="item.substr(0,3)" v-model="restriction[index]"/-->
+          <template v-if="isForecasting"> 
               <div class="col-12">                  
                   <div class="row">
                       <label for="country" class="card-label mt-3">Time & Restriction:</label>
@@ -194,9 +189,10 @@ import { mapGetters } from "vuex";
 import { Context } from "@/common";
 //import InputBox from '@/components/InputBox';
 import paletteMixin from "@/components/mixins/palette.mixin";
-import scatterMixin from "@/components/mixins/scatter.mixin";
-import becMixin from "@/components/mixins/bec.mixin";
+
 import becDiagMixin from "@/components/mixins/becDiag.mixin";
+import becMixin from "@/components/mixins/bec.mixin";
+
 import ScatterChart from "@/components/charts/ScatterChart";
 import LineChart from "@/components/charts/LineChart";
 import VueSlider from "vue-slider-component";
@@ -209,7 +205,7 @@ export default {
     VueSlider,
     //InputBox
   },
-  mixins: [paletteMixin, scatterMixin, becMixin, becDiagMixin],
+  mixins: [paletteMixin, becDiagMixin, becMixin],
   data: () => ({    
     //Form fields
     flowSelected: null,
@@ -219,10 +215,7 @@ export default {
     previsionSelected: null,
     timeSelected: null,
    
-    prevision:[],
-    
-    
-    
+    prevision:[],    
     chartData: null,
 
     chartDataDiagNorm: null,
@@ -371,5 +364,5 @@ export default {
 <style>
  .align-right  {
     text-align: right;
- }
+ } 
 </style>>

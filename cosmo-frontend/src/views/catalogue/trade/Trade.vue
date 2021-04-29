@@ -9,7 +9,7 @@
           >
         </header>
         <CCardBody>
-          <line-chart :chartData="chartData" :options="options" />
+          <line-chart :chartData="chartData" :options="optionsTrade" />
         </CCardBody>
       </div>
     </div>
@@ -49,17 +49,16 @@
 <script>
 import { mapGetters } from "vuex";
 import { Context } from "@/common";
-import chartMixin from "@/components/mixins/chart.mixin";
 import paletteMixin from "@/components/mixins/palette.mixin";
-import tradeMixin from "@/components/mixins/trade.mixin";
+import tradeMixin from "@/components/mixins/tradeDiag.mixin";
 import LineChart from "@/components/charts/LineChart";
 
 export default {
-  name: "ChartjsLine",
+  name: "Trade",
   components: {
     LineChart
   },
-  mixins: [chartMixin, tradeMixin, paletteMixin],
+  mixins: [tradeMixin, paletteMixin],
   data: () => ({
     countrySelected: {
       country: "IT",
@@ -67,11 +66,25 @@ export default {
     },
     flowSelected: { id: 2, descr: "Export" },
     countryName: "Italy",
-    flow: "Export"
+    flow: "Export",
+    months: [
+      "Jan-20",
+      "Feb-20",
+      "Mar-20",
+      "Apr-20",
+      "May-20",
+      "Jun-20",
+      "Jul-20",
+      "Aug-20",
+      "Sep-20",
+      "Oct-20",
+      "Nov-20",
+      "Dec-20"
+    ]
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows"]),
-    ...mapGetters("chartjsLine", ["charts"]),
+    ...mapGetters("trade", ["charts"]),
     chartData() {
       var chartData = {};
       chartData.datasets = [];
@@ -85,7 +98,7 @@ export default {
             backgroundColor: color.background,
             borderColor: color.border,
             data: element.value,
-            //showLine: true,
+            showLine: true,
             pointRadius: 3
           });
         });
@@ -97,7 +110,7 @@ export default {
   methods: {
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
-        this.$store.dispatch("chartjsLine/findByName", {
+        this.$store.dispatch("trade/findByName", {
           name: this.countrySelected.country,
           flow: this.flowSelected.id
         });
@@ -109,7 +122,7 @@ export default {
   created() {
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("classification/getCountries");
-    this.$store.dispatch("chartjsLine/findByName", { name: "IT", flow: 2 });
+    this.$store.dispatch("trade/findByName", { name: "IT", flow: 2 });
   }
 };
 </script>

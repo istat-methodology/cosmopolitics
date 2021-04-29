@@ -1,6 +1,6 @@
 export default {
   data: () => ({
-    options: {
+    optionsTrade: {
       responsive: true,
       maintainAspectRatio: false,
       title: {
@@ -21,20 +21,16 @@ export default {
             display: true,
             scaleLabel: {
               display: true,
-              labelString: "Time"
+              labelString: ""
             }
           }
         ],
         yAxes: [
           {
-            ticks: {
-              min: -100,
-              max: 200
-            },
             display: true,
             scaleLabel: {
               display: true,
-              labelString: "Value"
+              labelString: ""
             }
           }
         ]      

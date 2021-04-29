@@ -68,18 +68,6 @@ const routes = [
         meta: { authorize: [] }
       },
       {
-        path: "catalogue/bar",
-        name: "ChartjsBar",
-        component: () => import("../views/catalogue/chartjs/ChartjsBar"),
-        meta: { authorize: [] }
-      },
-      {
-        path: "catalogue/policy",
-        name: "Policy",
-        component: () => import("../views/catalogue/chartjs/ChartjsScatter"),
-        meta: { authorize: [] }
-      },
-      {
         path: "catalogue/bec",
         name: "Bec",
         component: () => import("../views/catalogue/bec/Bec"),
@@ -92,9 +80,9 @@ const routes = [
         meta: { authorize: [] }
       },
       {
-        path: "catalogue/line",
+        path: "catalogue/trade",
         name: "Trade",
-        component: () => import("../views/catalogue/chartjs/ChartjsLine"),
+        component: () => import("../views/catalogue/trade/Trade"),
         meta: { authorize: [] }
       },
       {
