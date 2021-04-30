@@ -3,10 +3,8 @@
     <div class="col-9">
       <div class="card">
         <header class="card-header">
-          <span>Trade data 2020</span>
-          <span class="float-right text-primary"
-            >{{ countryName }} - {{ flow }}</span
-          >
+          <b><span>Trade data 2020: {{ this.countrySelected.name }} - {{ this.flowSelected.descr }}</span
+          ></b>
         </header>
         <CCardBody>
           <line-chart :chartData="chartData" :options="optionsTrade" />
@@ -64,31 +62,18 @@ export default {
       country: "IT",
       name: "Italy"
     },
-    flowSelected: { id: 2, descr: "Export" },
-    countryName: "Italy",
-    flow: "Export",
-    months: [
-      "Jan-20",
-      "Feb-20",
-      "Mar-20",
-      "Apr-20",
-      "May-20",
-      "Jun-20",
-      "Jul-20",
-      "Aug-20",
-      "Sep-20",
-      "Oct-20",
-      "Nov-20",
-      "Dec-20"
-    ]
+    flowSelected: { 
+      id: 2, 
+      descr: "Export" 
+    }
   }),
   computed: {
-    ...mapGetters("classification", ["countries", "flows"]),
+    ...mapGetters("classification", ["countries", "flows","timeTrade"]),
     ...mapGetters("trade", ["charts"]),
     chartData() {
       var chartData = {};
       chartData.datasets = [];
-      chartData.labels = this.months;
+      chartData.labels = this.timeTrade;
       if (this.charts) {
         this.charts.data.forEach(element => {
           const color = this.getColor();
@@ -111,18 +96,16 @@ export default {
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
-          name: this.countrySelected.country,
+          country: this.countrySelected.country,
           flow: this.flowSelected.id
         });
-        this.countryName = this.countrySelected.name;
-        this.flow = this.flowSelected.descr;
       }
     }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("classification/getCountries");
-    this.$store.dispatch("trade/findByName", { name: "IT", flow: 2 });
+    this.$store.dispatch("trade/findByName", { country: this.countrySelected.country, flow: this.flowSelected.id });
   }
 };
 </script>

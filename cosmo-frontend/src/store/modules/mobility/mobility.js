@@ -1,7 +1,7 @@
 import { mobilityService } from "@/services";
 
 const state = {
-  mobilities: [],
+  mobilities: null,
   mobility: null,
   mobilityCharts: null
 };
@@ -17,16 +17,7 @@ const mutations = {
   }
 };
 const actions = {
-  findAll({ commit }) {
-    return mobilityService
-      .findAll()
-      .then(data => {
-        commit("SET_MOBILITIES", data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
+  
   findByName({ commit }, filter) {
     return mobilityService
       .findByName(filter)

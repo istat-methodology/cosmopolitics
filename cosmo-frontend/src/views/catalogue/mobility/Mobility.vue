@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-9">
+    <div class="col-9">   
       <CCard>
         <CCardHeader>
           <b
@@ -9,18 +9,18 @@
         </CCardHeader>
         <CCardBody>
           <circle-spin
-            v-bind:loading="isLoading"
-            class="circle-spin"
-          ></circle-spin>
+              v-if="!this.tableData"
+              class="circle-spin"
+           ></circle-spin>
           <CDataTable :items="tableData" :fields="mobilityTableFileds" hover />
         </CCardBody>
       </CCard>
       <CCard>
         <CCardBody>
           <circle-spin
-            v-bind:loading="this.isLoading"
-            class="circle-spin"
-          ></circle-spin>
+              v-if="!this.chartData"
+              class="circle-spin"
+           ></circle-spin>
           <line-chart :chartData="chartData" :options="optionsMobility" />
         </CCardBody>
       </CCard>
@@ -76,7 +76,10 @@ export default {
   mixins: [mobilityMixin, mobilityDiagMixin, spinnerMixin],
   data: () => ({
     report: "",
-    countrySelected: { name: "Italy" },
+    countrySelected: {
+      country: "IT",
+      name: "Italy"
+    },
     mobilitySelected: {
       id: 1,
       name: "Retail",
@@ -86,7 +89,6 @@ export default {
     tableData: null
   }),
   computed: {
-    ...mapGetters("coreui", ["isLoading"]),
     ...mapGetters("classification", ["countries"]),
     ...mapGetters("mobility", ["mobilities", "mobilityCharts"]),
     ...mapGetters("policyIndicator", [
@@ -96,6 +98,8 @@ export default {
   },
   methods: {
     handleSubmit() {
+      this.chartData = null;
+      this.tableData = null;
       if (this.countrySelected) {
         if (this.mobilitySelected.id != 7) {
           this.getMobility();
@@ -108,7 +112,7 @@ export default {
   created() {
     this.$store.dispatch("coreui/setContext", Context.Mobility);
     this.$store.dispatch("classification/getCountries");
-    this.getMobility();
+    this.handleSubmit();
   }
 };
 </script>

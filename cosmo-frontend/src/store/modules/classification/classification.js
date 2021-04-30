@@ -31,6 +31,20 @@ const state = {
     { id: 7, descr: "October 2021", value: "202110" },
     { id: 8, descr: "November 2021", value: "202111" },
     { id: 9, descr: "December 2021", value: "202112" }
+  ],
+  timeTrade: [
+    "Jan-20",
+    "Feb-20",
+    "Mar-20",
+    "Apr-20",
+    "May-20",
+    "Jun-20",
+    "Jul-20",
+    "Aug-20",
+    "Sep-20",
+    "Oct-20",
+    "Nov-20",
+    "Dec-20"
   ]
 };
 const mutations = {
@@ -145,6 +159,9 @@ const getters = {
   },
   timeNext: state => {
     return state.timeNext;
+  },
+  timeTrade: state => {
+    return state.timeTrade;
   }
 };
 export const classification = {

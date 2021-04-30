@@ -12,14 +12,13 @@ function findAll() {
       return data;
     })
     .catch(err => {
-      throw err;
-      
+      throw err;      
     });
 }
 function findByName(filter) {
   const endpoint = filter.flow == 1 ? "importvqs" : "exportvqs";
   return axiosHack
-    .get("/" + endpoint + "/" + filter.name)
+    .get("/" + endpoint + "/" + filter.country)
     .then(res => {
       var data = res.data ? res.data : {};
       console.log(data);

@@ -1,7 +1,7 @@
 import { policyIndicatorService } from "@/services";
 
 const state = {
-  policyIndicators: [],
+  policyIndicators: null,
   policyIndicator: null,
   policyIndicatorCharts: null
 };
@@ -16,28 +16,8 @@ const mutations = {
     state.policyIndicatorCharts = policyIndicatorCharts;
   }
 };
-const actions = {
-  findAll({ commit }) {
-    return policyIndicatorService
-      .findAll()
-      .then(data => {
-        commit("SET_POLICY_INDICATORS", data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
-  findByName({ commit }, filter) {
-    return policyIndicatorService
-      .findByName(filter)
-      .then(data => {
-        data = data.PCAresult;
-        commit("SET_POLICY_INDICATORS", data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
+const actions = {  
+ 
   chartsByName({ commit }, filter) {
     return policyIndicatorService
       .chartsByName(filter)
