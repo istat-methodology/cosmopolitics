@@ -18,8 +18,7 @@ function findByName(filter) {
     });
 }
 
-function chartsByName(filter) {
- 
+function chartsByName(filter) { 
   return axiosR
     .get( "/policy-indicator?region=" + filter.region + "&subregion=" +  filter.subregion )
     .then(res => {
