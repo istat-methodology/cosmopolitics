@@ -17,9 +17,7 @@ function findByName(filter) {
       throw err;
     });
 }
-
 function chartsByName(filter) {
-
   return axiosR
     .get("/mobility-components?region=" + filter.region + "&subregion=" +  filter.subregion  )
     .then(res => {

@@ -37,6 +37,10 @@ const actions = {
       .catch(err => {
         console.log(err);
       });
+  },
+  reset({ commit }) {
+    commit("SET_MOBILITIES", null);
+    commit("SET_MOBILITY_CHARTS", null);
   }
 };
 

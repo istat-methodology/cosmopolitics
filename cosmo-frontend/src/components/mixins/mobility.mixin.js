@@ -22,6 +22,7 @@ export default {
   methods: {
     getMobility() {
       this.report = "";    
+      this.$store.dispatch("mobility/reset");
       this.$store
         .dispatch("mobility/findByName", {
           region: this.countrySelected.name,
@@ -31,8 +32,7 @@ export default {
           if (this.mobilities){
               this.tableData = this.mobilities;         
           }
-        });
-      
+        });      
       this.$store
         .dispatch("mobility/chartsByName", {
           region: this.countrySelected.name,
@@ -54,7 +54,7 @@ export default {
         })
         .then(() => {          
           this.tableData = this.getPolicyIndicatorTable(
-            this.policyIndicators,
+            this.policyIndicators.PCAresult,
             this.mobilitySelected
         )
       });  
@@ -109,7 +109,7 @@ export default {
       var chartObj= {};
       chartData.datasets = [];
       chartData.labels=[];
-      if (mobilityCharts[chartType.name]){
+      if (mobilityCharts !=null){
         chartData.labels = mobilityCharts[chartType.name].Date;
         dataXY = mobilityCharts[chartType.name].Values;
         chartObj = this.buildObject("bar", chartType.descr , false,"#06188a","#06188a", dataXY,false,0,3,0);
