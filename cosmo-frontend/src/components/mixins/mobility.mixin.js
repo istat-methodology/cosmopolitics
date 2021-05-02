@@ -47,6 +47,7 @@ export default {
     },
     getPolicyIndicator() {
       this.report = " - PCAResult";      
+      this.$store.dispatch("policyIndicator/reset");      
       this.$store
         .dispatch("policyIndicator/findByName", {
           region: this.countrySelected.name,
@@ -65,7 +66,7 @@ export default {
         })
         .then(() => {
           this.chartData = this.getPolicyIndicatorChart(
-            this.policyIndicatorCharts,
+            this.policyIndicatorCharts.DPM_Index,
             this.mobilitySelected
           );
         });
@@ -107,9 +108,9 @@ export default {
       var chartData = {};
       var dataXY=[];      
       var chartObj= {};
-      chartData.datasets = [];
-      chartData.labels=[];
-      if (mobilityCharts !=null){
+      if ( mobilityCharts != null ){
+        chartData.datasets = [];
+        chartData.labels=[];
         chartData.labels = mobilityCharts[chartType.name].Date;
         dataXY = mobilityCharts[chartType.name].Values;
         chartObj = this.buildObject("bar", chartType.descr , false,"#06188a","#06188a", dataXY,false,0,3,0);
@@ -124,9 +125,9 @@ export default {
       var chartData = {};
       var dataXY  = [];      
       var chartObj = {};
-      chartData.datasets = [];
-      chartData.labels=[];
-      if (policyIndicatorCharts){
+      if ( policyIndicatorCharts != null ){
+        chartData.datasets = [];
+        chartData.labels=[];
         chartData.labels = policyIndicatorCharts.Date;
         dataXY = policyIndicatorCharts.PolInd;
         chartObj = this.buildObject("bar", chartType.descr + " smooth", false,"#06188a","#06188a", dataXY,false,0,3,0);

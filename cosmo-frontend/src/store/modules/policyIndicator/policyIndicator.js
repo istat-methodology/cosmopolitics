@@ -32,7 +32,7 @@ const actions = {
     return policyIndicatorService
       .chartsByName(filter)
       .then(data => {
-        data = data.DPM_Index;
+        //data = data.DPM_Index;
         commit("SET_POLICY_INDICATOR_CHARTS", data);
       })
       .catch(err => {

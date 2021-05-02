@@ -21,7 +21,7 @@
               v-if="!this.chartData"
               class="circle-spin"
            ></circle-spin>
-          <line-chart :chartData="chartData" :options="optionsMobility" />
+          <line-chart v-if="chartData" :chartData="chartData" :options="optionsMobility" />
         </CCardBody>
       </CCard>
     </div>

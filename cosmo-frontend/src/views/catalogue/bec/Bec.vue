@@ -276,7 +276,9 @@ export default {
           country: this.countrySelected.country,
           partner: this.partnerSelected.id
         };    
-        this.$store.dispatch("bec/findLastDate", form).then(() => {        
+        this.$store.dispatch("bec/findLastDate", form).then(() => {  
+          
+          
 
         var yearOfBec = this.becDate[0].substr(2, 2);                 
         var monthOfBec = parseInt(this.becDate[0].substr(5, 2));
