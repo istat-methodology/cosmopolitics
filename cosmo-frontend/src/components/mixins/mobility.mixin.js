@@ -53,15 +53,11 @@ export default {
           region: this.countrySelected.name,
           subregion: this.countrySelected.name
         })
-        .then(() => {          
-          this.tableData = this.getPolicyIndicatorTable(
-            this.policyIndicators.PCAresult,
-            this.mobilitySelected
-        );
-        this.chartData = this.getPolicyIndicatorChart(
-          this.policyIndicators.DPM_Index,
-          this.mobilitySelected
-        );
+        .then(() => {         
+          if (this.policyIndicators){
+            this.tableData = this.getPolicyIndicatorTable( this.policyIndicators.PCAresult, this.mobilitySelected );
+            this.chartData = this.getPolicyIndicatorChart( this.policyIndicators.DPM_Index, this.mobilitySelected );
+          }
 
       });  
     },
