@@ -91,7 +91,7 @@ export default {
   computed: {
     ...mapGetters("classification", ["countries"]),
     ...mapGetters("mobility", ["mobilities", "mobilityCharts"]),
-    ...mapGetters("policyIndicator", ["policyIndicators", "policyIndicatorCharts" ])
+    ...mapGetters("policyIndicator", ["policyIndicators" ])
   },
   methods: {
     handleSubmit() {

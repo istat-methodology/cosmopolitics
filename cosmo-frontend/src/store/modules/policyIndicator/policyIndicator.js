@@ -1,9 +1,7 @@
 import { policyIndicatorService } from "@/services";
-
 const state = {
   policyIndicators: null,
-  policyIndicator: null,
-  policyIndicatorCharts: null
+  policyIndicator: null
 };
 const mutations = {
   SET_POLICY_INDICATORS(state, policyIndicators) {
@@ -11,9 +9,6 @@ const mutations = {
   },
   SET_POLICY_INDICATOR(state, policyIndicator) {
     state.policyIndicator = policyIndicator;
-  },
-  SET_POLICY_INDICATOR_CHARTS(state, policyIndicatorCharts) {
-    state.policyIndicatorCharts = policyIndicatorCharts;
   }
 };
 const actions = {  
@@ -28,20 +23,9 @@ const actions = {
         console.log(err);
       });
   },
-  chartsByName({ commit }, filter) {
-    return policyIndicatorService
-      .chartsByName(filter)
-      .then(data => {
-        //data = data.DPM_Index;
-        commit("SET_POLICY_INDICATOR_CHARTS", data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
   reset({ commit }) {
     commit("SET_POLICY_INDICATORS", null);
-    commit("SET_POLICY_INDICATOR_CHARTS", null);
+    commit("SET_POLICY_INDICATOR", null);
   }
 };
 
@@ -51,9 +35,6 @@ const getters = {
   },
   policyIndicator: state => {
     return state.policyIndicator;
-  },
-  policyIndicatorCharts: state => {
-    return state.policyIndicatorCharts;
   }
 };
 export const policyIndicator = {

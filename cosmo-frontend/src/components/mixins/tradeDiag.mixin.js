@@ -30,7 +30,7 @@ export default {
             display: true,
             scaleLabel: {
               display: true,
-              labelString: ""
+              labelString: "Product basket y-o-y change (%)"
             }
           }
         ]      

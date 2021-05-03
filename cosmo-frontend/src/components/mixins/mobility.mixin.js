@@ -57,19 +57,13 @@ export default {
           this.tableData = this.getPolicyIndicatorTable(
             this.policyIndicators.PCAresult,
             this.mobilitySelected
-        )
+        );
+        this.chartData = this.getPolicyIndicatorChart(
+          this.policyIndicators.DPM_Index,
+          this.mobilitySelected
+        );
+
       });  
-      this.$store
-        .dispatch("policyIndicator/chartsByName", {
-          region: this.countrySelected.name,
-          subregion: this.countrySelected.name
-        })
-        .then(() => {
-          this.chartData = this.getPolicyIndicatorChart(
-            this.policyIndicatorCharts.DPM_Index,
-            this.mobilitySelected
-          );
-        });
     },
     getPolicyIndicatorTable(policyIndicators) {
       var tableData = [];
