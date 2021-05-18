@@ -33,8 +33,8 @@ export default {
               labelString: "Product basket y-o-y change (%)"
             }
           }
-        ]      
-     },
+        ]
+      }
     }
   })
 };

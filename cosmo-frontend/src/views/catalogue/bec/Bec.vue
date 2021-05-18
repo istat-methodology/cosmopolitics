@@ -1,16 +1,25 @@
 <template>
   <div class="row">
     <div class="col-9">
-      <CCard> 
+      <CCard>
         <CCardHeader>
-          <b><span v-if="this.countrySelected && this.partnerSelected"
-            >{{ this.countrySelected.name }} -
-            {{ this.partnerSelected.descr }}</span
-          ><span v-else>BEC analysis</span></b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
-              <input type="checkbox" class="c-switch-input form-check-input" checked @click="handleMainChart">
-              <span class="c-switch-slider"></span>
-           </label>
+          <b
+            ><span v-if="this.countrySelected && this.partnerSelected"
+              >{{ this.countrySelected.name }} -
+              {{ this.partnerSelected.descr }}</span
+            ><span v-else>BEC analysis</span></b
+          >
+          <label
+            class="float-right c-switch form-check-label c-switch-sm c-switch-primary"
+          >
+            <input
+              type="checkbox"
+              class="c-switch-input form-check-input"
+              checked
+              @click="handleMainChart"
+            />
+            <span class="c-switch-slider"></span>
+          </label>
         </CCardHeader>
         <CCardBody v-show="isMainChart">
           <scatter-chart :chartData="chartData" :options="options" />
@@ -26,51 +35,86 @@
           />
         </CCardBody>
       </CCard>
-      
-      <CCard v-if="covidEstimationDataTable" >
+
+      <CCard v-if="covidEstimationDataTable">
         <CCardHeader>
-            <b> {{ this.covidEstimationTableTitle }}</b>
-            <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
-              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleCovidEstimation">
-              <span class="c-switch-slider"></span>
-            </label>
+          <b> {{ this.covidEstimationTableTitle }}</b>
+          <label
+            class="float-right c-switch form-check-label c-switch-sm c-switch-primary"
+          >
+            <input
+              type="checkbox"
+              class="c-switch-input form-check-input"
+              @click="handleCovidEstimation"
+            />
+            <span class="c-switch-slider"></span>
+          </label>
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
-          <CDataTable  :items="covidEstimationDataTable" :fields="covidEstimationTableFileds" hover />        
+          <CDataTable
+            :items="covidEstimationDataTable"
+            :fields="covidEstimationTableFileds"
+            hover
+          />
         </CCardBody>
       </CCard>
-      
+
       <CCard v-if="modelDataTable">
-        <CCardHeader >
-            <b>{{ this.modelTableTitle }}</b>
-            <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
-              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleModel">
-              <span class="c-switch-slider"></span>
-            </label>
+        <CCardHeader>
+          <b>{{ this.modelTableTitle }}</b>
+          <label
+            class="float-right c-switch form-check-label c-switch-sm c-switch-primary"
+          >
+            <input
+              type="checkbox"
+              class="c-switch-input form-check-input"
+              @click="handleModel"
+            />
+            <span class="c-switch-slider"></span>
+          </label>
         </CCardHeader>
         <CCardBody v-show="isModel">
-          <CDataTable  :items="modelDataTable" :fields="modelTableFileds" hover />         
+          <CDataTable
+            :items="modelDataTable"
+            :fields="modelTableFileds"
+            hover
+          />
         </CCardBody>
       </CCard>
-      <CCard v-if="chartDataDiagNorm"> 
+      <CCard v-if="chartDataDiagNorm">
         <CCardHeader>
           <b>{{ this.diagNormTitle }}</b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
-              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagNorm">
-              <span class="c-switch-slider"></span>
-           </label>
+          <label
+            class="float-right c-switch form-check-label c-switch-sm c-switch-primary"
+          >
+            <input
+              type="checkbox"
+              class="c-switch-input form-check-input"
+              @click="handleDiagNorm"
+            />
+            <span class="c-switch-slider"></span>
+          </label>
         </CCardHeader>
         <CCardBody v-if="isDiagNorm">
-          <scatter-chart :chartData="chartDataDiagNorm" :options="optionsNorm" />
+          <scatter-chart
+            :chartData="chartDataDiagNorm"
+            :options="optionsNorm"
+          />
         </CCardBody>
       </CCard>
-      <CCard v-if="chartDataDiagRes"> 
+      <CCard v-if="chartDataDiagRes">
         <CCardHeader>
           <b>{{ this.diagResTitle }}</b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
-              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagRes">
-              <span class="c-switch-slider"></span>
-           </label>
+          <label
+            class="float-right c-switch form-check-label c-switch-sm c-switch-primary"
+          >
+            <input
+              type="checkbox"
+              class="c-switch-input form-check-input"
+              @click="handleDiagRes"
+            />
+            <span class="c-switch-slider"></span>
+          </label>
         </CCardHeader>
         <CCardBody v-if="isDiagRes">
           <scatter-chart :chartData="chartDataDiagRes" :options="optionsRes" />
@@ -79,15 +123,21 @@
       <CCard v-if="chartDataDiagACF">
         <CCardHeader>
           <b>{{ this.diagACFTitle }}</b>
-          <label class="float-right c-switch form-check-label c-switch-sm c-switch-primary">
-              <input type="checkbox" class="c-switch-input form-check-input"  @click="handleDiagACF">
-              <span class="c-switch-slider"></span>
-           </label>
+          <label
+            class="float-right c-switch form-check-label c-switch-sm c-switch-primary"
+          >
+            <input
+              type="checkbox"
+              class="c-switch-input form-check-input"
+              @click="handleDiagACF"
+            />
+            <span class="c-switch-slider"></span>
+          </label>
         </CCardHeader>
         <CCardBody v-if="isDiagACF">
           <line-chart :chartData="chartDataDiagACF" :options="optionsACF" />
         </CCardBody>
-      </CCard>        
+      </CCard>
     </div>
     <div class="col-3">
       <CCard>
@@ -130,40 +180,45 @@
             placeholder="Prevision"
             v-model="previsionSelected"
           />
-          <template v-if="isForecasting"> 
-              <div class="col-12">                  
-                  <div class="row">
-                      <label for="country" class="card-label mt-3">Time & Restriction:</label>
+          <template v-if="isForecasting">
+            <div class="col-12">
+              <div class="row">
+                <label for="country" class="card-label mt-3"
+                  >Time & Restriction:</label
+                >
+              </div>
+              <div class="row">
+                <div v-for="(item, index) in prevision" v-bind:key="index">
+                  <div role="group" class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      v-bind:id="item.month"
+                      v-bind:name="item.month"
+                      v-bind:value="item.restriction"
+                      v-model="item.selected"
+                    />
+                    <label
+                      v-bind:for="item.month"
+                      class="custom-control-label"
+                      >{{ item.month }}</label
+                    >
                   </div>
-                  <div class="row">
-                    <div v-for="(item, index) in prevision" v-bind:key="index">  
-                      <div role="group" class="custom-control custom-checkbox">
-                          <input  
-                            type="checkbox"  
-                            class="custom-control-input" 
-                            v-bind:id="item.month" 
-                            v-bind:name="item.month" 
-                            v-bind:value="item.restriction"
-                            v-model="item.selected" 
-                           
-                          />
-                          <label v-bind:for="item.month" class="custom-control-label">{{item.month}}</label>                   
-                        </div>                
-                        <input
-                          type="number" 
-                          placeholder="0" 
-                          step="0.01" 
-                          min="0" 
-                          max="1" 
-                          class="form-control" 
-                          v-model="item.restriction"                            
-                        />        
-                    </div>
-                  </div>
-                  <!--div class="row">
+                  <input
+                    type="number"
+                    placeholder="0"
+                    step="0.01"
+                    min="0"
+                    max="1"
+                    class="form-control"
+                    v-model="item.restriction"
+                  />
+                </div>
+              </div>
+              <!--div class="row">
                       <pre>{{ prevision }}</pre>
                   </div-->
-              </div>
+            </div>
           </template>
           <CButton
             color="primary"
@@ -182,7 +237,6 @@
     v-bind:loading="isLoading"
     class="circle-spin"
   ></circle-spin-->
-
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -202,11 +256,11 @@ export default {
   components: {
     ScatterChart,
     LineChart,
-    VueSlider,
+    VueSlider
     //InputBox
   },
   mixins: [paletteMixin, becDiagMixin, becMixin],
-  data: () => ({    
+  data: () => ({
     //Form fields
     flowSelected: null,
     countrySelected: null,
@@ -214,27 +268,25 @@ export default {
     becSelected: null,
     previsionSelected: null,
     timeSelected: null,
-   
-    prevision:[],    
+
+    prevision: [],
     chartData: null,
 
     chartDataDiagNorm: null,
     chartDataDiagRes: null,
     chartDataDiagACF: null,
 
-    
     policyPeriodValue: "",
     policyPeriod: [],
-    
+
     isSlider: false,
 
-    isMainChart:true,
-    isCovidEstimation:false,
-    isModel:false,    
-    isDiagNorm:false,
-    isDiagRes:false,
-    isDiagACF:false,
-
+    isMainChart: true,
+    isCovidEstimation: false,
+    isModel: false,
+    isDiagNorm: false,
+    isDiagRes: false,
+    isDiagACF: false
   }),
   computed: {
     ...mapGetters("classification", [
@@ -244,92 +296,94 @@ export default {
       "flows",
       "previsions",
       "timeNext"
-    ]),    
-    ...mapGetters("bec", ["becCharts","becDate"]),
+    ]),
+    ...mapGetters("bec", ["becCharts", "becDate"]),
     isForecasting() {
       var forecast = false;
-      if (this.previsionSelected && this.flowSelected && this.countrySelected && this.partnerSelected){
-        if (this.previsionSelected.id == 2){    
-          this.createForecast();    
+      if (
+        this.previsionSelected &&
+        this.flowSelected &&
+        this.countrySelected &&
+        this.partnerSelected
+      ) {
+        if (this.previsionSelected.id == 2) {
+          this.createForecast();
           forecast = true;
         } else {
           forecast = false;
-        }  
-      }  
+        }
+      }
       return forecast;
-    },    
+    },
     sliderPeriod() {
       return this.getBecSlider();
     },
     options() {
-      return this.getOptions(this.startSeries.min, this.startSeries.year); 
+      return this.getOptions(this.startSeries.min, this.startSeries.year);
     }
   },
   methods: {
-      handelCheck(month,event){
-        console.log(event);
-        alert(month);
-      },     
-      createForecast(){         
-        const form = {
-          flow: this.flowSelected.id,
-          country: this.countrySelected.country,
-          partner: this.partnerSelected.id
-        };    
-        this.$store.dispatch("bec/findLastDate", form).then(() => {  
-          
-          
-
-        var yearOfBec = this.becDate[0].substr(2, 2);                 
+    handelCheck(month, event) {
+      console.log(event);
+      alert(month);
+    },
+    createForecast() {
+      const form = {
+        flow: this.flowSelected.id,
+        country: this.countrySelected.country,
+        partner: this.partnerSelected.id
+      };
+      this.$store.dispatch("bec/findLastDate", form).then(() => {
+        var yearOfBec = this.becDate[0].substr(2, 2);
         var monthOfBec = parseInt(this.becDate[0].substr(5, 2));
         var month = monthOfBec + 1;
-        var year = parseInt(yearOfBec);    
+        var year = parseInt(yearOfBec);
 
-        this.prevision = [];               
+        this.prevision = [];
         // loop to draw 6 month
-        for (var i = 1 ; i <= 6; i++){               
-          if (month > 12 ){                        
-              month = 1;
-              year = (parseInt(year) + 1);  
+        for (var i = 1; i <= 6; i++) {
+          if (month > 12) {
+            month = 1;
+            year = parseInt(year) + 1;
           }
-          var iMonth = month-1;
+          var iMonth = month - 1;
           var monthName = this.months[iMonth];
           var monthShortName = monthName.substr(0, 3);
           var element = monthShortName + "-" + year;
           this.prevision.push({
-            selected:false,
+            selected: false,
             month: element,
             restriction: 0
-          });          
+          });
           month = month + 1;
         }
-      }); 
-    },       
+      });
+    },
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
-      if (iVal <= this.maxTimeStep) {        
+      if (iVal <= this.maxTimeStep) {
         this.chartData = this.getBecChart(iVal);
       }
     },
-    handleMainChart(){
-      this.isMainChart = !this.isMainChart;     
+    handleMainChart() {
+      this.isMainChart = !this.isMainChart;
     },
-    handleDiagRes(){
-      this.isDiagRes = !this.isDiagRes;     
+    handleDiagRes() {
+      this.isDiagRes = !this.isDiagRes;
     },
-    handleDiagNorm(){
-      this.isDiagNorm = !this.isDiagNorm;     
+    handleDiagNorm() {
+      this.isDiagNorm = !this.isDiagNorm;
     },
-    handleDiagACF(){
-      this.isDiagACF = !this.isDiagACF;     
+    handleDiagACF() {
+      this.isDiagACF = !this.isDiagACF;
     },
-    handleCovidEstimation(){
-      this.isCovidEstimation = !this.isCovidEstimation;     
+    handleCovidEstimation() {
+      this.isCovidEstimation = !this.isCovidEstimation;
     },
-    handleModel(){
-      this.isModel = !this.isModel;     
+    handleModel() {
+      this.isModel = !this.isModel;
     },
-    handleSubmit() {      
+    handleSubmit() {
       const form = {
         flow: this.flowSelected.id,
         var: this.becSelected.id,
@@ -338,33 +392,33 @@ export default {
         fcst: this.previsionSelected.id
       };
       if (this.isForecasting) {
-          var restriction = [];
-          this.prevision.forEach(element => {
-              if (element.selected){
-                restriction.push(element.restriction);
-              }
-          });          
-          form.fcstpolind = restriction.join(',');
-      }      
+        var restriction = [];
+        this.prevision.forEach(element => {
+          if (element.selected) {
+            restriction.push(element.restriction);
+          }
+        });
+        form.fcstpolind = restriction.join(",");
+      }
       this.$store.dispatch("bec/findByFilters", form).then(() => {
         this.buildBecCharts(this.becCharts);
-        if (this.timeLapse) {         
+        if (this.timeLapse) {
           this.chartData = this.getBecChart(0);
           this.isSlider = true;
         }
-      });           
-    }, 
+      });
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
-    this.$store.dispatch("classification/getBecs");    
+    this.$store.dispatch("classification/getBecs");
   }
 };
 </script>
 <style>
- .align-right  {
-    text-align: right;
- } 
-</style>>
+.align-right {
+  text-align: right;
+}</style
+>>

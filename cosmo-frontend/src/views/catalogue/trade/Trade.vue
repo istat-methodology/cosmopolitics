@@ -3,8 +3,12 @@
     <div class="col-9">
       <div class="card">
         <header class="card-header">
-          <b><span>Trade data 2020: {{ this.countrySelected.name }} - {{ this.flowSelected.descr }}</span
-          ></b>
+          <b
+            ><span
+              >Trade data 2020: {{ this.countrySelected.name }} -
+              {{ this.flowSelected.descr }}</span
+            ></b
+          >
         </header>
         <CCardBody>
           <line-chart :chartData="chartData" :options="optionsTrade" />
@@ -62,13 +66,13 @@ export default {
       country: "IT",
       name: "Italy"
     },
-    flowSelected: { 
-      id: 2, 
-      descr: "Export" 
+    flowSelected: {
+      id: 2,
+      descr: "Export"
     }
   }),
   computed: {
-    ...mapGetters("classification", ["countries", "flows","timeTrade"]),
+    ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
     ...mapGetters("trade", ["charts"]),
     chartData() {
       var chartData = {};
@@ -105,7 +109,10 @@ export default {
   created() {
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("classification/getCountries");
-    this.$store.dispatch("trade/findByName", { country: this.countrySelected.country, flow: this.flowSelected.id });
+    this.$store.dispatch("trade/findByName", {
+      country: this.countrySelected.country,
+      flow: this.flowSelected.id
+    });
   }
 };
 </script>

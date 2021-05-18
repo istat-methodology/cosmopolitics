@@ -14,13 +14,13 @@ export default {
       default: () => {
         return {
           responsive: true,
-          maintainAspectRatio: false 
+          maintainAspectRatio: false
         };
       }
     }
   },
   mounted() {
     //this.addPlugin(zoom);
-    this.renderChart(this.chartData, this.options);    
+    this.renderChart(this.chartData, this.options);
   }
 };

@@ -17,7 +17,6 @@ const mutations = {
   }
 };
 const actions = {
-  
   findByName({ commit }, filter) {
     return mobilityService
       .findByName(filter)

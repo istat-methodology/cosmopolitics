@@ -14,32 +14,16 @@
       <img src="/img/istat-logo.png" height="20" />
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto" />
-    <CHeaderNav class="mr-4">
-      <app-header-dropdown-account />
-    </CHeaderNav>
-    <CSubheader class="justify-content-between px-3">
-      <!--CBreadcrumbRouter class="border-0 mb-0" /-->
-      <app-header-breadcrumb></app-header-breadcrumb>
-      <app-header-nav></app-header-nav>
-    </CSubheader>
+    <CHeaderNav class="mr-4"></CHeaderNav>
   </CHeader>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 
-import HeaderDropdownAccnt from "./HeaderDropdownAccnt";
-import BreadCrumb from "./BreadCrumb";
-import HeaderNav from "./HeaderNav";
-
 export default {
   computed: {
     ...mapGetters("auth", ["isAuthenticated"])
-  },
-  components: {
-    "app-header-dropdown-account": HeaderDropdownAccnt,
-    "app-header-breadcrumb": BreadCrumb,
-    "app-header-nav": HeaderNav
   }
 };
 </script>
