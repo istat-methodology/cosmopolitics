@@ -8,8 +8,8 @@ const state = {
   partners: [],
   becs: [],
   flows: [
-    { id: 1, descr: "Import" },
-    { id: 2, descr: "Export" }
+    { id: 1, descr: "Import"},
+    { id: 2, descr: "Export"}
   ],
   previsions: [
     { id: 0, descr: "Interrupted Time Series" },
