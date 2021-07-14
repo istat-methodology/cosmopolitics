@@ -59,7 +59,7 @@
             class="card-label mt-2"
             v-model="percentage"
             :class="{
-               'is-invalid': $v.percentage.$error
+              'is-invalid': $v.percentage.$error
             }"
           />
           <label class="card-label mt-2">Transport</label>
@@ -69,8 +69,8 @@
             :options="transports"
             placeholder="Select transport"
             v-model="transport"
-             :class="{
-               'is-invalid': $v.transport.$error
+            :class="{
+              'is-invalid': $v.transport.$error
             }"
           />
           <label class="card-label mt-2">Product</label>
@@ -79,8 +79,8 @@
             :options="products"
             placeholder="Select a product"
             v-model="product"
-             :class="{
-                 'is-invalid': $v.product.$error
+            :class="{
+              'is-invalid': $v.product.$error
             }"
           />
           <label class="card-label mt-2">Flows</label>
@@ -89,8 +89,8 @@
             :options="flows"
             placeholder="Select a flow"
             v-model="flow"
-             :class="{
-                 'is-invalid': $v.flow.$error
+            :class="{
+              'is-invalid': $v.flow.$error
             }"
           />
           <label class="card-label mt-2">Weights</label>
@@ -99,7 +99,7 @@
             :options="weights"
             placeholder="Weights"
             v-model="weight"
-              :class="{
+            :class="{
               'is-invalid': $v.weight.$error
             }"
           />
@@ -164,7 +164,7 @@ import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 
 import VueSlider from "vue-slider-component";
-import { required} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   name: "GraphVisjs",
@@ -217,21 +217,21 @@ export default {
     }
   },
   validations: {
-      percentage: {
-        required
-      },
-      transport: {
-        required
-      },
-      product: {
-        required
-      },
-      flow: {
-        required
-      },
-      weight: {
-        required
-      }   
+    percentage: {
+      required
+    },
+    transport: {
+      required
+    },
+    product: {
+      required
+    },
+    flow: {
+      required
+    },
+    weight: {
+      required
+    }
   },
   methods: {
     handleSelectEdge(selectedGraph) {
@@ -299,27 +299,27 @@ export default {
     },
 
     handleSubmit() {
+      this.$v.$touch(); //validate form data
 
-        this.$v.$touch(); //validate form data
-    
-      if (!this.$v.percentage.$invalid &&
-          !this.$v.transport.$invalid &&
-          !this.$v.product.$invalid &&
-          !this.$v.flow.$invalid &&
-          !this.$v.weight.$invalid)  {
-      
-          const form = {
-              tg_period: this.selectedPeriod.id,
-              tg_perc: this.percentage,
-              listaMezzi: this.getIds(this.transport),
-              product: this.product.id,
-              flow: this.flow.id,
-              weight_flag: this.weight.descr,
-              pos: "None",
-              selezioneMezziEdges: "None"
-            };
-            this.$store.dispatch("graphVisjs/postGraph", form);
-          }
+      if (
+        !this.$v.percentage.$invalid &&
+        !this.$v.transport.$invalid &&
+        !this.$v.product.$invalid &&
+        !this.$v.flow.$invalid &&
+        !this.$v.weight.$invalid
+      ) {
+        const form = {
+          tg_period: this.selectedPeriod.id,
+          tg_perc: this.percentage,
+          listaMezzi: this.getIds(this.transport),
+          product: this.product.id,
+          flow: this.flow.id,
+          weight_flag: this.weight.descr,
+          pos: "None",
+          selezioneMezziEdges: "None"
+        };
+        this.$store.dispatch("graphVisjs/postGraph", form);
+      }
     },
     getIds(selectedTransports) {
       var ids = [];

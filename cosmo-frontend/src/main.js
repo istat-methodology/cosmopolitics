@@ -20,11 +20,6 @@ import { iconsSet as icons } from "@/assets/icons/coreui.js";
 import "@/assets/icons/material";
 import { Icon } from "leaflet";
 
-// input validation :
-
-import VueFormulate from "@braid/vue-formulate";
-Vue.use(VueFormulate);
-
 Vue.use(VueSpinners);
 
 //Leaflet - icon (bug fixing)
@@ -40,9 +35,6 @@ Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.component("v-select", vSelect);
 Vue.use(VueCytoscape);
-
-
-
 
 new Vue({
   router,

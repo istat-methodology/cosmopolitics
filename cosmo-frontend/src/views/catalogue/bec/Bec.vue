@@ -145,103 +145,101 @@
           Trade filter
         </CCardHeader>
         <CCardBody>
-          
-                  <label class="card-label">Flows:</label>
-                  <v-select
-                    label="descr"
-                    :options="flows"
-                    placeholder="Flows"
-                    v-model="flowSelected"
-                    :class="{
-                      'is-invalid': $v.flowSelected.$error
-                    }"                            
-
+          <label class="card-label">Flows:</label>
+          <v-select
+            label="descr"
+            :options="flows"
+            placeholder="Flows"
+            v-model="flowSelected"
+            :class="{
+              'is-invalid': $v.flowSelected.$error
+            }"
+          />
+          <label class="card-label mt-3">Country:</label>
+          <v-select
+            label="name"
+            :options="countries"
+            placeholder="Country"
+            v-model="countrySelected"
+            :class="{
+              'is-invalid': $v.countrySelected.$error
+            }"
+          />
+          <label class="card-label mt-3">Partner:</label>
+          <v-select
+            label="descr"
+            :options="partners"
+            placeholder="Partner"
+            v-model="partnerSelected"
+            :class="{
+              'is-invalid': $v.partnerSelected.$error
+            }"
+          />
+          <label class="card-label mt-3">Bec:</label>
+          <v-select
+            label="descr"
+            :options="becs"
+            placeholder="Bec"
+            v-model="becSelected"
+            :class="{
+              'is-invalid': $v.becSelected.$error
+            }"
+          />
+          <label class="card-label mt-3">Prevision:</label>
+          <v-select
+            label="descr"
+            :options="previsions"
+            placeholder="Prevision"
+            v-model="previsionSelected"
+            :class="{
+              'is-invalid': $v.previsionSelected.$error
+            }"
+          />
+          <template v-if="isForecasting">
+            <div class="col-12">
+              <div class="row">
+                <label for="country" class="card-label mt-3"
+                  >Time & Restriction:</label
+                >
+              </div>
+              <div class="row">
+                <div v-for="(item, index) in prevision" v-bind:key="index">
+                  <div role="group" class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      v-bind:id="item.month"
+                      v-bind:name="item.month"
+                      v-bind:value="item.restriction"
+                      v-model="item.selected"
+                    />
+                    <label
+                      v-bind:for="item.month"
+                      class="custom-control-label"
+                      >{{ item.month }}</label
+                    >
+                  </div>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    step="0.01"
+                    min="0"
+                    max="1"
+                    class="form-control"
+                    v-model="item.restriction"
                   />
-                  <label class="card-label mt-3">Country:</label>
-                  <v-select
-                    label="name"
-                    :options="countries"
-                    placeholder="Country"
-                    v-model="countrySelected"
-                    :class="{
-                      'is-invalid': $v.countrySelected.$error
-                    }"
-                  />
-                  <label class="card-label mt-3">Partner:</label>
-                  <v-select
-                    label="descr"
-                    :options="partners"
-                    placeholder="Partner"
-                    v-model="partnerSelected"
-                    :class="{
-                      'is-invalid': $v.partnerSelected.$error
-                    }"
-                  />
-                  <label class="card-label mt-3">Bec:</label>
-                  <v-select
-                    label="descr"
-                    :options="becs"
-                    placeholder="Bec"
-                    v-model="becSelected"
-                    :class="{
-                      'is-invalid': $v.becSelected.$error
-                    }"
-
-                    
-                  />
-                  <label class="card-label mt-3">Prevision:</label>
-                  <v-select
-                    label="descr"
-                    :options="previsions"
-                    placeholder="Prevision"
-                    v-model="previsionSelected"
-                    :class="{
-                      'is-invalid': $v.previsionSelected.$error
-                    }"
-
-                  />
-                  <template v-if="isForecasting"> 
-                      <div class="col-12">                  
-                          <div class="row">
-                              <label for="country" class="card-label mt-3">Time & Restriction:</label>
-                          </div>
-                          <div class="row">
-                            <div v-for="(item, index) in prevision" v-bind:key="index">  
-                              <div role="group" class="custom-control custom-checkbox">
-                                 
-                                  <input  
-                                    type="checkbox"  
-                                    class="custom-control-input" 
-                                    v-bind:id="item.month" 
-                                    v-bind:name="item.month" 
-                                    v-bind:value="item.restriction"
-                                    v-model="item.selected"                                   
-                                  />                                 
-                                  <label v-bind:for="item.month" class="custom-control-label">{{item.month}}</label>                   
-                                </div>                
-                                <input
-                                  type="number" 
-                                  placeholder="0" 
-                                  step="0.01" 
-                                  min="0" 
-                                  max="1" 
-                                  class="form-control" 
-                                  v-model="item.restriction"
-                                />  
-                            </div>
-                          </div>
-
-                      </div>
-                  </template>
-                  <CButton
-                    color="primary"
-                    shape="square"
-                    size="sm"
-                    @click="handleSubmit"
-                    class="mt-3"
-                    >Go!</CButton
-                  >
-          
+                </div>
+              </div>
+            </div>
+          </template>
+          <CButton
+            color="primary"
+            shape="square"
+            size="sm"
+            @click="handleSubmit"
+            class="mt-3"
+            >Go!</CButton
+          >
         </CCardBody>
       </CCard>
     </div>
@@ -266,7 +264,7 @@ import LineChart from "@/components/charts/LineChart";
 import VueSlider from "vue-slider-component";
 
 //import { required, maxLength } from "vuelidate/lib/validators";
-import { required} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   name: "Bec",
@@ -340,36 +338,35 @@ export default {
     }
   },
   validations: {
-          flowSelected: {
-            required
-          },
-          countrySelected: {
-            required
-          },
-          partnerSelected: {
-            required
-          },
-          becSelected: {
-            required
-          },
-          previsionSelected : {
-            required
-          },
+    flowSelected: {
+      required
+    },
+    countrySelected: {
+      required
+    },
+    partnerSelected: {
+      required
+    },
+    becSelected: {
+      required
+    },
+    previsionSelected: {
+      required
+    }
   },
   methods: {
-      handleCheck(month,event){
-        console.log(event);
-        alert(month);
-      },     
-      createForecast(){         
-        const form = {
-          flow: this.flowSelected.id,
-          country: this.countrySelected.country,
-          partner: this.partnerSelected.id
-        };    
-        this.$store.dispatch("bec/findLastDate", form).then(() => {  
-
-        var yearOfBec = this.becDate[0].substr(2, 2);                 
+    handleCheck(month, event) {
+      console.log(event);
+      alert(month);
+    },
+    createForecast() {
+      const form = {
+        flow: this.flowSelected.id,
+        country: this.countrySelected.country,
+        partner: this.partnerSelected.id
+      };
+      this.$store.dispatch("bec/findLastDate", form).then(() => {
+        var yearOfBec = this.becDate[0].substr(2, 2);
         var monthOfBec = parseInt(this.becDate[0].substr(5, 2));
         var month = monthOfBec + 1;
         var year = parseInt(yearOfBec);
@@ -415,47 +412,45 @@ export default {
     handleCovidEstimation() {
       this.isCovidEstimation = !this.isCovidEstimation;
     },
-    handleModel(){
-      this.isModel = !this.isModel;     
-    },    
+    handleModel() {
+      this.isModel = !this.isModel;
+    },
 
-    handleSubmit() {    
-     
+    handleSubmit() {
       this.$v.$touch(); //validate form data
-       
 
-      if (!this.$v.flowSelected.$invalid &&
-          !this.$v.becSelected.$invalid &&
-          !this.$v.countrySelected.$invalid &&
-          !this.$v.partnerSelected.$invalid &&
-          !this.$v.previsionSelected.$invalid)
-          
-          {
-              const form = {
-                flow: this.flowSelected.id,
-                var: this.becSelected.id,
-                country: this.countrySelected.country,
-                partner: this.partnerSelected.id,
-                fcst: this.previsionSelected.id
-              };
-              if (this.isForecasting) {
-                  var restriction = [];
-                  this.prevision.forEach(element => {
-                      if (element.selected){
-                        restriction.push(element.restriction);
-                      }
-                  });          
-                  form.fcstpolind = restriction.join(',');
-              }      
-              this.$store.dispatch("bec/findByFilters", form).then(() => {
-                this.buildBecCharts(this.becCharts);
-                if (this.timeLapse) {         
-                  this.chartData = this.getBecChart(0);
-                  this.isSlider = true;
-                }
-              });           
+      if (
+        !this.$v.flowSelected.$invalid &&
+        !this.$v.becSelected.$invalid &&
+        !this.$v.countrySelected.$invalid &&
+        !this.$v.partnerSelected.$invalid &&
+        !this.$v.previsionSelected.$invalid
+      ) {
+        const form = {
+          flow: this.flowSelected.id,
+          var: this.becSelected.id,
+          country: this.countrySelected.country,
+          partner: this.partnerSelected.id,
+          fcst: this.previsionSelected.id
+        };
+        if (this.isForecasting) {
+          var restriction = [];
+          this.prevision.forEach(element => {
+            if (element.selected) {
+              restriction.push(element.restriction);
+            }
+          });
+          form.fcstpolind = restriction.join(",");
+        }
+        this.$store.dispatch("bec/findByFilters", form).then(() => {
+          this.buildBecCharts(this.becCharts);
+          if (this.timeLapse) {
+            this.chartData = this.getBecChart(0);
+            this.isSlider = true;
+          }
+        });
       }
-    }, 
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
