@@ -11,8 +11,7 @@ const mutations = {
     state.policyIndicator = policyIndicator;
   }
 };
-const actions = {  
-  
+const actions = {
   findByName({ commit }, filter) {
     return policyIndicatorService
       .findByName(filter)

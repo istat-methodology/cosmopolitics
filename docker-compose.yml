@@ -28,17 +28,17 @@ services:
   r-service:
    image: rocker/r-base
    command:
-        sh -c "cd app &&
+        sh -c "cd /home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server &&
              apt-get update &&
              cat libraries-bin.txt | xargs apt-get install -y -qq &&
              Rscript libraries.R &&
              Rscript api-controller.R"
    volumes:
-    - ./cosmo-backend/R-server/api-controller.R:/app/api-controller.R
-    - ./cosmo-backend/R-server/libraries.R:/app/libraries.R
-    - ./cosmo-backend/R-server/libraries-bin.txt:/app/libraries-bin.txt
-    - ./cosmo-backend/R-server/data/:/app/data/
-    - ./cosmo-backend/R-server/rscript/:/app/rscript/
+    - ./cosmo-backend/R-server/api-controller.R:/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/api-controller.R
+    - ./cosmo-backend/R-server/libraries.R:/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/libraries.R
+    - ./cosmo-backend/R-server/libraries-bin.txt:/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/libraries-bin.txt
+    - ./cosmo-backend/R-server/data/:/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/data/
+    - ./cosmo-backend/R-server/rscript/:/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/rscript/
    ports:
     - 5000:5000
   json-service:

@@ -1,27 +1,26 @@
 <template>
   <div class="row">
-    <div class="col-9">   
+    <div class="col-9">
       <CCard>
         <CCardHeader>
+          <span>Mobility analytics: </span>
           <b
             >{{ this.countrySelected.name }} <span>{{ this.report }} </span></b
           >
         </CCardHeader>
         <CCardBody>
-          <circle-spin
-              v-if="!this.tableData"
-              class="circle-spin"
-           ></circle-spin>
+          <circle-spin v-if="!this.tableData" class="circle-spin"></circle-spin>
           <CDataTable :items="tableData" :fields="mobilityTableFileds" hover />
         </CCardBody>
       </CCard>
       <CCard>
         <CCardBody>
-          <circle-spin
-              v-if="!this.chartData"
-              class="circle-spin"
-           ></circle-spin>
-          <line-chart v-if="chartData" :chartData="chartData" :options="optionsMobility" />
+          <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
+          <line-chart
+            v-if="chartData"
+            :chartData="chartData"
+            :options="optionsMobility"
+          />
         </CCardBody>
       </CCard>
     </div>
@@ -39,7 +38,9 @@
             placeholder="Country"
             v-model="countrySelected"
           />
-          <label for="mobility-types" class="card-label">Mobility type:</label>
+          <label for="mobility-types" class="card-label mt-3"
+            >Mobility type:</label
+          >
           <v-select
             id="mobility-types"
             label="descr"
@@ -91,7 +92,7 @@ export default {
   computed: {
     ...mapGetters("classification", ["countries"]),
     ...mapGetters("mobility", ["mobilities", "mobilityCharts"]),
-    ...mapGetters("policyIndicator", ["policyIndicators" ])
+    ...mapGetters("policyIndicator", ["policyIndicators"])
   },
   methods: {
     handleSubmit() {
@@ -119,7 +120,7 @@ export default {
   top: 20%;
   left: 50%;
 }
-.align-right  {
-    text-align: right;
-} 
+.align-right {
+  text-align: right;
+}
 </style>

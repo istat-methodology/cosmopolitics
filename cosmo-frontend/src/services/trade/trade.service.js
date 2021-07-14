@@ -12,7 +12,7 @@ function findAll() {
       return data;
     })
     .catch(err => {
-      throw err;      
+      throw err;
     });
 }
 function findByName(filter) {

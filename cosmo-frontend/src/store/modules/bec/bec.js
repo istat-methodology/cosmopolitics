@@ -3,7 +3,7 @@ import { becService } from "@/services";
 const state = {
   becChart: null,
   becCharts: null,
-  becDate:null
+  becDate: null
 };
 
 const mutations = {
@@ -51,7 +51,6 @@ const getters = {
   becDate: state => {
     return state.becDate;
   }
-
 };
 export const bec = {
   namespaced: true,

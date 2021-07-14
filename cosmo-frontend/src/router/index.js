@@ -4,30 +4,14 @@ import VueRouter from "vue-router";
 import store from "@/store";
 
 import Error from "@/views/error/Error";
-import Unauthorized from "@/views/error/Unauthorized";
 import Home from "@/views/Home";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/login",
-    component: () => import("../views/auth/Login"),
-    meta: { authorize: [] }
-  },
-  {
-    path: "/register",
-    component: () => import("../views/auth/Register"),
-    meta: { authorize: [] }
-  },
-  {
     path: "/error",
     component: Error,
-    meta: { authorize: [] }
-  },
-  {
-    path: "/unauthorized",
-    component: Unauthorized,
     meta: { authorize: [] }
   },
   {

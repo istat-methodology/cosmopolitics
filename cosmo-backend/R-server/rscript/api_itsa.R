@@ -280,8 +280,8 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
   {
     # Input Esterno
     fcstpolind <-as.numeric(unlist(strsplit(fcstpolind,",")))
-    #fcstpolind = c(0.1, 0.5, 0.4,0.6,0.7)
-    
+    #fcstpolind = c(0.5,0.4,0.2,0.1,0.3,0.5)
+    #fcstpolind = c(0.8)
     d2<-subset(dati,select=c(t,d,tend,polind,date))
     nobsf      = length(nwcst$polind) + length(fcstpolind)
     
@@ -299,16 +299,18 @@ itsa_diag <- function(flow,var_bec,country_code,partner_code,fcst,fcstpolind){
     #fcst$td      = fcst$t*fcst$d
     #fcst$tpolind = fcst$polind*fcst$t
     
-    basetend = dati$tend[(length(dati$tend)-12):length(dati$tend)]
+    basetend = dati$tend[(length(dati$tend)-(nobsf-1)):length(dati$tend)]
+    #basetend = dati$tend[(length(dati$tend)-12):length(dati$tend)]
     fcstend = rep(NA,nobsf)
     
     for (i in 1:nobsf)
     {
       fcstend[i] = mean(basetend)
-      basetend    = append(basetend[2:(length(basetend))],fcstend[i])
+      basetend    = append(basetend[(i+1):(length(basetend))],fcstend[i])
       
     }
     fcst$tend = fcstend
+    
     fcst <- subset(fcst,select=c(t,d,tend,polind))
     fcst$date <- fdate
     
