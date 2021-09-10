@@ -51,6 +51,9 @@
             :options="timePeriod"
             placeholder="Select period"
             v-model="selectedPeriod"
+            :class="{
+              'is-invalid': $v.selectedPeriod.$error
+            }"
             @input="updateSlider"
           />
           <CInput
@@ -164,7 +167,7 @@ import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 
 import VueSlider from "vue-slider-component";
-import { required } from "vuelidate/lib/validators";
+import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
   name: "GraphVisjs",
@@ -217,8 +220,11 @@ export default {
     }
   },
   validations: {
-    percentage: {
+    selectedPeriod: {
       required
+    },
+    percentage: {
+      required, numeric
     },
     transport: {
       required

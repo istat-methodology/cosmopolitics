@@ -43,11 +43,15 @@
         <CCardBody>
           <label class="card-label">Period</label>
           <v-select
-            label="name"
-            :options="timePeriod"
+            label="name"            
             placeholder="Select period"
-            v-model="selectedPeriod"
+            :options="timePeriod"
+            v-model="selectedPeriod"            
+           :class="{
+              'is-invalid': $v.selectedPeriod.$error
+            }"
             @input="updateSlider"
+
           />
           <CInput
             label="Percentage"
@@ -115,6 +119,7 @@
           v-for="(node, index) in selectedNodes"
           :key="index"
         >
+
           {{ node.source.label }} - {{ node.destination.label }}
         </CListGroupItem>
       </CListGroup>
@@ -152,16 +157,22 @@ import sliderMixin from "@/components/mixins/slider.mixin";
 
 import VueSlider from "vue-slider-component";
 
-import { required } from "vuelidate/lib/validators";
+import { required, numeric } from "vuelidate/lib/validators";
+
+
 
 export default {
   name: "GraphVisjs",
   components: { Network, VueSlider },
   mixins: [visMixin, sliderMixin],
+
+
   data: () => ({
+
+  
     //Form fields
     selectedPeriod: { id: "202003", name: "Mar 20" },
-    percentage: 90,
+    percentage: 90,    
     transport: null,
     product: null,
     weight: null,
@@ -199,8 +210,13 @@ export default {
     }
   },
   validations: {
-    percentage: {
+    selectedPeriod: {
       required
+    },
+    percentage: {
+      required, numeric
+       
+      
     },
     transport: {
       required
