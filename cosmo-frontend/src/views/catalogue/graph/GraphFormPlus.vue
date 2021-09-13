@@ -214,9 +214,7 @@ export default {
       required
     },
     percentage: {
-      required, numeric
-       
-      
+      required, numeric    
     },
     transport: {
       required

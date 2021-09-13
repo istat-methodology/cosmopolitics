@@ -152,7 +152,9 @@ button:focus {
 .is-invalid > .vs__dropdown-toggle {
   border-color: $danger;
 }
-
+.is-invalid > .form-control {
+  border-color: $danger;
+}
 /* Spinner */
 .spinner > div {
   background-color: $primary !important;

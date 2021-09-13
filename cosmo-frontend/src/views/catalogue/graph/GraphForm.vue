@@ -167,13 +167,14 @@ import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 
 import VueSlider from "vue-slider-component";
-import { required, numeric } from "vuelidate/lib/validators";
+import { required ,numeric} from "vuelidate/lib/validators";
 
 export default {
   name: "GraphVisjs",
   components: { Network, VueSlider },
   mixins: [visMixin, sliderMixin],
   data: () => ({
+    blank: "",
     //Form fields
     selectedPeriod: { id: "202003", name: "Mar 20" },
     percentage: 90,
@@ -223,8 +224,8 @@ export default {
     selectedPeriod: {
       required
     },
-    percentage: {
-      required, numeric
+    percentage:{
+      required, numeric 
     },
     transport: {
       required
@@ -333,7 +334,9 @@ export default {
         ids.push(element.id);
       });
       return ids;
-    }
+    }    
+   
+
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
