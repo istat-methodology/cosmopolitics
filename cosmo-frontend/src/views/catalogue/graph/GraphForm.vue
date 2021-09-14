@@ -16,14 +16,22 @@
             <span class="text-primary"> hubness:</span>
             {{ nodeMetric.hubness }}
           </span>
+          <span> 
+              {{networkEvents}}
+          </span>
         </CCardHeader>
         <CCardBody class="card-no-border">
+          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
+          
           <network
             class="network"
             ref="network"
             :nodes="network.nodes"
             :edges="network.edges"
             :options="network.options"
+
+            v-on:after-drawing="spinnerSettings(false, 'after-drawing')"
+
             @select-edge="handleSelectEdge"
             @hover-node="handleOverNode"
           />
@@ -169,10 +177,12 @@ import sliderMixin from "@/components/mixins/slider.mixin";
 import VueSlider from "vue-slider-component";
 import { required ,numeric} from "vuelidate/lib/validators";
 
+import spinnerMixin from "@/components/mixins/spinner.mixin";
+
 export default {
   name: "GraphVisjs",
   components: { Network, VueSlider },
-  mixins: [visMixin, sliderMixin],
+  mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
     blank: "",
     //Form fields
@@ -193,7 +203,10 @@ export default {
     nodeMetric: null,
 
     //Slider
-    sliderValue: "202003"
+    sliderValue: "202003",
+    //Spinner 
+    networkEvents: "",
+    spinner:false,
   }),
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
@@ -215,6 +228,7 @@ export default {
             edges: [],
             options: null
           };
+    
     },
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
@@ -241,6 +255,14 @@ export default {
     }
   },
   methods: {
+    spinnerStart(bool){
+        this.spinner = bool;
+    },     
+    spinnerSettings(bool,eventName){
+        //this.networkEvents += `${eventName}, `;
+        console.log(eventName)
+        this.spinner = bool;
+    },
     handleSelectEdge(selectedGraph) {
       this.selectedEdges = [];
       this.selectedNodes = [];
@@ -302,6 +324,7 @@ export default {
         pos: "None",
         selezioneMezziEdges: "None"
       };
+      this.spinnerStart(true);
       this.$store.dispatch("graphVisjs/postGraph", form);
     },
 
@@ -315,6 +338,7 @@ export default {
         !this.$v.flow.$invalid &&
         !this.$v.weight.$invalid
       ) {
+        this.spinnerStart(true);
         const form = {
           tg_period: this.selectedPeriod.id,
           tg_perc: this.percentage,
@@ -362,4 +386,14 @@ export default {
 .vue-slider {
   margin: 2rem;
 }
+
+.circle-spin {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+}
+.align-right {
+  text-align: right;
+}
 </style>
+
