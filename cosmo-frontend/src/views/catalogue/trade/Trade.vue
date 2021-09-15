@@ -11,6 +11,7 @@
           >
         </header>
         <CCardBody>
+          <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
           <line-chart :chartData="chartData" :options="optionsTrade" />
         </CCardBody>
       </div>
@@ -54,13 +55,14 @@ import { Context } from "@/common";
 import paletteMixin from "@/components/mixins/palette.mixin";
 import tradeMixin from "@/components/mixins/tradeDiag.mixin";
 import LineChart from "@/components/charts/LineChart";
+import spinnerMixin from "@/components/mixins/spinner.mixin";
 
 export default {
   name: "Trade",
   components: {
     LineChart
   },
-  mixins: [tradeMixin, paletteMixin],
+  mixins: [tradeMixin, paletteMixin, spinnerMixin],
   data: () => ({
     countrySelected: {
       country: "IT",
@@ -116,3 +118,13 @@ export default {
   }
 };
 </script>
+<style>
+.circle-spin {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+}
+.align-right {
+  text-align: right;
+}
+</style>
