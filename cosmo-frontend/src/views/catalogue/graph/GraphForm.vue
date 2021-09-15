@@ -291,7 +291,6 @@ export default {
           exclude: this.getIds(this.transportConstraint)
         });
       });
-
       const form = {
         tg_period: this.selectedPeriod.id,
         tg_perc: this.percentage,
@@ -301,18 +300,17 @@ export default {
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
-      };
+      };      
       this.$store.dispatch("graphVisjs/postGraph", form);
       this.closeModal();
+      this.spinnerStart(true);
     },
     closeModal() {
       this.edgeModal = false;
     },
-
     updateSlider() {
       this.sliderValue = this.selectedPeriod.id;
     },
-
     handleSliderChange(val) {
       const form = {
         tg_period: val,
@@ -358,9 +356,7 @@ export default {
         ids.push(element.id);
       });
       return ids;
-    }    
-   
-
+    }  
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
@@ -369,6 +365,8 @@ export default {
   }
 };
 </script>
+
+
 
 <style scoped>
 .network {

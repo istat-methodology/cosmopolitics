@@ -288,9 +288,10 @@ export default {
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
-      };
+      };      
       this.$store.dispatch("graphVisjs/postGraph", form);
       this.closeModal();
+      this.spinnerStart(true);
     },
     closeModal() {
       this.edgeModal = false;
