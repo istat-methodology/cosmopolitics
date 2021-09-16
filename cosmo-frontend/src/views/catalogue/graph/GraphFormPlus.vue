@@ -3,19 +3,23 @@
     <div class="col-9">
       <CCard>
         <CCardHeader>
-          <span v-if="graphDensity > 0"
-            ><span class="text-primary">Graph density: </span>
-            {{ graphDensity }}</span
-          >
+          <span v-if="graphDensity > 0">
+            <span class="text-primary">Graph density: </span>{{ graphDensity }}</span>
           <span v-else>Graph plus metrics</span>
-          <span class="pl-2 float-right" v-if="nodeCentrality > 0"
-            ><span class="text-primary">Node centrality:</span>
+          <span class="pl-2" v-if="nodeCentrality > 0"
+            ><span class="text-primary">, node centrality:</span>
             {{ nodeCentrality }}</span
-          >
+          >          
           <span> 
-              {{networkEvents}}
+            <CButton
+              color="primary"
+              shape="square"
+              size="sm"
+              @click="exportData()"
+              class="mt-2 float-right"
+              >Export Data Graph!</CButton
+            > 
           </span>
-
         </CCardHeader>
         <CCardBody class="card-no-border">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>          
@@ -345,6 +349,37 @@ export default {
         ids.push(element.id);
       });
       return ids;
+    },
+    exportData(){
+          var nodes = [];
+          var edges = [];
+              
+          for(var edgeId in this.network.edges){
+              edges.push({
+                from: this.network.edges[edgeId].from, to: this.network.edges[edgeId].to 
+              });
+          }    
+          for(var nodeId in this.network.nodes) {
+              nodes.push({
+                 id: this.network.nodes[nodeId].id,
+                 label: this.network.nodes[nodeId].label,
+                 x: this.network.nodes[nodeId].x, 
+                 y: this.network.nodes[nodeId].y
+              });
+          }
+          console.log(nodes);
+          console.log(edges);
+                    
+          const data = JSON.stringify({ nodes, edges });
+          const blob = new Blob([data], {type: 'text/plain'});
+          const e = document.createEvent('MouseEvents'), a = document.createElement('a');
+          a.download = "_GRAPH_COMEXT_ITGS.json";
+          a.href = window.URL.createObjectURL(blob);
+          a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+          e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+          a.dispatchEvent(e);
+          
+
     }
   },
   created() {
