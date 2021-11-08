@@ -69,7 +69,6 @@
         </CCardFooter>
       </div>
     </div>
-
     <!-- Marker modal -->
     <CModal :title="modalTitle" :show.sync="markerModal" size="lg">
       <CTabs variant="tabs" :active-tab="0">
@@ -111,14 +110,11 @@ import mapMixin from "@/components/mixins/map.mixin";
 import SimpleMapScreenshoter from 'leaflet-simple-map-screenshoter';
 import sliderMixin from "@/components/mixins/slider.mixin";
 import VueSlider from "vue-slider-component";
-
 /*
-
 import * as colorLegend from "d3-color-legend";
-
 import * as selection  from "d3-selection";
+import * as scaleChromatic from "d3-scale-chromatic";
 */
-//import * as scaleChromatic from "d3-scale-chromatic";
 import * as scale from "d3-scale";
 import * as d3 from "d3";
 
@@ -220,7 +216,11 @@ export default {
       const localExp = exportData.find(exp => {
         return exp.country == marker.country;
       });
-      return localExp ? localExp[periodValue] : 100;
+      if (periodValue ==="201912"){
+        return 100 
+      }else{
+         return  localExp ? localExp[periodValue] : 100;
+      }
     },
     buildTimeSeries() {
       this.markerTimeSeries = this.markers.map(marker => {
@@ -267,19 +267,26 @@ export default {
           }
         }
       });      
-      console.log(" getdatalegend: 2" + periodValue);
-      console.log(" getdatalegend: 3" + data);
+      console.log(" getdatalegend: period  =>" + periodValue);
+      console.log(" getdatalegend data: =>" + data);
 
       return data;
     },
-    setLegend(imin, imax){
+    setLegend(iMin, iMax){
       
-      console.log(imin & "...."  & imax);
+      var rMin = Math.round(iMin);
+      var rMax = Math.round(iMax);
+      
+      console.log(iMin & "...."  & iMax);
+      console.log(rMin & "...."  & rMax);
       
       var min =  d3.min(this.dataLegend);
       var mean = d3.sum(this.dataLegend) / this.dataLegend.length;
-      console.log(mean);
       var max = d3.max(this.dataLegend);
+
+      console.log(min);
+      console.log(max);
+      console.log(mean);
 
       console.log(min & "...."  & max);
       
@@ -292,7 +299,7 @@ export default {
       colors = d3.schemeRdYlGn[10];  //redBlueScale; //d3.interpolateRdBu;
       
       var qScale = scale.scaleLinear()
-            .domain([min, mean, max])
+            .domain([rMin, mean, rMax])
             .range(colors);
 
       console.log(qScale.domain());
@@ -317,8 +324,6 @@ export default {
         .attr("transform", "translate(0,50)")   
         .call(axis);
       */
-
-
     },
     
     getMax(exportData){
@@ -511,7 +516,6 @@ export default {
 .card-footer {
   background-color: #ebedef;
 }
-
 /* Modal */
 @media (min-width: 576px) {
   .modal-dialog {
@@ -530,8 +534,6 @@ export default {
   background-color: #8f85ed;
   border-color: #321fdb;
 }
-
-
 .legend {
   background-color:transparent;
   width: 300px;
@@ -542,8 +544,5 @@ export default {
 #Legend .colorlegend-labels {
   font-size: 11px;
   fill: black;
-}
-  
+}  
 </style>
- 
-
