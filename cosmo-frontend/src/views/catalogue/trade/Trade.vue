@@ -9,10 +9,15 @@
               {{ this.flowSelected.descr }}</span
             ></b
           >
+          <exporter typeDownload='jpeg' filename="_trade.jpeg" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='png' filename="_trade.png" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='pdf' filename="_trade.pdf" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='json' filename="_trade.json" :items="getJson()"> </exporter>
+          
         </header>
         <CCardBody>
           <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
-          <line-chart :chartData="chartData" :options="optionsTrade" />
+          <line-chart :chartData="chartData" :options="optionsTrade" id="trade-chart"/>
         </CCardBody>
       </div>
     </div>
@@ -56,14 +61,15 @@ import paletteMixin from "@/components/mixins/palette.mixin";
 import tradeMixin from "@/components/mixins/tradeDiag.mixin";
 import LineChart from "@/components/charts/LineChart";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
+import exporter from "@/components/Exporter";
+
 
 export default {
+
   name: "Trade",
-  components: {
-    LineChart
-  },
+  components: { LineChart, exporter },
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
-  data: () => ({
+  data: () => ({    
     countrySelected: {
       country: "IT",
       name: "Italy"
@@ -71,7 +77,9 @@ export default {
     flowSelected: {
       id: 2,
       descr: "Export"
-    }
+    },
+    download_status: "Download Charts",
+    spinner:false
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
@@ -99,6 +107,7 @@ export default {
     }
   },
   methods: {
+    
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
@@ -106,8 +115,25 @@ export default {
           flow: this.flowSelected.id
         });
       }
-    }
-  },
+    },
+    getJson(){
+      let trade = [];         
+      for (let i = 0; i < this.chartData.datasets.length; i++) {
+        let obj = {};
+        obj[this.chartData.datasets[i].label] = this.chartData.datasets[i].data;
+        trade.push( obj);
+      }          
+      let jsonData = JSON.stringify(trade);
+      return jsonData;
+    },
+    getCanvas(){
+      let canvas = document.querySelector("canvas");      
+      return canvas;
+    },
+    spinnerStart(bool){
+      this.spinner = bool;
+    },     
+  },  
   created() {
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("classification/getCountries");

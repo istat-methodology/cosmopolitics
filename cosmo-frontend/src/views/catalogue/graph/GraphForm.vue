@@ -11,29 +11,28 @@
             <span class="text-primary">, vulnerability: </span>{{ nodeMetric.vulnerability }}
             <span class="text-primary">, hubness:</span>{{ nodeMetric.hubness }}
           </span>
-          <span> 
-          <CButton
-            color="primary"
-            shape="square"
-            size="sm"
-            @click="exportData()"
-            class="mt-2 float-right"
-            >Export Data Graph!</CButton
-          > 
-          </span>
+
+          <exporter typeDownload='jpeg' filename="_graphAnalysis.jpeg" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='png' filename="_graphAnalysis.png" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='pdf' filename="_graphAnalysis.pdf" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='json' filename="_graphAnalysis.json" :items="getJson()"> </exporter>
+
+          <div v-show="error">
+            {{ error }}
+          </div>
+
+
         </CCardHeader>
         <CCardBody class="card-no-border">
-          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
-          
-          <network
+          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>          
+          <network           
+            id="graph"
             class="network"
             ref="network"
             :nodes="network.nodes"
             :edges="network.edges"
             :options="network.options"
-
-            v-on:after-drawing="spinnerSettings(false, 'after-drawing')"
-
+            v-on:after-drawing="spinnerSettings(false, 'after-drawing');"
             @select-edge="handleSelectEdge"
             @hover-node="handleOverNode"
           />
@@ -172,20 +171,16 @@
 import { Network } from "vue-visjs";
 import { mapGetters } from "vuex";
 import { Context } from "@/common";
-
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
-
 import VueSlider from "vue-slider-component";
-import { required ,numeric} from "vuelidate/lib/validators";
-
+import { required ,numeric } from "vuelidate/lib/validators";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
-
-import { saveAs } from 'file-saver';
+import exporter from "@/components/Exporter";
 
 export default {
   name: "GraphVisjs",
-  components: { Network, VueSlider },
+  components: { Network, VueSlider, exporter },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
     blank: "",
@@ -211,6 +206,22 @@ export default {
     //Spinner 
     networkEvents: "",
     spinner:false,
+    scale: 1,
+    dark: false,
+    size: {
+      widthScreenCm: 56.82,
+      widthPaperCm: 17.99,
+      widthPx: 2159,
+      heightScreenCm: 28.58,
+      heightPaperCm: 9.05,
+      heightPx: 1086
+    },
+    working: false,
+    url: '',
+    base64: '',
+    error: '',
+    dataUrl: '',
+
   }),
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
@@ -263,9 +274,9 @@ export default {
         this.spinner = bool;
     },     
     spinnerSettings(bool,eventName){
-        //this.networkEvents += `${eventName}, `;
-        console.log(eventName)
-        this.spinner = bool;        
+      //this.networkEvents += `${eventName}, `;
+      console.log(eventName)
+      this.spinner = bool; 
     },
     handleSelectEdge(selectedGraph) {
       this.selectedEdges = [];
@@ -329,7 +340,6 @@ export default {
       this.spinnerStart(true);
       this.$store.dispatch("graphVisjs/postGraph", form);
     },
-
     handleSubmit() {
       this.$v.$touch(); //validate form data
 
@@ -361,44 +371,29 @@ export default {
       });
       return ids;
     },
-    exportData(){
-          var nodes = [];
-          var edges = [];
-              
-          for(var edgeId in this.network.edges){
-              edges.push({
-                from: this.network.edges[edgeId].from, to: this.network.edges[edgeId].to 
-              });
-          }    
-          for(var nodeId in this.network.nodes) {
-              nodes.push({
-                 id: this.network.nodes[nodeId].id,
-                 label: this.network.nodes[nodeId].label,
-                 x: this.network.nodes[nodeId].x, 
-                 y: this.network.nodes[nodeId].y
-              });
-          }
-          console.log(nodes);
-          console.log(edges);
-
-          const data = JSON.stringify({ nodes, edges });
-          const blob = new Blob([data], {type: 'text/plain'});
-          
-          //const e = document.createEvent('MouseEvents'), a = document.createElement('a');
-          //a.download = "_GRAPH_ANALYSIS.json";
-          //a.href = window.URL.createObjectURL(blob);
-          //a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-          //e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-          //a.dispatchEvent(e);      
-          
-          //const fs = require('fs');
-          //try { fs.writeFileSync('_myfile.txt', data, 'utf-8'); }
-          //catch(e) { alert('Failed to save the file !'); }
-          
-          saveAs(blob, "_GRAPH_ANALYSIS.json");
-
-    }
-   
+    getJson(){
+      var nodes = [];
+      var edges = [];              
+      for(var edgeId in this.network.edges){
+          edges.push({
+            from: this.network.edges[edgeId].from, to: this.network.edges[edgeId].to 
+          });
+      }    
+      for(var nodeId in this.network.nodes) {
+          nodes.push({
+              id: this.network.nodes[nodeId].id,
+              label: this.network.nodes[nodeId].label,
+              x: this.network.nodes[nodeId].x, 
+              y: this.network.nodes[nodeId].y
+          });
+      }
+      let data = JSON.stringify({ nodes, edges });
+      return data;
+    },
+    getCanvas(){
+      let canvas = document.querySelector("canvas");
+      return canvas;
+    },  
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
@@ -406,15 +401,13 @@ export default {
     this.$store.dispatch("classification/getProducts");
   }
 };
-</script>
-
-
+</script> 
 
 <style scoped>
 .network {
   text-align: center;
-  height: 550px;
-  margin: 5px 0;
+  height: 650px;
+  margin: 0 0;
 }
 .card-label {
   color: #321fdb;

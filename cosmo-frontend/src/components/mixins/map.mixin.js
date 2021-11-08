@@ -1,4 +1,6 @@
 import { latLng } from "leaflet";
+import * as scaleChromatic from "d3-scale-chromatic";
+
 
 export default {
   data: () => ({
@@ -60,57 +62,15 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(d) {
-      return d > 18
-        ? "#06188a"
-        : d > 16
-        ? "#4260aa"
-        : d > 14
-        ? "#8999cc"
-        : d > 12
-        ? "#94c4f5"
-        : d > 10
-        ? "	#726dff"
-        : d > 8
-        ? "#48baff"
-        : d > 6
-        ? "#558bff"
-        : d > 4
-        ? "#35b9e0"
-        : d > 2
-        ? "#1ce2ff"
-        : d > 1
-        ? "#c1e7ff"
-        : d < -18
-        ? "#fa0404"
-        : d < -16
-        ? "#820101"
-        : d < -14
-        ? "#BD0026"
-        : d < -12
-        ? "#FC4E2A"
-        : d < -10
-        ? "#FD8D3C"
-        : d < -8
-        ? "#FEB24C"
-        : d < -6
-        ? "#ff10c5"
-        : d < -4
-        ? "#bb379b"
-        : d < -2
-        ? "	#d462bd"
-        : d < -1
-        ? "#f9b2e7"
-        : // zero
-        d < 1
-        ? "#f9b2e7"
-        : d > -0.99999999999999999999999999999
-        ? "#43BE4F"
-        : d < 0.99999999999999999999999999999
-        ? "#43BE4F"
-        : "#43BE4F";
+    getColor(perc,max,min) {
+      console.log(max & min);
+      //return this.perc2color(perc,min,max)
+      //return this.percentageToColor(perc)
+      
+      return scaleChromatic.interpolateRdYlGn(perc);
     },
     buildLegend() {
+      
       this.legend.title = "Trade Variation (%)";
       this.legend.subTitle = "(Base=Nov 2019)";
       var grades = [
@@ -139,12 +99,60 @@ export default {
       for (var i = 0; i < grades.length; i++) {
         from = grades[i];
         //to = grades[i + 1];
+        let color = from;
         this.legend.series.push({
-          color: this.getColor(from + 1),
+          color: scaleChromatic.interpolateRdYlGn(color),
           fromNumber: from,
           toNumber: to
         });
       }
-    }
+
+    },
+    calculatePoint(i, intervalSize, colorRangeInfo) {
+      var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+      return (useEndAsStart
+        ? (colorEnd - (i * intervalSize))
+        : (colorStart + (i * intervalSize)));
+    },
+    
+    /* Must use an interpolated color scale, which has a range of [0, 1] */
+    interpolateColors(dataLength, colorScale, colorRangeInfo) {
+      var { colorStart, colorEnd } = colorRangeInfo;
+      var colorRange = colorEnd - colorStart;
+      var intervalSize = colorRange / dataLength;
+      var i, colorPoint;
+      var colorArray = [];
+    
+      for (i = 0; i < dataLength; i++) {
+        colorPoint = this.calculatePoint(i, intervalSize, colorRangeInfo);
+        colorArray.push(colorScale(colorPoint));
+      }
+    
+      return colorArray;
+    },
+    percentageToColor(percentage, maxHue = 120, minHue = 0) {
+      const hue = percentage * (maxHue - minHue) + minHue;
+      return `hsl(${hue}, 100%, 50%)`;
+    },
+    perc2color(perc,min,max) {
+      var base = (max - min);
+  
+      if (base == 0) { perc = 100; }
+      else {
+          perc = (perc - min) / base * 100; 
+      }
+      var r, g, b = 0;
+      if (perc < 50) {
+          r = 255;
+          g = Math.round(5.1 * perc);
+      }
+      else {
+          g = 255;
+          r = Math.round(510 - 5.10 * perc);
+      }
+      var h = r * 0x10000 + g * 0x100 + b * 0x1;
+      return '#' + ('000000' + h.toString(16)).slice(-6);
   }
+  }
+
 };

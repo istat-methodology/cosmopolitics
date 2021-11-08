@@ -10,16 +10,11 @@
             ><span class="text-primary">, node centrality:</span>
             {{ nodeCentrality }}</span
           >          
-          <span> 
-            <CButton
-              color="primary"
-              shape="square"
-              size="sm"
-              @click="exportData()"
-              class="mt-2 float-right"
-              >Export Data Graph!</CButton
-            > 
-          </span>
+          <exporter typeDownload='jpeg' filename="_graphComextITGS.jpeg" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='png' filename="_graphComextITGS.png" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='pdf' filename="_graphComextITGS.pdf" :items="getCanvas()"> </exporter>
+          <exporter typeDownload='json' filename="_graphComextITGS.json" :items="getJson()"> </exporter>
+
         </CCardHeader>
         <CCardBody class="card-no-border">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>          
@@ -162,42 +157,33 @@
 import { Network } from "vue-visjs";
 import { mapGetters } from "vuex";
 import { Context } from "@/common";
-
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
-
 import VueSlider from "vue-slider-component";
-
 import { required, numeric } from "vuelidate/lib/validators";
-
 import spinnerMixin from "@/components/mixins/spinner.mixin";
-import { saveAs } from 'file-saver';
+import exporter from "@/components/Exporter";
 
 export default {
   name: "GraphVisjs",
-  components: { Network, VueSlider },
+  components: { Network, VueSlider, exporter},
   mixins: [visMixin, sliderMixin, spinnerMixin],
 
 
-  data: () => ({
-
-  
+  data: () => ({  
     //Form fields
     selectedPeriod: { id: "202003", name: "Mar 20" },
     percentage: 90,    
     transport: null,
     product: null,
     weight: null,
-
     //Graph modal
     edgeModal: false,
     selectedEdges: [],
     selectedNodes: [],
     transportConstraint: null,
-
     //Metrics
     nodeCentrality: 0,
-
     //Slider
     sliderValue: "202003",
     //Spinner 
@@ -244,12 +230,11 @@ export default {
   },
   methods: {
     spinnerStart(bool){
-        this.spinner = bool;
+      this.spinner = bool;
     },
-    spinnerSettings(bool,eventName){
-        //this.networkEvents += `${eventName}, `;
-        console.log(eventName)
-        this.spinner = bool;
+    spinnerSettings(bool,eventName){       
+      console.log(eventName)
+      this.spinner = bool;
     },
     handleSelectEdge(selectedGraph) {
       this.selectedEdges = [];
@@ -351,39 +336,32 @@ export default {
       });
       return ids;
     },
-    exportData(){
-          var nodes = [];
-          var edges = [];
-              
-          for(var edgeId in this.network.edges){
-              edges.push({
-                from: this.network.edges[edgeId].from, to: this.network.edges[edgeId].to 
-              });
-          }    
-          for(var nodeId in this.network.nodes) {
-              nodes.push({
-                 id: this.network.nodes[nodeId].id,
-                 label: this.network.nodes[nodeId].label,
-                 x: this.network.nodes[nodeId].x, 
-                 y: this.network.nodes[nodeId].y
-              });
-          }
-          console.log(nodes);
-          console.log(edges);
-                    
-          const data = JSON.stringify({ nodes, edges });
-          const blob = new Blob([data], {type: 'text/plain'});
-          //const e = document.createEvent('MouseEvents'), a = document.createElement('a');
-          //a.download = "_GRAPH_COMEXT_ITGS.json";
-          //a.href = window.URL.createObjectURL(blob);
-          //a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-          //e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-          //a.dispatchEvent(e);
-
-           saveAs(blob, "_GRAPH_COMEXT_ITGS.json");
-          
-
-    }
+    getJson(){
+      var nodes = [];
+      var edges = [];
+        
+      for(var edgeId in this.network.edges){
+        edges.push({
+          from: this.network.edges[edgeId].from, to: this.network.edges[edgeId].to 
+        });
+      }    
+      for(var nodeId in this.network.nodes) {
+        nodes.push({
+            id: this.network.nodes[nodeId].id,
+            label: this.network.nodes[nodeId].label,
+            x: this.network.nodes[nodeId].x, 
+            y: this.network.nodes[nodeId].y
+        });
+      }
+      console.log(nodes);
+      console.log(edges);
+      let data = JSON.stringify({ nodes, edges });
+      return data;
+    },
+    getCanvas(){
+      let canvas = document.querySelector("canvas");
+      return canvas;
+    },  
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.GraphPlus);
@@ -398,7 +376,7 @@ export default {
 <style scoped>
 .network {
   text-align: center;
-  height: 550px;
+  height: 650px;
   margin: 5px 0;
 }
 .card-label {

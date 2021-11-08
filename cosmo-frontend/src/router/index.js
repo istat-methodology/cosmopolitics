@@ -8,6 +8,8 @@ import Home from "@/views/Home";
 
 Vue.use(VueRouter);
 
+//Vue.http.headers.common['Access-Control-Allow-Origin'] ="*";
+
 const routes = [
   {
     path: "/error",

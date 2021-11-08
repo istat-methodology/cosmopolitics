@@ -2,7 +2,7 @@ import { graphVisjsService } from "@/services";
 
 const state = {
   graphs: [],
-  graph: null
+  graph: null,
 };
 const mutations = {
   SET_GRAPHS(state, graphs) {
@@ -31,10 +31,7 @@ const actions = {
           node.x = node.x * 314;
           node.y = node.y * 314;
           node.shape = "image";
-          node.image =
-            "https://flagpedia.net/data/flags/mini/" +
-            node.label.toLowerCase() +
-            ".png";
+          node.image = require("@/assets/flags/w40/" + node.label.toLowerCase() + ".png");
           node.size = 15;
         });
         commit("SET_GRAPH", data);
@@ -51,10 +48,8 @@ const actions = {
           node.x = node.x * 314;
           node.y = node.y * 314;
           node.shape = "image";
-          node.image =
-            "https://flagpedia.net/data/flags/mini/" +
-            node.label.toLowerCase() +
-            ".png";
+          node.image = require("@/assets/flags/w40/" + node.label.toLowerCase() + ".png");
+  
           node.size = 15;
         });
         commit("SET_GRAPH", data);
@@ -71,10 +66,7 @@ const actions = {
           node.x = node.x * 314;
           node.y = node.y * 314;
           node.shape = "image";
-          node.image =
-            "https://flagpedia.net/data/flags/mini/" +
-            node.label.toLowerCase() +
-            ".png";
+          node.image = require("@/assets/flags/w40/" + node.label.toLowerCase() + ".png");
           node.size = 15;
         });
         commit("SET_GRAPH", data);
@@ -102,7 +94,7 @@ const getters = {
   },
   metrics: state => {
     return state.graph ? state.graph.metriche : null;
-  }
+  },
 };
 export const graphVisjs = {
   namespaced: true,
