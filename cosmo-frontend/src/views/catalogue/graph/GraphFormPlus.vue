@@ -4,20 +4,41 @@
       <CCard>
         <CCardHeader>
           <span v-if="graphDensity > 0">
-            <span class="text-primary">Graph density: </span>{{ graphDensity }}</span>
+            <span class="text-primary">Graph density: </span
+            >{{ graphDensity }}</span
+          >
           <span v-else>Graph plus metrics</span>
           <span class="pl-2" v-if="nodeCentrality > 0"
             ><span class="text-primary">, node centrality:</span>
             {{ nodeCentrality }}</span
-          >          
-          <exporter typeDownload='jpeg' filename="_graphComextITGS.jpeg" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='png' filename="_graphComextITGS.png" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='pdf' filename="_graphComextITGS.pdf" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='json' filename="_graphComextITGS.json" :items="getJson()"> </exporter>
-
+          >
+          <exporter
+            typeDownload="jpeg"
+            filename="_graphComextITGS.jpeg"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="png"
+            filename="_graphComextITGS.png"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="pdf"
+            filename="_graphComextITGS.pdf"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="json"
+            filename="_graphComextITGS.json"
+            :items="getJson()"
+          >
+          </exporter>
         </CCardHeader>
         <CCardBody class="card-no-border">
-          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>          
+          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
           <network
             class="network"
             ref="network"
@@ -26,8 +47,7 @@
             :options="network.options"
             v-on:after-drawing="spinnerSettings(false, 'after-drawing')"
             @select-edge="handleSelectEdge"
-            @hover-node="handleOverNode"      
-
+            @hover-node="handleOverNode"
           />
           <vue-slider
             :adsorb="true"
@@ -49,15 +69,14 @@
         <CCardBody>
           <label class="card-label">Period</label>
           <v-select
-            label="name"            
+            label="name"
             placeholder="Select period"
             :options="timePeriod"
-            v-model="selectedPeriod"            
-           :class="{
+            v-model="selectedPeriod"
+            :class="{
               'is-invalid': $v.selectedPeriod.$error
             }"
             @input="updateSlider"
-
           />
           <CInput
             label="Percentage"
@@ -125,7 +144,6 @@
           v-for="(node, index) in selectedNodes"
           :key="index"
         >
-
           {{ node.source.label }} - {{ node.destination.label }}
         </CListGroupItem>
       </CListGroup>
@@ -166,14 +184,13 @@ import exporter from "@/components/Exporter";
 
 export default {
   name: "GraphVisjs",
-  components: { Network, VueSlider, exporter},
+  components: { Network, VueSlider, exporter },
   mixins: [visMixin, sliderMixin, spinnerMixin],
 
-
-  data: () => ({  
+  data: () => ({
     //Form fields
     selectedPeriod: { id: "202003", name: "Mar 20" },
-    percentage: 90,    
+    percentage: 90,
     transport: null,
     product: null,
     weight: null,
@@ -186,10 +203,9 @@ export default {
     nodeCentrality: 0,
     //Slider
     sliderValue: "202003",
-    //Spinner 
+    //Spinner
     networkEvents: "",
-    spinner:false,
-
+    spinner: false
   }),
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
@@ -216,7 +232,8 @@ export default {
       required
     },
     percentage: {
-      required, numeric    
+      required,
+      numeric
     },
     transport: {
       required
@@ -229,11 +246,11 @@ export default {
     }
   },
   methods: {
-    spinnerStart(bool){
+    spinnerStart(bool) {
       this.spinner = bool;
     },
-    spinnerSettings(bool,eventName){       
-      console.log(eventName)
+    spinnerSettings(bool, eventName) {
+      console.log(eventName);
       this.spinner = bool;
     },
     handleSelectEdge(selectedGraph) {
@@ -278,7 +295,7 @@ export default {
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
-      };      
+      };
       this.$store.dispatch("graphVisjs/postGraph", form);
       this.closeModal();
       this.spinnerStart(true);
@@ -336,21 +353,22 @@ export default {
       });
       return ids;
     },
-    getJson(){
+    getJson() {
       var nodes = [];
       var edges = [];
-        
-      for(var edgeId in this.network.edges){
+
+      for (var edgeId in this.network.edges) {
         edges.push({
-          from: this.network.edges[edgeId].from, to: this.network.edges[edgeId].to 
+          from: this.network.edges[edgeId].from,
+          to: this.network.edges[edgeId].to
         });
-      }    
-      for(var nodeId in this.network.nodes) {
+      }
+      for (var nodeId in this.network.nodes) {
         nodes.push({
-            id: this.network.nodes[nodeId].id,
-            label: this.network.nodes[nodeId].label,
-            x: this.network.nodes[nodeId].x, 
-            y: this.network.nodes[nodeId].y
+          id: this.network.nodes[nodeId].id,
+          label: this.network.nodes[nodeId].label,
+          x: this.network.nodes[nodeId].x,
+          y: this.network.nodes[nodeId].y
         });
       }
       console.log(nodes);
@@ -358,10 +376,10 @@ export default {
       let data = JSON.stringify({ nodes, edges });
       return data;
     },
-    getCanvas(){
+    getCanvas() {
       let canvas = document.querySelector("canvas");
       return canvas;
-    },  
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.GraphPlus);

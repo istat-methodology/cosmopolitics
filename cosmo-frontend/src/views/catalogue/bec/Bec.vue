@@ -4,12 +4,16 @@
       <CCard>
         <CCardHeader>
           <b>
-            <span v-if="this.countrySelected && this.partnerSelected">{{ this.countrySelected.name }} -
-              {{ this.partnerSelected.descr }}</span>
+            <span v-if="this.countrySelected && this.partnerSelected"
+              >{{ this.countrySelected.name }} -
+              {{ this.partnerSelected.descr }}</span
+            >
             <span v-else>BEC analysis</span>
           </b>
-          
-          <label class="float-right sm-2 c-switch form-check-label c-switch-sm c-switch-primary" >            
+
+          <label
+            class="float-right sm-2 c-switch form-check-label c-switch-sm c-switch-primary"
+          >
             <input
               type="checkbox"
               class="sm-2 c-switch-input form-check-input"
@@ -20,15 +24,38 @@
           </label>
 
           <span class="sm-2"> </span>
-          <exporter typeDownload='jpeg' filename='_trade.jpeg' :items='getCanvas()' > </exporter>
-          <exporter typeDownload='png' filename='_trade.png' :items='getCanvas()' > </exporter>
-          <exporter typeDownload='pdf' filename='_trade.pdf' :items='getCanvas()' > </exporter>
-          <exporter typeDownload='json' filename='_trade.json' :items='getJson()' > </exporter>
-
+          <exporter
+            typeDownload="jpeg"
+            filename="_trade.jpeg"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="png"
+            filename="_trade.png"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="pdf"
+            filename="_trade.pdf"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="json"
+            filename="_trade.json"
+            :items="getJson()"
+          >
+          </exporter>
         </CCardHeader>
         <CCardBody v-show="isMainChart">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
-          <scatter-chart :chartData="chartData" :options="options"  id="bec-first-chart"/>
+          <scatter-chart
+            :chartData="chartData"
+            :options="options"
+            id="bec-first-chart"
+          />
           <vue-slider
             v-if="isSlider"
             :adsorb="true"
@@ -255,7 +282,6 @@
     v-bind:loading="isLoading"
     class="circle-spin"
   ></circle-spin-->
-  
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -278,11 +304,10 @@ export default {
     LineChart,
     VueSlider,
     exporter
-   
   },
   mixins: [paletteMixin, becDiagMixin, becMixin, spinnerMixin],
   data: () => ({
-    spinner:false,
+    spinner: false,
     //Form fields
     flowSelected: null,
     countrySelected: null,
@@ -309,7 +334,7 @@ export default {
     isDiagNorm: false,
     isDiagRes: false,
     isDiagACF: false,
-    download_status: "Download Charts",
+    download_status: "Download Charts"
   }),
   computed: {
     ...mapGetters("classification", [
@@ -459,25 +484,27 @@ export default {
         });
       }
     },
-    getJson(){
-      if (this.chartData != null){
-        let bec = [];         
+    getJson() {
+      if (this.chartData != null) {
+        let bec = [];
         for (let i = 0; i < this.chartData.datasets.length; i++) {
           let obj = {};
-          obj[this.chartData.datasets[i].label] = this.chartData.datasets[i].data;
-          bec.push( obj);
+          obj[this.chartData.datasets[i].label] = this.chartData.datasets[
+            i
+          ].data;
+          bec.push(obj);
         }
-        let jsonData = JSON.stringify(bec)
+        let jsonData = JSON.stringify(bec);
         return jsonData;
       }
     },
-    getCanvas(){
-      let canvas = document.querySelector("canvas");      
+    getCanvas() {
+      let canvas = document.querySelector("canvas");
       return canvas;
     },
-    spinnerStart(bool){
+    spinnerStart(bool) {
       this.spinner = bool;
-    }, 
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);

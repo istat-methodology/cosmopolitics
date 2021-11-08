@@ -9,4 +9,3 @@ export * from "./mobility/mobility.service";
 export * from "./policyIndicator/policyIndicator.service";
 export * from "./bec/bec.service";
 export * from "./trade/trade.service";
-

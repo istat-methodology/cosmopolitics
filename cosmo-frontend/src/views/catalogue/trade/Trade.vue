@@ -9,15 +9,38 @@
               {{ this.flowSelected.descr }}</span
             ></b
           >
-          <exporter typeDownload='jpeg' filename="_trade.jpeg" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='png' filename="_trade.png" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='pdf' filename="_trade.pdf" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='json' filename="_trade.json" :items="getJson()"> </exporter>
-          
+          <exporter
+            typeDownload="jpeg"
+            filename="_trade.jpeg"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="png"
+            filename="_trade.png"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="pdf"
+            filename="_trade.pdf"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="json"
+            filename="_trade.json"
+            :items="getJson()"
+          >
+          </exporter>
         </header>
         <CCardBody>
           <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
-          <line-chart :chartData="chartData" :options="optionsTrade" id="trade-chart"/>
+          <line-chart
+            :chartData="chartData"
+            :options="optionsTrade"
+            id="trade-chart"
+          />
         </CCardBody>
       </div>
     </div>
@@ -63,13 +86,11 @@ import LineChart from "@/components/charts/LineChart";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
 
-
 export default {
-
   name: "Trade",
   components: { LineChart, exporter },
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
-  data: () => ({    
+  data: () => ({
     countrySelected: {
       country: "IT",
       name: "Italy"
@@ -79,7 +100,7 @@ export default {
       descr: "Export"
     },
     download_status: "Download Charts",
-    spinner:false
+    spinner: false
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
@@ -107,7 +128,6 @@ export default {
     }
   },
   methods: {
-    
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
@@ -116,24 +136,24 @@ export default {
         });
       }
     },
-    getJson(){
-      let trade = [];         
+    getJson() {
+      let trade = [];
       for (let i = 0; i < this.chartData.datasets.length; i++) {
         let obj = {};
         obj[this.chartData.datasets[i].label] = this.chartData.datasets[i].data;
-        trade.push( obj);
-      }          
+        trade.push(obj);
+      }
       let jsonData = JSON.stringify(trade);
       return jsonData;
     },
-    getCanvas(){
-      let canvas = document.querySelector("canvas");      
+    getCanvas() {
+      let canvas = document.querySelector("canvas");
       return canvas;
     },
-    spinnerStart(bool){
+    spinnerStart(bool) {
       this.spinner = bool;
-    },     
-  },  
+    }
+  },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("classification/getCountries");

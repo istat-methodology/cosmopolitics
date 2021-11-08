@@ -24,4 +24,4 @@ Icon.Default.mergeOptions({
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.component("v-select", vSelect);
-new Vue({ router, store, icons, render: h => h(App)}).$mount("#app");
+new Vue({ router, store, icons, render: h => h(App) }).$mount("#app");

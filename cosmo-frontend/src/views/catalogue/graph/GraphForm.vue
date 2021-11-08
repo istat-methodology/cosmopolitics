@@ -4,35 +4,57 @@
       <CCard>
         <CCardHeader>
           <span v-if="graphDensity > 0">
-            <span class="text-primary">Graph density: </span>{{ graphDensity }}</span>
-            <span v-else>Graph metrics</span>
+            <span class="text-primary">Graph density: </span
+            >{{ graphDensity }}</span
+          >
+          <span v-else>Graph metrics</span>
           <span class="pl-2" v-if="nodeMetric">
-            <span class="text-primary">, node centrality: </span>{{ nodeMetric.centrality }}
-            <span class="text-primary">, vulnerability: </span>{{ nodeMetric.vulnerability }}
+            <span class="text-primary">, node centrality: </span
+            >{{ nodeMetric.centrality }}
+            <span class="text-primary">, vulnerability: </span
+            >{{ nodeMetric.vulnerability }}
             <span class="text-primary">, hubness:</span>{{ nodeMetric.hubness }}
           </span>
 
-          <exporter typeDownload='jpeg' filename="_graphAnalysis.jpeg" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='png' filename="_graphAnalysis.png" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='pdf' filename="_graphAnalysis.pdf" :items="getCanvas()"> </exporter>
-          <exporter typeDownload='json' filename="_graphAnalysis.json" :items="getJson()"> </exporter>
+          <exporter
+            typeDownload="jpeg"
+            filename="_graphAnalysis.jpeg"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="png"
+            filename="_graphAnalysis.png"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="pdf"
+            filename="_graphAnalysis.pdf"
+            :items="getCanvas()"
+          >
+          </exporter>
+          <exporter
+            typeDownload="json"
+            filename="_graphAnalysis.json"
+            :items="getJson()"
+          >
+          </exporter>
 
           <div v-show="error">
             {{ error }}
           </div>
-
-
         </CCardHeader>
         <CCardBody class="card-no-border">
-          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>          
-          <network           
+          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
+          <network
             id="graph"
             class="network"
             ref="network"
             :nodes="network.nodes"
             :edges="network.edges"
             :options="network.options"
-            v-on:after-drawing="spinnerSettings(false, 'after-drawing');"
+            v-on:after-drawing="spinnerSettings(false, 'after-drawing')"
             @select-edge="handleSelectEdge"
             @hover-node="handleOverNode"
           />
@@ -174,7 +196,7 @@ import { Context } from "@/common";
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import VueSlider from "vue-slider-component";
-import { required ,numeric } from "vuelidate/lib/validators";
+import { required, numeric } from "vuelidate/lib/validators";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
 
@@ -203,9 +225,9 @@ export default {
 
     //Slider
     sliderValue: "202003",
-    //Spinner 
+    //Spinner
     networkEvents: "",
-    spinner:false,
+    spinner: false,
     scale: 1,
     dark: false,
     size: {
@@ -217,11 +239,10 @@ export default {
       heightPx: 1086
     },
     working: false,
-    url: '',
-    base64: '',
-    error: '',
-    dataUrl: '',
-
+    url: "",
+    base64: "",
+    error: "",
+    dataUrl: ""
   }),
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
@@ -243,7 +264,6 @@ export default {
             edges: [],
             options: null
           };
-    
     },
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
@@ -253,8 +273,9 @@ export default {
     selectedPeriod: {
       required
     },
-    percentage:{
-      required, numeric 
+    percentage: {
+      required,
+      numeric
     },
     transport: {
       required
@@ -270,13 +291,13 @@ export default {
     }
   },
   methods: {
-    spinnerStart(bool){
-        this.spinner = bool;
-    },     
-    spinnerSettings(bool,eventName){
+    spinnerStart(bool) {
+      this.spinner = bool;
+    },
+    spinnerSettings(bool, eventName) {
       //this.networkEvents += `${eventName}, `;
-      console.log(eventName)
-      this.spinner = bool; 
+      console.log(eventName);
+      this.spinner = bool;
     },
     handleSelectEdge(selectedGraph) {
       this.selectedEdges = [];
@@ -315,7 +336,7 @@ export default {
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
-      };      
+      };
       this.$store.dispatch("graphVisjs/postGraph", form);
       this.closeModal();
       this.spinnerStart(true);
@@ -371,29 +392,30 @@ export default {
       });
       return ids;
     },
-    getJson(){
+    getJson() {
       var nodes = [];
-      var edges = [];              
-      for(var edgeId in this.network.edges){
-          edges.push({
-            from: this.network.edges[edgeId].from, to: this.network.edges[edgeId].to 
-          });
-      }    
-      for(var nodeId in this.network.nodes) {
-          nodes.push({
-              id: this.network.nodes[nodeId].id,
-              label: this.network.nodes[nodeId].label,
-              x: this.network.nodes[nodeId].x, 
-              y: this.network.nodes[nodeId].y
-          });
+      var edges = [];
+      for (var edgeId in this.network.edges) {
+        edges.push({
+          from: this.network.edges[edgeId].from,
+          to: this.network.edges[edgeId].to
+        });
+      }
+      for (var nodeId in this.network.nodes) {
+        nodes.push({
+          id: this.network.nodes[nodeId].id,
+          label: this.network.nodes[nodeId].label,
+          x: this.network.nodes[nodeId].x,
+          y: this.network.nodes[nodeId].y
+        });
       }
       let data = JSON.stringify({ nodes, edges });
       return data;
     },
-    getCanvas(){
+    getCanvas() {
       let canvas = document.querySelector("canvas");
       return canvas;
-    },  
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
@@ -401,7 +423,7 @@ export default {
     this.$store.dispatch("classification/getProducts");
   }
 };
-</script> 
+</script>
 
 <style scoped>
 .network {
@@ -429,4 +451,3 @@ export default {
   text-align: right;
 }
 </style>
-

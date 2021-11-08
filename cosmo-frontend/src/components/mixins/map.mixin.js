@@ -1,7 +1,6 @@
 import { latLng } from "leaflet";
 import * as scaleChromatic from "d3-scale-chromatic";
 
-
 export default {
   data: () => ({
     enableTooltip: true,
@@ -62,15 +61,13 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(perc,max,min) {
-      console.log(max & min);
-      //return this.perc2color(perc,min,max)
-      //return this.percentageToColor(perc)
-      
+    getColor(perc, max, min) {
+      console.log("getcolor max:" & max & "getcolor mix:" & min);
+      console.log("getcolor perc:" & perc);
+
       return scaleChromatic.interpolateRdYlGn(perc);
     },
     buildLegend() {
-      
       this.legend.title = "Trade Variation (%)";
       this.legend.subTitle = "(Base=Nov 2019)";
       var grades = [
@@ -106,15 +103,14 @@ export default {
           toNumber: to
         });
       }
-
     },
     calculatePoint(i, intervalSize, colorRangeInfo) {
       var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
-      return (useEndAsStart
-        ? (colorEnd - (i * intervalSize))
-        : (colorStart + (i * intervalSize)));
+      return useEndAsStart
+        ? colorEnd - i * intervalSize
+        : colorStart + i * intervalSize;
     },
-    
+
     /* Must use an interpolated color scale, which has a range of [0, 1] */
     interpolateColors(dataLength, colorScale, colorRangeInfo) {
       var { colorStart, colorEnd } = colorRangeInfo;
@@ -122,37 +118,38 @@ export default {
       var intervalSize = colorRange / dataLength;
       var i, colorPoint;
       var colorArray = [];
-    
+
       for (i = 0; i < dataLength; i++) {
         colorPoint = this.calculatePoint(i, intervalSize, colorRangeInfo);
         colorArray.push(colorScale(colorPoint));
       }
-    
+
       return colorArray;
     },
     percentageToColor(percentage, maxHue = 120, minHue = 0) {
       const hue = percentage * (maxHue - minHue) + minHue;
       return `hsl(${hue}, 100%, 50%)`;
     },
-    perc2color(perc,min,max) {
-      var base = (max - min);
-  
-      if (base == 0) { perc = 100; }
-      else {
-          perc = (perc - min) / base * 100; 
+    perc2color(perc, min, max) {
+      var base = max - min;
+
+      if (base == 0) {
+        perc = 100;
+      } else {
+        perc = ((perc - min) / base) * 100;
       }
-      var r, g, b = 0;
+      var r,
+        g,
+        b = 0;
       if (perc < 50) {
-          r = 255;
-          g = Math.round(5.1 * perc);
-      }
-      else {
-          g = 255;
-          r = Math.round(510 - 5.10 * perc);
+        r = 255;
+        g = Math.round(5.1 * perc);
+      } else {
+        g = 255;
+        r = Math.round(510 - 5.1 * perc);
       }
       var h = r * 0x10000 + g * 0x100 + b * 0x1;
-      return '#' + ('000000' + h.toString(16)).slice(-6);
+      return "#" + ("000000" + h.toString(16)).slice(-6);
+    }
   }
-  }
-
 };

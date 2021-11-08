@@ -24,7 +24,6 @@
           <div class="px-1 text-left">
             {{ row.toNumber }}
           </div>
-         
         </div>
       </li>
     </ul>
