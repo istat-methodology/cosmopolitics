@@ -1,4 +1,5 @@
 import { latLng } from "leaflet";
+import * as d3 from "d3";
 import * as scaleChromatic from "d3-scale-chromatic";
 
 export default {
@@ -61,12 +62,24 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(perc, max, min) {
-      console.log("getcolor max:" & max & "getcolor mix:" & min);
-      console.log("getcolor perc:" & perc);
+    getColor(marker, max, min, data) {
+      console.log("getcolor max:" & max);
+      console.log("getcolor min:" & min);
+      console.log("getcolor marker:" & marker);      
+      console.log(data);
+      let dataScale = d3.scaleLinear()
+      .domain([max, min])
+      .range([0, 1]);
+      
+      const point = dataScale(marker);
+      
+      const colorScale = d3.interpolateRdYlGn;
+      
+      console.log(point);
 
-      return scaleChromatic.interpolateRdYlGn(perc);
+      return colorScale(point);
     },
+
     buildLegend() {
       this.legend.title = "Trade Variation (%)";
       this.legend.subTitle = "(Base=Nov 2019)";
@@ -125,31 +138,6 @@ export default {
       }
 
       return colorArray;
-    },
-    percentageToColor(percentage, maxHue = 120, minHue = 0) {
-      const hue = percentage * (maxHue - minHue) + minHue;
-      return `hsl(${hue}, 100%, 50%)`;
-    },
-    perc2color(perc, min, max) {
-      var base = max - min;
-
-      if (base == 0) {
-        perc = 100;
-      } else {
-        perc = ((perc - min) / base) * 100;
-      }
-      var r,
-        g,
-        b = 0;
-      if (perc < 50) {
-        r = 255;
-        g = Math.round(5.1 * perc);
-      } else {
-        g = 255;
-        r = Math.round(510 - 5.1 * perc);
-      }
-      var h = r * 0x10000 + g * 0x100 + b * 0x1;
-      return "#" + ("000000" + h.toString(16)).slice(-6);
     }
   }
 };
