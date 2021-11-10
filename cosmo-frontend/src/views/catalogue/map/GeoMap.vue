@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <div class="card">
-        <CCardBody>
+        <CCardBody>         
           <l-map
             ref="map"
             :zoom="zoom"
@@ -21,10 +21,8 @@
               ]"
               :fillOpacity="0.65"
               :radius="scale(Math.abs(marker.export) * 500)"
-              :color="getColor(marker.export / markerMax, markerMax, markerMin)"
-              :fillColor="
-                getColor(marker.export / markerMax, markerMax, markerMin)
-              "
+              :color="getColor(marker.export, markerMin, markerMax, dataLegend)"
+              :fillColor="getColor(marker.export, markerMin, markerMax, dataLegend)"
               @click="openModal(marker.export)"
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
@@ -33,13 +31,12 @@
                 </span>
               </l-tooltip>
             </l-circle-marker>
-
             <!-- Legend -->
             <l-control position="topright">
               <div id="Legend" class="legend"></div>
               <!--app-legend :legend="legend" /-->
             </l-control>
-            <l-control position="bottomleft">
+            <!---control position="bottomleft">
               <CButton
                 color="primary"
                 shape="square"
@@ -57,7 +54,7 @@
                 @click="stop"
                 >Stop</CButton
               >
-            </l-control>
+            </l-control-->
           </l-map>
         </CCardBody>
         <CCardFooter>
@@ -123,8 +120,8 @@ import VueSlider from "vue-slider-component";
 /*
 import * as colorLegend from "d3-color-legend";
 import * as selection  from "d3-selection";
-*/
 import * as scaleChromatic from "d3-scale-chromatic";
+*/
 import * as scale from "d3-scale";
 import * as d3 from "d3";
 
@@ -146,7 +143,8 @@ export default {
     markerModal: false,
     markerMax: 1,
     markerMin: -1,
-    dataLegend: [],
+    dataLegend: [], 
+    markerColors: [],
     modalTitle: "",
     mainFields: [
       { key: "Year", label: "" },
@@ -240,7 +238,7 @@ export default {
       this.dataLegend = this.getDataLegend(this.exportData, this.periodValue);
       this.markerMax = this.getMax(this.exportData);
       this.markerMin = this.getMin(this.exportData);
-      this.setLegend(this.markerMin, this.markerMax);
+      this.setLegend(this.markerMin, this.markerMax, this.dataLegend);
     },
     play() {
       this.counter = 0;
@@ -263,6 +261,7 @@ export default {
     setShooter() {
       new SimpleMapScreenshoter().addTo(this.$refs.map.mapObject);
     },
+    
     getDataLegend(exportData, periodValue) {
       var data = [];
       exportData.forEach(obj => {
@@ -277,67 +276,59 @@ export default {
       console.log(" getdatalegend data: =>" + data);
 
       return data;
-    },
-    setLegend(iMin, iMax) {
+    },    
+    setLegend(iMin, iMax, iData) {    
+    
       var rMin = Math.round(iMin);
       var rMax = Math.round(iMax);
 
       console.log(iMin & "...." & iMax);
       console.log(rMin & "...." & rMax);
 
-      var min = d3.min(this.dataLegend);
-      var mean = d3.sum(this.dataLegend) / this.dataLegend.length;
-      var max = d3.max(this.dataLegend);
+      var min = d3.min(iData);
+      var mean = d3.sum(iData) / iData.length;
+      var max = d3.max(iData);
 
       console.log(min);
       console.log(max);
       console.log(mean);
 
       console.log(min & "...." & max);
-
-      // quantile scale
-      //
       var colors = [];
+    //const colorScale = d3.interpolateInferno;
+      const colorScale = d3.interpolateRdYlGn;
+      const colorRangeInfo = {
+        colorStart: 0,
+        colorEnd: 1,
+        useEndAsStart: false,
+      };
+      const dataLength = iData.length;
+      colors = this.interpolateColors(dataLength, colorScale, colorRangeInfo);     
+      this.markerColors = colors;
 
-      //var intColors = ["#3e7a2a","#00876c","#3e9c73","#64b17a","#89c581","#afd989","#d6ec93","#ffff9f","#fde475","#fdc84d","#fea828","#ff8502","#ff5b00","#ff0009","#e30008"]
+    //createChart('pie-chart', chartData, colorScale, colorRangeInfo);
+    //colors = scaleChromatic.schemeRdYlGn[10];
 
-      colors = scaleChromatic.schemeRdYlGn[10]; //redBlueScale; //d3.interpolateRdBu;
+      console.log(colors);
 
-      var qScale = scale
-        .scaleLinear()
-        .domain([min, 0, max])
+      var qScale = scale.scaleLinear()
+        .domain([iMin, iMax])
         .range(colors);
 
       console.log(qScale.domain());
       console.log(qScale.range());
-      d3.select("#Legend")
+      
+      
+     d3.select("#Legend")
         .selectAll("*")
         .remove();
-
+      
       this.colorlegend("#Legend", qScale, "quantile", {
         title: "Trade Variation (%) - (Base=Nov 2019)",
         boxHeight: 15,
         boxWidth: 30
       });
-
-      /*  
-      var extent = d3.extent(this.dataLegend);
-      var linearScale = d3.scaleLinear()
-      .domain(extent)
-      .range([0, 100]);
-      var axis = d3.axisBottom(linearScale);
-      d3.select("#Legend")
-        .append("svg")
-        .attr("width", 350)
-        .append("g")
-        .attr('class', 'colorlegend-labels')
-        .attr('dy', '.71em')
-        .attr('x', '10')
-        .attr("transform", "translate(0,50)")   
-        .call(axis);
-      */
-    },
-
+    },     
     getMax(exportData) {
       var max = 1;
       exportData.forEach(obj => {
@@ -449,7 +440,7 @@ export default {
         .enter()
         .append("g");
 
-      // value labels
+// value labels
       var valueLabels;
       if (!isVertical) {
         valueLabels = legendBoxes
@@ -458,7 +449,7 @@ export default {
           .attr("dy", ".71em")
           .attr("x", function(d, i) {
             return (
-              i * (boxWidth + boxSpacing) +
+              i * (boxWidth + boxSpacing ) + 
               (type !== "ordinal" ? boxWidth / 2 : 0)
             );
           })
@@ -482,7 +473,6 @@ export default {
             if (i === colors.length - 1) return domain[domain.length - 1];
           }
         });
-
       // the colors, each color is drawn as a rectangle
       if (!isVertical) {
         legendBoxes
@@ -513,8 +503,27 @@ export default {
             .attr("y", boxHeight + titlePadding);
         }
       }
-
       return this;
+    },
+    calculatePoint(i, intervalSize, colorRangeInfo) {
+      var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+      return useEndAsStart
+        ? colorEnd - i * intervalSize
+        : colorStart + i * intervalSize;
+    },
+    /* Must use an interpolated color scale, which has a range of [0, 1] */
+    interpolateColors(dataLength, colorScale, colorRangeInfo) {
+      var { colorStart, colorEnd } = colorRangeInfo;
+      var colorRange = colorEnd - colorStart;
+      var intervalSize = colorRange / dataLength;
+      var i, colorPoint;
+      var colorArray = [];
+
+      for (i = 0; i < dataLength; i++) {
+        colorPoint = this.calculatePoint(i, intervalSize, colorRangeInfo);
+        colorArray.push(colorScale(colorPoint));
+      }
+      return colorArray;
     }
   },
   created() {
@@ -555,13 +564,15 @@ export default {
 }
 .legend {
   background-color: transparent;
-  width: 300px;
-  height: 60px;
+  width: 360px;
+  height: 80px;
   /*border: 1px solid #bbb;*/
-  margin: 10px;
+  margin-left: 5px;
+  padding: 1px !important;
 }
 #Legend .colorlegend-labels {
   font-size: 11px;
   fill: black;
+  
 }
 </style>
