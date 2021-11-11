@@ -34,11 +34,17 @@ export default {
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   }),
   methods: {
-    scale(d) {
-      const min = 1;
+    getRadius(marker,min,max,data) {
+      const minimum = 15;
       const factor = 5;
-      const zoomFactor = this.zoom >= 5 ? 1 : this.zoom / 10; // adjust divisor for best optics
-      return Math.floor(Math.log(d) * factor * zoomFactor) + min;
+      const zoomFactor = this.zoom >= 5 ? 1 : this.zoom / 10; // adjust divisor for best optics      
+      const d = Math.abs(marker);
+      let radius = Math.floor(Math.log(d) * factor * zoomFactor) + minimum;
+    //let sqrtScale = d3.scaleSqrt().domain([0, data.length - 1]).range([min,max]);
+    //let radius = Math.floor(sqrtScale(d) * factor * zoomFactor) + minimum;
+      console.log("getcolor marker:" & marker);            
+      console.log(data);
+      return radius
     },
     mouseover({ target }) {
       target.setStyle({
@@ -62,21 +68,17 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(marker, max, min, data) {
+    getColor(marker, min, max, data) {
+
+      let dataScale = d3.scaleLinear().domain([-60, 60]).range([0, 1]);      
+      const point = dataScale(marker);      
+      const colorScale = d3.interpolateRdYlGn;      
+      
       console.log("getcolor max:" & max);
       console.log("getcolor min:" & min);
-      console.log("getcolor marker:" & marker);      
+      console.log("getcolor marker:" & marker);            
       console.log(data);
-      let dataScale = d3.scaleLinear()
-      .domain([max, min])
-      .range([0, 1]);
-      
-      const point = dataScale(marker);
-      
-      const colorScale = d3.interpolateRdYlGn;
-      
-      console.log(point);
-
+      console.log(point);      
       return colorScale(point);
     },
 
@@ -123,7 +125,6 @@ export default {
         ? colorEnd - i * intervalSize
         : colorStart + i * intervalSize;
     },
-
     /* Must use an interpolated color scale, which has a range of [0, 1] */
     interpolateColors(dataLength, colorScale, colorRangeInfo) {
       var { colorStart, colorEnd } = colorRangeInfo;
@@ -131,12 +132,10 @@ export default {
       var intervalSize = colorRange / dataLength;
       var i, colorPoint;
       var colorArray = [];
-
       for (i = 0; i < dataLength; i++) {
         colorPoint = this.calculatePoint(i, intervalSize, colorRangeInfo);
         colorArray.push(colorScale(colorPoint));
       }
-
       return colorArray;
     }
   }
