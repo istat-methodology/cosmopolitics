@@ -1,6 +1,8 @@
 import { latLng } from "leaflet";
-import * as d3 from "d3";
+//import * as d3 from "d3";
 import * as scaleChromatic from "d3-scale-chromatic";
+import * as d3 from "d3";
+
 
 export default {
   data: () => ({
@@ -68,18 +70,32 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(marker, min, max, data) {
+    getColor(marker, iMin, iMax, data) {
 
-      let dataScale = d3.scaleLinear().domain([-60, 60]).range([0, 1]);      
+
+      iMin = -60;
+      iMax = 60;
+      console.log("getcolor marker:" & marker);                  
+      console.log("getcolor max:" & iMax);
+      console.log("getcolor min:" & iMin);
+      console.log("getcolor marker:" &data);
+      
+      //var colors = [];
+      //colors = this.markerColors;
+      
+      let dataScale = d3.scaleLinear().domain([iMin, iMax]).range([0, 1]);
+      
       const point = dataScale(marker);      
       const colorScale = d3.interpolateRdYlGn;      
       
-      console.log("getcolor max:" & max);
-      console.log("getcolor min:" & min);
-      console.log("getcolor marker:" & marker);            
-      console.log(data);
-      console.log(point);      
+      console.log(dataScale.domain());
+      console.log(dataScale.range());
+      console.log(colorScale(point));
+      console.log(this.markerColors);      
+      console.log("point:" & point);      
+
       return colorScale(point);
+      
     },
 
     buildLegend() {

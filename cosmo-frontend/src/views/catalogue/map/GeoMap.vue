@@ -259,9 +259,15 @@ export default {
       var min = d3.min(iData);
       var mean = d3.sum(iData) / iData.length;
       var max = d3.max(iData);
+      iMin = -60;
+      iMax = 60;
+      console.log(iMin);
+      console.log(iMax);
+      console.log(min);
+      console.log(max);
       console.log(mean);
+      
       var colors = [];
-
       const colorScale = d3.interpolateRdYlGn;
       const colorRangeInfo = {
         colorStart: 0,
@@ -273,8 +279,7 @@ export default {
       this.markerColors = colors;
     //colors = scaleChromatic.schemeRdYlGn[10];
       console.log(colors);
-      var lScale = scale.scaleLinear()
-        .domain([min, max])
+      var lScale = scale.scaleLinear().domain([iMin, iMax])
         .range(colors);
       
      d3.select("#Legend").selectAll("*").remove();
@@ -384,13 +389,16 @@ export default {
         .data(colors)
         .enter()
         .append("g");
+        
 // value labels
       var valueLabels;
       if (!isVertical) {
         valueLabels = legendBoxes
           .append("text")
+
           .attr("class", "colorlegend-labels")
           .attr("dy", ".71em")
+          
           .attr("x", function(d, i) {
             return (
               i * (boxWidth + boxSpacing ) + 
@@ -426,6 +434,7 @@ export default {
           })
           .attr("width", boxWidth)
           .attr("height", boxHeight)
+          
           .style("fill", function(d, i) {
             return colors[i];
           });
