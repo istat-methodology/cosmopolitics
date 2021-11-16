@@ -27,7 +27,7 @@
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{ marker.export }}
+                  >{{ marker.name }} {{  Math.round(marker.export) }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -98,13 +98,9 @@ import mapMixin from "@/components/mixins/map.mixin";
 import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import VueSlider from "vue-slider-component";
-/*
-import * as colorLegend from "d3-color-legend";
-import * as selection  from "d3-selection";
-import * as scaleChromatic from "d3-scale-chromatic";
-*/
 import * as scale from "d3-scale";
 import * as d3 from "d3";
+
 export default {
   name: "GeoMap",
   components: {
@@ -254,7 +250,6 @@ export default {
       return data;
     },    
     setLegend(iMin, iMax, iData) {    
-    
 
       var min = d3.min(iData);
       var mean = d3.sum(iData) / iData.length;
@@ -265,8 +260,7 @@ export default {
       console.log(iMax);
       console.log(min);
       console.log(max);
-      console.log(mean);
-      
+      console.log(mean);      
       var colors = [];
       const colorScale = d3.interpolateRdYlGn;
       const colorRangeInfo = {
@@ -276,19 +270,17 @@ export default {
       };
       const dataLength = iData.length;
       colors = this.interpolateColors(dataLength, colorScale, colorRangeInfo);     
-      this.markerColors = colors;
-    //colors = scaleChromatic.schemeRdYlGn[10];
-      console.log(colors);
-      var lScale = scale.scaleLinear().domain([iMin, iMax])
-        .range(colors);
-      
-     d3.select("#Legend").selectAll("*").remove();
-      
-      this.colorlegend("#Legend", lScale, "linear", {
-        title: "Trade Variation (%) - (Base=Nov 2019)",
+      this.markerColors = colors;      
+      console.log(colors);      
+      var linearScale = scale.scaleLinear()
+        .domain([iMin, iMax])
+        .range(colors);      
+      d3.select("#Legend").selectAll("*").remove();      
+      this.colorlegend("#Legend", linearScale, "linear", {
+        //title: "Trade Variation (%) - (Base=Nov 2019)",
+        title: "Monthly change in Export (%) - (Base=Nov 2019)",
         boxHeight: 15,
         axis:true
-
       });
     },     
     getMax(exportData) {
@@ -321,14 +313,11 @@ export default {
       return min;
     },
     colorlegend(target, scale, type, options) {
-      var scaleTypes = ["linear"],
-        found = false,
-        opts = options || {},
+      var opts = options || {},
         boxWidth = opts.boxWidth || 20, // width of each box (int)
         boxHeight = opts.boxHeight || 20, // height of each box (int)
         title = opts.title || null, // draw title (string)
         fill = opts.fill || false, // fill the element (boolean)
-        linearBoxes = opts.linearBoxes || 9, // number of boxes for linear scales (int)
         htmlElement = document.getElementById(
           target.substring(0, 1) === "#"
             ? target.substring(1, target.length)
@@ -342,36 +331,22 @@ export default {
         titlePadding = title ? 32 : 0,
         domain = scale.domain(),
         range = scale.range(),
-        i = 0,
-        isVertical = opts.vertical || false,
+        //i = 0,
+        //isVertical = opts.vertical || false,
         isAxis = opts.axis || false;
-      
-      console.log(linearBoxes);
 
-      // check for valid scale
-      for (i = 0; i < scaleTypes.length; i++) {
-        if (scaleTypes[i] === type) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) throw new Error("Scale type, " + type + ", is not suported.");
-     
       colors = range;
-
       // check the width and height and adjust if necessary to fit in the element use the range
-      if (!isVertical) {
-        if (
-          fill ||
-          w < (boxWidth + boxSpacing) * colors.length + padding[1] + padding[3]
-        ) {
-          boxWidth =
-            (w - padding[1] - padding[3] - boxSpacing * colors.length) /
-            colors.length;
-        }
-        if (fill || h < boxHeight + padding[0] + padding[2] + titlePadding) {
-          boxHeight = h - padding[0] - padding[2] - titlePadding;
-        }
+      if (
+        fill ||
+        w < (boxWidth + boxSpacing) * colors.length + padding[1] + padding[3]
+      ) {
+        boxWidth =
+          (w - padding[1] - padding[3] - boxSpacing * colors.length) /
+          colors.length;
+      }
+      if (fill || h < boxHeight + padding[0] + padding[2] + titlePadding) {
+        boxHeight = h - padding[0] - padding[2] - titlePadding;
       }
       // set up the legend graphics context
       var legend = d3
@@ -384,95 +359,64 @@ export default {
         .attr("transform", "translate(" + padding[0]  + "," + padding[0] + ")")
         .style("font-size", "11px")
         .style("fill", "#666");
+      
       var legendBoxes = legend
         .selectAll("g.legend")
         .data(colors)
         .enter()
-        .append("g");
-        
-// value labels
-      var valueLabels;
-      if (!isVertical) {
-        valueLabels = legendBoxes
-          .append("text")
-
-          .attr("class", "colorlegend-labels")
-          .attr("dy", ".71em")
-          
-          .attr("x", function(d, i) {
-            return (
-              i * (boxWidth + boxSpacing ) + 
-              (type !== "ordinal" ? boxWidth / 2 : 0)
-            );
-          })
-          .attr("y", function() {
-            return boxHeight + 2;
-          });
-      }
-      valueLabels
-        .style("text-anchor", function() {
-          return type === "ordinal" ? "start" : "middle";
+        .append("g");        
+      legendBoxes
+        .append("text")
+        .attr("class", "colorlegend-labels")
+        .attr("dy", ".71em")          
+        .attr("x", function(d, i) {
+          return ( i * (boxWidth + boxSpacing ) );
         })
-        .style("pointer-events", "none")
-        .text(function(d, i) {
-          // show label for all ordinal values
-          if (type === "ordinal") {
-            return domain[i];
-          }
-          // show only the first and last for others
-          else {
-            //if (i === 0) return domain[0];
-            //if (i === colors.length - 1) return domain[domain.length - 1];
-          }
-        });
+        .attr("y", function() {  return boxHeight; })
+        .style("text-anchor", function() {
+          return "middle";
+        })
+      .style("pointer-events", "none");   
       // the colors, each color is drawn as a rectangle
-      if (!isVertical) {
-        legendBoxes
-          .append("rect")
-          .attr("x", function(d, i) {
-            return i * (boxWidth + boxSpacing);
-          })
-          .attr("width", boxWidth)
-          .attr("height", boxHeight)
-          
-          .style("fill", function(d, i) {
-            return colors[i];
-          });
-      }
+      legendBoxes
+        .append("rect")
+        .attr("x", function(d, i) {
+          return i * (boxWidth + boxSpacing);
+        })
+        .attr("width", boxWidth)
+        .attr("height", boxHeight)          
+        .style("fill", function(d, i) {
+          return colors[i];
+        });
        
       if (isAxis) {
-        let scaleAxis = d3.scaleLinear().domain([-60, 60]).range([0, boxWidth * colors.length]);
+        let scaleAxis = d3.scaleLinear().domain(domain).range([0, boxWidth * colors.length]);
         let axis = d3.axisBottom(scaleAxis);
-        axis.ticks(13);
-
+        axis.ticks(13);        
+        //axis.ticks(25);
         var legendAxis = legend
           .append("g")
           .attr("class", "colorlegend-title")
           .style("text-anchor", "middle")
           .style("pointer-events", "none")
           .call(axis);
-
-
-        if (!isVertical) {
-          var axisTop=boxHeight + 1;
-          legendAxis
-            .attr("transform", "translate(" + 0  + "," + axisTop + ")");
-        }
+        
+        var axisTop = boxHeight + 1;
+            legendAxis.attr("transform", "translate(" + 0  + "," + axisTop + ")");
+        
       }
-      // show a title in center of legend (bottom)
+      // title in center of legend (bottom)
       if (title) {
-        var legendText = legend
+        var legendTitle = legend
           .append("text")
           .attr("class", "colorlegend-title")
           .style("text-anchor", "middle")
           .style("pointer-events", "none")
-          .text(title);
-        if (!isVertical) {
-          legendText
-            .attr("dy", ".71em")
-            .attr("x", colors.length * (boxWidth / 2))
-            .attr("y", boxHeight + titlePadding);
-        }
+          .text(title);        
+        legendTitle
+          .attr("dy", ".71em")
+          .attr("x", colors.length * (boxWidth / 2))
+          .attr("y", boxHeight + titlePadding);
       }
       return this;
     },
@@ -542,7 +486,7 @@ export default {
 }
 #Legend .colorlegend-labels {
   font-size: 11px;
-  fill: black;
-  
+  fill: black;  
 }
+
 </style>

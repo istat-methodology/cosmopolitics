@@ -70,31 +70,41 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(marker, iMin, iMax, data) {
-
+    getColor(marker, iMin, iMax, iData) {
 
       iMin = -60;
       iMax = 60;
-      console.log("getcolor marker:" & marker);                  
-      console.log("getcolor max:" & iMax);
-      console.log("getcolor min:" & iMin);
-      console.log("getcolor marker:" &data);
+      console.log("marker:" & marker);                  
+      console.log("iMax:" & iMax);
+      console.log("iMin:" & iMin);
+      console.log("iData:" & iData);
       
-      //var colors = [];
-      //colors = this.markerColors;
-      
+      /*
       let dataScale = d3.scaleLinear().domain([iMin, iMax]).range([0, 1]);
-      
       const point = dataScale(marker);      
       const colorScale = d3.interpolateRdYlGn;      
-      
       console.log(dataScale.domain());
       console.log(dataScale.range());
       console.log(colorScale(point));
       console.log(this.markerColors);      
-      console.log("point:" & point);      
-
+      console.log("point:" & point);            
       return colorScale(point);
+      */
+
+      var colors = [];
+      var colorsLength = 0;
+      colors = this.markerColors;
+      colorsLength = colors.length -1;
+      console.log("colorLength: " + colorsLength);
+      var s = d3.scaleLinear().domain([iMin, iMax]).range([0, colorsLength]);
+      let sPoint = s(marker);
+      let point = Math.round(sPoint);
+      console.log("colors " + colors);
+      console.log("s.range " +s.range());
+      console.log("sPoint : " + sPoint);
+      console.log("sRound : " + point);
+      console.log("rgb legend " + colors[point]);
+      return colors[point];
       
     },
 
