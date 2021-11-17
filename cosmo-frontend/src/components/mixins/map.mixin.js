@@ -42,11 +42,13 @@ export default {
       const zoomFactor = this.zoom >= 5 ? 1 : this.zoom / 10; // adjust divisor for best optics      
       const d = Math.abs(marker);
       let radius = Math.floor(Math.log(d) * factor * zoomFactor) + minimum;
-    //let sqrtScale = d3.scaleSqrt().domain([0, data.length - 1]).range([min,max]);
+    //let sqrtScale = d3.scaleSqrt().domain([0, data.length - 1]).range([min,max]);    
     //let radius = Math.floor(sqrtScale(d) * factor * zoomFactor) + minimum;
-      console.log("getcolor marker:" & marker);            
+      console.log("getRadius marker:" + marker);            
+      console.log("getRadius radius:" + radius);
       console.log(data);
-      return radius
+      return radius;
+
     },
     mouseover({ target }) {
       target.setStyle({

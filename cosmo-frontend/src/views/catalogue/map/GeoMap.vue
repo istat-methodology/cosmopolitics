@@ -27,7 +27,7 @@
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{  Math.round(marker.export) }}
+                  >{{ marker.name }} {{  marker.export }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -317,7 +317,6 @@ export default {
         boxWidth = opts.boxWidth || 20, // width of each box (int)
         boxHeight = opts.boxHeight || 20, // height of each box (int)
         title = opts.title || null, // draw title (string)
-        fill = opts.fill || false, // fill the element (boolean)
         htmlElement = document.getElementById(
           target.substring(0, 1) === "#"
             ? target.substring(1, target.length)
@@ -327,46 +326,69 @@ export default {
         h = htmlElement.offsetHeight, // height of container element
         colors = [],
         padding = [6, 4, 10, 4], // top, right, bottom, left
-        boxSpacing = type === "ordinal" ? 3 : 0, // spacing between boxes
+        boxSpacing = 0, // spacing between boxes
         titlePadding = title ? 32 : 0,
         domain = scale.domain(),
         range = scale.range(),
         //i = 0,
         //isVertical = opts.vertical || false,
-        isAxis = opts.axis || false;
+        isAxis = opts.axis || false,
+        pointOnLegend;
 
       colors = range;
+      ;
       // check the width and height and adjust if necessary to fit in the element use the range
-      if (
-        fill ||
-        w < (boxWidth + boxSpacing) * colors.length + padding[1] + padding[3]
-      ) {
-        boxWidth =
-          (w - padding[1] - padding[3] - boxSpacing * colors.length) /
-          colors.length;
+      if ( w < (boxWidth + boxSpacing) * colors.length + padding[1] + padding[3]) { 
+          boxWidth =  (w - padding[1] - padding[3] - boxSpacing * colors.length) / colors.length; 
       }
-      if (fill || h < boxHeight + padding[0] + padding[2] + titlePadding) {
-        boxHeight = h - padding[0] - padding[2] - titlePadding;
+      if (h < boxHeight + padding[0] + padding[2] + titlePadding) { 
+          boxHeight = h - padding[0] - padding[2] - titlePadding;
       }
       // set up the legend graphics context
       var legend = d3
         .select(target)
         .append("svg")
-        .attr("width", w+5)
+        .attr("width", w + 5)
         .attr("height", h)
         .append("g")
         .attr("class", "colorlegend")
         .attr("transform", "translate(" + padding[0]  + "," + padding[0] + ")")
         .style("font-size", "11px")
         .style("fill", "#666");
-      
+    
       var legendBoxes = legend
         .selectAll("g.legend")
         .data(colors)
         .enter()
-        .append("g");        
+        .append("g")
+        .on('click', function(e){
+            var pos = d3.pointer(e);
+	          var xPos = pos[0];
+	          var value = xPos;
+            let scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
+            var v = scalePointer(value);
+            alert(Math.round(v));            
+        })
+        .on("mouseover", function(d){
+            var pos = d3.pointer(d);
+            var xPos = pos[0];
+            var value = xPos;
+            var scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
+            var v = Math.round(scalePointer(value));
+            legendBoxes.selectAll("title").remove();
+            legendBoxes.append("title").text(v);
+         });
+         //.on("mouseout",function(d, i){
+         //     d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
+         //});    
+      console.log(pointOnLegend);
+      //legendBoxes  
+      //  .append("title")
+      //  .text(function(d,v) { console.log(d + v); return "????: " + pointOnLegend });
+
       legendBoxes
         .append("text")
+		    .attr("stroke", "#fff")
         .attr("class", "colorlegend-labels")
         .attr("dy", ".71em")          
         .attr("x", function(d, i) {
@@ -376,13 +398,15 @@ export default {
         .style("text-anchor", function() {
           return "middle";
         })
-      .style("pointer-events", "none");   
+        .style("pointer-events", "none")
+
       // the colors, each color is drawn as a rectangle
       legendBoxes
-        .append("rect")
+        .append("rect")       
+        
         .attr("x", function(d, i) {
           return i * (boxWidth + boxSpacing);
-        })
+        })        
         .attr("width", boxWidth)
         .attr("height", boxHeight)          
         .style("fill", function(d, i) {
@@ -392,6 +416,7 @@ export default {
       if (isAxis) {
         let scaleAxis = d3.scaleLinear().domain(domain).range([0, boxWidth * colors.length]);
         let axis = d3.axisBottom(scaleAxis);
+        
         axis.ticks(13);        
         //axis.ticks(25);
         var legendAxis = legend
@@ -399,11 +424,14 @@ export default {
           .attr("class", "colorlegend-title")
           .style("text-anchor", "middle")
           .style("pointer-events", "none")
+          
           .call(axis);
         
         var axisTop = boxHeight + 1;
-            legendAxis.attr("transform", "translate(" + 0  + "," + axisTop + ")");
+            legendAxis
+            .attr("transform", "translate(" + 0  + "," + axisTop + ")");
         
+    
       }
       // title in center of legend (bottom)
       if (title) {
@@ -420,6 +448,13 @@ export default {
       }
       return this;
     },
+    getPosVal(d){
+      var pos = d3.pointer(d);
+      var xPos = pos[0];
+      var value = xPos;
+      let scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
+      return scalePointer(value);            
+    },  
     calculatePoint(i, intervalSize, colorRangeInfo) {
       var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
       return useEndAsStart
