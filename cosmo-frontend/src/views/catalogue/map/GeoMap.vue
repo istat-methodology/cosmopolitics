@@ -333,8 +333,12 @@ export default {
         //i = 0,
         //isVertical = opts.vertical || false,
         isAxis = opts.axis || false,
-        pointOnLegend;
-
+        pointOnLegend,
+        scaleAxis = null,
+        axis = null,
+        scalePointer = null;
+       
+      
       colors = range;
       ;
       // check the width and height and adjust if necessary to fit in the element use the range
@@ -344,6 +348,11 @@ export default {
       if (h < boxHeight + padding[0] + padding[2] + titlePadding) { 
           boxHeight = h - padding[0] - padding[2] - titlePadding;
       }
+
+      scaleAxis = d3.scaleLinear().domain(domain).range([0, boxWidth * colors.length]),
+      axis = d3.axisBottom(scaleAxis),
+      scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
+
       // set up the legend graphics context
       var legend = d3
         .select(target)
@@ -365,26 +374,19 @@ export default {
             var pos = d3.pointer(e);
 	          var xPos = pos[0];
 	          var value = xPos;
-            let scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
-            var v = scalePointer(value);
-            alert(Math.round(v));            
-        })
-        .on("mouseover", function(d){
+            legendBoxes.selectAll("title").remove();
+            legendBoxes.append("title").text(Math.round(scalePointer(value))).enter();
+            alert(Math.round(scalePointer(value)));            
+        });
+        /*.on("mouseover", function(d){
             var pos = d3.pointer(d);
             var xPos = pos[0];
             var value = xPos;
-            var scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
-            var v = Math.round(scalePointer(value));
             legendBoxes.selectAll("title").remove();
-            legendBoxes.append("title").text(v);
+            legendBoxes.append("title").text(Math.round(scalePointer(value)));
          });
-         //.on("mouseout",function(d, i){
-         //     d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
-         //});    
+         */
       console.log(pointOnLegend);
-      //legendBoxes  
-      //  .append("title")
-      //  .text(function(d,v) { console.log(d + v); return "????: " + pointOnLegend });
 
       legendBoxes
         .append("text")
@@ -414,9 +416,6 @@ export default {
         });
        
       if (isAxis) {
-        let scaleAxis = d3.scaleLinear().domain(domain).range([0, boxWidth * colors.length]);
-        let axis = d3.axisBottom(scaleAxis);
-        
         axis.ticks(13);        
         //axis.ticks(25);
         var legendAxis = legend
@@ -430,8 +429,6 @@ export default {
         var axisTop = boxHeight + 1;
             legendAxis
             .attr("transform", "translate(" + 0  + "," + axisTop + ")");
-        
-    
       }
       // title in center of legend (bottom)
       if (title) {
@@ -448,13 +445,6 @@ export default {
       }
       return this;
     },
-    getPosVal(d){
-      var pos = d3.pointer(d);
-      var xPos = pos[0];
-      var value = xPos;
-      let scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
-      return scalePointer(value);            
-    },  
     calculatePoint(i, intervalSize, colorRangeInfo) {
       var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
       return useEndAsStart
