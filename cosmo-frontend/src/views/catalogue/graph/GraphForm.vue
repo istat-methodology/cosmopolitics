@@ -418,6 +418,7 @@ export default {
     }
   },
   created() {
+    this.timePeriod = this.getSliderTime(new Date("2019-12"),new Date("2021-01"));
     this.$store.dispatch("coreui/setContext", Context.Graph);
     this.$store.dispatch("classification/getTransports");
     this.$store.dispatch("classification/getProducts");
