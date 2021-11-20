@@ -1,7 +1,9 @@
 export default {
   data: () => ({
+    //timePeriod: this.getSliderScale(),
     periodValue: "201912",
-    timePeriod: [
+    timePeriod:[] ,
+    /*[
       { id: "201912", name: "Dec 19" },
       { id: "202001", name: "Jan 20" },
       { id: "202002", name: "Feb 20" },
@@ -15,6 +17,7 @@ export default {
       { id: "202010", name: "Oct 20" },
       { id: "202011", name: "Nov 20" }
     ],
+    */
     policyPeriodValue: "202003",
     policyPeriod: [
       { id: "202003", name: "Mar 20" },
@@ -68,6 +71,32 @@ export default {
         return element.id == value;
       });
       return obj ? obj.val : null;
+    },        
+    getSliderTime(start, end) {        
+        //const months = Array.from({length: 12}, (item, i) => {
+        //   return new Date(0, i).toLocaleString('en-US', {month: 'short'})
+        //});
+        //console.log(months);
+        //timePeriod: [
+        //      { id: "201912", name: "Dec 19" },
+        var arr = new Array();
+        var dt = new Date(start);
+        //d3.timeFormat('%b-%y') rembember mybe to use!!!
+        //var options = { month: 'long'};
+        var options = { month: 'short'};
+        while (dt <= end) {
+            var mm = dt.getMonth();
+            mm = mm + 1;
+            mm = String(mm);
+            mm = (mm.length > 1) ? mm : "0" + mm;
+            var yy = dt.getFullYear();
+            var idString = String(yy)  +  String(mm); 
+            var nameString = new Intl.DateTimeFormat('en-US', options).format(dt) + '-' + dt.getFullYear();
+            var item = { id :idString, name: nameString }
+            arr.push(item);
+            dt.setMonth(dt.getMonth() + 1);    
+        }    
+        return arr;
     }
-  }
+  }  
 };

@@ -1,9 +1,5 @@
 import { latLng } from "leaflet";
-//import * as d3 from "d3";
-import * as scaleChromatic from "d3-scale-chromatic";
 import * as d3 from "d3";
-
-
 export default {
   data: () => ({
     enableTooltip: true,
@@ -44,11 +40,11 @@ export default {
       let radius = Math.floor(Math.log(d) * factor * zoomFactor) + minimum;
     //let sqrtScale = d3.scaleSqrt().domain([0, data.length - 1]).range([min,max]);    
     //let radius = Math.floor(sqrtScale(d) * factor * zoomFactor) + minimum;
-      console.log("getRadius marker:" + marker);            
-      console.log("getRadius radius:" + radius);
+    //console.log("getRadius marker:" + marker);            
+    //console.log("getRadius radius:" + radius);
+      console.log("m- " + min + " m+ " + max + " r " + radius);
       console.log(data);
       return radius;
-
     },
     mouseover({ target }) {
       target.setStyle({
@@ -72,99 +68,17 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(marker, iMin, iMax, iData) {
-
-      iMin = -60;
-      iMax = 60;
-      console.log("marker:" & marker);                  
-      console.log("iMax:" & iMax);
-      console.log("iMin:" & iMin);
-      console.log("iData:" & iData);
-      
-      /*
-      let dataScale = d3.scaleLinear().domain([iMin, iMax]).range([0, 1]);
-      const point = dataScale(marker);      
-      const colorScale = d3.interpolateRdYlGn;      
-      console.log(dataScale.domain());
-      console.log(dataScale.range());
-      console.log(colorScale(point));
-      console.log(this.markerColors);      
-      console.log("point:" & point);            
-      return colorScale(point);
-      */
-
+    getColor(marker, min, max, data) {
+      min = -60, max = 60;
+      console.log("data:" + data);
       var colors = [];
       var colorsLength = 0;
       colors = this.markerColors;
       colorsLength = colors.length -1;
-      console.log("colorLength: " + colorsLength);
-      var s = d3.scaleLinear().domain([iMin, iMax]).range([0, colorsLength]);
+      var s = d3.scaleLinear().domain([min, max]).range([0, colorsLength]);
       let sPoint = s(marker);
       let point = Math.round(sPoint);
-      console.log("colors " + colors);
-      console.log("s.range " +s.range());
-      console.log("sPoint : " + sPoint);
-      console.log("sRound : " + point);
-      console.log("rgb legend " + colors[point]);
       return colors[point];
-      
-    },
-
-    buildLegend() {
-      this.legend.title = "Trade Variation (%)";
-      this.legend.subTitle = "(Base=Nov 2019)";
-      var grades = [
-          18,
-          16,
-          14,
-          12,
-          10,
-          8,
-          6,
-          4,
-          2,
-          0,
-          -2,
-          -4,
-          -6,
-          -8,
-          -10,
-          -12,
-          -14,
-          -16,
-          -18
-        ],
-        from,
-        to;
-      for (var i = 0; i < grades.length; i++) {
-        from = grades[i];
-        //to = grades[i + 1];
-        let color = from;
-        this.legend.series.push({
-          color: scaleChromatic.interpolateRdYlGn(color),
-          fromNumber: from,
-          toNumber: to
-        });
-      }
-    },
-    calculatePoint(i, intervalSize, colorRangeInfo) {
-      var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
-      return useEndAsStart
-        ? colorEnd - i * intervalSize
-        : colorStart + i * intervalSize;
-    },
-    /* Must use an interpolated color scale, which has a range of [0, 1] */
-    interpolateColors(dataLength, colorScale, colorRangeInfo) {
-      var { colorStart, colorEnd } = colorRangeInfo;
-      var colorRange = colorEnd - colorStart;
-      var intervalSize = colorRange / dataLength;
-      var i, colorPoint;
-      var colorArray = [];
-      for (i = 0; i < dataLength; i++) {
-        colorPoint = this.calculatePoint(i, intervalSize, colorRangeInfo);
-        colorArray.push(colorScale(colorPoint));
-      }
-      return colorArray;
     }
   }
 };

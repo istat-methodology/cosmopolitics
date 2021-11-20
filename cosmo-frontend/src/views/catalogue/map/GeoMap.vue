@@ -34,7 +34,6 @@
             <!-- Legend -->
             <l-control position="topright">
               <div id="Legend" class="legend"></div>
-              <!--app-legend :legend="legend" /-->
             </l-control>
           </l-map>
         </CCardBody>
@@ -49,6 +48,7 @@
             @change="handleCounterChange"
           />
         </CCardFooter>
+
       </div>
     </div>
     <!-- Marker modal -->
@@ -93,7 +93,6 @@ import {
   LTooltip,
   LCircleMarker
 } from "vue2-leaflet";
-//import MapLegend from "@/components/MapLegend";
 import mapMixin from "@/components/mixins/map.mixin";
 import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter";
 import sliderMixin from "@/components/mixins/slider.mixin";
@@ -113,6 +112,7 @@ export default {
   },
   mixins: [mapMixin, sliderMixin],
   data: () => ({
+    sliderTime:[],
     center: [51.16423, 10.45412],
     zoom: 4,
     markerTimeSeries: [],
@@ -154,6 +154,7 @@ export default {
     //Player
     delta: 2000,
     disablePlay: false
+    
   }),
   computed: {
     ...mapGetters("geomap", {
@@ -192,16 +193,14 @@ export default {
       this.buildTimeSeries();
     },
     getExport(marker, exportData, periodValue) {
-      const localExp = exportData.find(exp => {
-        return exp.country == marker.country;
-      });
-      if (periodValue === "201912") {
-        return 1;
-      } else {
-        return localExp ? localExp[periodValue] : 1;
+      const localExp = exportData.find(exp => { return exp.country == marker.country; });
+      if (periodValue === "201912" || periodValue > "202011") { 
+            return 1 
+      } else { 
+            return localExp ? localExp[periodValue] : 1
       }
     },
-    buildTimeSeries() {
+    buildTimeSeries() {      
       this.markerTimeSeries = this.markers.map(marker => {
         return {
           ...marker,
@@ -240,27 +239,17 @@ export default {
       exportData.forEach(obj => {
         for (const key in obj) {
           if (key == periodValue) {
-            console.log(key);
+            //console.log(key);
             data.push(obj[key]);
           }
         }
       });
-      console.log(" getdatalegend: period  =>" + periodValue);
-      console.log(" getdatalegend data: =>" + data);
+      //console.log(" getdatalegend: period  =>" + periodValue);
+      //console.log(" getdatalegend data: =>" + data);
       return data;
     },    
-    setLegend(iMin, iMax, iData) {    
-
-      var min = d3.min(iData);
-      var mean = d3.sum(iData) / iData.length;
-      var max = d3.max(iData);
-      iMin = -60;
-      iMax = 60;
-      console.log(iMin);
-      console.log(iMax);
-      console.log(min);
-      console.log(max);
-      console.log(mean);      
+    setLegend(min, max, iData) {    
+      min = -60, max = 60;
       var colors = [];
       const colorScale = d3.interpolateRdYlGn;
       const colorRangeInfo = {
@@ -271,9 +260,9 @@ export default {
       const dataLength = iData.length;
       colors = this.interpolateColors(dataLength, colorScale, colorRangeInfo);     
       this.markerColors = colors;      
-      console.log(colors);      
+      //console.log(colors);      
       var linearScale = scale.scaleLinear()
-        .domain([iMin, iMax])
+        .domain([min, max])
         .range(colors);      
       d3.select("#Legend").selectAll("*").remove();      
       this.colorlegend("#Legend", linearScale, "linear", {
@@ -330,17 +319,13 @@ export default {
         titlePadding = title ? 32 : 0,
         domain = scale.domain(),
         range = scale.range(),
-        //i = 0,
-        //isVertical = opts.vertical || false,
         isAxis = opts.axis || false,
         pointOnLegend,
         scaleAxis = null,
         axis = null,
         scalePointer = null;
-       
       
       colors = range;
-      ;
       // check the width and height and adjust if necessary to fit in the element use the range
       if ( w < (boxWidth + boxSpacing) * colors.length + padding[1] + padding[3]) { 
           boxWidth =  (w - padding[1] - padding[3] - boxSpacing * colors.length) / colors.length; 
@@ -369,23 +354,14 @@ export default {
         .selectAll("g.legend")
         .data(colors)
         .enter()
-        .append("g")
-        .on('click', function(e){
+        .append("g")        
+        .on('click', function(e,rgbColor){
             var pos = d3.pointer(e);
 	          var xPos = pos[0];
 	          var value = xPos;
-            legendBoxes.selectAll("title").remove();
-            legendBoxes.append("title").text(Math.round(scalePointer(value))).enter();
-            alert(Math.round(scalePointer(value)));            
+            alert("Value: " + Math.round(scalePointer(value))+ ", color: " + rgbColor);            
         });
-        /*.on("mouseover", function(d){
-            var pos = d3.pointer(d);
-            var xPos = pos[0];
-            var value = xPos;
-            legendBoxes.selectAll("title").remove();
-            legendBoxes.append("title").text(Math.round(scalePointer(value)));
-         });
-         */
+        
       console.log(pointOnLegend);
 
       legendBoxes
@@ -400,7 +376,7 @@ export default {
         .style("text-anchor", function() {
           return "middle";
         })
-        .style("pointer-events", "none")
+        .style("pointer-events", "none");
 
       // the colors, each color is drawn as a rectangle
       legendBoxes
@@ -422,8 +398,7 @@ export default {
           .append("g")
           .attr("class", "colorlegend-title")
           .style("text-anchor", "middle")
-          .style("pointer-events", "none")
-          
+          .style("pointer-events", "none")          
           .call(axis);
         
         var axisTop = boxHeight + 1;
@@ -466,12 +441,15 @@ export default {
     }
   },
   created() {
+    this.timePeriod = this.getSliderTime(new Date("2019-12"),new Date("2021-01"));
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.$store.dispatch("geomap/findAll").then(() => {
       this.$store.dispatch("geomap/getExportTimeSeries").then(() => {
+        
         this.buildTimeSeries();
       });
     });
+    
   }
 };
 </script>
