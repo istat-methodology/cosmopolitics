@@ -95,7 +95,8 @@ export default {
             var item = { id :idString, name: nameString }
             arr.push(item);
             dt.setMonth(dt.getMonth() + 1);    
-        }    
+        }
+        console.log(arr);    
         return arr;
     }
   }  

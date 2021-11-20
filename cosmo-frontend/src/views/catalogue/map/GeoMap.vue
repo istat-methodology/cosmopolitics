@@ -194,23 +194,26 @@ export default {
     },
     getExport(marker, exportData, periodValue) {
       const localExp = exportData.find(exp => { return exp.country == marker.country; });
-      if (periodValue === "201912" || periodValue > "202011") { 
-            return 1 
+      if ( periodValue > "202011") { 
+            return 0 
       } else { 
             return localExp ? localExp[periodValue] : 1
       }
     },
     buildTimeSeries() {      
+      
       this.markerTimeSeries = this.markers.map(marker => {
         return {
           ...marker,
           export: this.getExport(marker, this.exportData, this.periodValue)
         };
       });
-      this.dataLegend = this.getDataLegend(this.exportData, this.periodValue);
-      this.markerMax = this.getMax(this.exportData);
-      this.markerMin = this.getMin(this.exportData);
-      this.setLegend(this.markerMin, this.markerMax, this.dataLegend);
+      if ( this.periodValue < "202011") { 
+        this.dataLegend = this.getDataLegend(this.exportData, this.periodValue);
+        this.markerMax = this.getMax(this.exportData);
+        this.markerMin = this.getMin(this.exportData);
+        this.setLegend(this.markerMin, this.markerMax, this.dataLegend);
+      }
     },
     play() {
       this.counter = 0;
