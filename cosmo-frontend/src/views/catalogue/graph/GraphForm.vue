@@ -194,11 +194,11 @@
 <script>
 import { Network } from "vue-visjs";
 import { mapGetters } from "vuex";
+import { required, numeric } from "vuelidate/lib/validators";
+import VueSlider from "vue-slider-component";
 import { Context } from "@/common";
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
-import VueSlider from "vue-slider-component";
-import { required, numeric } from "vuelidate/lib/validators";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
 
@@ -209,7 +209,10 @@ export default {
   data: () => ({
     blank: "",
     //Form fields
+    
+    //selectbox
     selectedPeriod: { id: "202003", name: "Mar 20" },
+    //Slider
     periodValue: "202003",
 
     percentage: 90,
@@ -217,18 +220,13 @@ export default {
     product: null,
     flow: null,
     weight: null,
-
     //Graph modal
     edgeModal: false,
     selectedEdges: [],
     selectedNodes: [],
     transportConstraint: null,
-
     //Metrics
     nodeMetric: null,
-
-    //Slider
-    
     //Spinner
     networkEvents: "",
     spinner: false,

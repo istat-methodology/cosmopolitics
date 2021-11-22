@@ -1,5 +1,5 @@
 import { periodService } from "@/services";
-import { getSliderTime } from "@/common";
+import { getPeriod } from "@/common";
 const state = {
   timePeriod: null,
   periodValue: ""
@@ -17,7 +17,7 @@ const actions = {
     return periodService
       .findByName(filter)
       .then(data => {
-        commit("SET_TIME_PERIOD", getSliderTime(data[0].values.timeStart,data[0].values.timeEnd));
+        commit("SET_TIME_PERIOD", getPeriod(data[0].values.timeStart,data[0].values.timeEnd));
         commit("SET_PERIOD_VALUE", data[0].values.timeSelected);
       })
       .catch(err => {

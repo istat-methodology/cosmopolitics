@@ -1,4 +1,4 @@
-export function getSliderTime(start, end) {        
+export function getPeriod(start, end) {        
   //const months = Array.from({length: 12}, (item, i) => {
   //   return new Date(0, i).toLocaleString('en-US', {month: 'short'})
   //});
@@ -17,7 +17,6 @@ export function getSliderTime(start, end) {
     var shortYear = dt.toLocaleDateString('en', {year: '2-digit'}); 
     var shortMonth = dt.toLocaleString('en-US', {month: 'short'});             
     var longYear = dt.toLocaleDateString('en', {year:'numeric'});
-
     var idString = String(longYear)  +  String(monthIndex);
     var nameString = shortMonth + ' ' + shortYear;
     var item = { id :idString, name: nameString }
