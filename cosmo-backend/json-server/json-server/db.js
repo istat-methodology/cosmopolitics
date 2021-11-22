@@ -15,7 +15,8 @@ const exportseries = require("./exportseries");
 const becs = require("./clsBec");
 const partners = require("./partners");
 const productplus = require("./productplus");
-
+// input for start end date
+const timeperiod = require("./timeperiod");
 
 module.exports = () => ({
   countries,
@@ -34,5 +35,6 @@ module.exports = () => ({
   exportseries,
   becs,
   partners,
-  productplus
+  productplus,
+  timeperiod
 });

@@ -38,7 +38,8 @@
           </l-map>
         </CCardBody>
         <CCardFooter>
-          <vue-slider
+          <vue-slider 
+            v-if="timePeriod"
             :adsorb="true"
             :tooltip="'none'"
             v-model="periodValue"
@@ -48,7 +49,6 @@
             @change="handleCounterChange"
           />
         </CCardFooter>
-
       </div>
     </div>
     <!-- Marker modal -->
@@ -112,7 +112,8 @@ export default {
   },
   mixins: [mapMixin, sliderMixin],
   data: () => ({
-    sliderTime:[],
+    periodValue: "201912",
+        
     center: [51.16423, 10.45412],
     zoom: 4,
     markerTimeSeries: [],
@@ -157,11 +158,13 @@ export default {
     
   }),
   computed: {
-    ...mapGetters("geomap", {
+    ...mapGetters(
+      "geomap", {
       markers: "geomap",
       markerData: "markerData",
       exportData: "exportData"
-    }),
+      }), 
+    ...mapGetters("period", ["timePeriod"]),    
     micro() {
       return this.markerData ? this.markerData[0].MI : [];
     },
@@ -444,15 +447,13 @@ export default {
     }
   },
   created() {
-    this.timePeriod = this.getSliderTime(new Date("2019-12"),new Date("2021-01"));
+    this.$store.dispatch("period/findByName", "map");
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.$store.dispatch("geomap/findAll").then(() => {
-      this.$store.dispatch("geomap/getExportTimeSeries").then(() => {
-        
+      this.$store.dispatch("geomap/getExportTimeSeries").then(() => {        
         this.buildTimeSeries();
       });
     });
-    
   }
 };
 </script>

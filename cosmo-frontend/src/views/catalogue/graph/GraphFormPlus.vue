@@ -50,9 +50,10 @@
             @hover-node="handleOverNode"
           />
           <vue-slider
+            v-if="timePeriod"
             :adsorb="true"
             :tooltip="'none'"
-            v-model="sliderValue"
+            v-model="periodValue"
             :data="timePeriod"
             :data-value="'id'"
             :data-label="'name'"
@@ -69,6 +70,7 @@
         <CCardBody>
           <label class="card-label">Period</label>
           <v-select
+            v-if="timePeriod"
             label="name"
             placeholder="Select period"
             :options="timePeriod"
@@ -189,7 +191,7 @@ export default {
 
   data: () => ({
     //Form fields
-    selectedPeriod: { id: "202003", name: "Mar 20" },
+    
     percentage: 90,
     transport: null,
     product: null,
@@ -202,7 +204,8 @@ export default {
     //Metrics
     nodeCentrality: 0,
     //Slider
-    sliderValue: "202003",
+    periodValue: "202003",
+    selectedPeriod: { id: "202003", name: "Mar 20" },
     //Spinner
     networkEvents: "",
     spinner: false
@@ -210,6 +213,7 @@ export default {
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", ["transports", "productPlus", "weights"]),
+    ...mapGetters("period", ["timePeriod"]),    
     network() {
       return this.nodes && this.edges
         ? {
@@ -305,7 +309,7 @@ export default {
     },
 
     updateSlider() {
-      this.sliderValue = this.selectedPeriod.id;
+      this.periodValue = this.selectedPeriod.id;
     },
 
     handleSliderChange(val) {
@@ -382,7 +386,7 @@ export default {
     }
   },
   created() {
-    this.timePeriod = this.getSliderTime(new Date("2019-12"),new Date("2021-01"));
+    this.$store.dispatch("period/findByName", "graph-plus");
     this.$store.dispatch("coreui/setContext", Context.GraphPlus);
     this.$store.dispatch("classification/getTransports");
     this.$store.dispatch("classification/getProducts");

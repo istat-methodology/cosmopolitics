@@ -1,8 +1,5 @@
 export default {
   data: () => ({
-    //timePeriod: this.getSliderScale(),
-    periodValue: "201912",
-    timePeriod:[] ,   
     policyPeriodValue: "202003",
     policyPeriod: [
       { id: "202003", name: "Mar 20" },
