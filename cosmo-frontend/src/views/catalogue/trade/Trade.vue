@@ -100,28 +100,33 @@ export default {
       descr: "Export"
     },
     download_status: "Download Charts",
-    spinner: false
+    spinner: false,
+    tradePeriod:[]
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
     ...mapGetters("trade", ["charts"]),
+    ...mapGetters("period", ["timePeriod"]),  
     chartData() {
       var chartData = {};
       chartData.datasets = [];
-      chartData.labels = this.timeTrade;
-      if (this.charts) {
-        this.charts.data.forEach(element => {
-          const color = this.getColor();
-          chartData.datasets.push({
-            label: element.dataname,
-            fill: false,
-            backgroundColor: color.background,
-            borderColor: color.border,
-            data: element.value,
-            showLine: true,
-            pointRadius: 3
+      if (this.timePeriod) {
+        //chartData.labels = this.timeTrade;
+        chartData.labels = this.tradePeriod;
+        if (this.charts) {
+          this.charts.data.forEach(element => {
+            const color = this.getColor();
+            chartData.datasets.push({
+              label: element.dataname,
+              fill: false,
+              backgroundColor: color.background,
+              borderColor: color.border,
+              data: element.value,
+              showLine: true,
+              pointRadius: 3
+            });
           });
-        });
+        }
       }
       this.clearColor();
       return chartData;
@@ -155,6 +160,13 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch("period/findByName", "trade").then(() => {
+      for (var i=0; i < this.timePeriod.length; i++){
+        console.log(this.timePeriod[i].name);  
+        this.tradePeriod.push(this.timePeriod[i].name);
+      }
+      console.log(this.tradePeriod);
+    });
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("trade/findByName", {
