@@ -1,4 +1,5 @@
 const countries = require("./countries");
+const countriesBorders = require("./countriesBorders");
 const iemarkers = require("./iemarkers");
 const exportvqs = require("./exportvqs");
 const importvqs = require("./importvqs");
@@ -20,6 +21,7 @@ const timeperiod = require("./timeperiod");
 
 module.exports = () => ({
   countries,
+  countriesBorders,
   iemarkers,
   exportvqs,
   importvqs,

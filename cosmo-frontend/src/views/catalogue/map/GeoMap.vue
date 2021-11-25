@@ -8,9 +8,25 @@
             :zoom="zoom"
             :center="center"
             style="height: 650px; width: 100%"
-            @ready="setShooter()"
-          >
+            @ready="setShooter()"          >
             <l-tile-layer :url="url" :attribution="attribution" />
+            <l-geo-json 
+            v-if="geojson"
+            :geojson="geojson" 
+            :options="options"
+            :options-style="styleFunction" 
+            ></l-geo-json>            
+            <l-wms-tile-layer
+              :key="wmsLayer.name"
+              :base-url="wmsLayer.url"
+              :layers="wmsLayer.layers"
+              :visible="wmsLayer.visible"
+              :name="wmsLayer.name"
+              :attribution="wmsLayer.attribution"
+              :transparent="true"
+              format="image/png"
+              layer-type="base">
+            </l-wms-tile-layer>
             <!-- Circle markers -->
             <l-circle-marker
               v-for="(marker, i) in markerTimeSeries"
@@ -35,6 +51,11 @@
             <l-control position="topright">
               <div id="Legend" class="legend"></div>
             </l-control>
+            <l-control position="bottomleft">
+              <button @click="setGeoJsonLayer()">GEOJSON</button>
+              <button @click="setWMSLayer()">WMS</button>
+              <button @click="resetLayer()">reset layer</button>
+            </l-control>      
           </l-map>
         </CCardBody>
         <CCardFooter>
@@ -88,7 +109,9 @@ import { mapGetters } from "vuex";
 import { Context } from "@/common";
 import {
   LMap,
+  LGeoJson,
   LTileLayer,
+  LWMSTileLayer,
   LControl,
   LTooltip,
   LCircleMarker
@@ -97,11 +120,15 @@ import mapMixin from "@/components/mixins/map.mixin";
 import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import VueSlider from "vue-slider-component";
+import axios from "axios";
+import WMSCapabilities from 'wms-capabilities';
 export default {
   name: "GeoMap",
   components: {
     LMap,
     LTileLayer,
+    "l-wms-tile-layer" : LWMSTileLayer,
+    "l-geo-json": LGeoJson,
     LControl,
     LCircleMarker,
     LTooltip,
@@ -150,8 +177,21 @@ export default {
     ],
     //Player
     delta: 2000,
-    disablePlay: false
-    
+    disablePlay: false,
+    wmsLayer : {
+        url: '',
+        name: '',
+        visible: true,
+        format: 'image/png',
+        layers: '',
+        transparent: true,
+        attribution: '',
+    },       
+    geojson: null,
+    geojsoncolor: null,
+    colorScale: ["e7d090", "e9ae7b", "de7062"],
+    currentStrokeWidth: 0.5,
+    currentStrokeColor: "gray",
   }),
   computed: {
     ...mapGetters(
@@ -160,7 +200,8 @@ export default {
       markerData: "markerData",
       exportData: "exportData"
       }), 
-    ...mapGetters("period", ["timePeriod"]),    
+    ...mapGetters("period", ["timePeriod"]),
+    ...mapGetters("countries", ["countriesborders"]),    
     micro() {
       return this.markerData ? this.markerData[0].MI : [];
     },
@@ -175,15 +216,71 @@ export default {
     },
     exportGoods() {
       return this.markerData ? this.markerData[0].ExpG : [];
+    },
+    options() {
+      return {
+        onEachFeature: this.onEachFeatureFunction
+      };
+    },
+    styleFunction() {
+      return () => {
+        return {
+          weight: 0.5,
+          opacity: 1,
+          fillOpacity: 0.6
+        };
+      };
+    },
+    onEachFeatureFunction() {
+      if (!this.enableTooltip) {
+        return () => {};
+      }
+      return (feature, layer) => {
+        layer.bindTooltip("<div>" 
+        + feature.properties.iso_a2 + "<br>" 
+        + feature.properties.admin +  "<br>" 
+        + feature.properties.continent +  "<br>"
+        + " </div>" , { permanent: false, sticky: true }
+        );
+        layer.on({
+          mouseover: this.mouseover.bind(this),
+          mouseout: this.mouseout.bind(this)
+        });
+        //click: zoomToFeature
+        var value = this.getFeatureExport();
+        layer.options.fillColor = this.getColor(value);
+        layer.options.color = this.getColor(value);
+      };
     }
   },
   methods: {
+    getFeatureExport(){
+      var min = Math.ceil(-60);
+      var max = Math.floor(60);
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    mouseover({ target }) {
+        target.setStyle({
+          weight: this.currentStrokeWidth,
+          color: this.currentStrokeColor,
+          dashArray: ""
+        });
+    },
+    mouseout({ target }) {
+        target.setStyle({
+          weight: this.strokeWidth,
+          color: this.strokeColor,
+          dashArray: ""
+        });
+        this.currentItem = { name: "", value: 0 };
+      },
     openModal(marker) {
       this.$store.dispatch("geomap/getMarker", marker.country).then(() => {
         this.markerModal = true;
         this.modalTitle = marker.name;
       });
     },
+ 
     closeModal() {
       this.markerModal = false;
     },
@@ -201,10 +298,7 @@ export default {
     },
     buildTimeSeries() {            
       this.markerTimeSeries = this.markers.map(marker => {
-        return {
-          ...marker,
-          export: this.getExport(marker, this.exportData, this.periodValue)
-        };
+        return { ...marker, export: this.getExport(marker, this.exportData, this.periodValue)};
       });
       if ( this.periodValue < "202011") { 
         this.dataLegend = this.getDataLegend(this.exportData, this.periodValue);
@@ -260,15 +354,71 @@ export default {
       //console.log(min);
       return min;
     },
+    setGeoJsonLayer(){
+      /*var jsonUrl = "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson";
+      axios.get(jsonUrl).then((res) => {
+        this.geojson = res.data;
+      });    
+      */
+    },
+    setWMSLayer(){
+      this.wmsLayer = {
+        url: 'https://ahocevar.com/geoserver/wms',
+        visible: true,
+        format: 'image/png',
+        name:'ne:ne',
+        layers:'ne:ne',
+        transparent: true
+      }          
+      var wmsUrl = "https://ahocevar.com/geoserver/wms?service=wms&version=1.1.1&request=GetCapabilities"; 
+      axios.get(wmsUrl).then((res) => {
+        // For convert the xml to JSON
+        const json = new WMSCapabilities(res.data).toJSON();
+        // GetCapabilities provides all the layers so we need to filter the required one.      
+        //const workspace="";
+        const layer_name="opengeo:countries";
+
+        const layers = json?.Capability?.Layer?.Layer;
+        const layer = layers?.filter((l) => l.Name === `${layer_name}` )[0];
+
+        // To get the bounding box of the layer
+        const bbox = layer?.LatLonBoundingBox;
+
+        // Use this bounding box to zoom to the layer,
+        var fitBounds=[];
+        fitBounds.push([ [bbox[1], bbox[0]],  [bbox[3], bbox[2]], ]);
+        console.log(fitBounds);
+      });  
+    },
+    resetLayer(){
+      this.wmsLayer = {
+        url: '',
+        name: '',
+        visible: false,
+        format: 'image/png',
+        layers: '',
+        transparent: true,
+        attribution: '',
+      }         
+    }
   },
   created() {
+    
     this.$store.dispatch("period/findByName", "map");
+    this.$store.dispatch("countries/getCountriesBorders").then(() => {
+        this.geojson = this.countriesborders;      
+    });
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.$store.dispatch("geomap/findAll").then(() => {
       this.$store.dispatch("geomap/getExportTimeSeries").then(() => {        
         this.buildTimeSeries();
       });
-    });
+    });    
+    //var jsonUrl = "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson";
+    //  axios.get(jsonUrl).then((res) => {
+    //    this.geojsoncolor = res;        
+    //});
+    
   }
 };
 </script>

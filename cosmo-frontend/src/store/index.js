@@ -16,6 +16,8 @@ import { policyIndicator } from "./modules/policyIndicator/policyIndicator";
 import { bec } from "./modules/bec/bec";
 // time period 
 import { period } from "./modules/period/period";
+import { countries } from "./modules/countries/countries";
+
 
 Vue.use(Vuex);
 
@@ -35,6 +37,8 @@ export default new Vuex.Store({
     policyIndicator,
     bec,
     //
-    period
+    period,
+    countries
+
   }
 });
