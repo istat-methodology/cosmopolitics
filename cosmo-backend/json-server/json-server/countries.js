@@ -25,11 +25,12 @@ module.exports = [
     name: "Bulgaria"
   },
  {
-      "country":"CY",
-       "coordinates":{
-              "latitude":"35.126413","longitude":"33.429859"
-         },
-     "name":"Cyprus"  
+    country: "CY",
+    coordinates: {
+        latitude:"35.126413",
+        longitude:"33.429859"
+    },
+    name:"Cyprus"  
  },
   {
     country: "CZ",
@@ -56,11 +57,12 @@ module.exports = [
     name: "Denmark"
   },
    {
-      "country":"EE",
-       "coordinates":{
-              "latitude":"58.595272","longitude":"25.013607"
-         },
-         "name":"Estonia"  
+    country:"EE",
+    coordinates:{
+        latitude:"58.595272",
+        longitude:"25.013607"
+    },
+    name:"Estonia"  
  },
   {
     country: "ES",
@@ -142,11 +144,12 @@ module.exports = [
     name: "Italy"
   },
   {
-      "country":"LT",
-       "coordinates":{
-              "latitude":"55.169438","longitude":"23.881275"
-         },
-         "name":"Lithuania"  
+    country:"LT",
+    coordinates: {
+      latitude: "55.169438",
+      longitude:"23.881275"
+    },
+    name:"Lithuania"  
  },
   {
     country: "LU",
@@ -157,11 +160,12 @@ module.exports = [
     name: "Luxembourg"
   },
   {
-      "country":"LV",
-       "coordinates":{
-              "latitude":"56.879635","longitude":"24.603189"
-         },
-         "name":"Latvia"  
+    country:"LV",
+    coordinates:{
+      latitude:"56.879635",
+      longitude:"24.603189"
+    },
+    name:"Latvia"  
  },
   {
     country: "MT",

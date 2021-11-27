@@ -5,3 +5,4 @@ export * from "./headers";
 export * from "./map";
 export * from "./graphVisjs";
 export * from "./period";
+export * from "./jsonData";

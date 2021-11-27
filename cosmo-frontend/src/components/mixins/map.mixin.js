@@ -68,9 +68,8 @@ export default {
         : "Hover over a state";
       return div;
     },
-    getColor(marker, min, max, data) {
+    getColor(marker, min, max) {
       min = -60, max = 60;
-      console.log("data:" + data);
       var colors = [];
       var colorsLength = 0;
       colors = this.markerColors;
