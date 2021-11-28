@@ -29,7 +29,8 @@
               layer-type="base">
             </l-wms-tile-layer>
             <!-- Circle markers -->
-            <l-circle-marker              
+            <l-circle-marker    
+              v-show="!isMarker"          
               v-for="(marker, i) in markerTimeSeries"
               v-bind:key="i"
               :lat-lng="[
@@ -243,45 +244,39 @@ export default {
       if (!this.enableTooltip) {
         return () => {};
       }
-      return (feature, layer) => {
+      return (feature, layer) => {        
         var value = this.jsondata[feature.properties.iso_a2];
-        layer.options.fillColor = this.getColor(value,-60,60);
-        layer.options.color = "gray"; //this.getColor(value,-60,60);        
-        layer.bindTooltip("<div>" 
-        + feature.properties.iso_a2 + "<br>" 
-        + feature.properties.admin +  "<br>" 
-        + feature.properties.continent +  "<br>"
-        + "export:" + value +  "<br>"
-        + " </div>" , { permanent: false, sticky: true }
-        );
-        layer.on({
-          mouseover: this.mouseover,
-          mouseout: this.mouseout,
-          //click: this.zoomToFeature
-        });
-        
+        if (value != undefined){
+          layer.options.fillColor = this.getColor(value,-60,60);
+          layer.options.color = "gray"; //this.getColor(value,-60,60);    
+          layer.bindTooltip("<div>" 
+          + feature.properties.iso_a2 + "<br>" 
+          + feature.properties.admin +  "<br>" 
+          + feature.properties.continent +  "<br>"
+          + "export:" + value +  "<br>"
+          + " </div>" , { permanent: false, sticky: true }        
+          );        
+          layer.on({
+            mouseover: this.mouseover,
+            mouseout: this.mouseout         
+          });
+        }
       };
     }
   },
   methods: {
     mouseover(e) {
         var layer = e.target;
-        layer.setStyle({
-            weight: 1,
-            opacity: 1,            
+        layer.setStyle({        
             color: 'black',
-            dashArray: '2',
-            fillOpacity: 0.7
+            dashArray: '2'
         });
     },
     mouseout(e) {
         var layer = e.target;
         layer.setStyle({
-            weight: 1,
-            opacity: 1,
             color: 'gray',
-            dashArray: '',
-            fillOpacity: 0.7
+            dashArray: ''   
         });
         this.currentItem = { name: "", value: 0 };
     },
