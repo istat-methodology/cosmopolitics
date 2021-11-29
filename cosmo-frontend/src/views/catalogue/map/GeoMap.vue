@@ -44,7 +44,7 @@
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{  marker.export }}
+                  >{{ marker.name }} {{  Math.round(marker.export) }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -246,6 +246,7 @@ export default {
       return (feature, layer) => {        
         var value = this.jsondata[feature.properties.iso_a2];
         if (value != undefined){
+          value = Math.round(value);
           layer.options.fillColor = this.getColor(value,-60,60);
           layer.options.color = "gray"; //this.getColor(value,-60,60);    
           layer.bindTooltip("<div>" 
