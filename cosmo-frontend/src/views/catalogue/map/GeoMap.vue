@@ -10,9 +10,8 @@
             style="height: 650px; width: 100%"
             @ready="setShooter()"          >
             <l-tile-layer :url="url" :attribution="attribution" />
-            <l-geo-json 
-            v-show="isFeature"
-            v-if="geojson && isFeature"
+            <l-geo-json v-if="geojson"
+            :visible="isFeature"
             :geojson="geojson" 
             :options="options"
             :options-style="styleFunction" 
@@ -30,13 +29,13 @@
             </l-wms-tile-layer>
             <!-- Circle markers -->
             <l-circle-marker    
-              v-show="!isMarker"          
               v-for="(marker, i) in markerTimeSeries"
               v-bind:key="i"
               :lat-lng="[
                 marker.coordinates.latitude,
                 marker.coordinates.longitude
               ]"
+              :visible="!isMarker"
               :fillOpacity="0.65"
               :radius="getRadius(marker.export, markerMin, markerMax, dataLegend)"
               :color="getColor(marker.export, markerMin, markerMax)"
@@ -364,6 +363,7 @@ export default {
     },
     setGeoJsonLayer(){
       this.isFeature= !this.isFeature;
+      this.isMarker= !this.isMarker;
     },
     setWMSLayer(){
       this.wmsLayer = {
