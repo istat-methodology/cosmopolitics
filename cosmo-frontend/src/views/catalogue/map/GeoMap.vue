@@ -53,9 +53,9 @@
               <div id="Legend" class="legend"></div>
             </l-control>
             <l-control position="bottomleft">
-              <button @click="setGeoJsonLayer()">feature</button>
-              <button @click="setWMSLayer()">WMS</button>
-              <button @click="resetLayer()">reset layer</button>
+              <button @click="setFeatureMarker()">{{this.btnFeatureMarker}}</button>
+              <!--button @click="setWMSLayer()">WMS</button>
+              <button @click="resetLayer()">reset layer</button-->
             </l-control>      
           </l-map>
         </CCardBody>
@@ -192,9 +192,9 @@ export default {
     geojsoncolor: null,       
     currentStrokeWidth: 0.5,
     currentStrokeColor: "gray",
+    btnFeatureMarker:"Feature",
     isMarker:false,
     isFeature:false,
-
   }),
   computed: {
     ...mapGetters(
@@ -361,7 +361,12 @@ export default {
       //console.log(min);
       return min;
     },
-    setGeoJsonLayer(){
+    setFeatureMarker(){
+      if (this.btnFeatureMarker=="Feature"){
+        this.btnFeatureMarker="Marker";
+      }else{
+        this.btnFeatureMarker="Feature";
+      }
       this.isFeature= !this.isFeature;
       this.isMarker= !this.isMarker;
     },
