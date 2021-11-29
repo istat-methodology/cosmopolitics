@@ -64,7 +64,7 @@
             v-if="timePeriod"
             :adsorb="true"
             :tooltip="'none'"
-            v-model="periodValue"
+            v-model="seriesperiod"
             :data="timePeriod"
             :data-value="'id'"
             :data-label="'name'"
@@ -137,7 +137,7 @@ export default {
   },
   mixins: [mapMixin, sliderMixin],
   data: () => ({
-    periodValue: "202004",
+    seriesperiod: "202004",
     center: [51.16423, 10.45412],
     zoom: 4,
     markerTimeSeries: [],
@@ -293,26 +293,26 @@ export default {
       this.markerModal = false;
     },
     handleCounterChange(val) {
-      this.periodValue = val;
-      this.buildTimeSeries();
-      this.$store.dispatch("countries/getDataSeries").then((seriesData) => {
-      this.$store.dispatch("countries/getCountriesBorders",{seriesData:seriesData, seriesPeriod: this.periodValue});
+      this.seriesperiod = val;
+      this.buildTimeSeries();    
+      this.$store.dispatch("countries/getDataSeries").then((seriesdata) => {
+        this.$store.dispatch("countries/getCountriesBorders",{seriesData:seriesdata, seriesPeriod:this.seriesperiod});
       });
     },
-    getExport(marker, exportData, periodValue) {
+    getExport(marker, exportData, seriesperiod) {
       const localExp = exportData.find(exp => { return exp.country == marker.country; });
-      if ( periodValue > "202011") { 
+      if ( seriesperiod > "202011") { 
             return 0 
       } else { 
-            return localExp ? localExp[periodValue] : 1
+            return localExp ? localExp[seriesperiod] : 1
       }
     },
     buildTimeSeries() {            
       this.markerTimeSeries = this.markers.map(marker => {
-        return { ...marker, export: this.getExport(marker, this.exportData, this.periodValue)};
+        return { ...marker, export: this.getExport(marker, this.exportData, this.seriesperiod)};
       });
-      if ( this.periodValue < "202011") { 
-        this.dataLegend = this.getDataLegend(this.exportData, this.periodValue);
+      if ( this.seriesperiod < "202011") { 
+        this.dataLegend = this.getDataLegend(this.exportData, this.seriesperiod);
         this.markerMax = this.getMax(this.exportData);
         this.markerMin = this.getMin(this.exportData);
         this.setLegend(this.markerMin, this.markerMax, this.dataLegend);
@@ -321,11 +321,11 @@ export default {
     setShooter() {
       new SimpleMapScreenshoter().addTo(this.$refs.map.mapObject);
     },    
-    getDataLegend(exportData, periodValue) {
+    getDataLegend(exportData, seriesperiod) {
       var data = [];
       exportData.forEach(obj => {
         for (const key in obj) {
-          if (key == periodValue) {
+          if (key == seriesperiod) {
             //console.log(key);
             data.push(obj[key]);
           }
@@ -415,8 +415,8 @@ export default {
     this.$store.dispatch("geomap/findAll").then(() => {
         this.$store.dispatch("geomap/getExportTimeSeries").then(() => {        
             this.buildTimeSeries();
-            this.$store.dispatch("countries/getDataSeries").then((seriesData) => {
-            this.$store.dispatch("countries/getCountriesBorders",{seriesData:seriesData, seriesPeriod:this.periodValue});
+            this.$store.dispatch("countries/getDataSeries").then((seriesdata) => {
+            this.$store.dispatch("countries/getCountriesBorders",{seriesData:seriesdata, seriesPeriod:this.seriesperiod});
         });
       });
     });  

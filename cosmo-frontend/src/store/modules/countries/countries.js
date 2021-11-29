@@ -42,7 +42,7 @@ const actions = {
       .catch(err => {
         console.log(err);
       });
-  },
+  }, 
   getDataSeries({ commit }) {
     return countriesService
       .getDataSeries()
