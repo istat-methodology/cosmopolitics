@@ -1,36 +1,7 @@
-import { latLng } from "leaflet";
+//import { latLng } from "leaflet";
 import * as d3 from "d3";
 import * as scale from "d3-scale";
 export default {
-  data: () => ({
-    enableTooltip: true,
-    zoom: 4,
-    center: [45.861347, 57.405578],
-    fillColor: "#e4ce7f",
-    marker: latLng(41.89277044, 12.48366722),
-    legend: {
-      title: null,
-      subTitle: null,
-      series: [
-        {
-          color: "",
-          fromNumber: "",
-          toNumber: ""
-        }
-      ]
-    },
-    info: {},
-    strokeColor: "fff",
-    currentStrokeColor: "4d4d4d",
-    strokeWidth: 2,
-    currentStrokeWidth: 3,
-    optionCircle: {
-      color: "",
-      radius: "10"
-    },
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-  }),
   methods: {
     getRadius(marker,min,max,data) {
       const minimum = 15;
@@ -45,29 +16,7 @@ export default {
       console.log("m- " + min + " m+ " + max + " r " + radius);
       console.log(data);
       return radius;
-    },
-    mouseover({ target }) {
-      target.setStyle({
-        weight: this.currentStrokeWidth,
-        color: `#${this.currentStrokeColor}`,
-        dashArray: ""
-      });
-      this.info = this.buildInfo(target.feature);
-    },
-    mouseout({ target }) {
-      target.setStyle({
-        weight: this.strokeWidth,
-        color: `#${this.strokeColor}`,
-        dashArray: ""
-      });
-      this.info = this.buildInfo("");
-    },
-    callGraph(props) {
-      var div = props
-        ? "State of " + "<b>" + props.properties.display_name + "</b><br/>"
-        : "Hover over a state";
-      return div;
-    },
+    }, 
     getColor(marker, min, max) {
       min = -60, max = 60;
       var colors = [];
@@ -79,7 +28,7 @@ export default {
       let point = Math.round(sPoint);
       return colors[point];
     },
-    setLegend(min, max, iData) {    
+    setLegend(min, max, data) {    
       min = -60, max = 60;
       var colors = [];
       const colorScale = d3.interpolateRdYlGn;
@@ -88,7 +37,7 @@ export default {
         colorEnd: 1,
         useEndAsStart: false,
       };
-      const dataLength = iData.length;
+      const dataLength = data.length;
       colors = this.interpolateColors(dataLength, colorScale, colorRangeInfo);     
       this.markerColors = colors;      
       //console.log(colors);      
@@ -96,14 +45,14 @@ export default {
         .domain([min, max])
         .range(colors);      
       d3.select("#Legend").selectAll("*").remove();      
-      this.colorlegend("#Legend", linearScale, "linear", {
+      this.colorlegend("#Legend", linearScale, {
         //title: "Trade Variation (%) - (Base=Nov 2019)",
         title: "Monthly change in Export (%) - (Base=Nov 2019)",
         boxHeight: 15,
         axis:true
       });
     },     
-    colorlegend(target, scale, type, options) {
+    colorlegend(target, scale, options) {
       var opts = options || {},
         boxWidth = opts.boxWidth || 20, // width of each box (int)
         boxHeight = opts.boxHeight || 20, // height of each box (int)
@@ -122,7 +71,6 @@ export default {
         domain = scale.domain(),
         range = scale.range(),
         isAxis = opts.axis || false,
-        pointOnLegend,
         scaleAxis = null,
         axis = null,
         scalePointer = null;
@@ -135,11 +83,9 @@ export default {
       if (h < boxHeight + padding[0] + padding[2] + titlePadding) { 
           boxHeight = h - padding[0] - padding[2] - titlePadding;
       }
-
       scaleAxis = d3.scaleLinear().domain(domain).range([0, boxWidth * colors.length]),
       axis = d3.axisBottom(scaleAxis),
       scalePointer = d3.scaleLinear().domain([0,350]).range([-60,60]);
-
       // set up the legend graphics context
       var legend = d3
         .select(target)
@@ -163,8 +109,6 @@ export default {
 	          var value = xPos;
             alert("Value: " + Math.round(scalePointer(value))+ ", color: " + rgbColor);            
         });
-        
-      console.log(pointOnLegend);
 
       legendBoxes
         .append("text")
@@ -240,6 +184,21 @@ export default {
         colorArray.push(colorScale(colorPoint));
       }
       return colorArray;
-    }
+    },
+    mouseover(e) {
+      var layer = e.target;
+      layer.setStyle({        
+          color: 'black',
+          dashArray: '2'
+      });
+    },
+    mouseout(e) {
+      var layer = e.target;
+      layer.setStyle({
+          color: 'gray',
+          dashArray: ''   
+      });
+      this.currentItem = { name: "", value: 0 };
+    },
   }
 };
