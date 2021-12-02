@@ -1,5 +1,6 @@
 export default {
     data: () => ({
+        isModal: false,
         modalTitle: "",
         mainFields: [
           { key: "Year", label: "" },
@@ -34,12 +35,12 @@ export default {
     methods: {
         openModal(marker) {
             this.$store.dispatch("geomap/getMarker", marker.country).then(() => {
-                this.markerModal = true;
+                this.isModal = true;
                 this.modalTitle = marker.name;
-        });
+            });
         }, 
         closeModal() {
-            this.markerModal = false;
+            this.isModal = false;
         },
     },
 };

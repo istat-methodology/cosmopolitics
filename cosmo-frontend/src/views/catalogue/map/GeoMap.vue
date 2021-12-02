@@ -61,7 +61,7 @@
       </div>
     </div>
     <!-- Marker modal -->
-    <CModal :title="modalTitle" :show.sync="markerModal" size="lg">
+    <CModal :title="modalTitle" :show.sync="isModal" size="lg">
       <CTabs variant="tabs" :active-tab="0">
         <CTab title="Main">
           <CDataTable
@@ -128,19 +128,32 @@ export default {
     zoom: 4,
     seriesperiod: "202004",
     markerTimeSeries: [],
-    bordersTimeSeries: [],
-    markerModal: false,
-    markerMax: 1,
-    markerMin: -1,
-    dataLegend: [], 
-    markerColors: [],
+    bordersTimeSeries: [],    
+    markerMax: 60,
+    markerMin: -60,  
+    
     //Player
-    delta: 2000,
-    disablePlay: false,
+    delta: 2000,   
     //features
     enableTooltip: true,
-    currentStrokeWidth: 0.5,
-    currentStrokeColor: "gray",
+    layer:{
+      style:{
+        default:{
+          weight: 1,
+          opacity: 1,
+          color: 'gray',
+          dashArray: '',
+          fillOpacity: 0.7
+        },
+        over:{
+          weight: 1,
+          opacity: 1,
+          color: 'black',
+          dashArray: '2',
+          fillOpacity: 0.7
+        }
+      }
+    },      
     btnFeatureMarker:"Feature",
     isMarker:false,
     isFeature:false,
@@ -180,11 +193,11 @@ export default {
     styleFunction() {
       return () => {
         return {
-        weight: 1,
-        opacity: 1,
-        color: 'gray',
-        dashArray: '',
-        fillOpacity: 0.7
+          weight: this.layer.style.default.weight,
+          opacity: this.layer.style.defaultopacity,
+          color: this.layer.style.default.color,
+          dashArray: this.layer.style.default.dashArray,
+          fillOpacity: this.layer.style.default.fillOpacity
         };
       };
     },
@@ -293,6 +306,20 @@ export default {
       }
       this.isFeature= !this.isFeature;
       this.isMarker= !this.isMarker;
+    },    
+    mouseover(e) {
+      var layer = e.target;
+      layer.setStyle({        
+          color: this.layer.style.over.color,
+          dashArray: this.layer.style.over.dashArray   
+      });
+    },
+    mouseout(e) {
+      var layer = e.target;
+      layer.setStyle({
+          color: this.layer.style.default.color,
+          dashArray: this.layer.style.default.dashArray   
+      });     
     },
   },
   created() {    
@@ -347,5 +374,4 @@ export default {
   font-size: 11px;
   fill: black;  
 }
-
 </style>

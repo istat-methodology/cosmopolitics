@@ -2,6 +2,10 @@
 import * as d3 from "d3";
 import * as scale from "d3-scale";
 export default {
+  data: () => ({
+    colors : [],
+    dataLegend: []    
+  }),
   methods: {
     getRadius(marker,min,max,data) {
       const minimum = 15;
@@ -19,18 +23,15 @@ export default {
     }, 
     getColor(marker, min, max) {
       min = -60, max = 60;
-      var colors = [];
       var colorsLength = 0;
-      colors = this.markerColors;
-      colorsLength = colors.length -1;
+      colorsLength = this.colors.length -1;
       var s = d3.scaleLinear().domain([min, max]).range([0, colorsLength]);
       let sPoint = s(marker);
       let point = Math.round(sPoint);
-      return colors[point];
+      return this.colors[point];
     },
     setLegend(min, max, data) {    
-      min = -60, max = 60;
-      var colors = [];
+      min = -60, max = 60;     
       const colorScale = d3.interpolateRdYlGn;
       const colorRangeInfo = {
         colorStart: 0,
@@ -38,12 +39,10 @@ export default {
         useEndAsStart: false,
       };
       const dataLength = data.length;
-      colors = this.interpolateColors(dataLength, colorScale, colorRangeInfo);     
-      this.markerColors = colors;      
-      //console.log(colors);      
+      this.colors = this.interpolateColors(dataLength, colorScale, colorRangeInfo);     
       var linearScale = scale.scaleLinear()
         .domain([min, max])
-        .range(colors);      
+        .range(this.colors);      
       d3.select("#Legend").selectAll("*").remove();      
       this.colorlegend("#Legend", linearScale, {
         //title: "Trade Variation (%) - (Base=Nov 2019)",
@@ -109,7 +108,6 @@ export default {
 	          var value = xPos;
             alert("Value: " + Math.round(scalePointer(value))+ ", color: " + rgbColor);            
         });
-
       legendBoxes
         .append("text")
 		    .attr("stroke", "#fff")
@@ -184,21 +182,6 @@ export default {
         colorArray.push(colorScale(colorPoint));
       }
       return colorArray;
-    },
-    mouseover(e) {
-      var layer = e.target;
-      layer.setStyle({        
-          color: 'black',
-          dashArray: '2'
-      });
-    },
-    mouseout(e) {
-      var layer = e.target;
-      layer.setStyle({
-          color: 'gray',
-          dashArray: ''   
-      });
-      this.currentItem = { name: "", value: 0 };
-    },
+    }
   }
 };

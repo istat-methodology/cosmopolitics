@@ -31,6 +31,7 @@ components: {
 },
 export default {
     data: () => ({
+
       wmsLayer : {
         url: '',
         name: '',
