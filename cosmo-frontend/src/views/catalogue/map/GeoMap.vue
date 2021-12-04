@@ -130,10 +130,8 @@ export default {
     markerTimeSeries: [],
     bordersTimeSeries: [],    
     markerMax: 60,
-    markerMin: -60,  
-    
-    //Player
-    delta: 2000,   
+    markerMin: -60, 
+    //delta: 2000,   
     //features
     enableTooltip: true,
     layer:{
@@ -217,8 +215,7 @@ export default {
           + feature.properties.admin +  "<br>" 
           + feature.properties.continent +  "<br>"
           + "export:" + value +  "<br>"
-          + " </div>" , { permanent: false, sticky: true }        
-          );        
+          + " </div>" , { permanent: false, sticky: true });        
           layer.on({
             mouseover: this.mouseover,
             mouseout: this.mouseout
@@ -227,7 +224,7 @@ export default {
       };
     }
   },
-  methods: {
+  methods: {       
     handleCounterChange(val) {
       this.seriesperiod = val;
       this.buildTimeSeries();    
