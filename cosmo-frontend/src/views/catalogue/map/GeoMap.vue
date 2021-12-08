@@ -91,6 +91,7 @@
             <l-control position="topleft">
               <div class="leaflet-bar">
                   <a  :title="this.titleFeatureMarker" role="button" @click="setFeatureMarker()">{{this.btnFeatureMarker}}</a>
+                  <a  :title="this.titleImportExport" role="button" @click="setImportExport()" >{{this.btnImportExport}}</a>
               </div>
             </l-control>      
           </l-map>
@@ -175,6 +176,11 @@ export default {
     titleFeatureMarker:"Change view to Feature mode",
     isMarker:false,
     isFeature:false,
+    btnImportExport:"I",
+    titleImportExport:"Load Import",
+    isImport:false,
+    isExport:false,
+
   }),
   computed: {
     ...mapGetters(
@@ -332,6 +338,17 @@ export default {
       this.isFeature= !this.isFeature;
       this.isMarker= !this.isMarker;
     },    
+    setImportExport(){
+      if (this.btnImportExport=="I"){
+        this.btnImportExport="E";
+        this.titleImportExport="Load Export";
+      }else{
+        this.btnImportExport="I";
+        this.titleImportExport="Load Import";
+      }
+      this.isImport= !this.isImport;
+      this.isExport= !this.isExport;
+    },
     mouseover(e) {
       var layer = e.target;
       layer.setStyle({        
