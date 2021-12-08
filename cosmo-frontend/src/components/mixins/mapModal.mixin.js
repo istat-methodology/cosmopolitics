@@ -39,6 +39,15 @@ export default {
                 this.modalTitle = marker.name;
             });
         }, 
+        openModalOnFeature(e) {
+          var name = e.layer.feature.properties.admin;
+          var code = e.layer.feature.properties.iso_a2;
+          console.log(name);
+          this.$store.dispatch("geomap/getMarker", code).then(() => {
+              this.isModal = true;
+              this.modalTitle = name;
+          });
+        },
         closeModal() {
             this.isModal = false;
         },

@@ -15,6 +15,7 @@
               :geojson="geojson" 
               :options="options"
               :options-style="styleFunction" 
+              @click="openModalOnFeature"
             ></l-geo-json>
             <!-- Circle markers -->
             <l-circle-marker    
@@ -29,8 +30,7 @@
               :radius="getRadius(marker.export, markerMin, markerMax, dataLegend)"
               :color="getColor(marker.export, markerMin, markerMax)"
               :fillColor="getColor(marker.export, markerMin, markerMax)"
-              @click="openModal(marker)"
-            >
+              @click="openModal(marker)"            >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
                   >{{ marker.name }} {{  Math.round(marker.export) }}
@@ -41,8 +41,57 @@
             <l-control position="topright">
               <div id="Legend" class="legend"></div>
             </l-control>
-            <l-control position="bottomleft">
-              <button @click="setFeatureMarker()">{{this.btnFeatureMarker}}</button>
+
+            <l-control position="bottomright" >    
+               <div class="row info" >
+                <CTabs variant="tabs" :active-tab="0">
+                  <CTab title="Main">
+                    <CDataTable
+                      :items="micro"
+                      :fields="mainFields"
+                      hover
+                      v-if="markerData"
+                      class="col-6"
+                    />
+                  </CTab>
+                  <CTab title="Import partners">
+                    <CDataTable 
+                      :items="importDataItems" 
+                      :fields="importFields" 
+                      hover 
+                      class="col-6"
+                  />
+                  </CTab>
+                  <CTab title="Export partners">
+                    <CDataTable 
+                    :items="exportDataItems" 
+                    :fields="exportFields" 
+                    hover 
+                    class="col-6"/>
+                  </CTab>
+                  <CTab title="Import goods">
+                    <CDataTable 
+                    :items="importGoods" 
+                    :fields="importGoodsFields" 
+                    hover 
+                    class="col-6"/>
+                  </CTab>
+                  <CTab title="Export goods">
+                    <CDataTable 
+                    :items="exportGoods" 
+                    :fields="exportGoodsFields" 
+                    hover  
+                    class="col-6"
+                    />
+                  </CTab>
+                </CTabs>
+               </div>
+            </l-control>
+
+            <l-control position="topleft">
+              <div class="leaflet-bar">
+                  <a  :title="this.titleFeatureMarker" role="button" @click="setFeatureMarker()">{{this.btnFeatureMarker}}</a>
+              </div>
             </l-control>      
           </l-map>
         </CCardBody>
@@ -60,36 +109,6 @@
         </CCardFooter>
       </div>
     </div>
-    <!-- Marker modal -->
-    <CModal :title="modalTitle" :show.sync="isModal" size="lg">
-      <CTabs variant="tabs" :active-tab="0">
-        <CTab title="Main">
-          <CDataTable
-            :items="micro"
-            :fields="mainFields"
-            hover
-            v-if="markerData"
-          />
-        </CTab>
-        <CTab title="Import partners">
-          <CDataTable :items="importDataItems" :fields="importFields" hover />
-        </CTab>
-        <CTab title="Export partners">
-          <CDataTable :items="exportDataItems" :fields="exportFields" hover />
-        </CTab>
-        <CTab title="Import goods">
-          <CDataTable :items="importGoods" :fields="importGoodsFields" hover />
-        </CTab>
-        <CTab title="Export goods">
-          <CDataTable :items="exportGoods" :fields="exportGoodsFields" hover />
-        </CTab>
-      </CTabs>
-      <template #footer>
-        <CButton color="outline-primary" square size="sm" @click="closeModal"
-          >Close</CButton
-        >
-      </template>
-    </CModal>
   </div>
 </template>
 <script>
@@ -152,7 +171,8 @@ export default {
         }
       }
     },      
-    btnFeatureMarker:"Feature",
+    btnFeatureMarker:"F",
+    titleFeatureMarker:"Change view to Feature mode",
     isMarker:false,
     isFeature:false,
   }),
@@ -200,12 +220,15 @@ export default {
       };
     },
     onEachFeatureFunction() {
-      /*if (!this.enableTooltip) {
+      /*
+      if (!this.enableTooltip) {
         return () => {};
       }
       */
       return (feature, layer) => {        
         var value = this.jsondata[feature.properties.iso_a2];
+        this.selectedCountry.code = feature.properties.iso_a2;
+        this.selectedCountry.name = feature.properties.admin;        
         if (value != undefined){
           value = Math.round(value);
           layer.options.fillColor = this.getColor(value,-60,60);
@@ -218,13 +241,16 @@ export default {
           + " </div>" , { permanent: false, sticky: true });        
           layer.on({
             mouseover: this.mouseover,
-            mouseout: this.mouseout
+            mouseout: this.mouseout//,
+            //click: this.openModalOnFeature
+            //click: this.openModalOnFeature(feature.properties.iso_a2,feature.properties.admin)
           });
         }
       };
     }
   },
   methods: {       
+    
     handleCounterChange(val) {
       this.seriesperiod = val;
       this.buildTimeSeries();    
@@ -296,10 +322,12 @@ export default {
       return min;
     },
     setFeatureMarker(){
-      if (this.btnFeatureMarker=="Feature"){
-        this.btnFeatureMarker="Marker";
+      if (this.btnFeatureMarker=="F"){
+        this.btnFeatureMarker="M";
+        this.titleFeatureMarker="Change view Marker mode";
       }else{
-        this.btnFeatureMarker="Feature";
+        this.btnFeatureMarker="F";
+        this.titleFeatureMarker="Change view to Feature mode";
       }
       this.isFeature= !this.isFeature;
       this.isMarker= !this.isMarker;
@@ -310,6 +338,7 @@ export default {
           color: this.layer.style.over.color,
           dashArray: this.layer.style.over.dashArray   
       });
+      //this.openModalOnFeature(country, name);
     },
     mouseout(e) {
       var layer = e.target;
@@ -371,4 +400,17 @@ export default {
   font-size: 11px;
   fill: black;  
 }
+.info {
+    /*padding: 6px 8px;*/
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    /*background: rgba(255,255,255,0.8);*/
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    /*margin: 0 0 5px;*/
+    color: #777;
+}
+
 </style>

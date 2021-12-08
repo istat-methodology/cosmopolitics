@@ -3,6 +3,10 @@ import * as d3 from "d3";
 import * as scale from "d3-scale";
 export default {
   data: () => ({
+    selectedCountry:{
+      name:"",
+      code:""
+    },
     colors : [],
     dataLegend: []    
   }),
