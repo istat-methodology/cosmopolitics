@@ -90,8 +90,8 @@
 
             <l-control position="topleft">
               <div class="leaflet-bar">
-                  <a  :title="this.titleFeatureMarker" role="button" @click="setFeatureMarker()">{{this.btnFeatureMarker}}</a>
-                  <a  :title="this.titleImportExport" role="button" @click="setImportExport()" >{{this.btnImportExport}}</a>
+                  <a class="control-btn" :title="this.titleFeatureMarker" role="button" @click="setFeatureMarker()">{{this.btnFeatureMarker}}</a>
+                  <a class="control-btn" :title="this.titleImportExport" role="button" @click="setImportExport()" >{{this.btnImportExport}}</a>
               </div>
             </l-control>      
           </l-map>
@@ -428,6 +428,10 @@ export default {
 .info h4 {
     /*margin: 0 0 5px;*/
     color: #777;
+}
+.control-btn {
+    font: bold 18px 'Lucida Console', Monaco, monospace;
+    text-indent: 1px;
 }
 
 </style>
