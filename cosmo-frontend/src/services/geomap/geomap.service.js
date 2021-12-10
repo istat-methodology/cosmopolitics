@@ -2,8 +2,7 @@ import { axiosHack } from "@/http";
 export const geomapService = {
   findAll,
   findByName,
-  getExportTimeSeries,
-  getImportTimeSeries
+  getSeries
 };
 
 function findAll() {
@@ -32,22 +31,9 @@ function findByName(name) {
     });
 }
 
-function getExportTimeSeries() {
+function getSeries(name) {
   return axiosHack
-    .get("/exportseries")
-    .then(res => {
-      var data = res.data ? res.data : {};
-      //console.log(data);
-      return data;
-    })
-    .catch(err => {
-      throw err;
-    });
-}
-
-function getImportTimeSeries() {
-  return axiosHack
-    .get("/importseries")
+    .get("/" + name)
     .then(res => {
       var data = res.data ? res.data : {};
       //console.log(data);

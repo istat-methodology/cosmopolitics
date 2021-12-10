@@ -13,16 +13,16 @@
           >
             <l-tile-layer :url="url" :attribution="attribution" />
             <l-geo-json
-              v-if="geojson"
+              v-if="geoJson"
               :visible="isFeature"
-              :geojson="geojson"
+              :geojson="geoJson"
               :options="options"
               :options-style="styleFunction"
               @click="openModalOnFeature"
             ></l-geo-json>
             <!-- Circle markers -->
             <l-circle-marker
-              v-for="(marker, i) in markerTimeSeries"
+              v-for="(marker, i) in markerPeriodSeries"
               v-bind:key="i"
               :lat-lng="[
                 marker.coordinates.latitude,
@@ -30,16 +30,14 @@
               ]"
               :visible="!isMarker"
               :fillOpacity="0.65"
-              :radius="
-                getRadius(marker.export, markerMin, markerMax, dataLegend)
-              "
-              :color="getColor(marker.export, markerMin, markerMax)"
-              :fillColor="getColor(marker.export, markerMin, markerMax)"
+              :radius="getRadius(marker.series, markerMin, markerMax, dataLegend)"
+              :color="getColor(marker.series, markerMin, markerMax)"
+              :fillColor="getColor(marker.series, markerMin, markerMax)"
               @click="openModal(marker)"
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{ Math.round(marker.export) }}
+                  >{{ marker.name }} {{ Math.round(marker.series) }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -111,7 +109,7 @@
             v-if="timePeriod"
             :adsorb="true"
             :tooltip="'none'"
-            v-model="seriesperiod"
+            v-model="seriesPeriod"
             :data="timePeriod"
             :data-value="'id'"
             :data-label="'name'"
@@ -157,9 +155,8 @@ export default {
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     center: [51.16423, 10.45412],
     zoom: 4,
-    seriesperiod: "202004",
-    markerTimeSeries: [],
-    bordersTimeSeries: [],
+    seriesPeriod: "202004",
+    markerPeriodSeries: [],    
     markerMax: 60,
     markerMin: -60,
     //delta: 2000,
@@ -187,22 +184,24 @@ export default {
     titleFeatureMarker: "Change view to Feature mode",
     isMarker: false,
     isFeature: false,
-
+    
+    seriesName:"exportseries",
     btnImportExport: "IMP",
     titleImportExport: "Load Import",
     isImport: false,
     isExport: false
+    
   }),
   computed: {
     ...mapGetters("geomap", {
       markers: "geomap",
       markerData: "markerData",
-      exportData: "exportData"
+      seriesData: "seriesData"
     }),
     ...mapGetters("period", ["timePeriod"]),
     ...mapGetters("countries", {
-      geojson: "countriesborders",
-      jsondata: "jsondata"
+      geoJson: "countriesBorders",
+      jsonData: "jsonData"
     }),
     micro() {
       return this.markerData ? this.markerData[0].MI : [];
@@ -237,7 +236,7 @@ export default {
     },
     onEachFeatureFunction() {
       return (feature, layer) => {
-        var value = this.jsondata[feature.properties.iso_a2];
+        var value = this.jsonData[feature.properties.iso_a2];
         this.selectedCountry.code = feature.properties.iso_a2;
         this.selectedCountry.name = feature.properties.admin;
         if (value != undefined) {
@@ -268,50 +267,53 @@ export default {
   },
   methods: {
     handleCounterChange(val) {
-      this.seriesperiod = val;
-      this.buildTimeSeries();
-      this.$store.dispatch("countries/getDataSeries").then(seriesdata => {
-        this.$store.dispatch("countries/getCountriesBorders", {
-          seriesData: seriesdata,
-          seriesPeriod: this.seriesperiod
-        });
-      });
+      this.seriesPeriod = val;
+      this.buildPeriodSeries();
+      this.buildFeatures();
     },
-    getExport(marker, exportData, seriesperiod) {
-      const localExp = exportData.find(exp => {
-        return exp.country == marker.country;
+    getPeriodSeries(marker, seriesData, seriesPeriod) {
+      const localSeries = seriesData.find(serie => {
+        return serie.country == marker.country;
       });
-      if (seriesperiod > "202011") {
+      if (seriesPeriod > "202011") {
         return 0;
       } else {
-        return localExp ? localExp[seriesperiod] : 1;
+        return localSeries ? localSeries[seriesPeriod] : 1;
       }
     },
-    buildTimeSeries() {
-      this.markerTimeSeries = this.markers.map(marker => {
+    buildPeriodSeries() {
+      this.markerPeriodSeries = this.markers.map(marker => {
         return {
           ...marker,
-          export: this.getExport(marker, this.exportData, this.seriesperiod)
+          series: this.getPeriodSeries(marker, this.seriesData, this.seriesPeriod)
         };
       });
-      if (this.seriesperiod < "202011") {
+      if (this.seriesPeriod < "202011") {
         this.dataLegend = this.getDataLegend(
-          this.exportData,
-          this.seriesperiod
+          this.seriesData,
+          this.seriesPeriod
         );
-        this.markerMax = this.getMax(this.exportData);
-        this.markerMin = this.getMin(this.exportData);
+        this.markerMax = this.getMax(this.seriesData);
+        this.markerMin = this.getMin(this.seriesData);
         this.setLegend(this.markerMin, this.markerMax, this.dataLegend);
       }
+    },
+    buildFeatures() {
+        this.$store.dispatch("countries/getDataSeries", this.seriesName).then(seriesData => {
+        this.$store.dispatch("countries/getCountriesBorders", {
+          seriesData: seriesData,
+          seriesPeriod: this.seriesPeriod
+        });
+      });
     },
     setShooter() {
       new SimpleMapScreenshoter().addTo(this.$refs.map.mapObject);
     },
-    getDataLegend(exportData, seriesperiod) {
+    getDataLegend(seriesData, seriesPeriod) {
       var data = [];
-      exportData.forEach(obj => {
+      seriesData.forEach(obj => {
         for (const key in obj) {
-          if (key == seriesperiod) {
+          if (key == seriesPeriod) {
             //console.log(key);
             data.push(obj[key]);
           }
@@ -319,9 +321,9 @@ export default {
       });
       return data;
     },
-    getMax(exportData) {
+    getMax(seriesData) {
       var max = 1;
-      exportData.forEach(obj => {
+      seriesData.forEach(obj => {
         for (const key in obj) {
           if (key != "country") {
             if (max < obj[key]) {
@@ -333,9 +335,9 @@ export default {
       //console.log(max);
       return max;
     },
-    getMin(exportData) {
+    getMin(seriesData) {
       var min = -1;
-      exportData.forEach(obj => {
+      seriesData.forEach(obj => {
         for (const key in obj) {
           if (key != "country") {
             //console.log(obj[key]);
@@ -363,10 +365,13 @@ export default {
       if (this.btnImportExport == "IMP") {
         this.btnImportExport = "EXP";
         this.titleImportExport = "Load Export";
+        this.seriesName = "importseries";
       } else {
         this.btnImportExport = "IMP";
         this.titleImportExport = "Load Import";
+        this.seriesName = "exportseries";        
       }
+      this.getDataSeries(this.seriesName);
       this.isImport = !this.isImport;
       this.isExport = !this.isExport;
     },
@@ -376,30 +381,27 @@ export default {
         color: this.layer.style.over.color,
         dashArray: this.layer.style.over.dashArray
       });
-      //this.openModalOnFeature(country, name);
     },
     mouseout(e) {
       var layer = e.target;
       layer.setStyle({
         color: this.layer.style.default.color,
         dashArray: this.layer.style.default.dashArray
+      });    
+    },
+    getDataSeries(){
+      this.$store.dispatch("geomap/findAll").then(() => {
+        this.$store.dispatch("geomap/getSeries", this.seriesName ).then(() => {
+          this.buildPeriodSeries();
+          this.buildFeatures();          
+        });
       });
     }
   },
   created() {
     this.$store.dispatch("period/findByName", "map");
     this.$store.dispatch("coreui/setContext", Context.Map);
-    this.$store.dispatch("geomap/findAll").then(() => {
-      this.$store.dispatch("geomap/getExportTimeSeries").then(() => {
-        this.buildTimeSeries();
-        this.$store.dispatch("countries/getDataSeries").then(seriesdata => {
-          this.$store.dispatch("countries/getCountriesBorders", {
-            seriesData: seriesdata,
-            seriesPeriod: this.seriesperiod
-          });
-        });
-      });
-    });
+    this.getDataSeries("exportseries");
   }
 };
 </script>

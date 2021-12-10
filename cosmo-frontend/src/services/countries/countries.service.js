@@ -3,9 +3,9 @@ export const countriesService = {
   findAll,
   getDataSeries
 };
-function findAll(jsondataname) {
+function findAll(jsonDataName) {
   return axiosHack
-    .get("/" + jsondataname)
+    .get("/" + jsonDataName)
     .then(res => {
       var data = res.data ? res.data : {};
       //console.log(data);
@@ -15,9 +15,9 @@ function findAll(jsondataname) {
       throw err;
     });
 }
-function getDataSeries() {
+function getDataSeries(name) {
   return axiosHack
-    .get("/exportseries")
+    .get("/" + name)
     .then(res => {
       var data = res.data ? res.data : {};
       //console.log(data);

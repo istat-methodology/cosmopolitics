@@ -2,23 +2,23 @@ import { countriesService } from "@/services";
 import { getData } from "@/common";
 
 const state = {
-  jsondata: null,
-  seriesdata: null,
+  jsonData: null,
+  seriesData: null,
   countries: null,
-  countriesborders: null
+  countriesBorders: null
 };
 const mutations = {
   SET_COUNTRIES(state, countries) {
     state.countries = countries;
   },
-  SET_JSON_DATA(state, jsondata) {
-    state.jsondata = jsondata;
+  SET_JSON_DATA(state, jsonData) {
+    state.jsonData = jsonData;
   },
-  SET_SERIES_DATA(state, seriesdata) {
-    state.seriesdata = seriesdata;
+  SET_SERIES_DATA(state, seriesData) {
+    state.seriesData = seriesData;
   },
-  SET_COUNTRIES_BORDERS(state, countriesborders) {
-    state.countriesborders = countriesborders;
+  SET_COUNTRIES_BORDERS(state, countriesBorders) {
+    state.countriesBorders = countriesBorders;
   }
 };
 const actions = {
@@ -32,20 +32,20 @@ const actions = {
         console.log(err);
       });
   },
-  getCountriesBorders({ commit }, seriesdata) {
+  getCountriesBorders({ commit }, seriesData) {
     return countriesService
       .findAll("countriesBorders")
       .then(data => {
-        commit("SET_JSON_DATA", getData(seriesdata));
+        commit("SET_JSON_DATA", getData(seriesData));
         commit("SET_COUNTRIES_BORDERS", data);
       })
       .catch(err => {
         console.log(err);
       });
   },
-  getDataSeries({ commit }) {
+  getDataSeries({ commit }, name) {
     return countriesService
-      .getDataSeries()
+      .getDataSeries(name)
       .then(data => {
         commit("SET_SERIES_DATA", data);
         return data;
@@ -59,14 +59,14 @@ const getters = {
   countries: state => {
     return state.countries;
   },
-  jsondata: state => {
-    return state.jsondata;
+  jsonData: state => {
+    return state.jsonData;
   },
   exportData: state => {
-    return state.seriesdata;
+    return state.seriesData;
   },
-  countriesborders: state => {
-    return state.countriesborders;
+  countriesBorders: state => {
+    return state.countriesBorders;
   }
 };
 export const countries = {
