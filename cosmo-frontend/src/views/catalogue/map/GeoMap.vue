@@ -443,13 +443,14 @@ export default {
 }
 .info {
   /*padding: 6px 8px;*/
-  font: 14px/16px Arial, Helvetica, sans-serif;
+  font: 11px Arial, Helvetica, sans-serif;
   background: white;
   /*background: rgba(255,255,255,0.8);*/
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  width: 600px;
-  height: 400px;
+  width: 550px;
+  height:400px;
+  
 }
 .info h4 {
   /*margin: 0 0 5px;*/
