@@ -1,6 +1,6 @@
 import { axiosHack } from "@/http";
 export const periodService = {
-  findByName,  
+  findByName
 };
 
 function findByName(name) {

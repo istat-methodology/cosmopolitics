@@ -2,23 +2,25 @@
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <div class="card">
-        <CCardBody>         
+        <CCardBody>
           <l-map
             ref="map"
             :zoom="zoom"
             :center="center"
             style="height: 650px; width: 100%"
-            @ready="setShooter()"          >
+            @ready="setShooter()"
+          >
             <l-tile-layer :url="url" :attribution="attribution" />
-            <l-geo-json v-if="geojson"
+            <l-geo-json
+              v-if="geojson"
               :visible="isFeature"
-              :geojson="geojson" 
+              :geojson="geojson"
               :options="options"
-              :options-style="styleFunction" 
+              :options-style="styleFunction"
               @click="openModalOnFeature"
             ></l-geo-json>
             <!-- Circle markers -->
-            <l-circle-marker    
+            <l-circle-marker
               v-for="(marker, i) in markerTimeSeries"
               v-bind:key="i"
               :lat-lng="[
@@ -27,13 +29,16 @@
               ]"
               :visible="!isMarker"
               :fillOpacity="0.65"
-              :radius="getRadius(marker.export, markerMin, markerMax, dataLegend)"
+              :radius="
+                getRadius(marker.export, markerMin, markerMax, dataLegend)
+              "
               :color="getColor(marker.export, markerMin, markerMax)"
               :fillColor="getColor(marker.export, markerMin, markerMax)"
-              @click="openModal(marker)"            >
+              @click="openModal(marker)"
+            >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{  Math.round(marker.export) }}
+                  >{{ marker.name }} {{ Math.round(marker.export) }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -42,8 +47,8 @@
               <div id="Legend" class="legend"></div>
             </l-control>
 
-            <l-control position="bottomright" >    
-               <div class="row info" >
+            <l-control position="bottomright">
+              <div class="row info">
                 <CTabs variant="tabs" :active-tab="0">
                   <CTab title="Main">
                     <CDataTable
@@ -55,49 +60,63 @@
                     />
                   </CTab>
                   <CTab title="Import partners">
-                    <CDataTable 
-                      :items="importDataItems" 
-                      :fields="importFields" 
-                      hover 
+                    <CDataTable
+                      :items="importDataItems"
+                      :fields="importFields"
+                      hover
                       class="col-6"
-                  />
+                    />
                   </CTab>
                   <CTab title="Export partners">
-                    <CDataTable 
-                    :items="exportDataItems" 
-                    :fields="exportFields" 
-                    hover 
-                    class="col-6"/>
+                    <CDataTable
+                      :items="exportDataItems"
+                      :fields="exportFields"
+                      hover
+                      class="col-6"
+                    />
                   </CTab>
                   <CTab title="Import goods">
-                    <CDataTable 
-                    :items="importGoods" 
-                    :fields="importGoodsFields" 
-                    hover 
-                    class="col-6"/>
+                    <CDataTable
+                      :items="importGoods"
+                      :fields="importGoodsFields"
+                      hover
+                      class="col-6"
+                    />
                   </CTab>
                   <CTab title="Export goods">
-                    <CDataTable 
-                    :items="exportGoods" 
-                    :fields="exportGoodsFields" 
-                    hover  
-                    class="col-6"
+                    <CDataTable
+                      :items="exportGoods"
+                      :fields="exportGoodsFields"
+                      hover
+                      class="col-6"
                     />
                   </CTab>
                 </CTabs>
-               </div>
+              </div>
             </l-control>
 
             <l-control position="topleft">
               <div class="leaflet-bar">
-                  <a class="control-btn" :title="this.titleFeatureMarker" role="button" @click="setFeatureMarker()">{{this.btnFeatureMarker}}</a>
-                  <a class="control-btn" :title="this.titleImportExport" role="button" @click="setImportExport()" >{{this.btnImportExport}}</a>
+                <a
+                  class="control-btn"
+                  :title="this.titleFeatureMarker"
+                  role="button"
+                  @click="setFeatureMarker()"
+                  >{{ this.btnFeatureMarker }}</a
+                >
+                <a
+                  class="control-btn"
+                  :title="this.titleImportExport"
+                  role="button"
+                  @click="setImportExport()"
+                  >{{ this.btnImportExport }}</a
+                >
               </div>
-            </l-control>      
+            </l-control>
           </l-map>
         </CCardBody>
         <CCardFooter>
-          <vue-slider 
+          <vue-slider
             v-if="timePeriod"
             :adsorb="true"
             :tooltip="'none'"
@@ -142,58 +161,57 @@ export default {
   },
   mixins: [mapMixin, mapModalMixin, sliderMixin],
   data: () => ({
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    attribution:
+      '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     center: [51.16423, 10.45412],
     zoom: 4,
     seriesperiod: "202004",
     markerTimeSeries: [],
-    bordersTimeSeries: [],    
+    bordersTimeSeries: [],
     markerMax: 60,
-    markerMin: -60, 
-    //delta: 2000,   
+    markerMin: -60,
+    //delta: 2000,
     //features
     enableTooltip: true,
-    layer:{
-      style:{
-        default:{
+    layer: {
+      style: {
+        default: {
           weight: 1,
           opacity: 1,
-          color: 'gray',
-          dashArray: '',
+          color: "gray",
+          dashArray: "",
           fillOpacity: 0.7
         },
-        over:{
+        over: {
           weight: 1,
           opacity: 1,
-          color: 'black',
-          dashArray: '2',
+          color: "black",
+          dashArray: "2",
           fillOpacity: 0.7
         }
       }
-    },      
-    btnFeatureMarker:"F",
-    titleFeatureMarker:"Change view to Feature mode",
-    isMarker:false,
-    isFeature:false,
-    btnImportExport:"I",
-    titleImportExport:"Load Import",
-    isImport:false,
-    isExport:false,
-
+    },
+    btnFeatureMarker: "F",
+    titleFeatureMarker: "Change view to Feature mode",
+    isMarker: false,
+    isFeature: false,
+    btnImportExport: "I",
+    titleImportExport: "Load Import",
+    isImport: false,
+    isExport: false
   }),
   computed: {
-    ...mapGetters(
-      "geomap", {
+    ...mapGetters("geomap", {
       markers: "geomap",
       markerData: "markerData",
       exportData: "exportData"
-      }), 
+    }),
     ...mapGetters("period", ["timePeriod"]),
     ...mapGetters("countries", {
-        geojson : "countriesborders",
-        jsondata: "jsondata"
-    }),    
+      geojson: "countriesborders",
+      jsondata: "jsondata"
+    }),
     micro() {
       return this.markerData ? this.markerData[0].MI : [];
     },
@@ -231,23 +249,31 @@ export default {
         return () => {};
       }
       */
-      return (feature, layer) => {        
+      return (feature, layer) => {
         var value = this.jsondata[feature.properties.iso_a2];
         this.selectedCountry.code = feature.properties.iso_a2;
-        this.selectedCountry.name = feature.properties.admin;        
-        if (value != undefined){
+        this.selectedCountry.name = feature.properties.admin;
+        if (value != undefined) {
           value = Math.round(value);
-          layer.options.fillColor = this.getColor(value,-60,60);
-          layer.options.color = "gray"; //this.getColor(value,-60,60);    
-          layer.bindTooltip("<div>" 
-          + feature.properties.iso_a2 + "<br>" 
-          + feature.properties.admin +  "<br>" 
-          + feature.properties.continent +  "<br>"
-          + "export:" + value +  "<br>"
-          + " </div>" , { permanent: false, sticky: true });        
+          layer.options.fillColor = this.getColor(value, -60, 60);
+          layer.options.color = "gray"; //this.getColor(value,-60,60);
+          layer.bindTooltip(
+            "<div>" +
+              feature.properties.iso_a2 +
+              "<br>" +
+              feature.properties.admin +
+              "<br>" +
+              feature.properties.continent +
+              "<br>" +
+              "export:" +
+              value +
+              "<br>" +
+              " </div>",
+            { permanent: false, sticky: true }
+          );
           layer.on({
             mouseover: this.mouseover,
-            mouseout: this.mouseout//,
+            mouseout: this.mouseout //,
             //click: this.openModalOnFeature
             //click: this.openModalOnFeature(feature.properties.iso_a2,feature.properties.admin)
           });
@@ -255,29 +281,39 @@ export default {
       };
     }
   },
-  methods: {       
-    
+  methods: {
     handleCounterChange(val) {
       this.seriesperiod = val;
-      this.buildTimeSeries();    
-      this.$store.dispatch("countries/getDataSeries").then((seriesdata) => {
-        this.$store.dispatch("countries/getCountriesBorders",{seriesData:seriesdata, seriesPeriod:this.seriesperiod});
+      this.buildTimeSeries();
+      this.$store.dispatch("countries/getDataSeries").then(seriesdata => {
+        this.$store.dispatch("countries/getCountriesBorders", {
+          seriesData: seriesdata,
+          seriesPeriod: this.seriesperiod
+        });
       });
     },
     getExport(marker, exportData, seriesperiod) {
-      const localExp = exportData.find(exp => { return exp.country == marker.country; });
-      if ( seriesperiod > "202011") { 
-            return 0 
-      } else { 
-            return localExp ? localExp[seriesperiod] : 1
+      const localExp = exportData.find(exp => {
+        return exp.country == marker.country;
+      });
+      if (seriesperiod > "202011") {
+        return 0;
+      } else {
+        return localExp ? localExp[seriesperiod] : 1;
       }
     },
-    buildTimeSeries() {            
+    buildTimeSeries() {
       this.markerTimeSeries = this.markers.map(marker => {
-        return { ...marker, export: this.getExport(marker, this.exportData, this.seriesperiod)};
+        return {
+          ...marker,
+          export: this.getExport(marker, this.exportData, this.seriesperiod)
+        };
       });
-      if ( this.seriesperiod < "202011") { 
-        this.dataLegend = this.getDataLegend(this.exportData, this.seriesperiod);
+      if (this.seriesperiod < "202011") {
+        this.dataLegend = this.getDataLegend(
+          this.exportData,
+          this.seriesperiod
+        );
         this.markerMax = this.getMax(this.exportData);
         this.markerMin = this.getMin(this.exportData);
         this.setLegend(this.markerMin, this.markerMax, this.dataLegend);
@@ -285,7 +321,7 @@ export default {
     },
     setShooter() {
       new SimpleMapScreenshoter().addTo(this.$refs.map.mapObject);
-    },    
+    },
     getDataLegend(exportData, seriesperiod) {
       var data = [];
       exportData.forEach(obj => {
@@ -297,7 +333,7 @@ export default {
         }
       });
       return data;
-    },    
+    },
     getMax(exportData) {
       var max = 1;
       exportData.forEach(obj => {
@@ -327,55 +363,58 @@ export default {
       //console.log(min);
       return min;
     },
-    setFeatureMarker(){
-      if (this.btnFeatureMarker=="F"){
-        this.btnFeatureMarker="M";
-        this.titleFeatureMarker="Change view Marker mode";
-      }else{
-        this.btnFeatureMarker="F";
-        this.titleFeatureMarker="Change view to Feature mode";
+    setFeatureMarker() {
+      if (this.btnFeatureMarker == "F") {
+        this.btnFeatureMarker = "M";
+        this.titleFeatureMarker = "Change view Marker mode";
+      } else {
+        this.btnFeatureMarker = "F";
+        this.titleFeatureMarker = "Change view to Feature mode";
       }
-      this.isFeature= !this.isFeature;
-      this.isMarker= !this.isMarker;
-    },    
-    setImportExport(){
-      if (this.btnImportExport=="I"){
-        this.btnImportExport="E";
-        this.titleImportExport="Load Export";
-      }else{
-        this.btnImportExport="I";
-        this.titleImportExport="Load Import";
+      this.isFeature = !this.isFeature;
+      this.isMarker = !this.isMarker;
+    },
+    setImportExport() {
+      if (this.btnImportExport == "I") {
+        this.btnImportExport = "E";
+        this.titleImportExport = "Load Export";
+      } else {
+        this.btnImportExport = "I";
+        this.titleImportExport = "Load Import";
       }
-      this.isImport= !this.isImport;
-      this.isExport= !this.isExport;
+      this.isImport = !this.isImport;
+      this.isExport = !this.isExport;
     },
     mouseover(e) {
       var layer = e.target;
-      layer.setStyle({        
-          color: this.layer.style.over.color,
-          dashArray: this.layer.style.over.dashArray   
+      layer.setStyle({
+        color: this.layer.style.over.color,
+        dashArray: this.layer.style.over.dashArray
       });
       //this.openModalOnFeature(country, name);
     },
     mouseout(e) {
       var layer = e.target;
       layer.setStyle({
-          color: this.layer.style.default.color,
-          dashArray: this.layer.style.default.dashArray   
-      });     
-    },
+        color: this.layer.style.default.color,
+        dashArray: this.layer.style.default.dashArray
+      });
+    }
   },
-  created() {    
+  created() {
     this.$store.dispatch("period/findByName", "map");
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.$store.dispatch("geomap/findAll").then(() => {
-        this.$store.dispatch("geomap/getExportTimeSeries").then(() => {        
-            this.buildTimeSeries();
-            this.$store.dispatch("countries/getDataSeries").then((seriesdata) => {
-            this.$store.dispatch("countries/getCountriesBorders",{seriesData:seriesdata, seriesPeriod:this.seriesperiod});
+      this.$store.dispatch("geomap/getExportTimeSeries").then(() => {
+        this.buildTimeSeries();
+        this.$store.dispatch("countries/getDataSeries").then(seriesdata => {
+          this.$store.dispatch("countries/getCountriesBorders", {
+            seriesData: seriesdata,
+            seriesPeriod: this.seriesperiod
+          });
         });
       });
-    });  
+    });
   }
 };
 </script>
@@ -415,23 +454,22 @@ export default {
 }
 #Legend .colorlegend-labels {
   font-size: 11px;
-  fill: black;  
+  fill: black;
 }
 .info {
-    /*padding: 6px 8px;*/
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    background: white;
-    /*background: rgba(255,255,255,0.8);*/
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
+  /*padding: 6px 8px;*/
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  /*background: rgba(255,255,255,0.8);*/
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 .info h4 {
-    /*margin: 0 0 5px;*/
-    color: #777;
+  /*margin: 0 0 5px;*/
+  color: #777;
 }
 .control-btn {
-    font: bold 18px 'Lucida Console', Monaco, monospace;
-    text-indent: 1px;
+  font: bold 18px "Lucida Console", Monaco, monospace;
+  text-indent: 1px;
 }
-
 </style>

@@ -10,20 +10,23 @@ const mutations = {
   },
   SET_PERIOD_VALUE(state, periodValue) {
     state.periodValue = periodValue;
-  },
+  }
 };
 const actions = {
   findByName({ commit }, filter) {
     return periodService
       .findByName(filter)
       .then(data => {
-        commit("SET_TIME_PERIOD", getPeriod(data[0].values.timeStart,data[0].values.timeEnd));
+        commit(
+          "SET_TIME_PERIOD",
+          getPeriod(data[0].values.timeStart, data[0].values.timeEnd)
+        );
         commit("SET_PERIOD_VALUE", data[0].values.timeSelected);
       })
       .catch(err => {
         console.log(err);
       });
-  }    
+  }
 };
 const getters = {
   timePeriod: state => {

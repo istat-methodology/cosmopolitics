@@ -209,7 +209,7 @@ export default {
   data: () => ({
     blank: "",
     //Form fields
-    
+
     //selectbox
     selectedPeriod: { id: "202003", name: "Mar 20" },
     //Slider
@@ -254,7 +254,7 @@ export default {
       "flows",
       "weights"
     ]),
-    ...mapGetters("period", ["timePeriod"]),    
+    ...mapGetters("period", ["timePeriod"]),
     network() {
       return this.nodes && this.edges
         ? {

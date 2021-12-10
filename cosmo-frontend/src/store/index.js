@@ -14,10 +14,9 @@ import { classification } from "./modules/classification/classification";
 import { mobility } from "./modules/mobility/mobility";
 import { policyIndicator } from "./modules/policyIndicator/policyIndicator";
 import { bec } from "./modules/bec/bec";
-// time period 
+// time period
 import { period } from "./modules/period/period";
 import { countries } from "./modules/countries/countries";
-
 
 Vue.use(Vuex);
 
@@ -39,6 +38,5 @@ export default new Vuex.Store({
     //
     period,
     countries
-
   }
 });

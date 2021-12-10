@@ -191,7 +191,7 @@ export default {
 
   data: () => ({
     //Form fields
-    
+
     percentage: 90,
     transport: null,
     product: null,
@@ -213,7 +213,7 @@ export default {
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", ["transports", "productPlus", "weights"]),
-    ...mapGetters("period", ["timePeriod"]),    
+    ...mapGetters("period", ["timePeriod"]),
     network() {
       return this.nodes && this.edges
         ? {

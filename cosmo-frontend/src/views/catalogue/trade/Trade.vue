@@ -101,12 +101,12 @@ export default {
     },
     download_status: "Download Charts",
     spinner: false,
-    tradePeriod:[]
+    tradePeriod: []
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
     ...mapGetters("trade", ["charts"]),
-    ...mapGetters("period", ["timePeriod"]),  
+    ...mapGetters("period", ["timePeriod"]),
     chartData() {
       var chartData = {};
       chartData.datasets = [];
@@ -161,8 +161,8 @@ export default {
   },
   created() {
     this.$store.dispatch("period/findByName", "trade").then(() => {
-      for (var i=0; i < this.timePeriod.length; i++){
-        console.log(this.timePeriod[i].name);  
+      for (var i = 0; i < this.timePeriod.length; i++) {
+        console.log(this.timePeriod[i].name);
         this.tradePeriod.push(this.timePeriod[i].name);
       }
       console.log(this.tradePeriod);
