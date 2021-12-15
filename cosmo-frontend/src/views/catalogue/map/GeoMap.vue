@@ -8,8 +8,8 @@
             :zoom="zoom"
             :center="center"
             style="height: 650px; width: 100%"
-            @ready="setShooter()"
-            @click="closeModal()"
+            @ready="setShooter(); openInfoStart('IT', 'Italy')"
+            @click="closeInfo()"
           >
             <l-tile-layer :url="url" :attribution="attribution" />
             <l-geo-json
@@ -18,7 +18,7 @@
               :geojson="geoJson"
               :options="options"
               :options-style="styleFunction"
-              @click="openModalOnFeature"
+              @click="openInfoOnFeature"
             ></l-geo-json>
             <!-- Circle markers -->
             <l-circle-marker
@@ -33,7 +33,7 @@
               :radius="getRadius(marker.series, markerMin, markerMax, dataLegend)"
               :color="getColor(marker.series, markerMin, markerMax)"
               :fillColor="getColor(marker.series, markerMin, markerMax)"
-              @click="openModal(marker)"
+              @click="openInfo(marker)"
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
@@ -47,10 +47,16 @@
             </l-control>
 
             <l-control position="bottomleft">
-              <div class="info" v-if="isModal">
-                <CTabs variant="tabs" :active-tab="0" v-if="markerData">
+              <div class="info" v-if="isInfo">
+                <CTabs 
+                  v-if="markerData"
+                  variant="tabs" 
+                  :active-tab="0" >
                   <CTab title="Main">
-                    <CDataTable :items="micro" :fields="mainFields" hover />
+                    <CDataTable 
+                    :items="micro" 
+                    :fields="mainFields" 
+                    hover />
                   </CTab>
                   <CTab title="Import partners">
                     <CDataTable
@@ -132,7 +138,7 @@ import {
   LCircleMarker
 } from "vue2-leaflet";
 import mapMixin from "@/components/mixins/map.mixin";
-import mapModalMixin from "@/components/mixins/mapModal.mixin";
+import mapInfoMixin from "@/components/mixins/mapInfo.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter";
 import VueSlider from "vue-slider-component";
@@ -148,12 +154,12 @@ export default {
     LTooltip,
     VueSlider
   },
-  mixins: [mapMixin, mapModalMixin, sliderMixin],
+  mixins: [mapMixin, mapInfoMixin, sliderMixin],
   data: () => ({
     attribution:
       '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    center: [51.16423, 10.45412],
+    center: [51.16423, 1.45412],
     zoom: 4,
     seriesPeriod: "202004",
     markerPeriodSeries: [],    
@@ -189,16 +195,17 @@ export default {
     btnImportExport: "IMP",
     titleImportExport: "Load Import",
     isImport: false,
-    isExport: false
+    isExport: false,
+    startTime : "2019"
     
   }),
   computed: {
+    ...mapGetters("period", ["timePeriod"]),
     ...mapGetters("geomap", {
       markers: "geomap",
       markerData: "markerData",
       seriesData: "seriesData"
-    }),
-    ...mapGetters("period", ["timePeriod"]),
+    }),    
     ...mapGetters("countries", {
       geoJson: "countriesBorders",
       jsonData: "jsonData"

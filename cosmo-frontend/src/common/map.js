@@ -1,3 +1,4 @@
+/*
 export const Map = {
   Attribution:
     '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -70,3 +71,4 @@ export function buildLegend() {
     });
   }
 }
+*/
