@@ -190,8 +190,7 @@ export default {
     btnFeatureMarker: "F",
     titleFeatureMarker: "Change view to Feature mode",
     isMarker: false,
-    isFeature: false,
-    
+    isFeature: false,    
     seriesName:"exportseries",
     btnImportExport: "IMP",
     titleImportExport: "Load Import",
@@ -315,7 +314,12 @@ export default {
       });
     },
     setShooter() {
-      new SimpleMapScreenshoter().addTo(this.$refs.map.mapObject);
+      let pluginOptions = {
+       
+        hideElementsWithSelectors: []
+      }
+
+      new SimpleMapScreenshoter(pluginOptions).addTo(this.$refs.map.mapObject);
     },
     getDataLegend(seriesData, seriesPeriod) {
       var data = [];
