@@ -175,7 +175,8 @@
     <div class="col-3">
       <CCard>
         <CCardHeader>
-          Trade filter
+          <h6 >Prevision for Interrupted Time Series</h6>
+          <h6>Trade filter</h6>
         </CCardHeader>
         <CCardBody>
           <label class="card-label">Flows:</label>
@@ -218,8 +219,8 @@
               'is-invalid': $v.becSelected.$error
             }"
           />
-          <label class="card-label mt-3">Prevision:</label>
-          <v-select
+          <!--label class="card-label mt-3">Prevision:</label-->
+          <!--v-select
             label="descr"
             :options="previsions"
             placeholder="Prevision"
@@ -227,8 +228,8 @@
             :class="{
               'is-invalid': $v.previsionSelected.$error
             }"
-          />
-          <template v-if="isForecasting">
+          /-->
+          <!--template v-if="isForecasting">
             <div class="col-12">
               <div class="row">
                 <label for="country" class="card-label mt-3"
@@ -264,7 +265,7 @@
                 </div>
               </div>
             </div>
-          </template>
+          </template-->
           <CButton
             color="primary"
             shape="square"
@@ -346,7 +347,7 @@ export default {
       "timeNext"
     ]),
     ...mapGetters("bec", ["becCharts", "becDate"]),
-    isForecasting() {
+    /*isForecasting() {
       var forecast = false;
       if (
         this.previsionSelected &&
@@ -363,6 +364,7 @@ export default {
       }
       return forecast;
     },
+    */
     sliderPeriod() {
       return this.getBecSlider();
     },
@@ -392,6 +394,7 @@ export default {
       console.log(event);
       alert(month);
     },
+    /*
     createForecast() {
       const form = {
         flow: this.flowSelected.id,
@@ -424,6 +427,7 @@ export default {
         }
       });
     },
+    */
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
       if (iVal <= this.maxTimeStep) {
@@ -456,16 +460,18 @@ export default {
         !this.$v.flowSelected.$invalid &&
         !this.$v.becSelected.$invalid &&
         !this.$v.countrySelected.$invalid &&
-        !this.$v.partnerSelected.$invalid &&
-        !this.$v.previsionSelected.$invalid
+        !this.$v.partnerSelected.$invalid 
+        //&&
+        //!this.$v.previsionSelected.$invalid
       ) {
         const form = {
           flow: this.flowSelected.id,
           var: this.becSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: this.previsionSelected.id
+          fcst: 0 // this.previsionSelected.id
         };
+        /*
         if (this.isForecasting) {
           var restriction = [];
           this.prevision.forEach(element => {
@@ -475,6 +481,7 @@ export default {
           });
           form.fcstpolind = restriction.join(",");
         }
+        */
         this.$store.dispatch("bec/findByFilters", form).then(() => {
           this.buildBecCharts(this.becCharts);
           if (this.timeLapse) {

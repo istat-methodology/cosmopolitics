@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6 col-md-4">
+    <!--div class="col-sm-6 col-md-4">
       <div class="card">
         <header class="card-header">
           <span class="card-title">Graph on COMEXT and ITGS integration</span>
@@ -80,8 +80,8 @@
           </p>
         </div>
       </div>
-    </div>
-    <div class="col-sm-6 col-md-4">
+    </div-->
+    <!--div class="col-sm-6 col-md-4">
       <div class="card">
         <header class="card-header">
           <span class="card-title"> Mobility Policy Analysis</span>
@@ -106,21 +106,36 @@
           </p>
         </div>
       </div>
-    </div>
+    </div-->
     <div class="col-sm-6 col-md-4">
       <div class="card">
         <header class="card-header">
-          <span class="card-title"
+          <!--span class="card-title"
             >Policy Evaluation (with nowcasting or forecasting upon
             request)</span
+          -->
+          <span class="card-title"
+            >Policy Evaluation (with interrupted time series)</span
           >
         </header>
-        <div class="card-body">
+        <!--div class="card-body">
           In this section we analyse covid pandemic effect by computing the
           Covid-19 monthly impact on import and export time series in value,
           using the interrupted time series model with a counterfactual
           approach. The selected model is use to get nowcasting and forecasting
           of import and export series as well.
+          <br />
+          <p class="section-link">
+            <router-link tag="a" :to="{ name: 'Bec' }"
+              ><span>Go to policy indicator <chevron-right-icon /></span>
+            </router-link>
+          </p>
+        </div-->
+        <div class="card-body">
+          In this section we analyse covid pandemic effect by computing the
+          Covid-19 monthly impact on import and export time series in value,
+          using the interrupted time series model with a counterfactual
+          approach. The selected model is use to get import and export series as well.
           <br />
           <p class="section-link">
             <router-link tag="a" :to="{ name: 'Bec' }"

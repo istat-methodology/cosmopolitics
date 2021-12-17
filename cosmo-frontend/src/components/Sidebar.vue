@@ -43,7 +43,7 @@
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Graph analysis
         </router-link>
       </li>
-      <li class="c-sidebar-nav-item">
+      <!--li class="c-sidebar-nav-item">
         <router-link
           tag="a"
           :to="{ name: 'GraphPlus' }"
@@ -53,8 +53,8 @@
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Graph COMEXT -
           ITGS
         </router-link>
-      </li>
-      <li class="c-sidebar-nav-item">
+      </li-->
+      <!--li class="c-sidebar-nav-item">
         <router-link
           tag="a"
           :to="{ name: 'Mobility' }"
@@ -64,7 +64,7 @@
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Mobility
           analysis
         </router-link>
-      </li>
+      </li-->
       <li class="c-sidebar-nav-item">
         <router-link
           tag="a"

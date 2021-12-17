@@ -1,8 +1,6 @@
-module.exports = [
-  {
+module.exports = [{
     dataname: "01",
-    data: [
-      {
+    data: [{
         x: "1",
         y: "NA"
       },
@@ -522,8 +520,7 @@ module.exports = [
   },
   {
     dataname: "02",
-    data: [
-      {
+    data: [{
         x: "1",
         y: "NA"
       },
@@ -1043,8 +1040,7 @@ module.exports = [
   },
   {
     dataname: "03",
-    data: [
-      {
+    data: [{
         x: "1",
         y: "1511.345572"
       },
@@ -1536,8 +1532,7 @@ module.exports = [
   },
   {
     dataname: "04",
-    data: [
-      {
+    data: [{
         x: "123",
         y: "1084.320663"
       },
@@ -1569,9 +1564,14 @@ module.exports = [
   },
   {
     dataname: "05",
-    data: [
-      { x: "122", y: "10000" },
-      { x: "122", y: "-20000" }
+    data: [{
+        x: "122",
+        y: "10000"
+      },
+      {
+        x: "122",
+        y: "-20000"
+      }
     ]
   }
 ];

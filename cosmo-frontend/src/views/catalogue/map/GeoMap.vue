@@ -48,8 +48,9 @@
 
             <l-control position="bottomleft">
               <div class="info" v-if="isInfo">
+                <h5>{{ this.infoTitle }}</h5>
                 <CTabs 
-                  v-if="markerData"
+                  v-if="infoData"
                   variant="tabs" 
                   :active-tab="0" >
                   <CTab title="Main">
@@ -203,7 +204,7 @@ export default {
     ...mapGetters("period", ["timePeriod"]),
     ...mapGetters("geomap", {
       markers: "geomap",
-      markerData: "markerData",
+      infoData: "infoData",
       seriesData: "seriesData"
     }),    
     ...mapGetters("countries", {
@@ -211,19 +212,19 @@ export default {
       jsonData: "jsonData"
     }),
     micro() {
-      return this.markerData ? this.markerData[0].MI : [];
+      return this.infoData ? this.infoData[0].MI : [];
     },
     importDataItems() {
-      return this.markerData ? this.markerData[0].ImpP : [];
+      return this.infoData ? this.infoData[0].ImpP : [];
     },
     exportDataItems() {
-      return this.markerData ? this.markerData[0].ExpP : [];
+      return this.infoData ? this.infoData[0].ExpP : [];
     },
     importGoods() {
-      return this.markerData ? this.markerData[0].ImpG : [];
+      return this.infoData ? this.infoData[0].ImpG : [];
     },
     exportGoods() {
-      return this.markerData ? this.markerData[0].ExpG : [];
+      return this.infoData ? this.infoData[0].ExpG : [];
     },
     options() {
       return {
@@ -461,8 +462,11 @@ export default {
   height:400px;
   
 }
-.info h4 {
+.info h5 {
   /*margin: 0 0 5px;*/
+  text-align: center;
+  text-shadow:0 0 15px rgba(0, 0, 0, 0.2); ;
+  
   color: #777;
 }
 .control-btn {

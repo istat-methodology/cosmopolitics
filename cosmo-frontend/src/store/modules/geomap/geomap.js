@@ -2,15 +2,15 @@ import { geomapService } from "@/services";
 
 const state = {
   geomap: null,
-  markerData: null,
+  infoData: null,
   seriesData: null
 };
 const mutations = {
   SET_GEOMAP(state, geomap) {
     state.geomap = geomap;
   },
-  SET_MARKER(state, markerData) {
-    state.markerData = markerData;
+  SET_INFO(state, infoData) {
+    state.infoData = infoData;
   },
   SET_SERIES(state, seriesData) {
     state.seriesData = seriesData;
@@ -28,11 +28,11 @@ const actions = {
         console.log(err);
       });
   },
-  getMarker({ commit }, name) {
+  getInfo({ commit }, name) {
     return geomapService
       .findByName(name)
       .then(data => {
-        commit("SET_MARKER", data);
+        commit("SET_INFO", data);
       })
       .catch(err => {
         console.log(err);
@@ -54,8 +54,8 @@ const getters = {
   geomap: state => {
     return state.geomap;
   },
-  markerData: state => {
-    return state.markerData;
+  infoData: state => {
+    return state.infoData;
   },
   seriesData: state => {
     return state.seriesData;
