@@ -8,7 +8,10 @@
             :zoom="zoom"
             :center="center"
             style="height: 650px; width: 100%"
-            @ready="setShooter(); openInfoStart('IT', 'Italy')"
+            @ready="
+              setShooter();
+              openInfoStart('IT', 'Italy');
+            "
             @click="closeInfo()"
           >
             <l-tile-layer :url="url" :attribution="attribution" />
@@ -26,11 +29,13 @@
               v-bind:key="i"
               :lat-lng="[
                 marker.coordinates.latitude,
-                marker.coordinates.longitude
+                marker.coordinates.longitude,
               ]"
               :visible="!isMarker"
               :fillOpacity="0.65"
-              :radius="getRadius(marker.series, markerMin, markerMax, dataLegend)"
+              :radius="
+                getRadius(marker.series, markerMin, markerMax, dataLegend)
+              "
               :color="getColor(marker.series, markerMin, markerMax)"
               :fillColor="getColor(marker.series, markerMin, markerMax)"
               @click="openInfo(marker)"
@@ -49,15 +54,9 @@
             <l-control position="bottomleft">
               <div class="info" v-if="isInfo">
                 <h5>{{ this.infoTitle }}</h5>
-                <CTabs 
-                  v-if="infoData"
-                  variant="tabs" 
-                  :active-tab="0" >
+                <CTabs v-if="infoData" variant="tabs" :active-tab="0">
                   <CTab title="Main">
-                    <CDataTable 
-                    :items="micro" 
-                    :fields="mainFields" 
-                    hover />
+                    <CDataTable :items="micro" :fields="mainFields" hover />
                   </CTab>
                   <CTab title="Import partners">
                     <CDataTable
@@ -95,6 +94,13 @@
               <div class="leaflet-bar">
                 <a
                   class="control-btn"
+                  title="Help"
+                  role="button"
+                  @click="helpOn(true)"
+                  >?</a
+                >
+                <a
+                  class="control-btn"
                   :title="this.titleFeatureMarker"
                   role="button"
                   @click="setFeatureMarker()"
@@ -125,6 +131,28 @@
         </CCardFooter>
       </div>
     </div>
+    <!-- Marker modal -->
+    <CModal
+      title="Economic and International Trade Indicators"
+      :show.sync="isModalHelp"
+      size="lg"
+    >
+      <div class="card">
+        <div class="card-body">
+          This section provides a map displaying for each country the total
+          population and some macro-economic indicators and trade and exchanged
+          goods for import and export in 2019 and in 2019 and in 2019 and 2020.
+          Further the component provides a
+          <strong>time-lapse</strong> functionality to represent the
+          international trade monthly variations for the last twelve months.
+        </div>
+      </div>
+      <template #footer>
+        <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
+          >Close</CButton
+        >
+      </template>
+    </CModal>
   </div>
 </template>
 <script>
@@ -136,7 +164,7 @@ import {
   LTileLayer,
   LControl,
   LTooltip,
-  LCircleMarker
+  LCircleMarker,
 } from "vue2-leaflet";
 import mapMixin from "@/components/mixins/map.mixin";
 import mapInfoMixin from "@/components/mixins/mapInfo.mixin";
@@ -153,7 +181,7 @@ export default {
     LControl,
     LCircleMarker,
     LTooltip,
-    VueSlider
+    VueSlider,
   },
   mixins: [mapMixin, mapInfoMixin, sliderMixin],
   data: () => ({
@@ -163,7 +191,7 @@ export default {
     center: [51.16423, 1.45412],
     zoom: 4,
     seriesPeriod: "202004",
-    markerPeriodSeries: [],    
+    markerPeriodSeries: [],
     markerMax: 60,
     markerMin: -60,
     //delta: 2000,
@@ -176,39 +204,41 @@ export default {
           opacity: 1,
           color: "gray",
           dashArray: "",
-          fillOpacity: 0.7
+          fillOpacity: 0.7,
         },
         over: {
           weight: 1,
           opacity: 1,
           color: "black",
           dashArray: "2",
-          fillOpacity: 0.7
-        }
-      }
+          fillOpacity: 0.7,
+        },
+      },
     },
     btnFeatureMarker: "F",
     titleFeatureMarker: "Change view to Feature mode",
     isMarker: false,
-    isFeature: false,    
-    seriesName:"exportseries",
+    isFeature: false,
+    seriesName: "exportseries",
     btnImportExport: "IMP",
     titleImportExport: "Load Import",
     isImport: false,
     isExport: false,
-    startTime : "2019"
-    
+    ie: "Export",
+    startTime: "2019",
+    modalHelpTitle: " About on ",
+    isModalHelp: false,
   }),
   computed: {
     ...mapGetters("period", ["timePeriod"]),
     ...mapGetters("geomap", {
       markers: "geomap",
       infoData: "infoData",
-      seriesData: "seriesData"
-    }),    
+      seriesData: "seriesData",
+    }),
     ...mapGetters("countries", {
       geoJson: "countriesBorders",
-      jsonData: "jsonData"
+      jsonData: "jsonData",
     }),
     micro() {
       return this.infoData ? this.infoData[0].MI : [];
@@ -227,7 +257,7 @@ export default {
     },
     options() {
       return {
-        onEachFeature: this.onEachFeatureFunction
+        onEachFeature: this.onEachFeatureFunction,
       };
     },
     styleFunction() {
@@ -237,7 +267,7 @@ export default {
           opacity: this.layer.style.defaultopacity,
           color: this.layer.style.default.color,
           dashArray: this.layer.style.default.dashArray,
-          fillOpacity: this.layer.style.default.fillOpacity
+          fillOpacity: this.layer.style.default.fillOpacity,
         };
       };
     },
@@ -246,6 +276,7 @@ export default {
         var value = this.jsonData[feature.properties.iso_a2];
         this.selectedCountry.code = feature.properties.iso_a2;
         this.selectedCountry.name = feature.properties.admin;
+        layer.options.fillColor = "#00000000";
         if (value != undefined) {
           value = Math.round(value);
           layer.options.fillColor = this.getColor(value, -60, 60);
@@ -266,20 +297,24 @@ export default {
           );
           layer.on({
             mouseover: this.mouseover,
-            mouseout: this.mouseout
+            mouseout: this.mouseout,
           });
         }
       };
-    }
+    },
   },
   methods: {
+    helpOn(showModal) {
+      this.isModalHelp = showModal;
+      this.modalHelpTitle = "About map";
+    },
     handleCounterChange(val) {
       this.seriesPeriod = val;
       this.buildPeriodSeries();
       this.buildFeatures();
     },
     getPeriodSeries(marker, seriesData, seriesPeriod) {
-      const localSeries = seriesData.find(serie => {
+      const localSeries = seriesData.find((serie) => {
         return serie.country == marker.country;
       });
       if (seriesPeriod > "202011") {
@@ -289,10 +324,14 @@ export default {
       }
     },
     buildPeriodSeries() {
-      this.markerPeriodSeries = this.markers.map(marker => {
+      this.markerPeriodSeries = this.markers.map((marker) => {
         return {
           ...marker,
-          series: this.getPeriodSeries(marker, this.seriesData, this.seriesPeriod)
+          series: this.getPeriodSeries(
+            marker,
+            this.seriesData,
+            this.seriesPeriod
+          ),
         };
       });
       if (this.seriesPeriod < "202011") {
@@ -302,28 +341,34 @@ export default {
         );
         this.markerMax = this.getMax(this.seriesData);
         this.markerMin = this.getMin(this.seriesData);
-        this.setLegend(this.markerMin, this.markerMax, this.dataLegend);
+        this.setLegend(
+          this.markerMin,
+          this.markerMax,
+          this.dataLegend,
+          this.ie
+        );
       }
     },
     buildFeatures() {
-        this.$store.dispatch("countries/getDataSeries", this.seriesName).then(seriesData => {
-        this.$store.dispatch("countries/getCountriesBorders", {
-          seriesData: seriesData,
-          seriesPeriod: this.seriesPeriod
+      this.$store
+        .dispatch("countries/getDataSeries", this.seriesName)
+        .then((seriesData) => {
+          this.$store.dispatch("countries/getCountriesBorders", {
+            seriesData: seriesData,
+            seriesPeriod: this.seriesPeriod,
+          });
         });
-      });
     },
     setShooter() {
       let pluginOptions = {
-       
-        hideElementsWithSelectors: []
-      }
+        hideElementsWithSelectors: [],
+      };
 
       new SimpleMapScreenshoter(pluginOptions).addTo(this.$refs.map.mapObject);
     },
     getDataLegend(seriesData, seriesPeriod) {
       var data = [];
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key == seriesPeriod) {
             //console.log(key);
@@ -335,7 +380,7 @@ export default {
     },
     getMax(seriesData) {
       var max = 1;
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             if (max < obj[key]) {
@@ -349,7 +394,7 @@ export default {
     },
     getMin(seriesData) {
       var min = -1;
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             //console.log(obj[key]);
@@ -378,10 +423,12 @@ export default {
         this.btnImportExport = "EXP";
         this.titleImportExport = "Load Export";
         this.seriesName = "importseries";
+        this.ie = "Import";
       } else {
         this.btnImportExport = "IMP";
         this.titleImportExport = "Load Import";
-        this.seriesName = "exportseries";        
+        this.seriesName = "exportseries";
+        this.ie = "Export";
       }
       this.getDataSeries(this.seriesName);
       this.isImport = !this.isImport;
@@ -391,30 +438,30 @@ export default {
       var layer = e.target;
       layer.setStyle({
         color: this.layer.style.over.color,
-        dashArray: this.layer.style.over.dashArray
+        dashArray: this.layer.style.over.dashArray,
       });
     },
     mouseout(e) {
       var layer = e.target;
       layer.setStyle({
         color: this.layer.style.default.color,
-        dashArray: this.layer.style.default.dashArray
-      });    
+        dashArray: this.layer.style.default.dashArray,
+      });
     },
-    getDataSeries(){
+    getDataSeries() {
       this.$store.dispatch("geomap/findAll").then(() => {
-        this.$store.dispatch("geomap/getSeries", this.seriesName ).then(() => {
+        this.$store.dispatch("geomap/getSeries", this.seriesName).then(() => {
           this.buildPeriodSeries();
-          this.buildFeatures();          
+          this.buildFeatures();
         });
       });
-    }
+    },
   },
   created() {
     this.$store.dispatch("period/findByName", "map");
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.getDataSeries("exportseries");
-  }
+  },
 };
 </script>
 <style scoped>
@@ -463,14 +510,13 @@ export default {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   width: 550px;
-  height:400px;
-  
+  height: 400px;
 }
 .info h5 {
   /*margin: 0 0 5px;*/
   text-align: center;
-  text-shadow:0 0 15px rgba(0, 0, 0, 0.2); ;
-  
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
   color: #777;
 }
 .control-btn {
