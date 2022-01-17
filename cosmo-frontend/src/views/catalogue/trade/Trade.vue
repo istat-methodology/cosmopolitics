@@ -9,30 +9,26 @@
               {{ this.flowSelected.descr }}</span
             ></b
           >
-          <exporter
-            typeDownload="jpeg"
-            filename="_trade.jpeg"
-            :items="getCanvas()"
-          >
-          </exporter>
-          <exporter
-            typeDownload="png"
-            filename="_trade.png"
-            :items="getCanvas()"
-          >
-          </exporter>
-          <exporter
-            typeDownload="pdf"
-            filename="_trade.pdf"
-            :items="getCanvas()"
-          >
-          </exporter>
-          <exporter
-            typeDownload="json"
-            filename="_trade.json"
-            :items="getJson()"
-          >
-          </exporter>
+          <span class="float-right">
+            <span class="float-right">
+              <button
+                class="btn mr-2 float-right btn-sm btn-square"
+                title="Info"
+                role="button"
+                @click="helpOn(true)"
+              >
+                i
+              </button>
+            </span>
+            <span class="float-right">
+              <exporter
+                filename="cosmopolitics_trade"
+                :data="getData()"
+                :options="['jpeg', 'png', 'pdf', 'json']"
+              >
+              </exporter>
+            </span>
+          </span>
         </header>
         <CCardBody>
           <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
@@ -47,17 +43,37 @@
     <div class="col-3">
       <CCard>
         <CCardHeader>
-          Trade filter
+          <div class="row">
+            <div class="col-10">
+              <span class="float-left"><h6>Trade filter</h6> </span>
+            </div>
+            <div class="col-2">
+              <span class="float-right">
+                <button
+                  class="btn sm-2 btn-sm btn-square"
+                  title="Info"
+                  role="button"
+                  @click="helpOn(true)"
+                >
+                  i
+                </button>
+              </span>
+            </div>
+          </div>
         </CCardHeader>
         <CCardBody>
-          <label for="country" class="card-label">Country:</label>
+          <label for="country" class="card-label" :title="this.countryFilter"
+            >Country:</label
+          >
           <v-select
             label="name"
             :options="countries"
             placeholder="Country"
             v-model="countrySelected"
           />
-          <label for="country" class="card-label mt-3">Flows:</label>
+          <label for="country" class="card-label mt-3" :title="this.flowFilter"
+            >Flows:</label
+          >
           <v-select
             label="descr"
             :options="flows"
@@ -75,6 +91,23 @@
         </CCardBody>
       </CCard>
     </div>
+    <!-- Marker modal -->
+
+    <CModal
+      title="Changes in basket composition of traded products (CPA -
+            classification of products by activity) by Member State"
+      :show.sync="isModalHelp"
+      size="lg"
+    >
+      This section provides, for each Member State, the 2020 monthly time series
+      of year-over-year changes in the basket composition of exported and
+      imported goods, classified according to CPA-2 digits.
+      <template #footer>
+        <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
+          >Close</CButton
+        >
+      </template>
+    </CModal>
   </div>
 </template>
 <script>
@@ -93,15 +126,20 @@ export default {
   data: () => ({
     countrySelected: {
       country: "IT",
-      name: "Italy"
+      name: "Italy",
     },
     flowSelected: {
       id: 2,
-      descr: "Export"
+      descr: "Export",
     },
     download_status: "Download Charts",
     spinner: false,
-    tradePeriod: []
+    tradePeriod: [],
+    modalHelpTitle: " About on ",
+    isModalHelp: false,
+    // help on filter as title
+    flowFilter: "digit flows",
+    countryFilter: "digit Country",
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
@@ -114,7 +152,7 @@ export default {
         //chartData.labels = this.timeTrade;
         chartData.labels = this.tradePeriod;
         if (this.charts) {
-          this.charts.data.forEach(element => {
+          this.charts.data.forEach((element) => {
             const color = this.getColor();
             chartData.datasets.push({
               label: element.dataname,
@@ -123,25 +161,29 @@ export default {
               borderColor: color.border,
               data: element.value,
               showLine: true,
-              pointRadius: 3
+              pointRadius: 3,
             });
           });
         }
       }
       this.clearColor();
       return chartData;
-    }
+    },
   },
   methods: {
+    helpOn(showModal) {
+      this.isModalHelp = showModal;
+      this.modalHelpTitle = "About map";
+    },
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
           country: this.countrySelected.country,
-          flow: this.flowSelected.id
+          flow: this.flowSelected.id,
         });
       }
     },
-    getJson() {
+    getData() {
       let trade = [];
       for (let i = 0; i < this.chartData.datasets.length; i++) {
         let obj = {};
@@ -149,15 +191,17 @@ export default {
         trade.push(obj);
       }
       let jsonData = JSON.stringify(trade);
-      return jsonData;
-    },
-    getCanvas() {
       let canvas = document.querySelector("canvas");
-      return canvas;
+
+      var arr = [];
+      arr[0] = jsonData;
+      arr[1] = canvas;
+      return arr;
     },
+
     spinnerStart(bool) {
       this.spinner = bool;
-    }
+    },
   },
   created() {
     this.$store.dispatch("period/findByName", "trade").then(() => {
@@ -171,9 +215,9 @@ export default {
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("trade/findByName", {
       country: this.countrySelected.country,
-      flow: this.flowSelected.id
+      flow: this.flowSelected.id,
     });
-  }
+  },
 };
 </script>
 <style>

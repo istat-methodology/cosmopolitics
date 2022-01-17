@@ -1,13 +1,20 @@
 <template>
-  <CButton
-    color="primary"
-    shape="square"
+  <CDropdown
+    togglerText="export"
+    className="c-header-nav-items mr-2 "
     size="sm"
-    class="mr-2 float-right"
-    @click="download(typeDownload)"
+    direction="down"
   >
-    {{ typeDownload }}
-  </CButton>
+    <CDropdownMenu>
+      <CDropdownItem
+        v-for="item in options"
+        :key="item"
+        @click="download(item)"
+      >
+        {{ item }}
+      </CDropdownItem>
+    </CDropdownMenu>
+  </CDropdown>
 </template>
 
 <script>
@@ -18,43 +25,43 @@ import { saveAs } from "file-saver";
 export default {
   name: "exporter",
   props: {
-    typeDownload: {
-      Type: String,
-      default: () => ""
-    },
     filename: {
       Type: String,
-      default: () => ""
+      default: () => "",
     },
-    items: {
+    data: {
       Type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
+    options: {
+      Type: Array,
+      default: () => ["jpeg", "png", "pdf", "json", "csv"],
+    },
   },
   methods: {
-    download(typeDownload) {
-      switch (typeDownload) {
-        case "body":
-          this.toJPEG(this.items, this.filename);
-          break;
+    download(type) {
+      switch (type) {
         case "jpeg":
-          this.toJPEG(this.items, this.filename);
+          this.toJPEG(this.data[1], this.filename + "." + type);
           break;
         case "png":
-          this.toPNG(this.items, this.filename);
+          this.toPNG(this.data[1], this.filename + "." + type);
           break;
         case "pdf":
-          this.toPDF(this.items, this.filename);
+          this.toPDF(this.data[1], this.filename + "." + type);
           break;
         case "json":
-          this.toJSON(this.items, this.filename);
+          this.toJSON(this.data[0], this.filename + "." + type);
+          break;
+        case "csv":
+          this.toCSV(this.data[2], this.filename + "." + type);
           break;
         default:
           break;
       }
     },
     toBody(items) {
-      html2canvas(items, { useCORS: true }).then(canvas => {
+      html2canvas(items, { useCORS: true }).then((canvas) => {
         document.body.appendChild(canvas);
       });
     },
@@ -62,18 +69,22 @@ export default {
       const blob = new Blob([data], { type: "text/plain" });
       saveAs(blob, filename);
     },
+    toCSV(data, filename) {
+      const blob = new Blob([data], { type: "text/plain" });
+      saveAs(blob, filename);
+    },
     toJPEG(items, filename) {
       html2canvas(items, {
-        useCORS: true
-      }).then(canvas => {
+        useCORS: true,
+      }).then((canvas) => {
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
         saveAs(imgData, filename);
       });
     },
     toPNG(items, filename) {
       html2canvas(items, {
-        useCORS: true
-      }).then(canvas => {
+        useCORS: true,
+      }).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
         saveAs(imgData, filename);
       });
@@ -81,8 +92,8 @@ export default {
     toPDF(items, filename) {
       let pdf = new jsPDF("l", "px");
       html2canvas(items, {
-        useCORS: true
-      }).then(canvas => {
+        useCORS: true,
+      }).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
@@ -102,7 +113,7 @@ export default {
         );
         pdf.save(filename);
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -17,7 +17,6 @@
     </li>
   </ol>
 </template>
-
 <script>
 import breadcrumbMixin from "@/components/mixins/breadcrumb.mixin";
 

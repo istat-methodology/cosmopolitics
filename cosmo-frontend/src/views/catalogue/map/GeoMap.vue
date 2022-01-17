@@ -94,10 +94,10 @@
               <div class="leaflet-bar">
                 <a
                   class="control-btn"
-                  title="Help"
+                  title="Info"
                   role="button"
                   @click="helpOn(true)"
-                  >?</a
+                  >i</a
                 >
                 <a
                   class="control-btn"
@@ -137,16 +137,12 @@
       :show.sync="isModalHelp"
       size="lg"
     >
-      <div class="card">
-        <div class="card-body">
-          This section provides a map displaying for each country the total
-          population and some macro-economic indicators and trade and exchanged
-          goods for import and export in 2019 and in 2019 and in 2019 and 2020.
-          Further the component provides a
-          <strong>time-lapse</strong> functionality to represent the
-          international trade monthly variations for the last twelve months.
-        </div>
-      </div>
+      This section provides a map displaying for each country the total
+      population and some macro-economic indicators and trade and exchanged
+      goods for import and export in 2019 and in 2019 and in 2019 and 2020.
+      Further the component provides a <strong>time-lapse</strong> functionality
+      to represent the international trade monthly variations for the last
+      twelve months.
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
           >Close</CButton

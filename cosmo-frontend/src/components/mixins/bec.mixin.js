@@ -73,7 +73,13 @@ export default {
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
-        dataMap.push({ x: index, y: index }, { x: index, y: element });
+        dataMap.push({
+          x: index,
+          y: index
+        }, {
+          x: index,
+          y: element
+        });
       });
       return dataMap;
     },
@@ -101,9 +107,14 @@ export default {
         null,
         this.timeLapse[this.maxTimeStep].tend
       );
-      var data = [
-        { x: this.treatX, y: this.maxTreatY },
-        { x: this.treatX, y: this.minTreatY }
+      var data = [{
+          x: this.treatX,
+          y: this.maxTreatY
+        },
+        {
+          x: this.treatX,
+          y: this.minTreatY
+        }
       ];
       return data;
     },
@@ -200,9 +211,7 @@ export default {
       yearSeries = 0;
       tmp = 0;
       for (
-        var s = 0;
-        s <= this.timeLapse[this.maxTimeStep].date[s].lenght - 1;
-        s++
+        var s = 0; s <= this.timeLapse[this.maxTimeStep].date[s].lenght - 1; s++
       ) {
         tmp = this.timeLapse[this.maxTimeStep].date[s];
         if (tmp.substr(2, 4) != yearSeries) {
@@ -255,7 +264,7 @@ export default {
       chartObj = {
         label: label,
         fill: fill,
-        backgroundColor: function(context) {
+        backgroundColor: function (context) {
           var index = context.dataIndex;
           var value = context.dataset.data[index];
           if (value) {
@@ -470,9 +479,14 @@ export default {
             case "dsh_y_pos":
               borderDash = 5;
               maxDsh = diag[chartType].length - 1;
-              dataXY = [
-                { x: 0, y: diag[chartType][0] },
-                { x: maxDsh, y: diag[chartType][maxDsh] }
+              dataXY = [{
+                  x: 0,
+                  y: diag[chartType][0]
+                },
+                {
+                  x: maxDsh,
+                  y: diag[chartType][maxDsh]
+                }
               ];
               chartObj = this.buildObject(
                 "pos",
@@ -489,9 +503,14 @@ export default {
               break;
             case "dsh_y_neg":
               (borderDash = 5), (maxDsh = diag[chartType].length - 1);
-              dataXY = [
-                { x: 0, y: diag[chartType][0] },
-                { x: maxDsh, y: diag[chartType][maxDsh] }
+              dataXY = [{
+                  x: 0,
+                  y: diag[chartType][0]
+                },
+                {
+                  x: maxDsh,
+                  y: diag[chartType][maxDsh]
+                }
               ];
               chartObj = this.buildObject(
                 "pos",
@@ -508,9 +527,14 @@ export default {
               break;
             case "lne_y":
               diag[chartType].forEach((element, index) => {
-                dataXY = [
-                  { x: index, y: 0 },
-                  { x: index, y: element }
+                dataXY = [{
+                    x: index,
+                    y: 0
+                  },
+                  {
+                    x: index,
+                    y: element
+                  }
                 ];
                 chartObj = this.buildObject(
                   n++,
@@ -533,7 +557,7 @@ export default {
     getTable(objects) {
       var tableData = [];
       var keys = objects.row;
-      keys.forEach(function(item, index) {
+      keys.forEach(function (item, index) {
         var rowObject = {};
         for (var dat in objects) {
           if (dat != "_row") {
@@ -563,6 +587,29 @@ export default {
         }
       }
       return tableFields;
+    },
+    getDataFromTable(table) {
+      if (table != null) {    
+        console.log(table);
+        var csvData = "\uFEFF" + this.tableToCSV(table);
+        return csvData;
+      }
+    },
+    tableToCSV(table) {
+      let data = "";
+      let col;
+      let csvDelimiter = ";";
+      let csvNewLine = "\r\n";
+      table.forEach(function (rows) {
+        var i = 0;
+        for (var cols in rows) {
+          col = rows[cols];
+          data = data + (i ? csvDelimiter : "") + col;
+          i++;
+        }
+        data = data + csvNewLine;
+      });
+      return "\uFEFF" + data;
     },
     buildNothingTimePeriod(dataR) {
       var maxTimeStep;
