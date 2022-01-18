@@ -114,9 +114,7 @@
             >Policy Evaluation (with nowcasting or forecasting upon
             request)</span
           -->
-          <span class="card-title"
-            >Policy Evaluation (with interrupted time series)</span
-          >
+          <span class="card-title">Time Series visualization</span>
         </header>
         <!--div class="card-body">
           In this section we analyse covid pandemic effect by computing the
@@ -132,14 +130,17 @@
           </p>
         </div-->
         <div class="card-body">
-          In this section we analyse covid pandemic effect by computing the
-          Covid-19 monthly impact on import and export time series in value,
-          using the interrupted time series model with a counterfactual
-          approach. The selected model is use to get import and export series as well.
+          Effective visualization tool for monthly Comext foreign trade data
+          series. despite the amount of underlying data, they allow an easily
+          understandable reading. useful as a dissemination tool. series are
+          provided in value and quantity, with indication of descriptive
+          statistics and the possibility of downloading
           <br />
           <p class="section-link">
             <router-link tag="a" :to="{ name: 'Bec' }"
-              ><span>Go to policy indicator <chevron-right-icon /></span>
+              ><span
+                >Go to Time Series visualization <chevron-right-icon
+              /></span>
             </router-link>
           </p>
         </div>
@@ -175,7 +176,7 @@ export default {
   name: "Metadata",
   created() {
     this.$store.dispatch("coreui/setContext", Context.Home);
-  }
+  },
 };
 </script>
 

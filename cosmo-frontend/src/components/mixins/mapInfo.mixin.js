@@ -20,7 +20,7 @@ export default {
     ],
     importFields: [{
         key: "main_p_" + previusYear,
-        label: "Main partner " + previusYear
+        label: "Main partners " + previusYear
       },
       {
         key: "tot_imp_" + previusYear,
@@ -28,7 +28,7 @@ export default {
       },
       {
         key: "main_p_" + currentYear,
-        label: "Main partner " + currentYear
+        label: "Main partners " + currentYear
       },
       {
         key: "tot_imp_" + currentYear,
@@ -37,7 +37,7 @@ export default {
     ],
     exportFields: [{
         key: "main_p_" + previusYear,
-        label: "Main partner " + previusYear
+        label: "Main partners " + previusYear
       },
       {
         key: "tot_exp_" + previusYear,
@@ -45,7 +45,7 @@ export default {
       },
       {
         key: "main_p_" + currentYear,
-        label: "Main partner " + currentYear
+        label: "Main partners " + currentYear
       },
       {
         key: "tot_exp_" + currentYear,

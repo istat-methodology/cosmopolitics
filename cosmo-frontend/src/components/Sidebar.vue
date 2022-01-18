@@ -72,7 +72,7 @@
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-warning': isPolicy }"
         >
-          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> BEC analysis
+          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Time Series
         </router-link>
       </li>
       <li class="c-sidebar-nav-item">

@@ -42,7 +42,7 @@
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{ Math.round(marker.series) }}
+                  >{{ marker.name }} {{ ie }} {{ Math.round(marker.series) }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -279,15 +279,14 @@ export default {
           layer.options.color = "gray"; //this.getColor(value,-60,60);
           layer.bindTooltip(
             "<div>" +
-              feature.properties.iso_a2 +
-              "<br>" +
+              //feature.properties.iso_a2 +
+              //"<br>" +
               feature.properties.admin +
-              "<br>" +
-              feature.properties.continent +
-              "<br>" +
-              "export:" +
+              "<span> " +
+              this.ie +
+              "</span> " +
               value +
-              "<br>" +
+              "</span>" +
               " </div>",
             { permanent: false, sticky: true }
           );

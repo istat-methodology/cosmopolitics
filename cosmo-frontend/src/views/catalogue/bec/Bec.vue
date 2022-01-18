@@ -18,10 +18,13 @@
             <span class="padding-right">
               <b>
                 <span v-if="this.countrySelected && this.partnerSelected"
-                  >{{ this.countrySelected.name }} -
+                  >Time series visualization – Monthly COMEXT Data:
+                  {{ this.countrySelected.name }} -
                   {{ this.partnerSelected.descr }}</span
                 >
-                <span v-else>BEC analysis</span>
+                <span v-else
+                  >Time Series visualization – Monthly COMEXT Data</span
+                >
               </b>
             </span>
           </span>
@@ -40,7 +43,7 @@
               <exporter
                 filename="cosmopolitics_bec"
                 :data="getData(chartData, 'bec')"
-                :options="[ 'jpeg' ,'png','pdf', 'json']"
+                :options="['jpeg', 'png', 'pdf', 'json']"
               >
               </exporter>
             </span>
@@ -94,20 +97,23 @@
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_covidestimation"
-                :data="getData(this.getDataFromTable(this.covidEstimationDataTable),'covidEstimation')"
+                :data="
+                  getData(
+                    this.getDataFromTable(this.covidEstimationDataTable),
+                    'covidEstimation'
+                  )
+                "
                 :options="['csv']"
-                
               >
               </exporter>
             </span>
           </span>
-          <!-- covidEstimationDataTable, 'covidEstimation' -->
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
           <CDataTable
             :items="covidEstimationDataTable"
-            :fields="covidEstimationTableFileds"            
-            hover 
+            :fields="covidEstimationTableFileds"
+            hover
           />
         </CCardBody>
       </CCard>
@@ -144,7 +150,9 @@
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_model"
-                :data="getData(this.getDataFromTable(this.modelDataTable), 'model')"
+                :data="
+                  getData(this.getDataFromTable(this.modelDataTable), 'model')
+                "
                 :options="['csv']"
               >
               </exporter>
@@ -156,7 +164,6 @@
           <CDataTable
             :items="modelDataTable"
             :fields="modelTableFileds"
-            
             hover
           />
         </CCardBody>
@@ -194,7 +201,7 @@
               <exporter
                 filename="cosmopolitics_diagnorm"
                 :data="getData(chartDataDiagNorm, 'diagnorm')"
-                :options="[ 'jpeg' ,'png','pdf', 'json']"
+                :options="['jpeg', 'png', 'pdf', 'json']"
               >
               </exporter>
             </span>
@@ -241,7 +248,7 @@
               <exporter
                 filename="cosmopolitics_diagres"
                 :data="getData(chartDataDiagRes, 'diagres')"
-                :options="[ 'jpeg' ,'png','pdf', 'json']"
+                :options="['jpeg', 'png', 'pdf', 'json']"
               >
               </exporter>
             </span>
@@ -288,7 +295,7 @@
               <exporter
                 filename="cosmopolitics_diagacf"
                 :data="getData(chartDataDiagACF, 'diagacf')"
-                :options="[ 'jpeg' ,'png','pdf', 'json']"
+                :options="['jpeg', 'png', 'pdf', 'json']"
               >
               </exporter>
             </span>
@@ -308,9 +315,7 @@
         <CCardHeader>
           <div class="row">
             <div class="col-10">
-              <span class="float-left"
-                ><h6>Prevision for Interrupted Time Series</h6></span
-              >
+              <span class="float-left"><h6>Trade filter</h6></span>
             </div>
             <div class="col-2">
               <span class="float-right">
@@ -325,25 +330,20 @@
               </span>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12">
-              <span class="float-left"><h6>Trade filter</h6> </span>
-            </div>
-          </div>
         </CCardHeader>
         <CCardBody>
           <label class="card-label" :title="this.flowFilter">Flows:</label>
           <v-select
             label="descr"
             :options="flows"
-            placeholder="Flows"
+            placeholder="Flow"
             v-model="flowSelected"
             :class="{
               'is-invalid': $v.flowSelected.$error,
             }"
           />
           <label class="card-label mt-3" :title="this.countryFilter"
-            >Country:</label
+            >Countries:</label
           >
           <v-select
             label="name"
@@ -355,7 +355,7 @@
             }"
           />
           <label class="card-label mt-3" :title="this.partnerFilter"
-            >Partner:</label
+            >Partners:</label
           >
           <v-select
             label="descr"
@@ -366,7 +366,7 @@
               'is-invalid': $v.partnerSelected.$error,
             }"
           />
-          <label class="card-label mt-3" :title="this.becFilter">Bec:</label>
+          <label class="card-label mt-3" :title="this.becFilter">Becs:</label>
           <v-select
             label="descr"
             :options="becs"
@@ -388,14 +388,15 @@
       </CCard>
     </div>
     <CModal
-      title="Policy Evaluation (with interrupted time series)"
+      title="Time Series visualizatiion"
       :show.sync="isModalHelp"
       size="lg"
     >
-      In this section we analyse covid pandemic effect by computing the Covid-19
-      monthly impact on import and export time series in value, using the
-      interrupted time series model with a counterfactual approach. The selected
-      model is use to get import and export series as well.
+      Effective visualization tool for monthly Comext foreign trade data series.
+      despite the amount of underlying data, they allow an easily understandable
+      reading. useful as a dissemination tool. series are provided in value and
+      quantity, with indication of descriptive statistics and the possibility of
+      downloading
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
           >Close</CButton
@@ -418,7 +419,6 @@ import becMixin from "@/components/mixins/bec.mixin";
 import ScatterChart from "@/components/charts/ScatterChart";
 import LineChart from "@/components/charts/LineChart";
 import VueSlider from "vue-slider-component";
-//import { required, helpers } from "vuelidate/lib/validators";
 import { required } from "vuelidate/lib/validators";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
@@ -571,21 +571,21 @@ export default {
     getData(data, id) {
       if (data != null) {
         var arr = [];
-        if (id == "model"){
+        if (id == "model") {
           arr[2] = data;
-        }else if (id == "covidEstimation"){
+        } else if (id == "covidEstimation") {
           arr[2] = data;
-        }else{
+        } else {
           let dat = [];
           for (let i = 0; i < data.datasets.length; i++) {
             let obj = {};
             obj[data.datasets[i].label] = data.datasets[i].data;
             dat.push(obj);
-          }          
+          }
           let jsonData = JSON.stringify(dat);
           arr[0] = jsonData;
-          let canvas = document.getElementById(id);        
-          arr[1] = canvas;          
+          let canvas = document.getElementById(id);
+          arr[1] = canvas;
         }
         return arr;
       }

@@ -10,6 +10,7 @@
         v-for="item in options"
         :key="item"
         @click="download(item)"
+        :title ="getTitle(item)"
       >
         {{ item }}
       </CDropdownItem>
@@ -39,6 +40,9 @@ export default {
     },
   },
   methods: {
+    getTitle(typeformat){
+       return  "export as "  + typeformat  + " format"
+    },
     download(type) {
       switch (type) {
         case "jpeg":
