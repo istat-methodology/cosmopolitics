@@ -7,7 +7,7 @@
             <span class="text-primary">Graph density: </span
             >{{ graphDensity }}</span
           >
-          <span v-else>Graph metrics</span>
+          <span v-else><b>Graph metrics</b></span>
           <span class="pl-2" v-if="nodeMetric">
             <span class="text-primary">, node centrality: </span
             >{{ nodeMetric.centrality }}
@@ -72,7 +72,7 @@
         <CCardHeader>
           <div class="row">
             <div class="col-10">
-              <span class="float-left"><h6>Graph filter</h6></span>
+              <span class="float-left"><b><h6>Graph filter</h6></b></span>
             </div>
             <div class="col-2">
               <span class="float-right">
