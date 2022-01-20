@@ -1,4 +1,4 @@
-docker build -t mecdcme/hackathon-front-end  .
+docker build -t mecdcme/cosmo-front-end  .
 
-docker push mecdcme/hackathon-front-end
+docker push mecdcme/cosmo-front-end
 
