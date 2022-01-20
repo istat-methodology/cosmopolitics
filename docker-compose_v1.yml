@@ -1,10 +1,16 @@
 version: '3'
 services:
   web-app:
-   image: nginx:1.18.0-alpine
+   image: node
+   command:
+        sh -c "cd app &&
+             apt-get update &&
+             apt-get install -y libgif-dev &&
+             npm install  &&
+             npm run serve"
    volumes:
-    - ./cosmo-frontend/dist:/app/dist
-    - ./cosmo-frontend/nginx.conf:/etc/nginx/nginx.conf
+    - ./cosmo-frontend/:/app/
+    - /app/node_modules
    ports:
     - 8070:8070
   python-service:
