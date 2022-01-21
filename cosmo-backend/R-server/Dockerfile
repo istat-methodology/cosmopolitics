@@ -1,11 +1,8 @@
-#FROM rocker/tidyverse
 FROM rocker/r-base
-#FROM rocker/r-ubuntu
 
-COPY . /app/R-server
-COPY /data/ /app/R-server/data
-COPY /rscript/ /app/R-server/rscript 
-WORKDIR /app/R-server
+
+COPY . /app
+WORKDIR /app
 
 RUN apt-get update  
 RUN cat libraries-bin.txt | xargs apt-get install -y -qq

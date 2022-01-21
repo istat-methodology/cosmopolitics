@@ -78,7 +78,7 @@ def load_COMEXPLUS():
     df=df[df["PRODUCT_NC"]!="TOT"]
     df=df[df["DECLARANT_ISO"]!="EU"]
     df=df[df["PARTNER_ISO"]!="EU"]
-    df[["PRODUCT_NC","04"]].drop_duplicates().to_csv("COMEXPLUS_PROD.csv",index=False)        
+    df[["PRODUCT_NC","04"]].drop_duplicates().to_csv("data/COMEXPLUS_PROD.csv",index=False)        
             
     return df
 

@@ -26,8 +26,8 @@ library(tidyverse)
 #basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
 
 
-basedir = ("/app/R-server/rscript")
-basedirData=("/app/R-server/data")
+basedir = ("/app/rscript")
+basedirData=("/app/data")
 
 FILE_Global_Mobility_Report=paste(basedirData,"Global_Mobility_Report.csv",sep="/")
 FILE_DB_Mobility=paste(basedirData,"DB_GoogleMobility.csv",sep="/")
@@ -83,6 +83,20 @@ COMEXT_EXP<-load_comext("2")
 # ResBEC   <- BEC(2,"IT","US",2020,2)
 # SARES <- sa(2,1,"IT","US",2020,2)
 # ITSA  <- itsa_diag(2,2,"BE","AE",1,1)
+
+
+app$add_get(
+  path = "/hello", 
+  FUN = function(.req, .res) {
+     
+    .res$set_body("world")
+    .res$set_content_type("text/plain")
+    .res$set_header("Access-Control-Allow-Origin", "*")
+    .res$set_header("Access-Control-Allow-Methods","*")
+    .res$set_header("Access-Control-Allow-Headers", "*")
+    
+  })
+
 
 app$add_get(
   path = "/load-data", 

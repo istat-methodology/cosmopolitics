@@ -1,4 +1,4 @@
-docker build -t mecdcme/cosmo-r-service  .
+docker build -t istatcosmo.azurecr.io/cosmo-r-service  .
 
-docker push mecdcme/cosmo-r-service
+docker push istatcosmo.azurecr.io/cosmo-r-service
 

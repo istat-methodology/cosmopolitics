@@ -4,3 +4,7 @@ cosmo-frontend/android/
 .Rproj.user
 cosmopolitics.Rproj
 .Rhistory
+cosmo-backend/R-server/data/COMEXT_EXP.csv
+cosmo-backend/R-server/data/COMEXT_IMP.csv
+cosmo-backend/python-server/data/dataAvailable/
+cosmo-backend/python-server/data/stima_comext_ITGS_201901_202012..csv
