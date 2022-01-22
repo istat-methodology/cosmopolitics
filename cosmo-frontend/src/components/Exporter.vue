@@ -5,14 +5,14 @@
     size="sm"
     direction="down"
   >
-      <CDropdownItem
-        v-for="item in options"
-        :key="item"
-        @click="download(item)"
-        :title="getTitle(item)"
-      >
-        {{ item }}
-      </CDropdownItem>
+    <CDropdownItem
+      v-for="item in options"
+      :key="item"
+      @click="download(item)"
+      :title="getTitle(item)"
+    >
+      {{ item }}
+    </CDropdownItem>
   </CDropdown>
 </template>
 
