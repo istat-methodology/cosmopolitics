@@ -22,7 +22,7 @@
                 class="btn mr-2 float-right btn-sm btn-square"
                 title="Info"
                 role="button"
-                @click="helpOn(true)"
+                @click="helpOn(true, 'main')"
               >
                 i
               </button>
@@ -31,7 +31,7 @@
               <exporter
                 filename="cosmopolitics_graph_analysis"
                 :data="getData()"
-                :options="[ 'jpeg' ,'png','pdf', 'json']"
+                :options="['jpeg', 'png', 'pdf', 'json']"
               >
               </exporter>
             </span>
@@ -72,7 +72,9 @@
         <CCardHeader>
           <div class="row">
             <div class="col-10">
-              <span class="float-left"><b><h6>Graph filter</h6></b></span>
+              <span class="float-left"
+                ><b><h6>Graph filter</h6></b></span
+              >
             </div>
             <div class="col-2">
               <span class="float-right">
@@ -80,7 +82,7 @@
                   class="btn sm-2 btn-sm btn-square"
                   title="Info"
                   role="button"
-                  @click="helpOn(true)"
+                  @click="helpOn(true,'filter')"
                 >
                   i
                 </button>
@@ -89,7 +91,7 @@
           </div>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label" :title="this.periodFilter">Period</label>
+          <label class="card-label" :title="this.periodFilter">Period:</label>
           <v-select
             v-if="timePeriod"
             label="name"
@@ -102,7 +104,7 @@
             @input="updateSlider"
           />
           <label class="card-label mt-2" :title="this.percentageFilter"
-            >Percentage</label
+            >Percentage:</label
           >
           <CInput
             title="this.percentageFilter"
@@ -113,7 +115,7 @@
             }"
           />
           <label class="card-label mt-2" :title="this.transportFilter"
-            >Transport</label
+            >Transport:</label
           >
           <v-select
             label="descr"
@@ -126,7 +128,7 @@
             }"
           />
           <label class="card-label mt-2" :title="this.productFilter"
-            >Product</label
+            >Product:</label
           >
           <v-select
             label="descr"
@@ -137,7 +139,7 @@
               'is-invalid': $v.product.$error,
             }"
           />
-          <label class="card-label mt-2" :title="this.flowFilter">Flows</label>
+          <label class="card-label mt-2" :title="this.flowFilter">Flows:</label>
           <v-select
             label="descr"
             :options="flows"
@@ -148,7 +150,7 @@
             }"
           />
           <label class="card-label mt-2" :title="this.weightFilter"
-            >Weights</label
+            >Weights:</label
           >
           <v-select
             label="descr"
@@ -191,10 +193,11 @@
       <v-select
         label="descr"
         multiple
-        :options="transports"
+        :options="transportConstraintStart"
         placeholder="Select transport"
         v-model="transportConstraint"
       />
+
       <template #footer>
         <CButton
           color="outline-primary"
@@ -215,19 +218,13 @@
       size="lg"
     >
       <p>
-        This section shows the graph plot of international trade based on
-        <strong>COMEXT transport data</strong>, along with relevant global and
-        local measures detailing the structure of countries relations. The panel
-        is interactive, providing the possibility to apply several filters and
-        to see how the graph structure and measures change accordingly.
+        {{ paragraph[0] }}
       </p>
       <p class="mt-2">
-        Furthermore an animation is provided showing the
-        <strong>evolution of the international trade graph over time</strong>,
-        spanning the entire time window of trading data.
+        {{ paragraph[1] }}
       </p>
       <template #footer>
-        <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
+        <CButton color="outline-primary" square size="sm" @click="helpOn(false, null)"
           >Close</CButton
         >
       </template>
@@ -241,10 +238,11 @@ import { mapGetters } from "vuex";
 import { required, numeric } from "vuelidate/lib/validators";
 import VueSlider from "vue-slider-component";
 import { Context } from "@/common";
+import { Help } from "@/common";
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
-import  exporter from "@/components/Exporter";
+import exporter from "@/components/Exporter";
 
 export default {
   name: "GraphVisjs",
@@ -268,7 +266,10 @@ export default {
     edgeModal: false,
     selectedEdges: [],
     selectedNodes: [],
-    transportConstraint: null,
+    transportConstraint: [],
+    transportConstraintStart: [],
+    transportConstraintSelected: {},
+    edgeFromTo: null,
     //Metrics
     nodeMetric: null,
     //Spinner
@@ -298,7 +299,12 @@ export default {
     transportFilter: "digit Transport",
     productFilter: "digit Product",
     flowFilter: "digit flow",
-    weightFilter: "digit weights",
+    weightFilter: "digit weights",    
+    
+    paragraph: [],
+    main:[],
+    filter:[]
+    
   }),
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
@@ -348,9 +354,17 @@ export default {
     },
   },
   methods: {
-    helpOn(showModal) {
-      this.isModalHelp = showModal;
-      this.modalHelpTitle = "About map";
+    helpOn(showModal, type) {
+      if (type=='main'){
+        this.paragraph[0]=this.main[0];
+        this.paragraph[1]=this.main[1];
+      }
+      else if (type=='filter'){
+        this.paragraph[0]=this.filter[0];
+        this.paragraph[1]=this.filter[1];
+
+      }
+      this.isModalHelp = showModal;      
     },
     spinnerStart(bool) {
       this.spinner = bool;
@@ -361,18 +375,39 @@ export default {
       this.spinner = bool;
     },
     handleSelectEdge(selectedGraph) {
+      this.transportConstraint = [];
+      console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
       selectedGraph.edges.forEach((edgeId) => {
+        
         const selectedEdge = this.getEdge(this.network, edgeId);
         const sourceNode = this.getNode(this.network, selectedEdge.from);
         const destinationNode = this.getNode(this.network, selectedEdge.to);
+        
+        if (selectedGraph.edges.length > 1) {
+            this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;            
+        } else {          
+            this.edgeFromTo = sourceNode.label + "-" + destinationNode.label;
+        }
+        
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
           destination: destinationNode,
         });
       });
+      console.log(this.edgeFromTo);
+      
+      if (selectedGraph.edges.length > 1) {
+        this.transportConstraintStart = this.transport;
+      } else {
+        this.transportConstraintStart = this.transportConstraintSelected[
+          this.edgeFromTo
+        ]
+          ? this.transportConstraintSelected[this.edgeFromTo]
+          : this.transport;
+      }
       this.edgeModal = true;
     },
     handleOverNode(event) {
@@ -382,6 +417,7 @@ export default {
     applyConstraints() {
       const constraints = [];
       this.selectedEdges.forEach((edge) => {
+        this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.network, edge.from).label,
           to: this.getNode(this.network, edge.to).label,
@@ -401,6 +437,13 @@ export default {
       this.$store.dispatch("graphVisjs/postGraph", form);
       this.closeModal();
       this.spinnerStart(true);
+    },
+
+    setTransportConstraintStart() {
+      let transport = this.transportConstraintStart.filter(
+        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
+      );
+      this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
     closeModal() {
       this.edgeModal = false;
@@ -424,7 +467,6 @@ export default {
     },
     handleSubmit() {
       this.$v.$touch(); //validate form data
-
       if (
         !this.$v.percentage.$invalid &&
         !this.$v.transport.$invalid &&
@@ -433,6 +475,7 @@ export default {
         !this.$v.weight.$invalid
       ) {
         this.spinnerStart(true);
+
         const form = {
           tg_period: this.selectedPeriod.id,
           tg_perc: this.percentage,
@@ -444,6 +487,7 @@ export default {
           selezioneMezziEdges: "None",
         };
         this.$store.dispatch("graphVisjs/postGraph", form);
+        this.transportConstraintSelected = {};
       }
     },
     getIds(selectedTransports) {
@@ -453,6 +497,7 @@ export default {
       });
       return ids;
     },
+
     getData() {
       var nodes = [];
       var edges = [];
@@ -481,6 +526,13 @@ export default {
     },
   },
   created() {
+    
+    this.main[0] = Help.Graph.Main[0];
+    this.main[1] = Help.Graph.Main[1];
+    this.filter[0] = Help.Graph.Filter[0];
+    this.filter[1] = Help.Graph.Filter[1];
+    
+
     this.$store.dispatch("period/findByName", "graph");
     this.$store.dispatch("coreui/setContext", Context.Graph);
     this.$store.dispatch("classification/getTransports");
@@ -515,3 +567,4 @@ export default {
   text-align: right;
 }
 </style>
+

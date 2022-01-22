@@ -112,7 +112,7 @@
         <CCardBody v-show="isCovidEstimation">
           <CDataTable
             :items="covidEstimationDataTable"
-            :fields="covidEstimationTableFileds"
+            
             hover
           />
         </CCardBody>
