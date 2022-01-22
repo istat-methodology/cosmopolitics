@@ -26,6 +26,7 @@ import {
   CInput,
   CTextarea,
   CButton,
+  CButtonGroup,
   CAlert,
   CDataTable,
   CTab,
@@ -60,6 +61,7 @@ Vue.component("CCardFooter", CCardFooter);
 Vue.component("CInput", CInput);
 Vue.component("CTextarea", CTextarea);
 Vue.component("CButton", CButton);
+Vue.component("CButtonGroup", CButtonGroup);
 Vue.component("CAlert", CAlert);
 Vue.component("CDataTable", CDataTable);
 Vue.component("CTab", CTab);

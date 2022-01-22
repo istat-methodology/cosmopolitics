@@ -38,7 +38,7 @@ const actions = {
         console.log(err);
       });
   },
-  getSeries({ commit },name) {
+  getSeries({ commit }, name) {
     return geomapService
       .getSeries(name)
       .then(data => {

@@ -3,7 +3,9 @@
     fixed
     :minimize="minimize"
     :show="show"
-    @update:show="value => $store.commit('set', ['sidebarShow', 'responsive'])"
+    @update:show="
+      value => $store.commit('coreui/set', ['sidebarShow', 'responsive'])
+    "
   >
     <CSidebarBrand class="d-md-down-none" to="/">
       <CIcon name="cil-terminal" size="lg"></CIcon>
@@ -18,7 +20,9 @@
           class="c-sidebar-nav-link"
           :class="{ 'c-active': isHome }"
         >
-          <CIcon name="cil-home" class="c-sidebar-nav-icon" />Home
+          <CIcon name="cil-home" class="c-sidebar-nav-icon" />{{
+            $t("sidebar.home")
+          }}
           <span class="badge badge-primary">Alpha</span>
         </router-link>
       </li>
@@ -30,7 +34,8 @@
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-primary': isMap }"
         >
-          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Interactive map
+          <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
+          {{ $t("sidebar.map") }}
         </router-link>
       </li>
       <li class="c-sidebar-nav-item">
@@ -40,31 +45,11 @@
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-success': isGraph }"
         >
-          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Graph analysis
+          <CIcon name="cil-layers" class="c-sidebar-nav-icon" />{{
+            $t("sidebar.graph")
+          }}
         </router-link>
       </li>
-      <!--li class="c-sidebar-nav-item">
-        <router-link
-          tag="a"
-          :to="{ name: 'GraphPlus' }"
-          class="c-sidebar-nav-link"
-          :class="{ 'c-active c-active-success': isGraphPlus }"
-        >
-          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Graph COMEXT -
-          ITGS
-        </router-link>
-      </li-->
-      <!--li class="c-sidebar-nav-item">
-        <router-link
-          tag="a"
-          :to="{ name: 'Mobility' }"
-          class="c-sidebar-nav-link"
-          :class="{ 'c-active c-active-primary': isMobility }"
-        >
-          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Mobility
-          analysis
-        </router-link>
-      </li-->
       <li class="c-sidebar-nav-item">
         <router-link
           tag="a"
@@ -72,7 +57,8 @@
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-warning': isPolicy }"
         >
-          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Time Series
+          <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
+          {{ $t("sidebar.timeseries") }}
         </router-link>
       </li>
       <li class="c-sidebar-nav-item">
@@ -82,8 +68,8 @@
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-danger': isTrade }"
         >
-          <CIcon name="cil-layers" class="c-sidebar-nav-icon" /> Basket of
-          traded products
+          <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
+          {{ $t("sidebar.basket") }}
         </router-link>
       </li>
     </ul>

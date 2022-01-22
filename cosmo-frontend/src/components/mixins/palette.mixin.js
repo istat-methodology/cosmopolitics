@@ -1,7 +1,8 @@
 export default {
   data: () => ({
     currentColor: 0,
-    colorPalette: [{
+    colorPalette: [
+      {
         border: "rgba(46, 184, 92, 1)", //green
         background: "rgba(46, 184, 92, 0.2)"
       },
@@ -114,9 +115,9 @@ export default {
   methods: {
     getColor() {
       this.currentColor =
-        this.currentColor >= this.colorPalette.length - 1 ?
-        0 :
-        this.currentColor;
+        this.currentColor >= this.colorPalette.length - 1
+          ? 0
+          : this.currentColor;
       const color = this.colorPalette[this.currentColor];
       this.currentColor++;
       return color;

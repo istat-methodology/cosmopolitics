@@ -5,7 +5,8 @@ export default {
   data: () => ({
     isInfo: false,
     infoTitle: "",
-    mainFields: [{
+    mainFields: [
+      {
         key: "Year",
         label: ""
       },
@@ -18,7 +19,8 @@ export default {
         label: currentYear
       }
     ],
-    importFields: [{
+    importFields: [
+      {
         key: "main_p_" + previusYear,
         label: "Main partners " + previusYear
       },
@@ -35,7 +37,8 @@ export default {
         label: "Total import " + currentYear
       }
     ],
-    exportFields: [{
+    exportFields: [
+      {
         key: "main_p_" + previusYear,
         label: "Main partners " + previusYear
       },
@@ -52,7 +55,8 @@ export default {
         label: "Total export " + currentYear
       }
     ],
-    importGoodsFields: [{
+    importGoodsFields: [
+      {
         key: "main_g_" + previusYear,
         label: "Main goods " + previusYear
       },
@@ -69,7 +73,8 @@ export default {
         label: "Total import " + currentYear
       }
     ],
-    exportGoodsFields: [{
+    exportGoodsFields: [
+      {
         key: "main_g_" + previusYear,
         label: "Main goods " + previusYear
       },
@@ -85,7 +90,7 @@ export default {
         key: "tot_exp_" + currentYear,
         label: "Total export " + currentYear
       }
-    ],
+    ]
   }),
   methods: {
     openInfo(marker) {
@@ -110,6 +115,6 @@ export default {
     },
     closeInfo() {
       this.isInfo = false;
-    },
-  },
+    }
+  }
 };

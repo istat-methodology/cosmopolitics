@@ -126,11 +126,11 @@ export default {
   data: () => ({
     countrySelected: {
       country: "IT",
-      name: "Italy",
+      name: "Italy"
     },
     flowSelected: {
       id: 2,
-      descr: "Export",
+      descr: "Export"
     },
     download_status: "Download Charts",
     spinner: false,
@@ -139,7 +139,7 @@ export default {
     isModalHelp: false,
     // help on filter as title
     flowFilter: "digit flows",
-    countryFilter: "digit Country",
+    countryFilter: "digit Country"
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
@@ -152,7 +152,7 @@ export default {
         //chartData.labels = this.timeTrade;
         chartData.labels = this.tradePeriod;
         if (this.charts) {
-          this.charts.data.forEach((element) => {
+          this.charts.data.forEach(element => {
             const color = this.getColor();
             chartData.datasets.push({
               label: element.dataname,
@@ -161,14 +161,14 @@ export default {
               borderColor: color.border,
               data: element.value,
               showLine: true,
-              pointRadius: 3,
+              pointRadius: 3
             });
           });
         }
       }
       this.clearColor();
       return chartData;
-    },
+    }
   },
   methods: {
     helpOn(showModal) {
@@ -179,7 +179,7 @@ export default {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
           country: this.countrySelected.country,
-          flow: this.flowSelected.id,
+          flow: this.flowSelected.id
         });
       }
     },
@@ -201,7 +201,7 @@ export default {
 
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
     this.$store.dispatch("period/findByName", "trade").then(() => {
@@ -215,9 +215,9 @@ export default {
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("trade/findByName", {
       country: this.countrySelected.country,
-      flow: this.flowSelected.id,
+      flow: this.flowSelected.id
     });
-  },
+  }
 };
 </script>
 <style>

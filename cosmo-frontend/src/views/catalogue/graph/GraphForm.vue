@@ -82,7 +82,7 @@
                   class="btn sm-2 btn-sm btn-square"
                   title="Info"
                   role="button"
-                  @click="helpOn(true,'filter')"
+                  @click="helpOn(true, 'filter')"
                 >
                   i
                 </button>
@@ -99,7 +99,7 @@
             placeholder="Select period"
             v-model="selectedPeriod"
             :class="{
-              'is-invalid': $v.selectedPeriod.$error,
+              'is-invalid': $v.selectedPeriod.$error
             }"
             @input="updateSlider"
           />
@@ -111,7 +111,7 @@
             placeholder="Set percentage"
             v-model="percentage"
             :class="{
-              'is-invalid': $v.percentage.$error,
+              'is-invalid': $v.percentage.$error
             }"
           />
           <label class="card-label mt-2" :title="this.transportFilter"
@@ -124,7 +124,7 @@
             placeholder="Select transport"
             v-model="transport"
             :class="{
-              'is-invalid': $v.transport.$error,
+              'is-invalid': $v.transport.$error
             }"
           />
           <label class="card-label mt-2" :title="this.productFilter"
@@ -136,7 +136,7 @@
             placeholder="Select a product"
             v-model="product"
             :class="{
-              'is-invalid': $v.product.$error,
+              'is-invalid': $v.product.$error
             }"
           />
           <label class="card-label mt-2" :title="this.flowFilter">Flows:</label>
@@ -146,7 +146,7 @@
             placeholder="Select a flow"
             v-model="flow"
             :class="{
-              'is-invalid': $v.flow.$error,
+              'is-invalid': $v.flow.$error
             }"
           />
           <label class="card-label mt-2" :title="this.weightFilter"
@@ -158,7 +158,7 @@
             placeholder="Weights"
             v-model="weight"
             :class="{
-              'is-invalid': $v.weight.$error,
+              'is-invalid': $v.weight.$error
             }"
           />
           <CButton
@@ -224,7 +224,11 @@
         {{ paragraph[1] }}
       </p>
       <template #footer>
-        <CButton color="outline-primary" square size="sm" @click="helpOn(false, null)"
+        <CButton
+          color="outline-primary"
+          square
+          size="sm"
+          @click="helpOn(false, null)"
           >Close</CButton
         >
       </template>
@@ -283,7 +287,7 @@ export default {
       widthPx: 2159,
       heightScreenCm: 28.58,
       heightPaperCm: 9.05,
-      heightPx: 1086,
+      heightPx: 1086
     },
     working: false,
     url: "",
@@ -299,12 +303,11 @@ export default {
     transportFilter: "digit Transport",
     productFilter: "digit Product",
     flowFilter: "digit flow",
-    weightFilter: "digit weights",    
-    
+    weightFilter: "digit weights",
+
     paragraph: [],
-    main:[],
-    filter:[]
-    
+    main: [],
+    filter: []
   }),
   computed: {
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
@@ -312,7 +315,7 @@ export default {
       "transports",
       "products",
       "flows",
-      "weights",
+      "weights"
     ]),
     ...mapGetters("period", ["timePeriod"]),
     network() {
@@ -320,51 +323,49 @@ export default {
         ? {
             nodes: this.nodes,
             edges: this.edges,
-            options: this.options,
+            options: this.options
           }
         : {
             nodes: [],
             edges: [],
-            options: null,
+            options: null
           };
     },
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    },
+    }
   },
   validations: {
     selectedPeriod: {
-      required,
+      required
     },
     percentage: {
       required,
-      numeric,
+      numeric
     },
     transport: {
-      required,
+      required
     },
     product: {
-      required,
+      required
     },
     flow: {
-      required,
+      required
     },
     weight: {
-      required,
-    },
+      required
+    }
   },
   methods: {
     helpOn(showModal, type) {
-      if (type=='main'){
-        this.paragraph[0]=this.main[0];
-        this.paragraph[1]=this.main[1];
+      if (type == "main") {
+        this.paragraph[0] = this.main[0];
+        this.paragraph[1] = this.main[1];
+      } else if (type == "filter") {
+        this.paragraph[0] = this.filter[0];
+        this.paragraph[1] = this.filter[1];
       }
-      else if (type=='filter'){
-        this.paragraph[0]=this.filter[0];
-        this.paragraph[1]=this.filter[1];
-
-      }
-      this.isModalHelp = showModal;      
+      this.isModalHelp = showModal;
     },
     spinnerStart(bool) {
       this.spinner = bool;
@@ -379,26 +380,25 @@ export default {
       console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
-      selectedGraph.edges.forEach((edgeId) => {
-        
+      selectedGraph.edges.forEach(edgeId => {
         const selectedEdge = this.getEdge(this.network, edgeId);
         const sourceNode = this.getNode(this.network, selectedEdge.from);
         const destinationNode = this.getNode(this.network, selectedEdge.to);
-        
+
         if (selectedGraph.edges.length > 1) {
-            this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;            
-        } else {          
-            this.edgeFromTo = sourceNode.label + "-" + destinationNode.label;
+          this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;
+        } else {
+          this.edgeFromTo = sourceNode.label + "-" + destinationNode.label;
         }
-        
+
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
-          destination: destinationNode,
+          destination: destinationNode
         });
       });
       console.log(this.edgeFromTo);
-      
+
       if (selectedGraph.edges.length > 1) {
         this.transportConstraintStart = this.transport;
       } else {
@@ -416,12 +416,12 @@ export default {
     },
     applyConstraints() {
       const constraints = [];
-      this.selectedEdges.forEach((edge) => {
+      this.selectedEdges.forEach(edge => {
         this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.network, edge.from).label,
           to: this.getNode(this.network, edge.to).label,
-          exclude: this.getIds(this.transportConstraint),
+          exclude: this.getIds(this.transportConstraint)
         });
       });
       const form = {
@@ -432,7 +432,7 @@ export default {
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints,
+        selezioneMezziEdges: constraints
       };
       this.$store.dispatch("graphVisjs/postGraph", form);
       this.closeModal();
@@ -441,7 +441,7 @@ export default {
 
     setTransportConstraintStart() {
       let transport = this.transportConstraintStart.filter(
-        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
+        o => !this.transportConstraint.find(o2 => o.id === o2.id)
       );
       this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
@@ -460,7 +460,7 @@ export default {
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: "None",
-        selezioneMezziEdges: "None",
+        selezioneMezziEdges: "None"
       };
       this.spinnerStart(true);
       this.$store.dispatch("graphVisjs/postGraph", form);
@@ -484,7 +484,7 @@ export default {
           flow: this.flow.id,
           weight_flag: this.weight.descr,
           pos: "None",
-          selezioneMezziEdges: "None",
+          selezioneMezziEdges: "None"
         };
         this.$store.dispatch("graphVisjs/postGraph", form);
         this.transportConstraintSelected = {};
@@ -492,7 +492,7 @@ export default {
     },
     getIds(selectedTransports) {
       var ids = [];
-      selectedTransports.forEach((element) => {
+      selectedTransports.forEach(element => {
         ids.push(element.id);
       });
       return ids;
@@ -504,7 +504,7 @@ export default {
       for (var edgeId in this.network.edges) {
         edges.push({
           from: this.network.edges[edgeId].from,
-          to: this.network.edges[edgeId].to,
+          to: this.network.edges[edgeId].to
         });
       }
       for (var nodeId in this.network.nodes) {
@@ -512,7 +512,7 @@ export default {
           id: this.network.nodes[nodeId].id,
           label: this.network.nodes[nodeId].label,
           x: this.network.nodes[nodeId].x,
-          y: this.network.nodes[nodeId].y,
+          y: this.network.nodes[nodeId].y
         });
       }
       let jsonData = JSON.stringify({ nodes, edges });
@@ -523,21 +523,19 @@ export default {
       arr[1] = canvas;
 
       return arr;
-    },
+    }
   },
   created() {
-    
     this.main[0] = Help.Graph.Main[0];
     this.main[1] = Help.Graph.Main[1];
     this.filter[0] = Help.Graph.Filter[0];
     this.filter[1] = Help.Graph.Filter[1];
-    
 
     this.$store.dispatch("period/findByName", "graph");
     this.$store.dispatch("coreui/setContext", Context.Graph);
     this.$store.dispatch("classification/getTransports");
     this.$store.dispatch("classification/getProducts");
-  },
+  }
 };
 </script>
 
@@ -567,4 +565,3 @@ export default {
   text-align: right;
 }
 </style>
-

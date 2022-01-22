@@ -5,16 +5,14 @@
     size="sm"
     direction="down"
   >
-    <CDropdownMenu>
       <CDropdownItem
         v-for="item in options"
         :key="item"
         @click="download(item)"
-        :title ="getTitle(item)"
+        :title="getTitle(item)"
       >
         {{ item }}
       </CDropdownItem>
-    </CDropdownMenu>
   </CDropdown>
 </template>
 
@@ -28,20 +26,20 @@ export default {
   props: {
     filename: {
       Type: String,
-      default: () => "",
+      default: () => ""
     },
     data: {
       Type: Array,
-      default: () => [],
+      default: () => []
     },
     options: {
       Type: Array,
-      default: () => ["jpeg", "png", "pdf", "json", "csv"],
-    },
+      default: () => ["jpeg", "png", "pdf", "json", "csv"]
+    }
   },
   methods: {
-    getTitle(typeformat){
-       return  "export as "  + typeformat  + " format"
+    getTitle(typeformat) {
+      return "export as " + typeformat + " format";
     },
     download(type) {
       switch (type) {
@@ -65,7 +63,7 @@ export default {
       }
     },
     toBody(items) {
-      html2canvas(items, { useCORS: true }).then((canvas) => {
+      html2canvas(items, { useCORS: true }).then(canvas => {
         document.body.appendChild(canvas);
       });
     },
@@ -79,16 +77,16 @@ export default {
     },
     toJPEG(items, filename) {
       html2canvas(items, {
-        useCORS: true,
-      }).then((canvas) => {
+        useCORS: true
+      }).then(canvas => {
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
         saveAs(imgData, filename);
       });
     },
     toPNG(items, filename) {
       html2canvas(items, {
-        useCORS: true,
-      }).then((canvas) => {
+        useCORS: true
+      }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         saveAs(imgData, filename);
       });
@@ -96,8 +94,8 @@ export default {
     toPDF(items, filename) {
       let pdf = new jsPDF("l", "px");
       html2canvas(items, {
-        useCORS: true,
-      }).then((canvas) => {
+        useCORS: true
+      }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
@@ -117,7 +115,7 @@ export default {
         );
         pdf.save(filename);
       });
-    },
-  },
+    }
+  }
 };
 </script>

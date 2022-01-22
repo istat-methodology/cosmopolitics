@@ -110,11 +110,7 @@
           </span>
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
-          <CDataTable
-            :items="covidEstimationDataTable"
-            
-            hover
-          />
+          <CDataTable :items="covidEstimationDataTable" hover />
         </CCardBody>
       </CCard>
 
@@ -339,7 +335,7 @@
             placeholder="Flow"
             v-model="flowSelected"
             :class="{
-              'is-invalid': $v.flowSelected.$error,
+              'is-invalid': $v.flowSelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.countryFilter"
@@ -351,7 +347,7 @@
             placeholder="Country"
             v-model="countrySelected"
             :class="{
-              'is-invalid': $v.countrySelected.$error,
+              'is-invalid': $v.countrySelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.partnerFilter"
@@ -363,7 +359,7 @@
             placeholder="Partner"
             v-model="partnerSelected"
             :class="{
-              'is-invalid': $v.partnerSelected.$error,
+              'is-invalid': $v.partnerSelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.becFilter">Becs:</label>
@@ -373,7 +369,7 @@
             placeholder="Bec"
             v-model="becSelected"
             :class="{
-              'is-invalid': $v.becSelected.$error,
+              'is-invalid': $v.becSelected.$error
             }"
           />
           <CButton
@@ -429,7 +425,7 @@ export default {
     ScatterChart,
     LineChart,
     VueSlider,
-    exporter,
+    exporter
   },
   mixins: [paletteMixin, becDiagMixin, becMixin, spinnerMixin],
   data: () => ({
@@ -469,7 +465,7 @@ export default {
     flowFilter: "digit flows",
     countryFilter: "digit Country",
     partnerFilter: "digit Partner",
-    becFilter: "digit Bec",
+    becFilter: "digit Bec"
   }),
   computed: {
     ...mapGetters("classification", [
@@ -478,7 +474,7 @@ export default {
       "becs",
       "flows",
       "previsions",
-      "timeNext",
+      "timeNext"
     ]),
     ...mapGetters("bec", ["becCharts", "becDate"]),
 
@@ -487,24 +483,24 @@ export default {
     },
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
-    },
+    }
   },
   validations: {
     flowSelected: {
-      required,
+      required
     },
     countrySelected: {
-      required,
+      required
     },
     partnerSelected: {
-      required,
+      required
     },
     becSelected: {
-      required,
+      required
     },
     previsionSelected: {
-      required,
-    },
+      required
+    }
   },
   methods: {
     helpOn(showModal) {
@@ -556,7 +552,7 @@ export default {
           var: this.becSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: 0, // this.previsionSelected.id
+          fcst: 0 // this.previsionSelected.id
         };
 
         this.$store.dispatch("bec/findByFilters", form).then(() => {
@@ -593,14 +589,14 @@ export default {
 
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
     this.$store.dispatch("classification/getBecs");
-  },
+  }
 };
 </script>
 <style>
@@ -609,6 +605,5 @@ export default {
 }
 .padding-right {
   padding-left: 10px;
-}
-</style
+}</style
 >>

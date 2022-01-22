@@ -14,7 +14,40 @@
       <img src="/img/istat-logo.png" height="20" />
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto" />
-    <CHeaderNav class="mr-4"></CHeaderNav>
+    <CHeaderNav class="mr-lang">
+      <ul class="ul-lang d-none d-md-flex">
+        <li class="nav-item">
+          <a class="nav-link" href="#" target="_blank">{{
+            $t("header.userguide")
+          }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" target="_blank">{{
+            $t("header.methodology")
+          }}</a>
+        </li>
+      </ul>
+      <CButtonGroup role="group">
+        <CButton
+          color="primary"
+          variant="ghost"
+          square
+          size="sm"
+          :class="{ active: selectedIt }"
+          @click="selectLanguage('it')"
+          >IT</CButton
+        >
+        <CButton
+          color="primary"
+          variant="ghost"
+          square
+          size="sm"
+          :class="{ active: selectedEn }"
+          @click="selectLanguage('en')"
+          >EN</CButton
+        >
+      </CButtonGroup>
+    </CHeaderNav>
   </CHeader>
 </template>
 
@@ -22,8 +55,22 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      langs: ["it", "en"],
+      selectedIt: false,
+      selectedEn: true
+    };
+  },
   computed: {
     ...mapGetters("auth", ["isAuthenticated"])
+  },
+  methods: {
+    selectLanguage(lan) {
+      this.$i18n.locale = lan;
+      this.selectedIt = lan == "it" ? true : false;
+      this.selectedEn = lan == "en" ? true : false;
+    }
   }
 };
 </script>
@@ -58,5 +105,26 @@ export default {
   text-decoration: none;
   color: #321fdb;
   background-color: #fff;
+}
+.btn-group .active {
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+}
+.mr-lang {
+  margin-right: 2.5rem;
+}
+.ul-lang {
+  margin-right: 2rem;
+  list-style: none;
+}
+.ul-lang .nav-link {
+  padding: 1rem 0.5rem;
+  color: #636f83;
+}
+.ul-lang .nav-link:hover {
+  color: #321fdb;
+  text-decoration: underline;
+  text-decoration-color: #321fdb;
 }
 </style>

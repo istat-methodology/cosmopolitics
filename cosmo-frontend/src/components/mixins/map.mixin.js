@@ -37,7 +37,7 @@ export default {
       let point = Math.round(sPoint);
       return this.colors[point];
     },
-    setLegend(min, max, data, importexport ) {
+    setLegend(min, max, data, importexport) {
       (min = -60), (max = 60);
       const colorScale = d3.interpolateRdYlGn;
       const colorRangeInfo = {
@@ -58,7 +58,7 @@ export default {
       d3.select("#Legend")
         .selectAll("*")
         .remove();
-      this.colorlegend("#Legend", linearScale, {        
+      this.colorlegend("#Legend", linearScale, {
         title: "Monthly change in " + importexport + " (%) - (Base=Nov 2019)",
         boxHeight: 15,
         axis: true
