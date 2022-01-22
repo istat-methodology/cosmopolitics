@@ -13,6 +13,11 @@ import VueSpinners from "vue-spinners";
 import { iconsSet as icons } from "@/assets/icons/coreui.js";
 import "@/assets/icons/material";
 import { Icon } from "leaflet";
+// i18n
+import VueI18n from 'vue-i18n';
+Vue.use(VueI18n);
+
+
 Vue.use(VueSpinners);
 //Leaflet - icon (bug fixing)
 delete Icon.Default.prototype._getIconUrl;
