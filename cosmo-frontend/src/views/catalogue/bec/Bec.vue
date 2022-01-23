@@ -321,9 +321,9 @@
           </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label">{{
-            $t("timeseries.form.fields.flow")
-          }}</label>
+          <label class="card-label"
+            >{{ $t("timeseries.form.fields.flow") }}*</label
+          >
           <v-select
             label="descr"
             :options="flows"
@@ -333,9 +333,9 @@
               'is-invalid': $v.flowSelected.$error
             }"
           />
-          <label class="card-label mt-3" :title="this.countryFilter">{{
-            $t("timeseries.form.fields.country")
-          }}</label>
+          <label class="card-label mt-3" :title="this.countryFilter"
+            >{{ $t("timeseries.form.fields.country") }}*</label
+          >
           <v-select
             label="name"
             :options="countries"
@@ -345,9 +345,9 @@
               'is-invalid': $v.countrySelected.$error
             }"
           />
-          <label class="card-label mt-3" :title="this.partnerFilter">{{
-            $t("timeseries.form.fields.partner")
-          }}</label>
+          <label class="card-label mt-3" :title="this.partnerFilter"
+            >{{ $t("timeseries.form.fields.partner") }}*</label
+          >
           <v-select
             label="descr"
             :options="partners"
@@ -357,9 +357,9 @@
               'is-invalid': $v.partnerSelected.$error
             }"
           />
-          <label class="card-label mt-3" :title="this.becFilter">{{
-            $t("timeseries.form.fields.bec")
-          }}</label>
+          <label class="card-label mt-3" :title="this.becFilter"
+            >{{ $t("timeseries.form.fields.bec") }}*</label
+          >
           <v-select
             label="descr"
             :options="becs"
@@ -369,12 +369,13 @@
               'is-invalid': $v.becSelected.$error
             }"
           />
+          <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-4"
+            class="mt-2"
             >{{ $t("common.submit") }}</CButton
           >
         </CCardBody>

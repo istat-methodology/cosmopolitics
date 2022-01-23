@@ -50,30 +50,31 @@
           </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label">{{
-            $t("trade.form.fields.country")
-          }}</label>
+          <label class="card-label"
+            >{{ $t("trade.form.fields.country") }}*</label
+          >
           <v-select
             label="name"
             :options="countries"
             :placeholder="$t('trade.form.fields.country_placeholder')"
             v-model="countrySelected"
           />
-          <label class="card-label mt-3">{{
-            $t("trade.form.fields.flow")
-          }}</label>
+          <label class="card-label mt-3"
+            >{{ $t("trade.form.fields.flow") }}*</label
+          >
           <v-select
             label="descr"
             :options="flows"
             :placeholder="$t('trade.form.fields.flow_placeholder')"
             v-model="flowSelected"
           />
+          <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-4"
+            class="mt-2"
             >{{ $t("common.submit") }}
           </CButton>
         </CCardBody>

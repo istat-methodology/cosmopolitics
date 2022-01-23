@@ -83,7 +83,9 @@
           </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label">{{ $t("graph.form.fields.period") }}</label>
+          <label class="card-label"
+            >{{ $t("graph.form.fields.period") }}*</label
+          >
           <v-select
             v-if="timePeriod"
             label="name"
@@ -95,9 +97,9 @@
             }"
             @input="updateSlider"
           />
-          <label class="card-label mt-2">{{
-            $t("graph.form.fields.percentage")
-          }}</label>
+          <label class="card-label mt-2"
+            >{{ $t("graph.form.fields.percentage") }}*</label
+          >
           <CInput
             title="this.percentageFilter"
             :placeholder="$t('graph.form.fields.percentage_placeholder')"
@@ -106,9 +108,9 @@
               'is-invalid': $v.percentage.$error
             }"
           />
-          <label class="card-label mt-2">{{
-            $t("graph.form.fields.transport")
-          }}</label>
+          <label class="card-label mt-2"
+            >{{ $t("graph.form.fields.transport") }}*</label
+          >
           <v-select
             label="descr"
             multiple
@@ -119,9 +121,9 @@
               'is-invalid': $v.transport.$error
             }"
           />
-          <label class="card-label mt-2">{{
-            $t("graph.form.fields.product")
-          }}</label>
+          <label class="card-label mt-2"
+            >{{ $t("graph.form.fields.product") }}*</label
+          >
           <v-select
             label="descr"
             :options="products"
@@ -131,9 +133,9 @@
               'is-invalid': $v.product.$error
             }"
           />
-          <label class="card-label mt-2">{{
-            $t("graph.form.fields.flow")
-          }}</label>
+          <label class="card-label mt-2"
+            >{{ $t("graph.form.fields.flow") }}*</label
+          >
           <v-select
             label="descr"
             :options="flows"
@@ -143,9 +145,9 @@
               'is-invalid': $v.flow.$error
             }"
           />
-          <label class="card-label mt-2">{{
-            $t("graph.form.fields.weight")
-          }}</label>
+          <label class="card-label mt-2"
+            >{{ $t("graph.form.fields.weight") }}*</label
+          >
           <v-select
             label="descr"
             :options="weights"
@@ -155,12 +157,13 @@
               'is-invalid': $v.weight.$error
             }"
           />
+          <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-4"
+            class="mt-2"
             >{{ $t("common.submit") }}</CButton
           >
         </CCardBody>

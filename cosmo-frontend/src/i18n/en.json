@@ -2,6 +2,7 @@
   "common":{
     "submit":"Go!",
     "exporter":"export",
+    "mandatory":"Mandatory fields",
     "footer":{
       "experimental": "Experimental Statistics 2022",
       "coreui": "Powered by"

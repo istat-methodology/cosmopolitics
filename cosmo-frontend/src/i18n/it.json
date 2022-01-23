@@ -2,6 +2,7 @@
   "common":{
     "submit":"Esegui!",
     "exporter":"esporta",
+    "mandatory":"Campi obbligatori",
     "footer":{
       "experimental": "Statistiche sperimentali 2022",
       "coreui": "Con il supporto di"
