@@ -377,7 +377,7 @@ export default {
     },
     handleSelectEdge(selectedGraph) {
       this.transportConstraint = [];
-      console.log(selectedGraph);
+      //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
       selectedGraph.edges.forEach(edgeId => {
@@ -397,7 +397,7 @@ export default {
           destination: destinationNode
         });
       });
-      console.log(this.edgeFromTo);
+      //console.log(this.edgeFromTo);
 
       if (selectedGraph.edges.length > 1) {
         this.transportConstraintStart = this.transport;
@@ -435,6 +435,10 @@ export default {
         selezioneMezziEdges: constraints
       };
       this.$store.dispatch("graphVisjs/postGraph", form);
+      this.$store.dispatch(
+        "message/success",
+        this.$t("graph.scenario.success")
+      );
       this.closeModal();
       this.spinnerStart(true);
     },

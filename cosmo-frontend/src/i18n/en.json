@@ -8,7 +8,7 @@
         "map": "Interactive map",
         "graph": "Graph analysis",
         "timeseries":"Time series",
-        "basket": "Basket of traded products"
+        "trade": "Basket of traded products"
     },
     "landing": {
       "map": {
@@ -26,10 +26,26 @@
         "body": "Effective visualization tool for monthly Comext foreign trade data series. despite the amount of underlying data, they allow an easily understandable reading. useful as a dissemination tool. series are provided in value and quantity, with indication of descriptive statistics and the possibility of downloading <br />",
         "link": "Go to time series section"
       },
-      "basket": {
+      "trade": {
         "title": "Changes in basket composition of traded products (CPA - classification of products by activity) by Member State",
         "body": "This section provides, for each Member State, the 2020 monthly time series of year-over-year changes in the basket composition of exported and imported goods, classified according to CPA-2 digits.<br />",
         "link": "Go to basket section"
+      }
+    },
+    "map":{},
+    "graph":{
+      "scenario":{
+        "success": "The graph has been modified according to the new constraints"
+      }
+    },
+    "timeseries":{},
+    "trade":{
+      "form":{
+        "title": "Trade filter",
+        "fields":{
+          "country": "Country",
+          "flow": "Flow"
+        }
       }
     }
   }

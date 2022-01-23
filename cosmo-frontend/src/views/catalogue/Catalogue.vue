@@ -52,14 +52,14 @@
     <div class="col-sm-6 col-md-4">
       <div class="card">
         <header class="card-header">
-          <span class="card-title">{{ $t("landing.basket.title") }}</span>
+          <span class="card-title">{{ $t("landing.trade.title") }}</span>
         </header>
         <div class="card-body">
-          <p v-html="$t('landing.basket.body')"></p>
+          <p v-html="$t('landing.trade.body')"></p>
           <p class="section-link">
             <router-link tag="a" :to="{ name: 'Trade' }"
               ><span>
-                {{ $t("landing.basket.link") }}<chevron-right-icon
+                {{ $t("landing.trade.link") }}<chevron-right-icon
               /></span>
             </router-link>
           </p>

@@ -69,7 +69,7 @@
           :class="{ 'c-active c-active-danger': isTrade }"
         >
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
-          {{ $t("sidebar.basket") }}
+          {{ $t("sidebar.trade") }}
         </router-link>
       </li>
     </ul>

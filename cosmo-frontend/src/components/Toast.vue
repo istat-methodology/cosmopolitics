@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .toaster .toast {
-  width: 60%;
+  width: 100%;
 }
 
 .toast-info {

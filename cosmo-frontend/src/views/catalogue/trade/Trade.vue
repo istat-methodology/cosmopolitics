@@ -45,7 +45,7 @@
         <CCardHeader>
           <div class="row">
             <div class="col-10">
-              <span class="float-left"><h6>Trade filter</h6> </span>
+              <span class="float-left"><h6>{{ $t("trade.form.title") }}</h6> </span>
             </div>
             <div class="col-2">
               <span class="float-right">
@@ -63,7 +63,7 @@
         </CCardHeader>
         <CCardBody>
           <label for="country" class="card-label" :title="this.countryFilter"
-            >Country:</label
+            >{{ $t("trade.form.fields.country") }}</label
           >
           <v-select
             label="name"
@@ -72,7 +72,7 @@
             v-model="countrySelected"
           />
           <label for="country" class="card-label mt-3" :title="this.flowFilter"
-            >Flows:</label
+            >{{ $t("trade.form.fields.flow") }}</label
           >
           <v-select
             label="descr"
@@ -149,7 +149,6 @@ export default {
       var chartData = {};
       chartData.datasets = [];
       if (this.timePeriod) {
-        //chartData.labels = this.timeTrade;
         chartData.labels = this.tradePeriod;
         if (this.charts) {
           this.charts.data.forEach(element => {
@@ -193,10 +192,7 @@ export default {
       let jsonData = JSON.stringify(trade);
       let canvas = document.querySelector("canvas");
 
-      var arr = [];
-      arr[0] = jsonData;
-      arr[1] = canvas;
-      return arr;
+      return [jsonData, canvas];
     },
 
     spinnerStart(bool) {
@@ -205,11 +201,9 @@ export default {
   },
   created() {
     this.$store.dispatch("period/findByName", "trade").then(() => {
-      for (var i = 0; i < this.timePeriod.length; i++) {
-        console.log(this.timePeriod[i].name);
-        this.tradePeriod.push(this.timePeriod[i].name);
+      for (const period of this.timePeriod) {
+        this.tradePeriod.push(period.name);
       }
-      console.log(this.tradePeriod);
     });
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("classification/getCountries");
