@@ -14,9 +14,9 @@
   },
   "sidebar": {
       "home": "Home",
-      "map": "[IT] Interactive map",
-      "graph": "[IT] Graph analysis",
-      "timeseries":"[IT] Time series",
+      "map": "Mappa interattiva",
+      "graph": "Graph analysis",
+      "timeseries":"Serie storiche",
       "trade": "[IT] Basket of traded products"
   },
   "landing": {
