@@ -7,7 +7,7 @@
             <span class="text-primary">Graph density: </span
             >{{ graphDensity }}</span
           >
-          <span v-else><b>Graph metrics</b></span>
+          <span v-else>{{ $t("graph.card.title") }} </span>
           <span class="pl-2" v-if="nodeMetric">
             <span class="text-primary">, node centrality: </span
             >{{ nodeMetric.centrality }}
@@ -70,28 +70,22 @@
     <div class="col-3">
       <CCard>
         <CCardHeader>
-          <div class="row">
-            <div class="col-10">
-              <span class="float-left"
-                ><b><h6>Graph filter</h6></b></span
-              >
-            </div>
-            <div class="col-2">
-              <span class="float-right">
-                <button
-                  class="btn sm-2 btn-sm btn-square"
-                  title="Info"
-                  role="button"
-                  @click="helpOn(true, 'filter')"
-                >
-                  i
-                </button>
-              </span>
-            </div>
-          </div>
+          <span class="float-left">{{ $t("graph.form.title") }}</span>
+          <span class="float-right">
+            <button
+              class="btn sm-2 btn-sm btn-square"
+              title="Info"
+              role="button"
+              @click="helpOn(true, 'filter')"
+            >
+              i
+            </button>
+          </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label" :title="this.periodFilter">Period:</label>
+          <label class="card-label" :title="this.periodFilter">{{
+            $t("graph.form.fields.period")
+          }}</label>
           <v-select
             v-if="timePeriod"
             label="name"
@@ -103,9 +97,9 @@
             }"
             @input="updateSlider"
           />
-          <label class="card-label mt-2" :title="this.percentageFilter"
-            >Percentage:</label
-          >
+          <label class="card-label mt-2" :title="this.percentageFilter">{{
+            $t("graph.form.fields.percentage")
+          }}</label>
           <CInput
             title="this.percentageFilter"
             placeholder="Set percentage"
@@ -114,9 +108,9 @@
               'is-invalid': $v.percentage.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.transportFilter"
-            >Transport:</label
-          >
+          <label class="card-label mt-2" :title="this.transportFilter">{{
+            $t("graph.form.fields.transport")
+          }}</label>
           <v-select
             label="descr"
             multiple
@@ -127,9 +121,9 @@
               'is-invalid': $v.transport.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.productFilter"
-            >Product:</label
-          >
+          <label class="card-label mt-2" :title="this.productFilter">{{
+            $t("graph.form.fields.product")
+          }}</label>
           <v-select
             label="descr"
             :options="products"
@@ -139,7 +133,9 @@
               'is-invalid': $v.product.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.flowFilter">Flows:</label>
+          <label class="card-label mt-2" :title="this.flowFilter">{{
+            $t("graph.form.fields.flow")
+          }}</label>
           <v-select
             label="descr"
             :options="flows"
@@ -149,9 +145,9 @@
               'is-invalid': $v.flow.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.weightFilter"
-            >Weights:</label
-          >
+          <label class="card-label mt-2" :title="this.weightFilter">{{
+            $t("graph.form.fields.weight")
+          }}</label>
           <v-select
             label="descr"
             :options="weights"
@@ -166,8 +162,8 @@
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-2"
-            >Go!</CButton
+            class="mt-4"
+            >{{ $t("common.submit") }}</CButton
           >
         </CCardBody>
       </CCard>
@@ -559,7 +555,6 @@ export default {
 .vue-slider {
   margin: 2rem;
 }
-
 .circle-spin {
   position: absolute;
   top: 20%;
@@ -567,5 +562,12 @@ export default {
 }
 .align-right {
   text-align: right;
+}
+.card-header {
+  padding: 1rem 1.25rem 0.7rem 1.25rem;
+}
+.card-header span {
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 </style>

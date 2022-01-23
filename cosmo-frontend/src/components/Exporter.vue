@@ -1,6 +1,6 @@
 <template>
   <CDropdown
-    togglerText="export"
+    :togglerText="$t('common.exporter')"
     className="c-header-nav-items mr-2 "
     size="sm"
     direction="down"

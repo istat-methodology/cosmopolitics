@@ -16,16 +16,15 @@
               </label>
             </span>
             <span class="padding-right">
-              <b>
-                <span v-if="this.countrySelected && this.partnerSelected"
-                  >Time series visualization – Monthly COMEXT Data:
-                  {{ this.countrySelected.name }} -
-                  {{ this.partnerSelected.descr }}</span
-                >
-                <span v-else
-                  >Time Series visualization – Monthly COMEXT Data</span
-                >
-              </b>
+              <span v-if="this.countrySelected && this.partnerSelected"
+                >{{ $t("timeseries.card.title") }}:
+                {{ this.countrySelected.name }} -
+                {{ this.partnerSelected.descr }}</span
+              >
+              <span v-else
+                >{{ $t("timeseries.card.title") }} –
+                {{ $t("timeseries.card.comext") }}</span
+              >
             </span>
           </span>
           <span class="float-right">
@@ -605,5 +604,12 @@ export default {
 }
 .padding-right {
   padding-left: 10px;
-}</style
->>
+}
+.card-header {
+  padding: 1rem 1.25rem 0.7rem 1.25rem;
+}
+.card-header span {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+</style>

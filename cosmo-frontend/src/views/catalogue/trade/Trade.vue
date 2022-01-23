@@ -1,13 +1,11 @@
 <template>
   <div class="row">
     <div class="col-9">
-      <div class="card">
-        <header class="card-header">
-          <b
-            ><span
-              >Trade data 2020: {{ this.countrySelected.name }} -
-              {{ this.flowSelected.descr }}</span
-            ></b
+      <CCard>
+        <CCardHeader>
+          <span
+            >{{ $t("trade.card.title") }} {{ this.countrySelected.name }} -
+            {{ this.flowSelected.descr }}</span
           >
           <span class="float-right">
             <span class="float-right">
@@ -29,7 +27,7 @@
               </exporter>
             </span>
           </span>
-        </header>
+        </CCardHeader>
         <CCardBody>
           <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
           <line-chart
@@ -38,40 +36,37 @@
             id="trade-chart"
           />
         </CCardBody>
-      </div>
+      </CCard>
     </div>
     <div class="col-3">
       <CCard>
         <CCardHeader>
-          <div class="row">
-            <div class="col-10">
-              <span class="float-left"><h6>{{ $t("trade.form.title") }}</h6> </span>
-            </div>
-            <div class="col-2">
-              <span class="float-right">
-                <button
-                  class="btn sm-2 btn-sm btn-square"
-                  title="Info"
-                  role="button"
-                  @click="helpOn(true)"
-                >
-                  i
-                </button>
-              </span>
-            </div>
-          </div>
+          <span class="float-left">{{ $t("trade.form.title") }} </span>
+          <span class="float-right">
+            <button
+              class="btn sm-2 btn-sm btn-square"
+              title="Info"
+              role="button"
+              @click="helpOn(true)"
+            >
+              i
+            </button>
+          </span>
         </CCardHeader>
         <CCardBody>
-          <label for="country" class="card-label" :title="this.countryFilter"
-            >{{ $t("trade.form.fields.country") }}</label
-          >
+          <label for="country" class="card-label" :title="this.countryFilter">{{
+            $t("trade.form.fields.country")
+          }}</label>
           <v-select
             label="name"
             :options="countries"
             placeholder="Country"
             v-model="countrySelected"
           />
-          <label for="country" class="card-label mt-3" :title="this.flowFilter"
+          <label
+            for="country"
+            class="card-label mt-3"
+            :title="this.flowFilter"
             >{{ $t("trade.form.fields.flow") }}</label
           >
           <v-select
@@ -85,9 +80,9 @@
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-3"
-            >Go!</CButton
-          >
+            class="mt-4"
+            >{{ $t("common.submit") }}
+          </CButton>
         </CCardBody>
       </CCard>
     </div>
@@ -222,5 +217,12 @@ export default {
 }
 .align-right {
   text-align: right;
+}
+.card-header {
+  padding: 1rem 1.25rem 0.7rem 1.25rem;
+}
+.card-header span {
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 </style>

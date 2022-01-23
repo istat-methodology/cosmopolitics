@@ -3,13 +3,13 @@
     <div>
       <span class="mr-1 text-dark"
         ><a href="https://www.istat.it" target="_blank"
-          >Istat – Istituto nazionale di statistica</a
+          >Istituto nazionale di statistica</a
         >
-        - Statistiche Sperimentali 2022</span
+        - {{ $t("common.footer.experimental") }}</span
       >
     </div>
     <div class="ml-auto">
-      <span class="mr-1">Powered by</span>
+      <span class="mr-1">{{ $t("common.footer.coreui") }}</span>
       <a href="https://coreui.io/vue" target="_blank">CoreUI for Vue</a>
     </div>
   </CFooter>
