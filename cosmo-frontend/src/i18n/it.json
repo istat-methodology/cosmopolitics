@@ -42,15 +42,27 @@
   },
   "map":{},
   "graph":{
+    "stats":{
+      "density": "Densità del grafo",
+      "centrality":"Centralità",
+      "vulnerability": "Vulnerabilità",
+      "hubness": "Hubness"
+    },
     "form":{
       "title": "Filtri di ricerca",
       "fields":{
         "period": "Periodo di riferimento",
+        "period_placeholder": "Seleziona un periodo",
         "percentage":"Percentuale",
+        "percentage_placeholder": "Seleziona una percentuale",
         "transport":"Mezzi di trasporto",
+        "transport_placeholder": "Seleziona mezzi di trasporto",
         "product":"Prodotti",
+        "product_placeholder": "Seleziona un prodotto",
         "flow": "Flussi",
-        "weight": "Pesi"
+        "flow_placeholder": "Seleziona un flusso",
+        "weight": "Pesi",
+        "weight_placeholder": "Seleziona i pesi"
       }
     },
     "card":{
@@ -62,9 +74,13 @@
       "title": "Filtri di ricerca",
       "fields":{
         "flow": "Flusso",
+        "flow_placeholder": "Seleziona il flusso",
         "country": "Paese",
+        "country_placeholder": "Seleziona un paese",
         "partner": "Partner",
-        "bec": "Bec"
+        "partner_placeholder": "Seleziona un partner",
+        "bec": "Bec",
+        "bec_placeholder": "Seleziona una Bec"
       }
     },
     "card":{
@@ -77,7 +93,9 @@
       "title": "Filtri di ricerca",
       "fields":{
         "country": "Paese",
-        "flow": "Flusso"
+        "country_placeholder": "Seleziona un paese",
+        "flow": "Flusso",
+        "flow_placeholder": "Seleziona il flusso"
       }
     },
     "card":{

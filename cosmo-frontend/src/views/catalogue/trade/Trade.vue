@@ -8,24 +8,21 @@
             {{ this.flowSelected.descr }}</span
           >
           <span class="float-right">
-            <span class="float-right">
-              <button
-                class="btn mr-2 float-right btn-sm btn-square"
-                title="Info"
-                role="button"
-                @click="helpOn(true)"
-              >
-                i
-              </button>
-            </span>
-            <span class="float-right">
-              <exporter
-                filename="cosmopolitics_trade"
-                :data="getData()"
-                :options="['jpeg', 'png', 'pdf', 'json']"
-              >
-              </exporter>
-            </span>
+            <button
+              class="btn mr-2 float-right btn-sm btn-square"
+              role="button"
+              @click="helpOn(true)"
+            >
+              i
+            </button>
+          </span>
+          <span class="float-right">
+            <exporter
+              filename="cosmopolitics_trade"
+              :data="getData()"
+              :options="['jpeg', 'png', 'pdf', 'json']"
+            >
+            </exporter>
           </span>
         </CCardHeader>
         <CCardBody>
@@ -45,7 +42,6 @@
           <span class="float-right">
             <button
               class="btn sm-2 btn-sm btn-square"
-              title="Info"
               role="button"
               @click="helpOn(true)"
             >
@@ -54,25 +50,22 @@
           </span>
         </CCardHeader>
         <CCardBody>
-          <label for="country" class="card-label" :title="this.countryFilter">{{
+          <label class="card-label">{{
             $t("trade.form.fields.country")
           }}</label>
           <v-select
             label="name"
             :options="countries"
-            placeholder="Country"
+            :placeholder="$t('trade.form.fields.country_placeholder')"
             v-model="countrySelected"
           />
-          <label
-            for="country"
-            class="card-label mt-3"
-            :title="this.flowFilter"
-            >{{ $t("trade.form.fields.flow") }}</label
-          >
+          <label class="card-label mt-3">{{
+            $t("trade.form.fields.flow")
+          }}</label>
           <v-select
             label="descr"
             :options="flows"
-            placeholder="Flows"
+            :placeholder="$t('trade.form.fields.flow_placeholder')"
             v-model="flowSelected"
           />
           <CButton
@@ -87,7 +80,6 @@
       </CCard>
     </div>
     <!-- Marker modal -->
-
     <CModal
       title="Changes in basket composition of traded products (CPA -
             classification of products by activity) by Member State"
@@ -127,14 +119,10 @@ export default {
       id: 2,
       descr: "Export"
     },
-    download_status: "Download Charts",
     spinner: false,
     tradePeriod: [],
     modalHelpTitle: " About on ",
-    isModalHelp: false,
-    // help on filter as title
-    flowFilter: "digit flows",
-    countryFilter: "digit Country"
+    isModalHelp: false
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
@@ -179,17 +167,16 @@ export default {
     },
     getData() {
       let trade = [];
-      for (let i = 0; i < this.chartData.datasets.length; i++) {
-        let obj = {};
-        obj[this.chartData.datasets[i].label] = this.chartData.datasets[i].data;
-        trade.push(obj);
+      for (const dataset of this.chartData.datasets) {
+        trade.push({
+          [dataset.label]: dataset.data
+        });
       }
       let jsonData = JSON.stringify(trade);
       let canvas = document.querySelector("canvas");
 
       return [jsonData, canvas];
     },
-
     spinnerStart(bool) {
       this.spinner = bool;
     }

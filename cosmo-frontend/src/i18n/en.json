@@ -42,15 +42,27 @@
   },
   "map":{},
   "graph":{
+    "stats":{
+      "density": "Graph density",
+      "centrality":"Node centrality:",
+      "vulnerability": "vulnerability:",
+      "hubness": "hubness:"
+    },
     "form":{
       "title": "Graph filter",
       "fields":{
         "period": "Period",
+        "period_placeholder": "Select a period",
         "percentage":"Percentage",
+        "percentage_placeholder": "Set a percentage",
         "transport":"Transport",
+        "transport_placeholder": "Select transport",
         "product":"Product",
+        "product_placeholder": "Select a product",
         "flow": "Flow",
-        "weight": "Weight"
+        "flow_placeholder": "Select a flow",
+        "weight": "Weight",
+        "weight_placeholder": "Select weights"
       }
     },
     "card":{
@@ -65,9 +77,13 @@
       "title": "Search filters",
       "fields":{
         "flow": "Flow",
+        "flow_placeholder": "Select a flow",
         "country": "Country",
+        "country_placeholder": "Select a country",
         "partner": "Partner",
-        "bec": "Bec"
+        "partner_placeholder": "Select a partner",
+        "bec": "Bec",
+        "bec_placeholder": "Select a Bec"
       }
     },
     "card":{
@@ -80,7 +96,9 @@
       "title": "Trade filter",
       "fields":{
         "country": "Country",
-        "flow": "Flow"
+        "country_placeholder": "Select a country",
+        "flow": "Flow",
+        "flow_placeholder": "Select a flow"
       }
     },
     "card":{

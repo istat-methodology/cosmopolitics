@@ -4,37 +4,38 @@
       <CCard>
         <CCardHeader>
           <span v-if="graphDensity > 0">
-            <span class="text-primary">Graph density: </span
+            <span class="text-primary">{{ $t("graph.stats.density") }} </span
             >{{ graphDensity }}</span
           >
           <span v-else>{{ $t("graph.card.title") }} </span>
           <span class="pl-2" v-if="nodeMetric">
-            <span class="text-primary">, node centrality: </span
+            <span class="text-primary"
+              >, {{ $t("graph.stats.centrality") }} </span
             >{{ nodeMetric.centrality }}
-            <span class="text-primary">, vulnerability: </span
+            <span class="text-primary"
+              >, {{ $t("graph.stats.vulnerability") }} </span
             >{{ nodeMetric.vulnerability }}
-            <span class="text-primary">, hubness:</span>{{ nodeMetric.hubness }}
+            <span class="text-primary">, {{ $t("graph.stats.hubness") }} </span
+            >{{ nodeMetric.hubness }}
           </span>
 
           <span class="float-right">
-            <span class="float-right">
-              <button
-                class="btn mr-2 float-right btn-sm btn-square"
-                title="Info"
-                role="button"
-                @click="helpOn(true, 'main')"
-              >
-                i
-              </button>
-            </span>
-            <span class="float-right">
-              <exporter
-                filename="cosmopolitics_graph_analysis"
-                :data="getData()"
-                :options="['jpeg', 'png', 'pdf', 'json']"
-              >
-              </exporter>
-            </span>
+            <button
+              class="btn mr-2 float-right btn-sm btn-square"
+              title="Info"
+              role="button"
+              @click="helpOn(true, 'main')"
+            >
+              i
+            </button>
+          </span>
+          <span class="float-right">
+            <exporter
+              filename="cosmopolitics_graph_analysis"
+              :data="getData()"
+              :options="['jpeg', 'png', 'pdf', 'json']"
+            >
+            </exporter>
           </span>
 
           <div v-show="error">
@@ -74,7 +75,6 @@
           <span class="float-right">
             <button
               class="btn sm-2 btn-sm btn-square"
-              title="Info"
               role="button"
               @click="helpOn(true, 'filter')"
             >
@@ -83,75 +83,73 @@
           </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label" :title="this.periodFilter">{{
-            $t("graph.form.fields.period")
-          }}</label>
+          <label class="card-label">{{ $t("graph.form.fields.period") }}</label>
           <v-select
             v-if="timePeriod"
             label="name"
             :options="timePeriod"
-            placeholder="Select period"
+            :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
             :class="{
               'is-invalid': $v.selectedPeriod.$error
             }"
             @input="updateSlider"
           />
-          <label class="card-label mt-2" :title="this.percentageFilter">{{
+          <label class="card-label mt-2">{{
             $t("graph.form.fields.percentage")
           }}</label>
           <CInput
             title="this.percentageFilter"
-            placeholder="Set percentage"
+            :placeholder="$t('graph.form.fields.percentage_placeholder')"
             v-model="percentage"
             :class="{
               'is-invalid': $v.percentage.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.transportFilter">{{
+          <label class="card-label mt-2">{{
             $t("graph.form.fields.transport")
           }}</label>
           <v-select
             label="descr"
             multiple
             :options="transports"
-            placeholder="Select transport"
+            :placeholder="$t('graph.form.fields.transport_placeholder')"
             v-model="transport"
             :class="{
               'is-invalid': $v.transport.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.productFilter">{{
+          <label class="card-label mt-2">{{
             $t("graph.form.fields.product")
           }}</label>
           <v-select
             label="descr"
             :options="products"
-            placeholder="Select a product"
+            :placeholder="$t('graph.form.fields.product_placeholder')"
             v-model="product"
             :class="{
               'is-invalid': $v.product.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.flowFilter">{{
+          <label class="card-label mt-2">{{
             $t("graph.form.fields.flow")
           }}</label>
           <v-select
             label="descr"
             :options="flows"
-            placeholder="Select a flow"
+            :placeholder="$t('graph.form.fields.flow_placeholder')"
             v-model="flow"
             :class="{
               'is-invalid': $v.flow.$error
             }"
           />
-          <label class="card-label mt-2" :title="this.weightFilter">{{
+          <label class="card-label mt-2">{{
             $t("graph.form.fields.weight")
           }}</label>
           <v-select
             label="descr"
             :options="weights"
-            placeholder="Weights"
+            :placeholder="$t('graph.form.fields.weight_placeholder')"
             v-model="weight"
             :class="{
               'is-invalid': $v.weight.$error
@@ -249,14 +247,11 @@ export default {
   components: { Network, VueSlider, exporter },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
-    blank: "",
-    //Form fields
-
     //selectbox
     selectedPeriod: { id: "202003", name: "Mar 20" },
     //Slider
     periodValue: "202003",
-
+    //Form fields
     percentage: 90,
     transport: null,
     product: null,
@@ -292,14 +287,6 @@ export default {
     dataUrl: "",
     modalHelpTitle: " About on ",
     isModalHelp: false,
-
-    // help on filter as title
-    periodFilter: "digit Period",
-    percentageFilter: "digit Percetage",
-    transportFilter: "digit Transport",
-    productFilter: "digit Product",
-    flowFilter: "digit flow",
-    weightFilter: "digit weights",
 
     paragraph: [],
     main: [],
@@ -420,6 +407,9 @@ export default {
           exclude: this.getIds(this.transportConstraint)
         });
       });
+      // ---------------------------------------
+      // @TODO Change the name of the form keys
+      // ---------------------------------------
       const form = {
         tg_period: this.selectedPeriod.id,
         tg_perc: this.percentage,
@@ -451,6 +441,9 @@ export default {
     updateSlider() {
       this.periodValue = this.selectedPeriod.id;
     },
+    // ---------------------------------------
+    // @TODO Change the name of the form keys
+    // ---------------------------------------
     handleSliderChange(val) {
       const form = {
         tg_period: val,
@@ -475,7 +468,9 @@ export default {
         !this.$v.weight.$invalid
       ) {
         this.spinnerStart(true);
-
+        // ---------------------------------------
+        // @TODO Change the name of the form keys
+        // ---------------------------------------
         const form = {
           tg_period: this.selectedPeriod.id,
           tg_perc: this.percentage,
@@ -518,14 +513,13 @@ export default {
       let jsonData = JSON.stringify({ nodes, edges });
       let canvas = document.querySelector("canvas");
 
-      var arr = [];
-      arr[0] = jsonData;
-      arr[1] = canvas;
-
-      return arr;
+      return [jsonData, canvas];
     }
   },
   created() {
+    // ---------------------------------------
+    // @TODO Improve modal management
+    // ---------------------------------------
     this.main[0] = Help.Graph.Main[0];
     this.main[1] = Help.Graph.Main[1];
     this.filter[0] = Help.Graph.Filter[0];

@@ -308,64 +308,62 @@
     <div class="col-3">
       <CCard>
         <CCardHeader>
-          <div class="row">
-            <div class="col-10">
-              <span class="float-left"><h6>Trade filter</h6></span>
-            </div>
-            <div class="col-2">
-              <span class="float-right">
-                <button
-                  class="btn sm-2 btn-sm btn-square"
-                  title="Info"
-                  role="button"
-                  @click="helpOn(true)"
-                >
-                  i
-                </button>
-              </span>
-            </div>
-          </div>
+          <span class="float-left">{{ $t("timeseries.form.title") }}</span>
+          <span class="float-right">
+            <button
+              class="btn sm-2 btn-sm btn-square"
+              title="Info"
+              role="button"
+              @click="helpOn(true)"
+            >
+              i
+            </button>
+          </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label" :title="this.flowFilter">Flows:</label>
+          <label class="card-label">{{
+            $t("timeseries.form.fields.flow")
+          }}</label>
           <v-select
             label="descr"
             :options="flows"
-            placeholder="Flow"
+            :placeholder="$t('timeseries.form.fields.flow_placeholder')"
             v-model="flowSelected"
             :class="{
               'is-invalid': $v.flowSelected.$error
             }"
           />
-          <label class="card-label mt-3" :title="this.countryFilter"
-            >Countries:</label
-          >
+          <label class="card-label mt-3" :title="this.countryFilter">{{
+            $t("timeseries.form.fields.country")
+          }}</label>
           <v-select
             label="name"
             :options="countries"
-            placeholder="Country"
+            :placeholder="$t('timeseries.form.fields.country_placeholder')"
             v-model="countrySelected"
             :class="{
               'is-invalid': $v.countrySelected.$error
             }"
           />
-          <label class="card-label mt-3" :title="this.partnerFilter"
-            >Partners:</label
-          >
+          <label class="card-label mt-3" :title="this.partnerFilter">{{
+            $t("timeseries.form.fields.partner")
+          }}</label>
           <v-select
             label="descr"
             :options="partners"
-            placeholder="Partner"
+            :placeholder="$t('timeseries.form.fields.partner_placeholder')"
             v-model="partnerSelected"
             :class="{
               'is-invalid': $v.partnerSelected.$error
             }"
           />
-          <label class="card-label mt-3" :title="this.becFilter">Becs:</label>
+          <label class="card-label mt-3" :title="this.becFilter">{{
+            $t("timeseries.form.fields.bec")
+          }}</label>
           <v-select
             label="descr"
             :options="becs"
-            placeholder="Bec"
+            :placeholder="$t('timeseries.form.fields.bec_placeholder')"
             v-model="becSelected"
             :class="{
               'is-invalid': $v.becSelected.$error
@@ -376,8 +374,8 @@
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-3"
-            >Go!</CButton
+            class="mt-4"
+            >{{ $t("common.submit") }}</CButton
           >
         </CCardBody>
       </CCard>
