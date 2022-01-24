@@ -6,4 +6,3 @@ export * from "./map";
 export * from "./graphVisjs";
 export * from "./period";
 export * from "./jsonData";
-export * from "./help";

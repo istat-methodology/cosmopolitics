@@ -109,7 +109,9 @@
           </span>
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
-          <CDataTable :items="covidEstimationDataTable" hover />
+          <CDataTable 
+            :fields ="covidEstimationTableFileds"
+            :items ="covidEstimationDataTable" hover />
         </CCardBody>
       </CCard>
 

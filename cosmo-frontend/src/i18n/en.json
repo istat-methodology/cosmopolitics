@@ -1,23 +1,23 @@
 {
-  "common":{
-    "submit":"Go!",
-    "exporter":"export",
-    "mandatory":"Mandatory fields",
-    "footer":{
+  "common": {
+    "submit": "Go!",
+    "exporter": "export",
+    "mandatory": "Mandatory fields",
+    "footer": {
       "experimental": "Experimental Statistics 2022",
       "coreui": "Powered by"
     }
   },
-  "header":{
-      "userguide": "User guide",
-      "methodology":"Methodological note"
+  "header": {
+    "userguide": "User guide",
+    "methodology": "Methodological note"
   },
   "sidebar": {
-      "home": "Home",
-      "map": "Interactive map",
-      "graph": "Graph analysis",
-      "timeseries":"Time series",
-      "trade": "Basket of traded products"
+    "home": "Home",
+    "map": "Interactive map",
+    "graph": "Graph analysis",
+    "timeseries": "Time series",
+    "trade": "Basket of traded products"
   },
   "landing": {
     "map": {
@@ -41,24 +41,24 @@
       "link": "Go to basket section"
     }
   },
-  "map":{},
-  "graph":{
-    "stats":{
+  "map": {},
+  "graph": {
+    "stats": {
       "density": "Graph density",
-      "centrality":"Node centrality:",
+      "centrality": "Node centrality:",
       "vulnerability": "vulnerability:",
       "hubness": "hubness:"
     },
-    "form":{
+    "form": {
       "title": "Graph filter",
-      "fields":{
+      "fields": {
         "period": "Period",
         "period_placeholder": "Select a period",
-        "percentage":"Percentage",
+        "percentage": "Percentage",
         "percentage_placeholder": "Set a percentage",
-        "transport":"Transport",
+        "transport": "Transport",
         "transport_placeholder": "Select transport",
-        "product":"Product",
+        "product": "Product",
         "product_placeholder": "Select a product",
         "flow": "Flow",
         "flow_placeholder": "Select a flow",
@@ -66,17 +66,31 @@
         "weight_placeholder": "Select weights"
       }
     },
-    "card":{
-      "title":"Graph analysis"
+    "card": {
+      "title": "Graph analysis"
     },
-    "scenario":{
+    "scenario": {
       "success": "The graph has been modified according to the new constraints"
+    },
+    "modal": {
+      "main": {
+        "title":"International Trade Relations",
+        "body": " The <b>'International Trade Relations'</b> Panel shows the graph analysis of the international trades between countries.<br> Data are relative to all trades between countries present in the Comext dataset. The requested data can be selected through filters. Countries are identified by their flags and their relative positions in the graph are given by the “Spring layout algorithm” implemented in the Networkx library."
+      },
+      "filter": {
+        "title": "Filter description",
+        "body": "Period: select the required time period for data underlying the graph (specific month or year) <br><b>Percentage:</b> select the percentage of data shown in the graph (integer value from 0 to 100). Once the percentage value is selected the data are filtered according to the following procedure: all the amounts traded between countries (all edges) are listed in a descending order, then the cumulative sum is calculated along the list. All the trades associated to a cumulative sum above the percentage value, taken as threshold, are filtered out. This means that small trading amounts are considered in the graph only when “percentage” takes an high value. <br><b>Transport:</b> select data relative to the means of transport used in the trades. The listed means of transport are: “unknown”, “sea”, “rail”, “road”, ”air”, “post”, “fixed mechanism”, “inland waterway”, “self-propulsion”. <br><b>Product:</b> select data relative to the product exchanged in the trades. The user can select either a single product or all of them together. <br><b>Flow:</b> select either “Export” data or “Import” data, coming from <br><b>Weight:</b> select the type of graph analysis. “True” select the weighted type of graph, “False” select the unweighted type of graph. Values for the links weights are the amounts exchanged in the trades."
+      },
+      "metrics": {
+        "title": "Metrics description",
+        "body": "The following metrics derive from standard centrality measures of Graph Analysis. <br>Product spread: graph density. Represents how much the product is spread through the graph. <br>Vulnerability: it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <Br>Exportation strength: it is the outdegree centrality for each country.<br> Hubness: it is the betweenness centrality of the countries."
+      }
     }
   },
-  "timeseries":{
-    "form":{
+  "timeseries": {
+    "form": {
       "title": "Search filters",
-      "fields":{
+      "fields": {
         "flow": "Flow",
         "flow_placeholder": "Select a flow",
         "country": "Country",
@@ -87,24 +101,23 @@
         "bec_placeholder": "Select a Bec"
       }
     },
-    "card":{
-      "title":"Time Series visualization",
+    "card": {
+      "title": "Time Series visualization",
       "comext": "Monthly COMEXT Data"
     }
   },
-  "trade":{
-    "form":{
+  "trade": {
+    "form": {
       "title": "Trade filter",
-      "fields":{
+      "fields": {
         "country": "Country",
         "country_placeholder": "Select a country",
         "flow": "Flow",
         "flow_placeholder": "Select a flow"
       }
     },
-    "card":{
-      "title":"Trade data:"
+    "card": {
+      "title": "Trade data:"
     }
   }
 }
-  

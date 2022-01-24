@@ -24,7 +24,7 @@
               class="btn mr-2 float-right btn-sm btn-square"
               title="Info"
               role="button"
-              @click="helpOn(true, 'main')"
+              @click="helpOn(true, true)"
             >
               i
             </button>
@@ -76,7 +76,7 @@
             <button
               class="btn sm-2 btn-sm btn-square"
               role="button"
-              @click="helpOn(true, 'filter')"
+              @click="helpOn(true, false)"
             >
               i
             </button>
@@ -210,22 +210,18 @@
     </CModal>
 
     <CModal
-      title="International Trade Relations"
+      :title="isMainModal?  $t('graph.modal.main.title'): $t('graph.modal.filter.title')"
       :show.sync="isModalHelp"
       size="lg"
     >
-      <p>
-        {{ paragraph[0] }}
-      </p>
-      <p class="mt-2">
-        {{ paragraph[1] }}
-      </p>
+      <p v-html="isMainModal ? $t('graph.modal.main.body'): $t('graph.modal.filter.body')"></p>
+      
       <template #footer>
         <CButton
           color="outline-primary"
           square
           size="sm"
-          @click="helpOn(false, null)"
+          @click="isModalHelp = false"
           >Close</CButton
         >
       </template>
@@ -239,7 +235,6 @@ import { mapGetters } from "vuex";
 import { required, numeric } from "vuelidate/lib/validators";
 import VueSlider from "vue-slider-component";
 import { Context } from "@/common";
-import { Help } from "@/common";
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
@@ -288,8 +283,14 @@ export default {
     base64: "",
     error: "",
     dataUrl: "",
-    modalHelpTitle: " About on ",
+    
+    modalTitle: " About on ",
+    modalBody: " About on ",
+
     isModalHelp: false,
+    isMainModal :false,
+    isFilterModal : false,
+
 
     paragraph: [],
     main: [],
@@ -343,14 +344,9 @@ export default {
     }
   },
   methods: {
-    helpOn(showModal, type) {
-      if (type == "main") {
-        this.paragraph[0] = this.main[0];
-        this.paragraph[1] = this.main[1];
-      } else if (type == "filter") {
-        this.paragraph[0] = this.filter[0];
-        this.paragraph[1] = this.filter[1];
-      }
+    
+    helpOn(showModal, mainModal) {
+      this.isMainModal = mainModal;
       this.isModalHelp = showModal;
     },
     spinnerStart(bool) {
@@ -523,10 +519,7 @@ export default {
     // ---------------------------------------
     // @TODO Improve modal management
     // ---------------------------------------
-    this.main[0] = Help.Graph.Main[0];
-    this.main[1] = Help.Graph.Main[1];
-    this.filter[0] = Help.Graph.Filter[0];
-    this.filter[1] = Help.Graph.Filter[1];
+    
 
     this.$store.dispatch("period/findByName", "graph");
     this.$store.dispatch("coreui/setContext", Context.Graph);
