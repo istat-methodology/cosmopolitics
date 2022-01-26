@@ -60,7 +60,7 @@
                   </CTab>
                   <CTab title="Import partners">
                     <CDataTable
-                      :items="importDataItems"
+                      :items="importDataItems"                  
                       :fields="importFields"
                       hover
                     />

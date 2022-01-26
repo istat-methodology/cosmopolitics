@@ -20,6 +20,7 @@ const state = {
     { id: 1, descr: true },
     { id: 2, descr: false }
   ],
+  /*
   timeNext: [
     { id: 0, descr: "March 2021", value: "202103" },
     { id: 1, descr: "April 2021", value: "202104" },
@@ -32,7 +33,8 @@ const state = {
     { id: 8, descr: "November 2021", value: "202111" },
     { id: 9, descr: "December 2021", value: "202112" }
   ],
-  timeTrade: [
+  */
+  /*timeTrade: [
     "Jan-20",
     "Feb-20",
     "Mar-20",
@@ -46,6 +48,7 @@ const state = {
     "Nov-20",
     "Dec-20"
   ]
+  */
 };
 const mutations = {
   SET_COUNTRIES(state, countries) {

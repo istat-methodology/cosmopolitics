@@ -19,8 +19,7 @@
           <span class="float-right">
             <exporter
               filename="cosmopolitics_trade"
-              :data="getData()"
-              :options="['jpeg', 'png', 'pdf', 'json']"
+              :data="getData(this.chartData)"
             >
             </exporter>
           </span>
@@ -166,17 +165,9 @@ export default {
         });
       }
     },
-    getData() {
-      let trade = [];
-      for (const dataset of this.chartData.datasets) {
-        trade.push({
-          [dataset.label]: dataset.data
-        });
-      }
-      let jsonData = JSON.stringify(trade);
+    getData(data) {
       let canvas = document.querySelector("canvas");
-
-      return [jsonData, canvas];
+      return [data, canvas];
     },
     spinnerStart(bool) {
       this.spinner = bool;

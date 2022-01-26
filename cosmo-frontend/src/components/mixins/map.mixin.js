@@ -8,7 +8,8 @@ export default {
       code: ""
     },
     colors: [],
-    dataLegend: []
+    dataLegend: [],
+    legendMonth:"Dec"
   }),
   methods: {
     getRadius(marker, min, max, data) {
@@ -59,7 +60,7 @@ export default {
         .selectAll("*")
         .remove();
       this.colorlegend("#Legend", linearScale, {
-        title: "Monthly change in " + importexport + " (%) - (Base=Nov 2019)",
+        title: "Monthly change in " + importexport + " (%) - (Base " + this.legendMonth + " 2019 = 100)",
         boxHeight: 15,
         axis: true
       });
@@ -182,6 +183,8 @@ export default {
           .append("text")
           .attr("class", "colorlegend-title")
           .style("text-anchor", "middle")
+          .style("font-size", "12")
+          .style("font-weight", "bold")
           .style("pointer-events", "none")
           .text(title);
         legendTitle

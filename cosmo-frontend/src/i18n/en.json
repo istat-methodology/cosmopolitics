@@ -17,6 +17,7 @@
     "map": "Interactive map",
     "graph": "Graph analysis",
     "timeseries": "Time series",
+    "timeseriescomplete": "Time series complete",
     "trade": "Basket of traded products"
   },
   "landing": {
@@ -32,7 +33,7 @@
     },
     "timeseries": {
       "title": "Time Series visualization",
-      "body": "Effective visualization tool for monthly Comext foreign trade data series. despite the amount of underlying data, they allow an easily understandable reading. useful as a dissemination tool. series are provided in value and quantity, with indication of descriptive statistics and the possibility of downloading <br />",
+      "body": "<b>Visualization tool</b> for monthly Comext foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats.",
       "link": "Go to time series section"
     },
     "trade": {
@@ -73,17 +74,22 @@
       "success": "The graph has been modified according to the new constraints"
     },
     "modal": {
+      
       "main": {
-        "title":"International Trade Relations",
-        "body": " The <b>'International Trade Relations'</b> Panel shows the graph analysis of the international trades between countries.<br> Data are relative to all trades between countries present in the Comext dataset. The requested data can be selected through filters. Countries are identified by their flags and their relative positions in the graph are given by the “Spring layout algorithm” implemented in the Networkx library."
+        "title": "International Trade Relations",
+        "subtitle": "<br><b>Graph analysis</b>",
+        "body": " <br>This panel shows the graph analysis of the international trades between countries.<br> Data are relative to all trades between countries present in the Comext dataset. The requested data can be selected through filters. Countries are identified by their flags and their relative positions in the graph are given by the “Spring layout algorithm” implemented in the Networkx library."
       },
       "filter": {
         "title": "Filter description",
-        "body": "Period: select the required time period for data underlying the graph (specific month or year) <br><b>Percentage:</b> select the percentage of data shown in the graph (integer value from 0 to 100). Once the percentage value is selected the data are filtered according to the following procedure: all the amounts traded between countries (all edges) are listed in a descending order, then the cumulative sum is calculated along the list. All the trades associated to a cumulative sum above the percentage value, taken as threshold, are filtered out. This means that small trading amounts are considered in the graph only when “percentage” takes an high value. <br><b>Transport:</b> select data relative to the means of transport used in the trades. The listed means of transport are: “unknown”, “sea”, “rail”, “road”, ”air”, “post”, “fixed mechanism”, “inland waterway”, “self-propulsion”. <br><b>Product:</b> select data relative to the product exchanged in the trades. The user can select either a single product or all of them together. <br><b>Flow:</b> select either “Export” data or “Import” data, coming from <br><b>Weight:</b> select the type of graph analysis. “True” select the weighted type of graph, “False” select the unweighted type of graph. Values for the links weights are the amounts exchanged in the trades."
+        "body": "<br><b>Period:</b> select the required time period for data underlying the graph (specific month or year) <br><br><b>Percentage:</b> select the percentage of data shown in the graph (integer value from 0 to 100). Once the percentage value is selected the data are filtered according to the following procedure: all the amounts traded between countries (all edges) are listed in a descending order, then the cumulative sum is calculated along the list. All the trades associated to a cumulative sum above the percentage value, taken as threshold, are filtered out. This means that small trading amounts are considered in the graph only when “percentage” takes an high value. <br><br><b>Transport:</b> select data relative to the means of transport used in the trades. The listed means of transport are: “unknown”, “sea”, “rail”, “road”, ”air”, “post”, “fixed mechanism”, “inland waterway”, “self-propulsion”. <br><br><b>Product:</b> select data relative to the product exchanged in the trades. The user can select either a single product or all of them together. <br><br><b>Flow:</b> select either “Export” data or “Import” data, coming from <br><br><b>Weight:</b> select the type of graph analysis. “True” select the weighted type of graph, “False” select the unweighted type of graph. Values for the links weights are the amounts exchanged in the trades.",
+        "keywords":"<br><br><b>[KEY WORDS]</b><br><b>Period:</b> time period (month or year)</b><br><b>Percentage:</b> percentage of all the trades (integer value 0-100)</b><br><b>Transport:</b> means of transport used in the trades. </b><br><b>Product:</b> product exchanged (one product or all of them)</b><br><b>Flow:</b> “Export” or “Import” data</b><br><b>Weight:</b> weighted (True) or unweighted (False) graph. </b>"
+
       },
       "metrics": {
-        "title": "Metrics description",
-        "body": "The following metrics derive from standard centrality measures of Graph Analysis. <br>Product spread: graph density. Represents how much the product is spread through the graph. <br>Vulnerability: it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <Br>Exportation strength: it is the outdegree centrality for each country.<br> Hubness: it is the betweenness centrality of the countries."
+        "subtitle": "<br><br><b>Metrics description</b>",
+        "body": "<br>The following metrics derive from standard centrality measures of Graph Analysis.<br><br><br><b>Product spread:</b><br><br><b>Graph density: </b>Represents how much the product is spread through the graph. <br><b>Vulnerability:</b> it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <Br><b>Exportation strength:</b> it is the outdegree centrality for each country.<br><b> Hubness:</b> it is the betweenness centrality of the countries.",
+        "keywords":"<br><br><b>[KEY WORDS]</b><br><b>Product spread:</b> graph density <br><b>Vulnerability:</b>  1 - the indegree centrality for each country. <br><b>Exportation strength:</b> outdegree centrality for each country.</b><br><b>Hubness:</b> betweenness centrality for each country.</b>"
       }
     }
   },
@@ -104,6 +110,12 @@
     "card": {
       "title": "Time Series visualization",
       "comext": "Monthly COMEXT Data"
+    },
+    "modal": {
+      "main": {
+        "title": "Time Series visualizatiion",
+        "body": "<b>Visualization tool</b> for monthly Comext foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats."
+      }
     }
   },
   "trade": {

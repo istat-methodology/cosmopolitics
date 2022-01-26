@@ -1,19 +1,5 @@
 export default {
   data: () => ({
-    months: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ],
     treatX: 0,
     minTreatY: 0,
     maxTreatY: 0,
@@ -21,12 +7,16 @@ export default {
     timePeriod: null,
     timeNothing: -1,
     maxTimeStep: 0,
+
     covidEstimationTableTitle: null,
-    covidEstimationTableFileds: null,
-    covidEstimationDataTable: null,
+    covidEstimationTableFields: null,
+    covidEstimationTableData: null,
+    
+    
     modelTableTitle: null,
-    modelTableFileds: null,
-    modelDataTable: null,
+    modelTableFields: null,
+    modelTableData: null,
+    
     cast: {
       indexStart: 0
     }
@@ -34,13 +24,13 @@ export default {
   methods: {
     getBecSlider() {
       var period = [];
-      this.policyPeriod.forEach(element => {
+      this.becPeriod.forEach(element => {
         period.push(element);
       });
       return period;
     },
     getBecSliderVal(value) {
-      var obj = this.policyPeriod.find(element => {
+      var obj = this.becPeriod.find(element => {
         return element.id == value;
       });
       return obj ? obj.val : null;
@@ -56,7 +46,7 @@ export default {
       return dataMap;
     },
     getXY(arrX, arrY) {
-      console.log("=>START");
+      //console.log("=>START");
       const dataMap = [];
       arrX.forEach((num1, index) => {
         const num2 = arrY[index];
@@ -64,30 +54,27 @@ export default {
           x: num1,
           y: num2
         };
-        console.log(obj);
+        //console.log(obj);
         dataMap.push(obj);
       });
-      console.log("=>END");
+      //console.log("=>END");
       return dataMap;
     },
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
-        dataMap.push(
-          {
-            x: index,
-            y: index
-          },
-          {
-            x: index,
-            y: element
-          }
-        );
+        dataMap.push({
+          x: index,
+          y: index
+        }, {
+          x: index,
+          y: element
+        });
       });
       return dataMap;
     },
     getCoordinatesNorm(n, m) {
-      console.log("=>START");
+      //console.log("=>START");
       const dataMap = [];
       n.forEach((num1, index) => {
         const num2 = m[index];
@@ -95,10 +82,10 @@ export default {
           x: num1,
           y: num2
         };
-        console.log(obj);
+        //console.log(obj);
         dataMap.push(obj);
       });
-      console.log("=>END");
+      //console.log("=>END");
       return dataMap;
     },
     getCoordinatesTreat() {
@@ -110,8 +97,7 @@ export default {
         null,
         this.timeLapse[this.maxTimeStep].tend
       );
-      var data = [
-        {
+      var data = [{
           x: this.treatX,
           y: this.maxTreatY
         },
@@ -124,10 +110,12 @@ export default {
     },
     buildBecCharts(dataR) {
       this.timeLapse = [];
-      this.covidEstimationDataTable = [];
-      this.modelDataTable = [];
+      this.covidEstimationTableData = [];
+      this.modelTableData = [];
+
       var covidEstimation = [];
       var model = [];
+
       var diagNorm = [];
       var diagACF = [];
       var diagRes = [];
@@ -138,14 +126,14 @@ export default {
           case "Covid_Estimation":
             covidEstimation.push(dataR[name]);
             this.covidEstimationTableTitle = "Covid Estimation";
-            this.covidEstimationTableFileds = this.timePeriod; //this.getHeaderTable(dataR[name]);
-            this.covidEstimationDataTable = this.getTable(covidEstimation[0]);
+            this.covidEstimationTableFields = this.timePeriod; //this.getHeaderTable(dataR[name]);
+            this.covidEstimationTableData = this.getTable(covidEstimation[0]);
             break;
           case "Model":
             model.push(dataR[name]);
             this.modelTableTitle = "Model";
-            this.modelTableFileds = this.getHeaderTable(dataR[name]);
-            this.modelDataTable = this.getTable(model[0]);
+            this.modelTableFields = this.getHeaderTable(dataR[name]);
+            this.modelTableData = this.getTable(model[0]);
             break;
           case "DIAG_NORM":
             diagNorm.push(dataR[name]);
@@ -183,29 +171,30 @@ export default {
       this.buildBecSlider();
     },
     buildBecSlider() {
-      this.policyPeriod = [];
+      this.becPeriod = [];
       var indexStart = 0;
       var indexEnd = 0;
       var v = 0;
       var tmp;
-      var year;
-      var iMonth;
-      var month;
       var label;
       var yearSeries;
       indexStart = this.timeLapse[0].date.length - 1;
       indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
-      this.policyPeriodValue = this.timeLapse[this.maxTimeStep].date[
+      this.becPeriodValue = this.timeLapse[this.maxTimeStep].date[
         indexStart
       ];
       for (var i = indexStart; i <= indexEnd; i++) {
         tmp = this.timeLapse[this.maxTimeStep].date[i];
-        year = tmp.substr(2, 2);
-        iMonth = parseInt(tmp.substr(5, 2)) - 1;
-        month = this.months[iMonth];
-        month = month.substr(0, 3);
-        label = month + "-" + year;
-        this.policyPeriod.push({
+
+        var dt = new Date(tmp);
+        var shortYear = dt.toLocaleDateString("en", {
+          year: "2-digit"
+        });
+        var shortMonth = dt.toLocaleString("en-US", {
+          month: "short"
+        });        
+        label = shortMonth + "-" + shortYear;
+        this.becPeriod.push({
           id: this.timeLapse[this.maxTimeStep].date[i],
           name: label,
           val: v
@@ -215,9 +204,7 @@ export default {
       yearSeries = 0;
       tmp = 0;
       for (
-        var s = 0;
-        s <= this.timeLapse[this.maxTimeStep].date[s].lenght - 1;
-        s++
+        var s = 0; s <= this.timeLapse[this.maxTimeStep].date[s].lenght - 1; s++
       ) {
         tmp = this.timeLapse[this.maxTimeStep].date[s];
         if (tmp.substr(2, 4) != yearSeries) {
@@ -270,7 +257,7 @@ export default {
       chartObj = {
         label: label,
         fill: fill,
-        backgroundColor: function(context) {
+        backgroundColor: function (context) {
           var index = context.dataIndex;
           var value = context.dataset.data[index];
           if (value) {
@@ -304,27 +291,32 @@ export default {
           dataXY = this.getCoordinates(data);
           chartObj = {};
           this.labels = this.timeLapse[time]["date"];
+
           switch (chartType) {
             case "date":
-              chartData.labels = data;
+              if (data != undefined) {
+                chartData.labels = data;
+              }
               break;
             case "tend":
               var highlightIndex = parseInt(this.cast.indexStart);
               chartObj = this.buildObjectWithContext(
                 highlightIndex,
                 "Yearly variation series",
-                true,
+                false,
                 "rgba(46, 184, 92, 0.2)",
                 "rgba(255,128,0,0.6)",
                 "rgba(46, 184, 92,1)",
                 dataXY,
-                false,
+                true,
                 0,
-                12,
+                2,
                 0
               );
+              chartData.datasets.push(chartObj);
               break;
             case "pred_tp":
+
               chartObj = this.buildObject(
                 "Model estimation",
                 false,
@@ -336,8 +328,12 @@ export default {
                 0,
                 0
               );
+              if (this.becFull == true) {
+                chartData.datasets.push(chartObj);
+              }
               break;
             case "pred_tp_c":
+
               borderDash = "5";
               chartObj = this.buildObject(
                 "Counterfactual",
@@ -350,38 +346,32 @@ export default {
                 0,
                 borderDash
               );
+              if (this.becFull == true) {
+                chartData.datasets.push(chartObj);
+              }
               break;
             default:
-              chartObj = this.buildObject(
-                chartType,
-                false,
-                "red",
-                "red",
-                dataXY,
-                true,
-                0,
-                0,
-                0
-              );
+              console.log("this chartType " + chartType + " doesn't exist");
+             
           }
-          if (chartType != "date") {
-            chartData.datasets.push(chartObj);
-          }
+          
         }
-        dataXY = this.getCoordinatesTreat();
-        borderDash = "5";
-        chartObj = this.buildObject(
-          "Covid Start",
-          false,
-          "blue",
-          "blue",
-          dataXY,
-          true,
-          0,
-          0,
-          borderDash
-        );
-        chartData.datasets.push(chartObj);
+        if (this.becFull == true) {
+          dataXY = this.getCoordinatesTreat();
+          borderDash = "5";
+          chartObj = this.buildObject(
+            "Covid Start",
+            false,
+            "blue",
+            "blue",
+            dataXY,
+            true,
+            0,
+            0,
+            borderDash
+          );
+          chartData.datasets.push(chartObj);
+        }
       }
       return chartData;
     },
@@ -485,8 +475,7 @@ export default {
             case "dsh_y_pos":
               borderDash = 5;
               maxDsh = diag[chartType].length - 1;
-              dataXY = [
-                {
+              dataXY = [{
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -510,8 +499,7 @@ export default {
               break;
             case "dsh_y_neg":
               (borderDash = 5), (maxDsh = diag[chartType].length - 1);
-              dataXY = [
-                {
+              dataXY = [{
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -535,8 +523,7 @@ export default {
               break;
             case "lne_y":
               diag[chartType].forEach((element, index) => {
-                dataXY = [
-                  {
+                dataXY = [{
                     x: index,
                     y: 0
                   },
@@ -566,7 +553,7 @@ export default {
     getTable(objects) {
       var tableData = [];
       var keys = objects.row;
-      keys.forEach(function(item, index) {
+      keys.forEach(function (item, index) {
         var rowObject = {};
         for (var dat in objects) {
           if (dat != "_row") {
@@ -609,7 +596,7 @@ export default {
       let col;
       let csvDelimiter = ";";
       let csvNewLine = "\r\n";
-      table.forEach(function(rows) {
+      table.forEach(function (rows) {
         var i = 0;
         for (var cols in rows) {
           col = rows[cols];
@@ -625,9 +612,6 @@ export default {
       var indexStart;
       var indexEnd;
       var tmp;
-      var year;
-      var iMonth;
-      var month;
       var label;
       var v = 0;
       this.timePeriod = [];
@@ -647,12 +631,22 @@ export default {
       indexEnd = dataR[maxTimeStep].date.length - 1;
       this.cast.indexStart = indexEnd;
       for (var i = indexStart; i <= indexEnd; i++) {
+
         tmp = dataR[maxTimeStep].date[i];
+        var dt = new Date(tmp);
+        var shortYear = dt.toLocaleDateString("en", {
+          year: "2-digit"
+        });
+        var shortMonth = dt.toLocaleString("en-US", {
+          month: "short"
+        });
+        /*
         year = tmp.substr(2, 2);
         iMonth = parseInt(tmp.substr(5, 2)) - 1;
         month = this.months[iMonth];
         month = month.substr(0, 3);
-        label = month + "-" + year;
+        */
+        label = shortMonth + "-" + shortYear;
         this.timePeriod.push({
           key: "T" + (v + 1),
           label: label,

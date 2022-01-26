@@ -16,6 +16,7 @@
     "map": "[IT] Interactive map",
     "graph": "[IT] Graph analysis",
     "timeseries": "[IT] Time series",
+    "timeseriescomplete": "[IT] Time series",
     "trade": "[IT] Basket of traded products"
   },
   "landing": {
@@ -71,15 +72,16 @@
     "modal": {
       "main": {
         "title": "[IT] International Trade Relations",
+        "subtitle": "[IT] <br><b>Graph analysis</b>",
         "body": "[IT] The <b>'International Trade Relations'</b> Panel shows the graph analysis of the international trades between countries.<br> Data are relative to all trades between countries present in the Comext dataset. The requested data can be selected through filters. Countries are identified by their flags and their relative positions in the graph are given by the “Spring layout algorithm” implemented in the Networkx library."
+      },
+      "metrics": {
+        "stitle": "[IT] ",
+        "body": "[IT] The following metrics derive from standard centrality measures of Graph Analysis. <br>Product spread: graph density. Represents how much the product is spread through the graph. <br>Vulnerability: it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <Br>Exportation strength: it is the outdegree centrality for each country.<br> Hubness: it is the betweenness centrality of the countries."
       },
       "filter": {
         "title": "[IT] International Trade Relations",
         "body": "[IT]Period: select the required time period for data underlying the graph (specific month or year) <br><b>Percentage:</b> select the percentage of data shown in the graph (integer value from 0 to 100). Once the percentage value is selected the data are filtered according to the following procedure: all the amounts traded between countries (all edges) are listed in a descending order, then the cumulative sum is calculated along the list. All the trades associated to a cumulative sum above the percentage value, taken as threshold, are filtered out. This means that small trading amounts are considered in the graph only when “percentage” takes an high value. <br><b>Transport:</b> select data relative to the means of transport used in the trades. The listed means of transport are: “unknown”, “sea”, “rail”, “road”, ”air”, “post”, “fixed mechanism”, “inland waterway”, “self-propulsion”. <br><b>Product:</b> select data relative to the product exchanged in the trades. The user can select either a single product or all of them together. <br><b>Flow:</b> select either “Export” data or “Import” data, coming from <br><b>Weight:</b> select the type of graph analysis. “True” select the weighted type of graph, “False” select the unweighted type of graph. Values for the links weights are the amounts exchanged in the trades."
-      },
-      "metrics": {
-        "title": "[IT] ",
-        "body": "[IT] The following metrics derive from standard centrality measures of Graph Analysis. <br>Product spread: graph density. Represents how much the product is spread through the graph. <br>Vulnerability: it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <Br>Exportation strength: it is the outdegree centrality for each country.<br> Hubness: it is the betweenness centrality of the countries."
       }
     }
   },
@@ -100,6 +102,12 @@
     "card": {
       "title": "Visualizzazione serie storiche",
       "comext": "Dati COMEXT mensili"
+    },
+    "modal": {
+      "main": {
+        "title": "Visualizzazione serie storiche",
+        "body": "[IT] Effective visualization tool for monthly Comext foreign trade data series. despite the amount of underlying data, they allow an easily understandable reading. useful as a dissemination tool. series are provided in value and quantity, with indication of descriptive statistics and the possibility of downloading "
+      }
     }
   },
   "trade": {

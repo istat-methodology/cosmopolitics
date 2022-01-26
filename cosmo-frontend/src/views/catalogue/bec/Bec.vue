@@ -1,3 +1,4 @@
+
 <template>
   <div class="row">
     <div class="col-9">
@@ -42,7 +43,7 @@
               <exporter
                 filename="cosmopolitics_bec"
                 :data="getData(chartData, 'bec')"
-                :options="['jpeg', 'png', 'pdf', 'json']"
+               
               >
               </exporter>
             </span>
@@ -52,10 +53,10 @@
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
           <scatter-chart :chartData="chartData" :options="options" id="bec" />
           <vue-slider
-            v-if="isSlider"
+            v-if="isSlider && isBecFull"
             :adsorb="true"
             :tooltip="'none'"
-            v-model="policyPeriodValue"
+            v-model="becPeriodValue"
             :data="sliderPeriod"
             :data-value="'id'"
             :data-label="'name'"
@@ -64,7 +65,7 @@
         </CCardBody>
       </CCard>
 
-      <CCard v-if="covidEstimationDataTable">
+      <CCard v-if="covidEstimationTableData  && isBecFull">
         <CCardHeader>
           <span class="float-left">
             <span class="float-left">
@@ -98,24 +99,27 @@
                 filename="cosmopolitics_covidestimation"
                 :data="
                   getData(
-                    this.getDataFromTable(this.covidEstimationDataTable),
+                    this.getDataFromTable(this.covidEstimationTableData),
                     'covidEstimation'
                   )
                 "
                 :options="['csv']"
+                :source="['table']"
               >
               </exporter>
             </span>
           </span>
         </CCardHeader>
         <CCardBody v-show="isCovidEstimation">
-          <CDataTable 
-            :fields ="covidEstimationTableFileds"
-            :items ="covidEstimationDataTable" hover />
+          <CDataTable
+            :fields="covidEstimationTableFields"
+            :items="covidEstimationTableData"
+            hover
+          />
         </CCardBody>
       </CCard>
 
-      <CCard v-if="modelDataTable">
+      <CCard v-if="modelTableData  && isBecFull">
         <CCardHeader>
           <span class="float-left">
             <span class="float-left">
@@ -147,10 +151,9 @@
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_model"
-                :data="
-                  getData(this.getDataFromTable(this.modelDataTable), 'model')
-                "
+                :data="getData(this.getDataFromTable(this.modelTableData), 'model')"
                 :options="['csv']"
+                :source="['table']"
               >
               </exporter>
             </span>
@@ -159,8 +162,8 @@
         </CCardHeader>
         <CCardBody v-show="isModel">
           <CDataTable
-            :items="modelDataTable"
-            :fields="modelTableFileds"
+            :items="modelTableData"
+            :fields="modelTableFields"
             hover
           />
         </CCardBody>
@@ -197,8 +200,7 @@
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_diagnorm"
-                :data="getData(chartDataDiagNorm, 'diagnorm')"
-                :options="['jpeg', 'png', 'pdf', 'json']"
+                :data="getData(chartDataDiagNorm, 'diagnorm')"                
               >
               </exporter>
             </span>
@@ -212,7 +214,7 @@
           />
         </CCardBody>
       </CCard>
-      <CCard v-if="chartDataDiagRes">
+      <CCard v-if="chartDataDiagRes && isBecFull">
         <CCardHeader>
           <span class="float-left">
             <span class="float-left">
@@ -245,7 +247,7 @@
               <exporter
                 filename="cosmopolitics_diagres"
                 :data="getData(chartDataDiagRes, 'diagres')"
-                :options="['jpeg', 'png', 'pdf', 'json']"
+              
               >
               </exporter>
             </span>
@@ -292,7 +294,7 @@
               <exporter
                 filename="cosmopolitics_diagacf"
                 :data="getData(chartDataDiagACF, 'diagacf')"
-                :options="['jpeg', 'png', 'pdf', 'json']"
+               
               >
               </exporter>
             </span>
@@ -311,16 +313,6 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("timeseries.form.title") }}</span>
-          <span class="float-right">
-            <button
-              class="btn sm-2 btn-sm btn-square"
-              title="Info"
-              role="button"
-              @click="helpOn(true)"
-            >
-              i
-            </button>
-          </span>
         </CCardHeader>
         <CCardBody>
           <label class="card-label"
@@ -332,7 +324,7 @@
             :placeholder="$t('timeseries.form.fields.flow_placeholder')"
             v-model="flowSelected"
             :class="{
-              'is-invalid': $v.flowSelected.$error
+              'is-invalid': $v.flowSelected.$error,
             }"
           />
           <label class="card-label mt-3" :title="this.countryFilter"
@@ -344,7 +336,7 @@
             :placeholder="$t('timeseries.form.fields.country_placeholder')"
             v-model="countrySelected"
             :class="{
-              'is-invalid': $v.countrySelected.$error
+              'is-invalid': $v.countrySelected.$error,
             }"
           />
           <label class="card-label mt-3" :title="this.partnerFilter"
@@ -356,7 +348,7 @@
             :placeholder="$t('timeseries.form.fields.partner_placeholder')"
             v-model="partnerSelected"
             :class="{
-              'is-invalid': $v.partnerSelected.$error
+              'is-invalid': $v.partnerSelected.$error,
             }"
           />
           <label class="card-label mt-3" :title="this.becFilter"
@@ -368,7 +360,7 @@
             :placeholder="$t('timeseries.form.fields.bec_placeholder')"
             v-model="becSelected"
             :class="{
-              'is-invalid': $v.becSelected.$error
+              'is-invalid': $v.becSelected.$error,
             }"
           />
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
@@ -384,15 +376,11 @@
       </CCard>
     </div>
     <CModal
-      title="Time Series visualizatiion"
+      :title="$t('timeseries.modal.main.title')"
       :show.sync="isModalHelp"
       size="lg"
     >
-      Effective visualization tool for monthly Comext foreign trade data series.
-      despite the amount of underlying data, they allow an easily understandable
-      reading. useful as a dissemination tool. series are provided in value and
-      quantity, with indication of descriptive statistics and the possibility of
-      downloading
+      <p v-html="$t('timeseries.modal.main.body')"></p>
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
           >Close</CButton
@@ -400,7 +388,6 @@
       </template>
     </CModal>
   </div>
-
   <!--circle-spin
     v-bind:loading="isLoading"
     class="circle-spin"
@@ -425,7 +412,7 @@ export default {
     ScatterChart,
     LineChart,
     VueSlider,
-    exporter
+    exporter,
   },
   mixins: [paletteMixin, becDiagMixin, becMixin, spinnerMixin],
   data: () => ({
@@ -444,8 +431,8 @@ export default {
     chartDataDiagRes: null,
     chartDataDiagACF: null,
 
-    policyPeriodValue: "",
-    policyPeriod: [],
+    becPeriodValue: "",
+    becPeriod: [],
 
     isSlider: false,
 
@@ -465,16 +452,17 @@ export default {
     flowFilter: "digit flows",
     countryFilter: "digit Country",
     partnerFilter: "digit Partner",
-    becFilter: "digit Bec"
+    becFilter: "digit Bec",
+    isBecFull: false
   }),
-  computed: {
+  computed: {    
     ...mapGetters("classification", [
       "countries",
       "partners",
       "becs",
       "flows",
       "previsions",
-      "timeNext"
+      "timeNext",
     ]),
     ...mapGetters("bec", ["becCharts", "becDate"]),
 
@@ -483,24 +471,24 @@ export default {
     },
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
-    }
+    },
   },
   validations: {
     flowSelected: {
-      required
+      required,
     },
     countrySelected: {
-      required
+      required,
     },
     partnerSelected: {
-      required
+      required,
     },
     becSelected: {
-      required
+      required,
     },
     previsionSelected: {
-      required
-    }
+      required,
+    },
   },
   methods: {
     helpOn(showModal) {
@@ -515,7 +503,7 @@ export default {
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
       if (iVal <= this.maxTimeStep) {
-        this.chartData = this.getBecChart(iVal);
+        this.chartData = this.getBecChart(iVal,this.isBecFull);
       }
     },
     handleMainChart() {
@@ -552,13 +540,13 @@ export default {
           var: this.becSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: 0 // this.previsionSelected.id
+          fcst: 0, // this.previsionSelected.id
         };
 
         this.$store.dispatch("bec/findByFilters", form).then(() => {
           this.buildBecCharts(this.becCharts);
           if (this.timeLapse) {
-            this.chartData = this.getBecChart(0);
+            this.chartData = this.getBecChart(0,this.isBecFull);
             this.isSlider = true;
           }
         });
@@ -568,18 +556,11 @@ export default {
       if (data != null) {
         var arr = [];
         if (id == "model") {
-          arr[2] = data;
+          arr[0] = data;
         } else if (id == "covidEstimation") {
-          arr[2] = data;
+          arr[0] = data;
         } else {
-          let dat = [];
-          for (let i = 0; i < data.datasets.length; i++) {
-            let obj = {};
-            obj[data.datasets[i].label] = data.datasets[i].data;
-            dat.push(obj);
-          }
-          let jsonData = JSON.stringify(dat);
-          arr[0] = jsonData;
+          arr[0] = data;
           let canvas = document.getElementById(id);
           arr[1] = canvas;
         }
@@ -589,14 +570,14 @@ export default {
 
     spinnerStart(bool) {
       this.spinner = bool;
-    }
+    },
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
     this.$store.dispatch("classification/getBecs");
-  }
+  },
 };
 </script>
 <style>

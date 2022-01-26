@@ -34,6 +34,7 @@
               filename="cosmopolitics_graph_analysis"
               :data="getData()"
               :options="['jpeg', 'png', 'pdf', 'json']"
+              :source="['graph']"
             >
             </exporter>
           </span>
@@ -214,7 +215,7 @@
       :show.sync="isModalHelp"
       size="lg"
     >
-      <p v-html="isMainModal ? $t('graph.modal.main.body'): $t('graph.modal.filter.body')"></p>
+      <p v-html="isMainModal ? $t('graph.modal.main.subtitle') + $t('graph.modal.main.body') + $t('graph.modal.metrics.subtitle') + $t('graph.modal.metrics.body')+ $t('graph.modal.metrics.keywords')  : $t('graph.modal.filter.body')+ $t('graph.modal.filter.keywords')"></p>
       
       <template #footer>
         <CButton
@@ -511,7 +512,6 @@ export default {
       }
       let jsonData = JSON.stringify({ nodes, edges });
       let canvas = document.querySelector("canvas");
-
       return [jsonData, canvas];
     }
   },

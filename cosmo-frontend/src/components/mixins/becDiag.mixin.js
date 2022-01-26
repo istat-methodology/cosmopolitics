@@ -144,9 +144,10 @@ export default {
         ]
       }
     },
+    //min 0 = first month on series
     startSeries: {
-      min: 60,
-      year: 2015
+      min: 0,
+      year: 2010
     }
   }),
   methods: {
