@@ -47,6 +47,12 @@ export default {
     },
     download(type) {
       switch (type) {
+        case "json":
+          this.toJSON(this.data[0], this.filename + "." + type, this.source);
+          break;
+        case "csv":
+          this.toCSV(this.data[0], this.filename + "." + type, this.source);
+          break;
         case "jpeg":
           this.toJPEG(this.data[1], this.filename + "." + type);
           break;
@@ -56,12 +62,7 @@ export default {
         case "pdf":
           this.toPDF(this.data[1], this.filename + "." + type);
           break;
-        case "json":
-          this.toJSON(this.data[0], this.filename + "." + type, this.source);
-          break;
-        case "csv":
-          this.toCSV(this.data[0], this.filename + "." + type, this.source);
-          break;
+
         default:
           break;
       }
@@ -89,10 +90,10 @@ export default {
       saveAs(blob, filename);
     },
     toCSV(data, filename, source) {
-      var result; 
+      var result;
       if (source == "table") {
-        result=data;
-      }else{  
+        result = data;
+      } else {
         var ctr, keys, columnDelimiter, lineDelimiter;
         var dat = [];
         var lbl = [];

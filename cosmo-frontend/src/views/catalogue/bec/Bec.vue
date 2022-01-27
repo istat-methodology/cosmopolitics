@@ -43,7 +43,6 @@
               <exporter
                 filename="cosmopolitics_bec"
                 :data="getData(chartData, 'bec')"
-               
               >
               </exporter>
             </span>
@@ -65,7 +64,7 @@
         </CCardBody>
       </CCard>
 
-      <CCard v-if="covidEstimationTableData  && isBecFull">
+      <CCard v-if="covidEstimationTableData && isBecFull">
         <CCardHeader>
           <span class="float-left">
             <span class="float-left">
@@ -119,7 +118,7 @@
         </CCardBody>
       </CCard>
 
-      <CCard v-if="modelTableData  && isBecFull">
+      <CCard v-if="modelTableData && isBecFull">
         <CCardHeader>
           <span class="float-left">
             <span class="float-left">
@@ -151,7 +150,9 @@
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_model"
-                :data="getData(this.getDataFromTable(this.modelTableData), 'model')"
+                :data="
+                  getData(this.getDataFromTable(this.modelTableData), 'model')
+                "
                 :options="['csv']"
                 :source="['table']"
               >
@@ -200,7 +201,7 @@
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_diagnorm"
-                :data="getData(chartDataDiagNorm, 'diagnorm')"                
+                :data="getData(chartDataDiagNorm, 'diagnorm')"
               >
               </exporter>
             </span>
@@ -247,7 +248,6 @@
               <exporter
                 filename="cosmopolitics_diagres"
                 :data="getData(chartDataDiagRes, 'diagres')"
-              
               >
               </exporter>
             </span>
@@ -294,7 +294,6 @@
               <exporter
                 filename="cosmopolitics_diagacf"
                 :data="getData(chartDataDiagACF, 'diagacf')"
-               
               >
               </exporter>
             </span>
@@ -453,9 +452,9 @@ export default {
     countryFilter: "digit Country",
     partnerFilter: "digit Partner",
     becFilter: "digit Bec",
-    isBecFull: false
+    isBecFull: false,
   }),
-  computed: {    
+  computed: {
     ...mapGetters("classification", [
       "countries",
       "partners",
@@ -503,7 +502,7 @@ export default {
     handleCounterChange(val) {
       var iVal = this.getBecSliderVal(val);
       if (iVal <= this.maxTimeStep) {
-        this.chartData = this.getBecChart(iVal,this.isBecFull);
+        this.chartData = this.getBecChart(iVal, this.isBecFull);
       }
     },
     handleMainChart() {
@@ -546,28 +545,21 @@ export default {
         this.$store.dispatch("bec/findByFilters", form).then(() => {
           this.buildBecCharts(this.becCharts);
           if (this.timeLapse) {
-            this.chartData = this.getBecChart(0,this.isBecFull);
+            this.chartData = this.getBecChart(0, this.isBecFull);
             this.isSlider = true;
           }
         });
       }
     },
     getData(data, id) {
+      var arr = [];
       if (data != null) {
-        var arr = [];
-        if (id == "model") {
-          arr[0] = data;
-        } else if (id == "covidEstimation") {
-          arr[0] = data;
-        } else {
-          arr[0] = data;
-          let canvas = document.getElementById(id);
-          arr[1] = canvas;
-        }
-        return arr;
+        arr[0] = data;
+        let canvas = document.getElementById(id);
+        arr[1] = canvas;
       }
+      return arr;
     },
-
     spinnerStart(bool) {
       this.spinner = bool;
     },
