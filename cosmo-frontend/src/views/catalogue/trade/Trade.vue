@@ -19,7 +19,7 @@
           <span class="float-right">
             <exporter
               filename="cosmopolitics_trade"
-              :data="getData(this.chartData)"
+              :data="getData(this.chartData, 'trade')"
             >
             </exporter>
           </span>
@@ -29,7 +29,7 @@
           <line-chart
             :chartData="chartData"
             :options="optionsTrade"
-            id="trade-chart"
+            id="trade"
           />
         </CCardBody>
       </CCard>
@@ -165,9 +165,11 @@ export default {
         });
       }
     },
-    getData(data) {
-      let canvas = document.querySelector("canvas");
-      return [data, canvas];
+    getData(data, id) {      
+      if (data != null) {
+        return [data, id];
+      }
+      return null;
     },
     spinnerStart(bool) {
       this.spinner = bool;

@@ -10,100 +10,139 @@ Vue.use(VueRouter);
 
 //Vue.http.headers.common['Access-Control-Allow-Origin'] ="*";
 
-const routes = [
-  {
+const routes = [{
     path: "/error",
     component: Error,
-    meta: { authorize: [] }
+    meta: {
+      authorize: []
+    }
   },
   {
     path: "/",
     redirect: "/catalogue",
     name: "Home",
     component: Home,
-    meta: { authorize: [] },
-    children: [
-      {
+    meta: {
+      authorize: []
+    },
+    children: [{
         path: "catalogue",
         name: "Catalogue",
         component: () => import("../views/catalogue/Catalogue"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/map",
         name: "Map",
         component: () => import("../views/catalogue/map/GeoMap"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/graph",
         name: "Graph",
         component: () => import("../views/catalogue/graph/GraphForm"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/graphplus",
         name: "GraphPlus",
         component: () => import("../views/catalogue/graph/GraphFormPlus"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/graphslider",
         name: "GraphSlider",
         component: () => import("../views/catalogue/graph/GraphSlider"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/bec",
         name: "Bec",
         component: () => import("../views/catalogue/bec/Bec"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
+      },
+      {
+        path: "catalogue/timeseries",
+        name: "TimeSeries",
+        component: () => import("../views/catalogue/timeseries/TimeSeries"),
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/mobility",
         name: "Mobility",
         component: () => import("../views/catalogue/mobility/Mobility"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/trade",
         name: "Trade",
         component: () => import("../views/catalogue/trade/Trade"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/geomap",
         name: "GeoMap",
         component: () => import("../views/catalogue/map/GeoMap"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/user",
         name: "UserList",
         component: () => import("../views/settings/user/UserList"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/user/edit/:id",
         name: "UserEdit",
         component: () => import("../views/settings/user/UserEdit"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/user/delete/:id",
         name: "UserDelete",
         component: () => import("../views/settings/user/UserDelete"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       },
       {
         path: "catalogue/user/add/",
         name: "UserAdd",
         component: () => import("../views/settings/user/UserAdd"),
-        meta: { authorize: [] }
+        meta: {
+          authorize: []
+        }
       }
     ]
   },
-  { path: "*", redirect: "/" }
+  {
+    path: "*",
+    redirect: "/"
+  }
 ];
 
 const router = new VueRouter({
@@ -114,7 +153,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // redirect to unauthorized page if not logged in and trying to access a restricted page
-  const { authorize } = to.meta;
+  const {
+    authorize
+  } = to.meta;
   const isAuthenticated = store.getters["auth/isAuthenticated"];
   const userRole = store.getters["auth/role"];
 

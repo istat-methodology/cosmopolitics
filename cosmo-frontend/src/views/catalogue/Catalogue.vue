@@ -40,7 +40,7 @@
         <div class="card-body">
           <p v-html="$t('landing.timeseries.body')"></p>
           <p class="section-link">
-            <router-link tag="a" :to="{ name: 'Bec' }"
+            <router-link tag="a" :to="{ name: 'TimeSeries' }"
               ><span>
                 {{ $t("landing.timeseries.link") }}<chevron-right-icon
               /></span>

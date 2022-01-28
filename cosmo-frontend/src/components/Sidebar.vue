@@ -4,7 +4,7 @@
     :minimize="minimize"
     :show="show"
     @update:show="
-      value => $store.commit('coreui/set', ['sidebarShow', 'responsive'])
+      (value) => $store.commit('coreui/set', ['sidebarShow', 'responsive'])
     "
   >
     <CSidebarBrand class="d-md-down-none" to="/">
@@ -12,7 +12,7 @@
       <span class="brand">Cosmopolitics</span>
     </CSidebarBrand>
 
-    <ul class="c-sidebar-nav h-100 ps" style="position: relative;">
+    <ul class="c-sidebar-nav h-100 ps" style="position: relative">
       <li class="c-sidebar-nav-item">
         <router-link
           tag="a"
@@ -58,6 +58,17 @@
           :class="{ 'c-active c-active-warning': isPolicy }"
         >
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
+          {{ $t("sidebar.timeseries") + " old" }}
+        </router-link>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <router-link
+          tag="a"
+          :to="{ name: 'TimeSeries' }"
+          class="c-sidebar-nav-link"
+          :class="{ 'c-active c-active-warning': isPolicy }"
+        >
+          <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
           {{ $t("sidebar.timeseries") }}
         </router-link>
       </li>
@@ -90,9 +101,9 @@ export default {
       isGraphPlus: "isGraphPlus",
       isPolicy: "isPolicy",
       isTrade: "isTrade",
-      isMobility: "isMobility"
-    })
-  }
+      isMobility: "isMobility",
+    }),
+  },
 };
 </script>
 <style scoped>

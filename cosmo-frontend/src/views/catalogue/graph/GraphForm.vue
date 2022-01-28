@@ -32,7 +32,7 @@
           <span class="float-right">
             <exporter
               filename="cosmopolitics_graph_analysis"
-              :data="getData()"
+              :data="getData('graph', this.$refs.graph)"
               :options="['jpeg', 'png', 'pdf', 'json']"
               :source="['graph']"
             >
@@ -46,9 +46,9 @@
         <CCardBody class="card-no-border">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
           <network
-            id="graph"
+            id="graph"            
             class="network"
-            ref="network"
+            ref="graph"
             :nodes="network.nodes"
             :edges="network.edges"
             :options="network.options"
@@ -493,7 +493,7 @@ export default {
       return ids;
     },
 
-    getData() {
+    getData(id,ref) {
       var nodes = [];
       var edges = [];
       for (var edgeId in this.network.edges) {
@@ -510,9 +510,9 @@ export default {
           y: this.network.nodes[nodeId].y
         });
       }
-      let jsonData = JSON.stringify({ nodes, edges });
-      let canvas = document.querySelector("canvas");
-      return [jsonData, canvas];
+      let jsonData = JSON.stringify({ nodes, edges });      
+      console.log(this.$refs[ref]);
+      return [jsonData, id];
     }
   },
   created() {

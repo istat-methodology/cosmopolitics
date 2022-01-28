@@ -48,33 +48,33 @@ export default {
     download(type) {
       switch (type) {
         case "json":
-          this.toJSON(this.data[0], this.filename + "." + type, this.source);
+          this.toJSON(this.data[0], this.filename + "." + type);
           break;
         case "csv":
-          this.toCSV(this.data[0], this.filename + "." + type, this.source);
+          this.toCSV(this.data[0], this.filename + "."+ type);
           break;
         case "jpeg":
-          this.toJPEG(this.data[1], this.filename + "." + type);
+          this.toJPEG(this.data[1], this.filename + "."+ type);
           break;
         case "png":
-          this.toPNG(this.data[1], this.filename + "." + type);
+          this.toPNG(this.data[1], this.filename + "."+ type);
           break;
         case "pdf":
-          this.toPDF(this.data[1], this.filename + "." + type);
+          this.toPDF(this.data[1], this.filename + "."+ type);
           break;
 
         default:
           break;
       }
     },
-    toBody(items) {
-      html2canvas(items, { useCORS: true }).then((canvas) => {
+    toBody(id) {
+      html2canvas(this.getCanvas(id), { useCORS: true }).then((canvas) => {
         document.body.appendChild(canvas);
       });
     },
-    toJSON(data, filename, source) {
+    toJSON(data, filename) {
       var jsonData = {};
-      if (source == "graph") {
+      if (this.source == "graph") {
         jsonData = data;
       } else {
         let dat = [];
@@ -89,9 +89,9 @@ export default {
       const blob = new Blob([jsonData], { type: "text/plain" });
       saveAs(blob, filename);
     },
-    toCSV(data, filename, source) {
+    toCSV(data, filename) {
       var result;
-      if (source == "table") {
+      if (this.source == "table") {
         result = data;
       } else {
         var ctr, keys, columnDelimiter, lineDelimiter;
@@ -100,29 +100,24 @@ export default {
         result = "";
         columnDelimiter = ";";
         lineDelimiter = "\n";
-
         for (let i = 0; i < data.datasets.length; i++) {
           dat = data.datasets[i].data;
           lbl = data.datasets[i].label;
           keys = Object.keys(dat[0]);
           result += lbl;
-
           if (keys.length > 0) {
             result += lineDelimiter;
             keys = Object.keys(dat[0]);
             result += keys.join(columnDelimiter);
             result += lineDelimiter;
-
             dat.forEach(function (item) {
               ctr = 0;
-              if (keys.length > 0) {
-                keys.forEach(function (key) {
-                  if (ctr > 0) result += columnDelimiter;
-                  result += item[key];
-                  ctr++;
-                });
-                result += lineDelimiter;
-              }
+              keys.forEach(function (key) {
+                if (ctr > 0) result += columnDelimiter;
+                result += item[key];
+                ctr++;
+              });
+              result += lineDelimiter;
             });
           } else {
             dat.forEach(function (item) {
@@ -131,42 +126,30 @@ export default {
             });
             result += lineDelimiter;
           }
-
-          dat.forEach(function (item) {
-            ctr = 0;
-            if (keys.length > 0) {
-              keys.forEach(function (key) {
-                if (ctr > 0) result += columnDelimiter;
-                result += item[key];
-                ctr++;
-              });
-              result += lineDelimiter;
-            }
-          });
         }
       }
       const blob = new Blob([result], { type: "text/plain" });
       saveAs(blob, filename);
     },
-    toJPEG(items, filename) {
-      html2canvas(items, {
+    toJPEG(id, filename) {
+      html2canvas(this.getCanvas(id), {
         useCORS: true,
       }).then((canvas) => {
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
         saveAs(imgData, filename);
       });
     },
-    toPNG(items, filename) {
-      html2canvas(items, {
+    toPNG(id, filename) {
+      html2canvas(this.getCanvas(id), {
         useCORS: true,
       }).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
         saveAs(imgData, filename);
       });
     },
-    toPDF(items, filename) {
+    toPDF(id, filename) {
       let pdf = new jsPDF("l", "px");
-      html2canvas(items, {
+      html2canvas(this.getCanvas(id), {
         useCORS: true,
       }).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
@@ -188,6 +171,11 @@ export default {
         );
         pdf.save(filename);
       });
+    },
+    getCanvas(id) {
+      return this.source == "graph"
+        ? document.getElementById(id).querySelector("canvas")
+        : document.getElementById(id);
     },
   },
 };

@@ -22,19 +22,6 @@ export default {
     }
   }),
   methods: {
-    getBecSlider() {
-      var period = [];
-      this.becPeriod.forEach(element => {
-        period.push(element);
-      });
-      return period;
-    },
-    getBecSliderVal(value) {
-      var obj = this.becPeriod.find(element => {
-        return element.id == value;
-      });
-      return obj ? obj.val : null;
-    },
     getCoordinates(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
@@ -46,7 +33,6 @@ export default {
       return dataMap;
     },
     getXY(arrX, arrY) {
-      //console.log("=>START");
       const dataMap = [];
       arrX.forEach((num1, index) => {
         const num2 = arrY[index];
@@ -54,10 +40,8 @@ export default {
           x: num1,
           y: num2
         };
-        //console.log(obj);
         dataMap.push(obj);
       });
-      //console.log("=>END");
       return dataMap;
     },
     getCoordinatesACF(dataArray) {
@@ -74,7 +58,6 @@ export default {
       return dataMap;
     },
     getCoordinatesNorm(n, m) {
-      //console.log("=>START");
       const dataMap = [];
       n.forEach((num1, index) => {
         const num2 = m[index];
@@ -82,10 +65,8 @@ export default {
           x: num1,
           y: num2
         };
-        //console.log(obj);
         dataMap.push(obj);
       });
-      //console.log("=>END");
       return dataMap;
     },
     getCoordinatesTreat() {
@@ -113,28 +94,14 @@ export default {
       this.covidEstimationTableData = [];
       this.modelTableData = [];
 
-      var covidEstimation = [];
-      var model = [];
 
       var diagNorm = [];
       var diagACF = [];
-      var diagRes = [];
+
       var indexT = 0;
       this.buildNothingTimePeriod(dataR);
       for (var name in dataR) {
         switch (name) {
-          case "Covid_Estimation":
-            covidEstimation.push(dataR[name]);
-            this.covidEstimationTableTitle = "Covid Estimation";
-            this.covidEstimationTableFields = this.timePeriod; //this.getHeaderTable(dataR[name]);
-            this.covidEstimationTableData = this.getTable(covidEstimation[0]);
-            break;
-          case "Model":
-            model.push(dataR[name]);
-            this.modelTableTitle = "Model";
-            this.modelTableFields = this.getHeaderTable(dataR[name]);
-            this.modelTableData = this.getTable(model[0]);
-            break;
           case "DIAG_NORM":
             diagNorm.push(dataR[name]);
             this.diagNormTitle = "DiagNorm";
@@ -144,11 +111,6 @@ export default {
             diagACF.push(dataR[name]);
             this.diagACFTitle = "DiagACF";
             this.chartDataDiagACF = this.getDiagACFChart(diagACF[0]);
-            break;
-          case "DIAG_RES":
-            diagRes.push(dataR[name]);
-            this.diagResTitle = "DiagRes";
-            this.chartDataDiagRes = this.getDiagResChart(diagRes[0]);
             break;
           case "Treat_number":
             this.treatX = dataR[name];
@@ -168,52 +130,6 @@ export default {
         }
       }
       this.maxTimeStep = this.timeLapse.length - 1;
-      this.buildBecSlider();
-    },
-    buildBecSlider() {
-      this.becPeriod = [];
-      var indexStart = 0;
-      var indexEnd = 0;
-      var v = 0;
-      var tmp;
-      var label;
-      var yearSeries;
-      indexStart = this.timeLapse[0].date.length - 1;
-      indexEnd = this.timeLapse[this.maxTimeStep].date.length - 1;
-      this.becPeriodValue = this.timeLapse[this.maxTimeStep].date[
-        indexStart
-      ];
-      for (var i = indexStart; i <= indexEnd; i++) {
-        tmp = this.timeLapse[this.maxTimeStep].date[i];
-
-        var dt = new Date(tmp);
-        var shortYear = dt.toLocaleDateString("en", {
-          year: "2-digit"
-        });
-        var shortMonth = dt.toLocaleString("en-US", {
-          month: "short"
-        });
-        label = shortMonth + "-" + shortYear;
-        this.becPeriod.push({
-          id: this.timeLapse[this.maxTimeStep].date[i],
-          name: label,
-          val: v
-        });
-        v++;
-      }
-      yearSeries = 0;
-      tmp = 0;
-      for (
-        var s = 0; s <= this.timeLapse[this.maxTimeStep].date[s].lenght - 1; s++
-      ) {
-        tmp = this.timeLapse[this.maxTimeStep].date[s];
-        if (tmp.substr(2, 4) != yearSeries) {
-          this.startSeries.push({
-            year: yearSeries,
-            min: s
-          });
-        }
-      }
     },
     buildObject(
       label,
@@ -281,6 +197,7 @@ export default {
     getBecChart(time) {
       var chartData = {};
       var borderDash = 0;
+      console.log(borderDash);
       var data = [];
       var dataXY = [];
       var chartObj = {};
@@ -303,116 +220,21 @@ export default {
               chartObj = this.buildObjectWithContext(
                 highlightIndex,
                 "Yearly variation series",
-                true,
+                false,
                 "rgba(46, 184, 92, 0.2)",
                 "rgba(255,128,0,0.6)",
                 "rgba(46, 184, 92,1)",
                 dataXY,
-                false,
-                0,
-                12,
-                0
-              );
-              chartData.datasets.push(chartObj);
-              break;
-            case "pred_tp":
-
-              chartObj = this.buildObject(
-                "Model estimation",
-                false,
-                "red",
-                "red",
-                dataXY,
                 true,
                 0,
-                0,
+                2,
                 0
-              );
-              chartData.datasets.push(chartObj);
-
-              break;
-            case "pred_tp_c":
-              borderDash = "5";
-              chartObj = this.buildObject(
-                "Counterfactual",
-                false,
-                "red",
-                "red",
-                dataXY,
-                true,
-                0,
-                0,
-                borderDash
               );
               chartData.datasets.push(chartObj);
               break;
             default:
               console.log("this chartType " + chartType + " doesn't exist");
-          }
-        }
 
-        dataXY = this.getCoordinatesTreat();
-        borderDash = "5";
-        chartObj = this.buildObject(
-          "Covid Start",
-          false,
-          "blue",
-          "blue",
-          dataXY,
-          true,
-          0,
-          0,
-          borderDash
-        );
-        chartData.datasets.push(chartObj);
-
-      }
-      return chartData;
-    },
-    getDiagResChart(diag) {
-      var chartData = {};
-      var data = [];
-      var dataXY = [];
-      var chartObj = {};
-      chartData.datasets = [];
-
-      if (diag) {
-        for (var chartType in diag) {
-          data = diag[chartType];
-          dataXY = this.getCoordinates(data);
-          chartObj = {};
-          switch (chartType) {
-            case "date":
-              chartData.labels = data;
-              break;
-            case "pnt_y":
-              chartObj = this.buildObject(
-                "pnt_y",
-                false,
-                "rgba(46, 184, 92, 0.2)",
-                "rgba(46, 184, 92, 1)",
-                dataXY,
-                false,
-                0,
-                12,
-                0
-              );
-              chartData.datasets.push(chartObj);
-              break;
-            case "lne_y":
-              chartObj = this.buildObject(
-                "lny_y",
-                false,
-                "red",
-                "red",
-                dataXY,
-                true,
-                0,
-                0,
-                0
-              );
-              chartData.datasets.push(chartObj);
-              break;
           }
         }
       }
@@ -544,63 +366,6 @@ export default {
       }
       return chartData;
     },
-    getTable(objects) {
-      var tableData = [];
-      var keys = objects.row;
-      keys.forEach(function (item, index) {
-        var rowObject = {};
-        for (var dat in objects) {
-          if (dat != "_row") {
-            rowObject[dat] = dat;
-            rowObject[dat] = objects[dat][index];
-          }
-        }
-        tableData.push(rowObject);
-      });
-      console.log(keys);
-      return tableData;
-    },
-    getHeaderTable(objects) {
-      var tableFields = [];
-      tableFields.push({
-        key: "row",
-        label: "",
-        _classes: "font-prop"
-      });
-      for (var dat in objects) {
-        if (dat != "row" && dat != "_row") {
-          tableFields.push({
-            key: dat,
-            label: dat,
-            _classes: "align-right"
-          });
-        }
-      }
-      return tableFields;
-    },
-    getDataFromTable(table) {
-      if (table != null) {
-        console.log(table);
-        var csvData = "\uFEFF" + this.tableToCSV(table);
-        return csvData;
-      }
-    },
-    tableToCSV(table) {
-      let data = "";
-      let col;
-      let csvDelimiter = ";";
-      let csvNewLine = "\r\n";
-      table.forEach(function (rows) {
-        var i = 0;
-        for (var cols in rows) {
-          col = rows[cols];
-          data = data + (i ? csvDelimiter : "") + col;
-          i++;
-        }
-        data = data + csvNewLine;
-      });
-      return "\uFEFF" + data;
-    },
     buildNothingTimePeriod(dataR) {
       var maxTimeStep;
       var indexStart;
@@ -625,7 +390,6 @@ export default {
       indexEnd = dataR[maxTimeStep].date.length - 1;
       this.cast.indexStart = indexEnd;
       for (var i = indexStart; i <= indexEnd; i++) {
-
         tmp = dataR[maxTimeStep].date[i];
         var dt = new Date(tmp);
         var shortYear = dt.toLocaleDateString("en", {
@@ -634,12 +398,6 @@ export default {
         var shortMonth = dt.toLocaleString("en-US", {
           month: "short"
         });
-        /*
-        year = tmp.substr(2, 2);
-        iMonth = parseInt(tmp.substr(5, 2)) - 1;
-        month = this.months[iMonth];
-        month = month.substr(0, 3);
-        */
         label = shortMonth + "-" + shortYear;
         this.timePeriod.push({
           key: "T" + (v + 1),

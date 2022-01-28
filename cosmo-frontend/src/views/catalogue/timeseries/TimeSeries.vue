@@ -41,8 +41,8 @@
             </span>
             <span class="float-right">
               <exporter
-                filename="cosmopolitics_bec"
-                :data="getData(chartData, 'bec')"
+                filename="cosmopolitics_timeseries"
+                :data="getData(chartData, 'timeseries')"
               >
               </exporter>
             </span>
@@ -50,123 +50,7 @@
         </CCardHeader>
         <CCardBody v-show="isMainChart">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
-          <scatter-chart :chartData="chartData" :options="options" id="bec" />
-          <vue-slider
-            v-if="isSlider && isBecFull"
-            :adsorb="true"
-            :tooltip="'none'"
-            v-model="becPeriodValue"
-            :data="sliderPeriod"
-            :data-value="'id'"
-            :data-label="'name'"
-            @change="handleCounterChange"
-          />
-        </CCardBody>
-      </CCard>
-
-      <CCard v-if="covidEstimationTableData">
-        <CCardHeader>
-          <span class="float-left">
-            <span class="float-left">
-              <label class="form-check-label c-switch c-switch-sm">
-                <input
-                  type="checkbox"
-                  class="form-check-input c-switch-input"
-                  checked
-                  @click="handleCovidEstimation"
-                />
-                <span class="c-switch-slider"></span>
-              </label>
-            </span>
-            <span class="padding-right">
-              <b> {{ this.covidEstimationTableTitle }}</b>
-            </span>
-          </span>
-          <span class="float-right">
-            <span class="float-right">
-              <button
-                class="btn sm-2 btn-sm btn-square"
-                title="Info"
-                role="button"
-                @click="helpOn(true)"
-              >
-                i
-              </button>
-            </span>
-            <span class="float-right">
-              <exporter
-                filename="cosmopolitics_covidestimation"
-                :data="
-                  getData(
-                    this.getDataFromTable(this.covidEstimationTableData),
-                    'covidEstimation'
-                  )
-                "
-                :options="['csv']"
-                :source="['table']"
-              >
-              </exporter>
-            </span>
-          </span>
-        </CCardHeader>
-        <CCardBody v-show="isCovidEstimation">
-          <CDataTable
-            :fields="covidEstimationTableFields"
-            :items="covidEstimationTableData"
-            hover
-          />
-        </CCardBody>
-      </CCard>
-
-      <CCard v-if="modelTableData">
-        <CCardHeader>
-          <span class="float-left">
-            <span class="float-left">
-              <label class="form-check-label c-switch c-switch-sm">
-                <input
-                  type="checkbox"
-                  class="form-check-input c-switch-input"
-                  checked
-                  @click="handleModel"
-                />
-                <span class="c-switch-slider"></span>
-              </label>
-            </span>
-            <span class="padding-right">
-              <b>{{ this.modelTableTitle }}</b>
-            </span>
-          </span>
-          <span class="float-right">
-            <span class="float-right">
-              <button
-                class="btn sm-2 btn-sm btn-square"
-                title="Info"
-                role="button"
-                @click="helpOn(true)"
-              >
-                i
-              </button>
-            </span>
-            <span class="float-right">
-              <exporter
-                filename="cosmopolitics_model"
-                :data="
-                  getData(this.getDataFromTable(this.modelTableData), 'model')
-                "
-                :options="['csv']"
-                :source="['table']"
-              >
-              </exporter>
-            </span>
-          </span>
-        
-        </CCardHeader>
-        <CCardBody v-show="isModel">
-          <CDataTable
-            :items="modelTableData"
-            :fields="modelTableFields"
-            hover
-          />
+          <scatter-chart :chartData="chartData" :options="options" id="timeseries" />
         </CCardBody>
       </CCard>
       <CCard v-if="chartDataDiagNorm">
@@ -212,52 +96,6 @@
             :chartData="chartDataDiagNorm"
             :options="optionsNorm"
             id="diagnorm"
-          />
-        </CCardBody>
-      </CCard>
-      <CCard v-if="chartDataDiagRes && isBecFull">
-        <CCardHeader>
-          <span class="float-left">
-            <span class="float-left">
-              <label class="form-check-label c-switch c-switch-sm">
-                <input
-                  type="checkbox"
-                  class="form-check-input c-switch-input"
-                  checked
-                  @click="handleDiagRes"
-                />
-                <span class="c-switch-slider"></span>
-              </label>
-            </span>
-            <span class="padding-right">
-              <b>{{ this.diagResTitle }}</b>
-            </span>
-          </span>
-          <span class="float-right">
-            <span class="float-right">
-              <button
-                class="btn sm-2 btn-sm btn-square"
-                title="Info"
-                role="button"
-                @click="helpOn(true)"
-              >
-                i
-              </button>
-            </span>
-            <span class="float-right">
-              <exporter
-                filename="cosmopolitics_diagres"
-                :data="getData(chartDataDiagRes, 'diagres')"
-              >
-              </exporter>
-            </span>
-          </span>
-        </CCardHeader>
-        <CCardBody v-if="isDiagRes">
-          <scatter-chart
-            :chartData="chartDataDiagRes"
-            :options="optionsRes"
-            id="diagres"
           />
         </CCardBody>
       </CCard>
@@ -397,23 +235,21 @@ import { mapGetters } from "vuex";
 import { Context } from "@/common";
 import paletteMixin from "@/components/mixins/palette.mixin";
 import becDiagMixin from "@/components/mixins/becDiag.mixin";
-import becMixin from "@/components/mixins/bec.mixin";
+import timeseriesMixin from "@/components/mixins/timeseries.mixin";
 import ScatterChart from "@/components/charts/ScatterChart";
 import LineChart from "@/components/charts/LineChart";
-import VueSlider from "vue-slider-component";
 import { required } from "vuelidate/lib/validators";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
 
 export default {
-  name: "Bec",
+  name: "TimeSeries",
   components: {
     ScatterChart,
     LineChart,
-    VueSlider,
     exporter,
   },
-  mixins: [paletteMixin, becDiagMixin, becMixin, spinnerMixin],
+  mixins: [paletteMixin, becDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
     spinner: false,
     //Form fields
@@ -421,13 +257,12 @@ export default {
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
-    previsionSelected: null,
+  
     timeSelected: null,
 
-    prevision: [],
+   
     chartData: null,
     chartDataDiagNorm: null,
-    chartDataDiagRes: null,
     chartDataDiagACF: null,
 
     becPeriodValue: "",
@@ -436,12 +271,7 @@ export default {
     isSlider: false,
 
     isMainChart: true,
-    isCovidEstimation: true,
-    csvCovidEstimation: "",
-    isModel: true,
-    csvModel: "",
     isDiagNorm: true,
-    isDiagRes: true,
     isDiagACF: true,
     download_status: "Download Charts",
     modalHelpTitle: " About on ",
@@ -452,22 +282,17 @@ export default {
     countryFilter: "digit Country",
     partnerFilter: "digit Partner",
     becFilter: "digit Bec",
-    isBecFull: true,
+    
   }),
   computed: {
     ...mapGetters("classification", [
       "countries",
       "partners",
       "becs",
-      "flows",
-      "previsions",
+      "flows",     
       "timeNext",
     ]),
     ...mapGetters("bec", ["becCharts", "becDate"]),
-
-    sliderPeriod() {
-      return this.getBecSlider();
-    },
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
     },
@@ -485,61 +310,36 @@ export default {
     becSelected: {
       required,
     },
-    previsionSelected: {
-      required,
-    },
   },
   methods: {
     helpOn(showModal) {
       this.isModalHelp = showModal;
       this.modalHelpTitle = "About map";
     },
-    handleCheck(month, event) {
-      console.log(event);
-      alert(month);
-    },
-
-    handleCounterChange(val) {
-      var iVal = this.getBecSliderVal(val);
-      if (iVal <= this.maxTimeStep) {
-        this.chartData = this.getBecChart(iVal, this.isBecFull);
-      }
-    },
     handleMainChart() {
       this.isMainChart = !this.isMainChart;
     },
-    handleDiagRes() {
-      this.isDiagRes = !this.isDiagRes;
-    },
+    
     handleDiagNorm() {
       this.isDiagNorm = !this.isDiagNorm;
     },
     handleDiagACF() {
       this.isDiagACF = !this.isDiagACF;
     },
-    handleCovidEstimation() {
-      this.isCovidEstimation = !this.isCovidEstimation;
-    },
-    handleModel() {
-      this.isModel = !this.isModel;
-    },
     handleSubmit() {
-      this.$v.$touch(); //validate form data
-
+      this.$v.$touch(); 
       if (
         !this.$v.flowSelected.$invalid &&
         !this.$v.becSelected.$invalid &&
         !this.$v.countrySelected.$invalid &&
         !this.$v.partnerSelected.$invalid
-        //&&
-        //!this.$v.previsionSelected.$invalid
       ) {
         const form = {
           flow: this.flowSelected.id,
           var: this.becSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: 0, // this.previsionSelected.id
+          fcst: 0, 
         };
 
         this.$store.dispatch("bec/findByFilters", form).then(() => {
@@ -555,6 +355,7 @@ export default {
       if (data != null) {
         return [data, id];
       }
+      return null
     },
     spinnerStart(bool) {
       this.spinner = bool;
