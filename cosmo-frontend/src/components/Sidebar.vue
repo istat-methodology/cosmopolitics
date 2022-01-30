@@ -50,7 +50,7 @@
           }}
         </router-link>
       </li>
-      <li class="c-sidebar-nav-item">
+      <!-- li class="c-sidebar-nav-item">
         <router-link
           tag="a"
           :to="{ name: 'Bec' }"
@@ -60,7 +60,7 @@
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
           {{ $t("sidebar.timeseries") + " old" }}
         </router-link>
-      </li>
+      </li -->
       <li class="c-sidebar-nav-item">
         <router-link
           tag="a"
