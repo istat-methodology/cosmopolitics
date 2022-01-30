@@ -159,7 +159,6 @@
               </exporter>
             </span>
           </span>
-        
         </CCardHeader>
         <CCardBody v-show="isModel">
           <CDataTable
@@ -362,6 +361,55 @@
               'is-invalid': $v.becSelected.$error,
             }"
           />
+
+          <label class="card-label mt-3">Prevision:</label>
+          <v-select
+            label="descr"
+            :options="previsions"
+            placeholder="Prevision"
+            v-model="previsionSelected"
+            :class="{
+              'is-invalid': $v.previsionSelected.$error,
+            }"
+          />
+          <template v-if="isForecasting">
+            <div class="col-12">
+              <div class="row">
+                <label for="country" class="card-label mt-3"
+                  >Time & Restriction:</label
+                >
+              </div>
+              <div class="row">
+                <div v-for="(item, index) in prevision" v-bind:key="index">
+                  <div role="group" class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      v-bind:id="item.month"
+                      v-bind:name="item.month"
+                      v-bind:value="item.restriction"
+                      v-model="item.selected"
+                    />
+                    <label
+                      v-bind:for="item.month"
+                      class="custom-control-label"
+                      >{{ item.month }}</label
+                    >
+                  </div>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    step="0.01"
+                    min="0"
+                    max="1"
+                    class="form-control"
+                    v-model="item.restriction"
+                  />
+                </div>
+              </div>
+            </div>
+          </template>
+
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
@@ -464,7 +512,23 @@ export default {
       "timeNext",
     ]),
     ...mapGetters("bec", ["becCharts", "becDate"]),
-
+    isForecasting() {
+      var forecast = false;
+      if (
+        this.previsionSelected &&
+        this.flowSelected &&
+        this.countrySelected &&
+        this.partnerSelected
+      ) {
+        if (this.previsionSelected.id == 2) {
+          this.createForecast();
+          forecast = true;
+        } else {
+          forecast = false;
+        }
+      }
+      return forecast;
+    },
     sliderPeriod() {
       return this.getBecSlider();
     },
@@ -523,34 +587,43 @@ export default {
     handleModel() {
       this.isModel = !this.isModel;
     },
+   
+    // add to resume
     handleSubmit() {
       this.$v.$touch(); //validate form data
-
       if (
         !this.$v.flowSelected.$invalid &&
         !this.$v.becSelected.$invalid &&
         !this.$v.countrySelected.$invalid &&
-        !this.$v.partnerSelected.$invalid
-        //&&
-        //!this.$v.previsionSelected.$invalid
+        !this.$v.partnerSelected.$invalid &&
+        !this.$v.previsionSelected.$invalid
       ) {
         const form = {
           flow: this.flowSelected.id,
           var: this.becSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: 0, // this.previsionSelected.id
+          fcst: this.previsionSelected.id,
         };
-
+        if (this.isForecasting) {
+          var restriction = [];
+          this.prevision.forEach((element) => {
+            if (element.selected) {
+              restriction.push(element.restriction);
+            }
+          });
+          form.fcstpolind = restriction.join(",");
+        }
         this.$store.dispatch("bec/findByFilters", form).then(() => {
           this.buildBecCharts(this.becCharts);
           if (this.timeLapse) {
-            this.chartData = this.getBecChart(0, this.isBecFull);
+            this.chartData = this.getBecChart(0);
             this.isSlider = true;
           }
         });
       }
     },
+
     getData(data, id) {
       if (data != null) {
         return [data, id];
@@ -559,7 +632,59 @@ export default {
     spinnerStart(bool) {
       this.spinner = bool;
     },
+
+    //add to resume prevision
+    createForecast() {
+
+      const months= [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ];
+
+
+
+      const form = {
+        flow: this.flowSelected.id,
+        country: this.countrySelected.country,
+        partner: this.partnerSelected.id,
+      };
+      this.$store.dispatch("bec/findLastDate", form).then(() => {
+        var yearOfBec = this.becDate[0].substr(2, 2);
+        var monthOfBec = parseInt(this.becDate[0].substr(5, 2));
+        var month = monthOfBec + 1;
+        var year = parseInt(yearOfBec);
+        this.prevision = [];
+        // loop to draw 6 month
+        for (var i = 1; i <= 6; i++) {
+          if (month > 12) {
+            month = 1;
+            year = parseInt(year) + 1;
+          }
+          var iMonth = month - 1;
+          var monthName = months[iMonth];
+          var monthShortName = monthName.substr(0, 3);
+          var element = monthShortName + "-" + year;
+          this.prevision.push({
+            selected: false,
+            month: element,
+            restriction: 0,
+          });
+          month = month + 1;
+        }
+      });
+    },
   },
+
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");

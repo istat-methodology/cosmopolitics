@@ -1,25 +1,22 @@
 export default {
   data: () => ({
-    treatX: 0,
-    minTreatY: 0,
-    maxTreatY: 0,
-    timeLapse: null,
-    timePeriod: null,
-    timeNothing: -1,
-    maxTimeStep: 0,
+  treatX: 0,
+  minTreatY: 0,
+  maxTreatY: 0,
+  timeLapse: null,
+  timePeriod: null,
+  timeNothing: -1,
+  maxTimeStep: 0,
+  covidEstimationTableTitle: null,
+  covidEstimationTableFileds: null,
+  covidEstimationDataTable: null,
+  modelTableTitle: null,
+  modelTableFileds: null,
+  modelDataTable: null,
+  cast: {
+    indexStart: 0
+  }
 
-    covidEstimationTableTitle: null,
-    covidEstimationTableFields: null,
-    covidEstimationTableData: null,
-
-
-    modelTableTitle: null,
-    modelTableFields: null,
-    modelTableData: null,
-
-    cast: {
-      indexStart: 0
-    }
   }),
   methods: {
     getBecSlider() {

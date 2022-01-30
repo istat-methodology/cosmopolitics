@@ -22,9 +22,14 @@ export function buildCharts(dataR) {
       if (type == "covid") {
         chartDataArray.push({
           dataName: type,
-          data: [
-            { x: 122, y: 100 },
-            { x: 122, y: -100 }
+          data: [{
+              x: 122,
+              y: 100
+            },
+            {
+              x: 122,
+              y: -100
+            }
           ]
         });
       } else {
