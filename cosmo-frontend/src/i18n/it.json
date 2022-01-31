@@ -117,7 +117,7 @@
     "modal": {
       "main": {
         "title": "Visualizzazione serie storiche",
-        "body": "[IT] Effective visualization tool for monthly Comext foreign trade data series. despite the amount of underlying data, they allow an easily understandable reading. useful as a dissemination tool. series are provided in value and quantity, with indication of descriptive statistics and the possibility of downloading "
+        "body": "Strumento di visualizzazione delle serie mensili di dati sul commercio estero Comext. Questa sezione consente una lettura facile e comprensibile nonostante la mole di dati sottostanti. Utile come strumento di divulgazione. E serie sono fornite serie in valore e il download è disponibile in vari formati."
       }
     }
   },
