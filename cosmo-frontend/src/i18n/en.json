@@ -33,7 +33,7 @@
     },
     "timeseries": {
       "title": "Time Series visualization",
-      "body": "<b>Visualization tool</b> for monthly Comext foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats.",
+      "body": "<b>Visualization tool</b> for <b>monthly COMEXT</b> foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats.",
       "link": "Go to Time series visualization section"
     },
     "trade": {
@@ -85,7 +85,7 @@
       "main": {
         "title": "International Trade Relations",
         "subtitle": "<br><b>Graph analysis</b><br>",
-        "body": "The <b>“International Trade Relations”</b> Panel shows the graph analysis of the international trades between countries.<br> Data are relative to all trades between countries present in the <b>Comext dataset</b>. The requested data can be selected  through filters. Countries are identified by their flags and their relative positions in the graph are given by the <b>“Spring layout algorithm”</b> implemented in the Network library.",
+        "body": "The <b>“International Trade Relations”</b> Panel shows the graph analysis of the international trades between countries.<br> Data are relative to all trades between countries present in the <b>COMEXT dataset</b>. The requested data can be selected  through filters. Countries are identified by their flags and their relative positions in the graph are given by the <b>“Spring layout algorithm”</b> implemented in the Network library.",
         "keywords": ""
       },
       "metrics": {
@@ -121,7 +121,7 @@
     "modal": {
       "main": {
         "title": "Time Series visualizatiion",
-        "body": "<b>Visualization tool</b> for monthly Comext foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats."
+        "body": "<b>Visualization tool</b> for <b>monthly COMEXT</b> foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats."
       }
     }
   },

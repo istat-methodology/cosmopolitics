@@ -16,7 +16,7 @@
     "home": "Home",
     "map": "Mappa Interattiva",
     "graph": "Graph analysis",
-    "timeseries": "Visualizzazioni Serie storiche",
+    "timeseries": "Visualizzazione Serie storiche",
     "trade": "Paniere dei prodotti"
   },
   "landing": {
@@ -27,13 +27,13 @@
     },
     "graph": {
       "title": "Relazioni nel commercio internazionale",
-      "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT transport data</strong>, along with relevant global and local measures detailing the structure of countries relations. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
+      "body": "Questa sezione visualizza grafi che rappresentano il <b>commercio internazionale per prodotto e modalità di trasporto da fonte COMEXT</b>, insieme alle <b>misure globali e locali pertinenti</b> che descrivono in dettaglio la struttura delle relazioni commerciali dei paesi. Il pannello è interattivo e offre la possibilità di applicare diversi filtri e di vedere come la struttura del grafico e le misure cambiano di conseguenza.<br>Inoltre viene fornita un'animazione che mostra l'<b>evoluzione del grafico del commercio internazionale nel tempo</b>.",
       "link": "Vai alla sezione Graph analysis"
     },
     "timeseries": {
-      "title": "Visualizzazioni Serie storiche",
-      "body": "Strumento di visualizzazione delle serie mensili di dati sul commercio estero Comext. Questa sezione consente una lettura facile e comprensibile nonostante la mole di dati sottostanti. Utile come strumento di divulgazione. E serie sono fornite serie in valore e il download è disponibile in vari formati.",
-      "link": "Vai alla sezione Visualizzazioni Serie storiche"
+      "title": "Visualizzazione Serie storiche",
+      "body": "<b>Strumento di visualizzazione</b> delle serie <b>mensili</b> di dati sul commercio estero <b>COMEXT</b>. Questa sezione consente una lettura facile e comprensibile nonostante la mole di dati sottostanti. Utile come strumento di divulgazione. Le serie sono fornite in valore ed il <b>download è disponibile</b> in vari formati.",
+      "link": "Vai alla sezione Visualizzazione Serie storiche"
     },
     "trade": {
       "title": "Variazioni nella composizione del paniere dei prodotti importati ed esportato (classificazione CPA – classificazione dei prodotti per attività economica) per Paese Membro",
@@ -75,13 +75,13 @@
       }
     },
     "card": {
-      "title": "Visualizzazione grafo"
+      "title": "Graph analysis"
     },
     "modal": {
       "main": {
         "title": "Relazioni nel commercio internazionale",
         "subtitle": "<br><b>Graph analysis</b>",
-        "body": "<br>Il pannello <b> “Relazioni nel commercio internazionale ” </b> mostra la graph analysis degli scambi commerciali fra paesi.<br> I dati sono relativi a tutti gli scambi commerciali presenti nel dataset <b>Comext</b>. I dati da visualizzare posso essere selezionati attraverso i filtri presenti nella schermata. I paesi sono identificati dalle icone delle bandiere e le loro posizioni relative all’interno del grafo sono definite attraverso l’algoritmo <b> “Spring layout” </b>, implementato nella libreria python Network.",
+        "body": "<br>Il pannello <b> “Relazioni nel commercio internazionale ” </b> mostra la graph analysis degli scambi commerciali fra paesi.<br> I dati sono relativi a tutti gli scambi commerciali presenti nel dataset <b>COMEXT</b>. I dati da visualizzare posso essere selezionati attraverso i filtri presenti nella schermata. I paesi sono identificati dalle icone delle bandiere e le loro posizioni relative all’interno del grafo sono definite attraverso l’algoritmo <b> “Spring layout” </b>, implementato nella libreria python Network.",
         "keywords": ""
       },
       "metrics": {
@@ -117,7 +117,7 @@
     "modal": {
       "main": {
         "title": "Visualizzazione serie storiche",
-        "body": "Strumento di visualizzazione delle serie mensili di dati sul commercio estero Comext. Questa sezione consente una lettura facile e comprensibile nonostante la mole di dati sottostanti. Utile come strumento di divulgazione. E serie sono fornite serie in valore e il download è disponibile in vari formati."
+        "body": "<b>Strumento di visualizzazione</b> delle serie <b>mensili</b> di dati sul commercio estero <b>COMEXT</b>. Questa sezione consente una lettura facile e comprensibile nonostante la mole di dati sottostanti. Utile come strumento di divulgazione. E serie sono fornite serie in valore e il <b>download è disponibile</b> in vari formati."
       }
     }
   },
