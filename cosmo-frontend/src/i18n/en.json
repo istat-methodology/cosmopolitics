@@ -23,7 +23,7 @@
   "landing": {
     "map": {
       "title": "Economic and International Trade Indicators",
-      "body": "This section provides a map displaying for each country the total population, some macro-economic indicators, main imported and exported goods ,and main trade partner countries. Moreover, a time-lapse functionality to represent the international trade year-on-year monthly variations for the last three years is provided.",
+      "body": "This section provides a map displaying for each country the <b>total population</b>, <b>some macro-economic indicators</b>, main <b>imported and exported goods</b> ,and main <b>trade partner countries</b>. <br><br>Moreover, a <b>time-lapse</b> functionality to represent the international trade year-on-year monthly variations for the last three years is provided.",
       "link": "Go to Interactive map section"
     },
     "graph": {
@@ -38,7 +38,7 @@
     },
     "trade": {
       "title": "Changes in basket composition of traded products (CPA - classification of products by activity) by Member State",
-      "body": "This section provides, for each Member State, the monthly time series of year-over-year changes in the basket composition of exported and imported goods, classified according to CPA-2 digits.",
+      "body": "This section provides, for each Member State, the <b>monthly time series of year-over-year changes</b> in the basket composition of exported and imported goods, classified according to <b>CPA-2 digits.</b>",
       "link": "Go to Basket of traded products section"
     }
   },
@@ -90,7 +90,7 @@
       },
       "metrics": {
         "subtitle": "<br><br><b>Metrics</b>",
-        "body": "<br>The following metrics derive from standard centrality measures of Graph Analysis.<br><br><b>Product spread:</b> <br><b>Graph density:</b> Represents how much the product is spread through the graph. <br><b>Vulnerability:</b> it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <Br><b>Exportation strength:</b> it is the outdegree centrality for each country.<br><b> Hubness:</b> it is the betweenness centrality of the countries.",
+        "body": "<br>The following metrics derive from standard centrality measures of Graph Analysis.<br><br><b>Product spread:</b><ul><li><b>Graph density:</b> Represents how much the product is spread through the graph.</li><li><b>Vulnerability:</b> it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <li><b>Exportation strength:</b> it is the outdegree centrality for each country.</li><li><b> Hubness:</b> it is the betweenness centrality of the countries.</li></ul>",
         "keywords": ""
       },
       "filter": {
@@ -141,7 +141,7 @@
     "modal": {
       "main": {
         "title": "Changes in basket composition of traded products (CPA - classification of products by activity) by Member State",
-        "body": "This section provides, for each Member State, the monthly time series of year-over-year changes in the basket composition of exported and imported goods, classified according to CPA-2 digits."
+        "body": "This section provides, for each Member State, the <b>monthly time series of year-over-year changes</b> in the basket composition of exported and imported goods, classified according to <b>CPA-2 digits.</b>"
       }
     }
   }

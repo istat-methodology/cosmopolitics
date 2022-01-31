@@ -22,7 +22,7 @@
   "landing": {
     "map": {
       "title": "Indicatori economici e del commercio internazionale",
-      "body": "Questa sezione fornisce una mappa che mostra per ogni paese la popolazione totale, alcuni indicatori macroeconomici, i principali prodotti importati ed esportati e i principali paesi partner commerciali. Inoltre, viene fornita una funzionalità time-lapse per rappresentare le variazioni mensili tendenziali del commercio internazionale per gli ultimi tre anni.",
+      "body": "Questa sezione fornisce una mappa che mostra per ogni paese la <b>popolazione totale</b>, alcuni <b>indicatori macroeconomici</b>, i principali <b>prodotti importati ed esportati </b>e i principali <b>paesi partner commerciali</b>.<br><br>Inoltre, viene fornita una funzionalità <b>time-lapse</b> per rappresentare le variazioni mensili tendenziali del commercio internazionale per gli ultimi tre anni.",
       "link": "Vai alla sezione Mappa interattiva"
     },
     "graph": {
@@ -37,7 +37,7 @@
     },
     "trade": {
       "title": "Variazioni nella composizione del paniere dei prodotti importati ed esportato (classificazione CPA – classificazione dei prodotti per attività economica) per Paese Membro",
-      "body": "Questa sezione fornisce, per ciascuno Stato membro, le serie storiche mensili delle variazioni tendenziali della composizione del paniere delle merci esportate e importate, classificate secondo le cifre CPA-2 cifre.",
+      "body": "Questa sezione fornisce, per ciascuno Stato membro, le <b>serie storiche mensili delle variazioni tendenziali</b> della composizione del paniere delle merci esportate e importate, classificate secondo le <b>cifre CPA-2 cifre.</b>",
       "link": "Vai alla sezione Paniere dei prodotti"
     }
   },
@@ -45,7 +45,7 @@
     "modal": {
       "main": {
         "title": "Indicatori economici e del commercio internazionale",
-        "body": "Questa sezione fornisce una mappa che mostra per ogni paese la popolazione totale, alcuni indicatori macroeconomici, i principali prodotti importati ed esportati e i principali paesi partner commerciali. Inoltre, viene fornita una funzionalità time-lapse per rappresentare le variazioni mensili tendenziali del commercio internazionale per gli ultimi tre anni.",
+        "body": "Questa sezione fornisce una mappa che mostra per ogni paese la <b>popolazione totale</b>, alcuni <b>indicatori macroeconomici</b>, i principali <b>prodotti importati ed esportati </b>e i principali <b>paesi partner commerciali</b>.<br><br>Inoltre, viene fornita una funzionalità <b>time-lapse</b> per rappresentare le variazioni mensili tendenziali del commercio internazionale per gli ultimi tre anni.",
         "keywords": ""
       }
     }
@@ -86,7 +86,7 @@
       },
       "metrics": {
         "subtitle": "<br><br><b>Metriche</b>",
-        "body": "<br>Le metriche seguenti derivano dalle misure di centralità standard calcolate nella graph analysis.<br><br><b>Diffusione del prodotto:</b><br><b> Densità del grafo:</b> Rappresenta quanto il prodotto è diffuso all’interno del grafo.<br><b>Vulnerabilità: </b> è calcolata come 1 - indegree centrality per ogni paese. La vulnerabilità riflette il fatto che un paese che riceve un prodotto da più paesi fornitori distinti è meno dipendente da un singolo paese per l’approvvigionamento di quel prodotto.<br><b>Forza di esportazione: </b> è la outdegree centrality per ogni paese.<br><b>Hubness: </b> è la betweenness centrality per ogni paese.",
+        "body": "<br>Le metriche seguenti derivano dalle misure di centralità standard calcolate nella graph analysis.<br><br><b>Diffusione del prodotto:<br><ul></b><li><b> Densità del grafo:</b> Rappresenta quanto il prodotto è diffuso all’interno del grafo.</li><li><b>Vulnerabilità: </b> è calcolata come 1 - indegree centrality per ogni paese. La vulnerabilità riflette il fatto che un paese che riceve un prodotto da più paesi fornitori distinti è meno dipendente da un singolo paese per l’approvvigionamento di quel prodotto.</li><li><b>Forza di esportazione: </b> è la outdegree centrality per ogni paese.</li><li><b>Hubness: </b> è la betweenness centrality per ogni paese.</ul>",
         "keywords": ""
       },
       "filter": {
@@ -137,7 +137,7 @@
     "modal": {
       "main": {
         "title": "Variazioni nella composizione del paniere dei prodotti importati ed esportato (classificazione CPA – classificazione dei prodotti per attività economica) per Paese Membro",
-        "body": "Questa sezione fornisce, per ciascuno Stato membro, le serie storiche mensili delle variazioni tendenziali della composizione del paniere delle merci esportate e importate, classificate secondo le cifre CPA-2 cifre."
+        "body": "Questa sezione fornisce, per ciascuno Stato membro, le <b>serie storiche mensili delle variazioni tendenziali</b> della composizione del paniere delle merci esportate e importate, classificate secondo le <b>cifre CPA-2 cifre.</b>"
       }
     }
   }
