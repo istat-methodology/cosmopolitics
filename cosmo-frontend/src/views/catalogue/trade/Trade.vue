@@ -38,15 +38,6 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("trade.form.title") }} </span>
-          <span class="float-right">
-            <button
-              class="btn sm-2 btn-sm btn-square"
-              role="button"
-              @click="helpOn(true)"
-            >
-              i
-            </button>
-          </span>
         </CCardHeader>
         <CCardBody>
           <label class="card-label"
@@ -81,14 +72,10 @@
     </div>
     <!-- Marker modal -->
     <CModal
-      title="Changes in basket composition of traded products (CPA -
-            classification of products by activity) by Member State"
+      :title="$t('trade.modal.main.title')"
       :show.sync="isModalHelp"
       size="lg"
-    >
-      This section provides, for each Member State, the 2020 monthly time series
-      of year-over-year changes in the basket composition of exported and
-      imported goods, classified according to CPA-2 digits.
+    ><p v-html="$t('trade.modal.main.body')"></p>
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
           >Close</CButton

@@ -133,16 +133,11 @@
     </div>
     <!-- Marker modal -->
     <CModal
-      title="Economic and International Trade Indicators"
+      :title="$t('map.modal.main.title')"
       :show.sync="isModalHelp"
       size="lg"
     >
-      This section provides a map displaying for each country the total
-      population and some macro-economic indicators and trade and exchanged
-      goods for import and export in 2019 and in 2019 and in 2019 and 2020.
-      Further the component provides a <strong>time-lapse</strong> functionality
-      to represent the international trade monthly variations for the last
-      twelve months.
+     <p v-html="$t('map.modal.main.body')"></p>
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
           >Close</CButton
@@ -206,7 +201,7 @@ export default {
           weight: 1,
           opacity: 1,
           color: "black",
-          dashArray: "2",
+          dashArray: "",
           fillOpacity: 0.7
         }
       }

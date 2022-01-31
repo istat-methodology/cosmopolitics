@@ -16,33 +16,41 @@
     "home": "Home",
     "map": "Interactive map",
     "graph": "Graph analysis",
-    "timeseries": "Time series",
+    "timeseries": "Time series visualization",
     "timeseriescomplete": "Time series complete",
     "trade": "Basket of traded products"
   },
   "landing": {
     "map": {
       "title": "Economic and International Trade Indicators",
-      "body": "<p>This section provides a map displaying for each country the total population and some macro-economic indicators and trade and exchanged goods for import and export in 2019 and in 2019 and in 2019 and 2020.</p><p class='mt-2'>Further the component provides a <strong>time-lapse</strong> functionality to represent the international trade monthly variations for the last twelve months.</p>",
-      "link": "Go to trade indicators section"
+      "body": "This section provides a map displaying for each country the total population, some macro-economic indicators, main imported and exported goods ,and main trade partner countries. Moreover, a time-lapse functionality to represent the international trade year-on-year monthly variations for the last three years is provided.",
+      "link": "Go to Interactive map section"
     },
     "graph": {
       "title": "International Trade Relations",
       "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT transport data</strong>, along with relevant global and local measures detailing the structure of countries relations. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
-      "link": "Go to graph section"
+      "link": "Go to Graph analisys section"
     },
     "timeseries": {
       "title": "Time Series visualization",
       "body": "<b>Visualization tool</b> for monthly Comext foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats.",
-      "link": "Go to time series section"
+      "link": "Go to Time series visualization section"
     },
     "trade": {
       "title": "Changes in basket composition of traded products (CPA - classification of products by activity) by Member State",
-      "body": "This section provides, for each Member State, the 2020 monthly time series of year-over-year changes in the basket composition of exported and imported goods, classified according to CPA-2 digits.<br />",
-      "link": "Go to basket section"
+      "body": "This section provides, for each Member State, the monthly time series of year-over-year changes in the basket composition of exported and imported goods, classified according to CPA-2 digits.",
+      "link": "Go to Basket of traded products section"
     }
   },
-  "map": {},
+  "map": {
+    "modal": {
+      "main": {
+        "title": "Economic and International Trade Indicators",
+        "body": "This section provides a map displaying for each country the total population, some macro-economic indicators, main imported and exported goods ,and main trade partner countries. Moreover, a time-lapse functionality to represent the international trade year-on-year monthly variations for the last three years is provided.",
+        "keywords": ""
+      }
+    }
+  },
   "graph": {
     "stats": {
       "density": "Graph density",
@@ -129,6 +137,12 @@
     },
     "card": {
       "title": "Trade data:"
+    },
+    "modal": {
+      "main": {
+        "title": "Changes in basket composition of traded products (CPA - classification of products by activity) by Member State",
+        "body": "This section provides, for each Member State, the monthly time series of year-over-year changes in the basket composition of exported and imported goods, classified according to CPA-2 digits."
+      }
     }
   }
 }

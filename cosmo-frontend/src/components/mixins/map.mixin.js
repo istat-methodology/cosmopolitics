@@ -1,6 +1,7 @@
 //import { latLng } from "leaflet";
 import * as d3 from "d3";
 import * as scale from "d3-scale";
+
 export default {
   data: () => ({
     selectedCountry: {
@@ -60,7 +61,7 @@ export default {
         .selectAll("*")
         .remove();
       this.colorlegend("#Legend", linearScale, {
-        title: "Monthly change in " + importexport + " (%) - (Base " + this.legendMonth + " 2019 = 100)",
+        title: "Monthly year - on - year " + importexport  + " change( % )",
         boxHeight: 15,
         axis: true
       });
