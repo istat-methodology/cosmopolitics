@@ -232,7 +232,7 @@ export default {
       jsonData: "jsonData"
     }),
     micro() {
-      return this.infoData ? this.infoData[0].MI : [];
+      return this.infoData ? this.infoData[0]["Main Import"] : [];
     },
     importDataItems() {
       return this.infoData ? this.infoData[0].ImpP : [];
