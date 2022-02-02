@@ -41,8 +41,9 @@
               @click="openInfo(marker)"
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
+                <!--Math.round(marker.series)  -->
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{ ie }} {{ Math.round(marker.series) }}
+                  >{{ marker.name }} {{ ie }} {{ marker.series.toFixed(1) + "%"}} 
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -268,8 +269,7 @@ export default {
         this.selectedCountry.code = feature.properties.iso_a2;
         this.selectedCountry.name = feature.properties.admin;
         layer.options.fillColor = "#00000000";
-        if (value != undefined) {
-          value = Math.round(value);
+        if (value != undefined) {          
           layer.options.fillColor = this.getColor(value, -60, 60);
           layer.options.color = "gray"; //this.getColor(value,-60,60);
           layer.bindTooltip(
@@ -280,7 +280,7 @@ export default {
               "<span> " +
               this.ie +
               "</span> " +
-              value +
+              value.toFixed(1) + "%" +
               "</span>" +
               " </div>",
             { permanent: false, sticky: true }
