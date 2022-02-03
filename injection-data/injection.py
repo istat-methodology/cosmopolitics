@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import os
+from pathlib import Path
 import urllib.request
 import logging.config
 import py7zr
@@ -27,7 +28,10 @@ class NpEncoder(json.JSONEncoder):
         else:
             return super(NpEncoder, self).default(obj)
 
-logging.config.fileConfig('logging.conf')
+
+
+source_path =  os.path.dirname(__file__)
+logging.config.fileConfig(source_path+os.sep+'logging.conf')
 
 # create logger
 logger = logging.getLogger('cosmoLog')
@@ -40,8 +44,8 @@ PREFIX_TRANSPORT="tr"
 FLOW_IMPORT=1
 FLOW_EXPORT=2
 
-#processing_day = datetime.datetime.today()
-processing_day = datetime.datetime(2022 , 1, 20)
+processing_day = datetime.datetime.today()
+
 this_year=processing_day.year
 this_month='%02d' %processing_day.month
 annual_new_data=1 if( processing_day < datetime.datetime(processing_day.year , 3, 20)) else 0 
@@ -162,7 +166,7 @@ def downloadAndExtractComextAnnualDATA():
         filenameZip="full"+str(current_year)+"52.7z"
         filenameDat="full"+str(current_year)+"52.dat" 
         url_file=URL_COMEXT_PRODUCTS+filenameZip
-        fileAnnualZip=DATA_FOLDER_ANNUAL_ZIPS+filenameZip
+        fileAnnualZip=DATA_FOLDER_ANNUAL_ZIPS+os.sep+filenameZip
         
 
         logging.info('File: '+url_file) 
@@ -187,6 +191,13 @@ def downloadfile(url_file,filename):
         logging.error(f"Unexpected {err=}, {type(err)=}")
     else:
         logging.info('File loaded: '+filename)  # will not print anything
+
+def getClsProduct(clsRow,codeProduct,position):
+    if (position < len(clsRow)):
+        return clsRow.iat[0,4]
+    else:
+        return codeProduct
+   
    
 # output ieinfo
 def annualProcessing():
@@ -199,21 +210,37 @@ def annualProcessing():
     
     cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None)
     
+     
     data_annual_previous_year =pd.read_csv(previous_filename,sep=",",low_memory=True)
     data_annual_current_year =pd.read_csv(current_filename,sep=",",low_memory=True)
-    
+
+    logging.info('previous_filename: '+previous_filename) 
     logging.info('current_filename: '+current_filename)  
     logging.info('data.head() ')  
     logging.info(data_annual_current_year.head())  
      
     countries=sorted(pd.unique(data_annual_current_year["DECLARANT_ISO"]))
-   
+    logging.info('countries: '+ ' '.join(countries)) 
     n_rows=3 
-    for country  in ["AT"]:
+    for country  in countries:
         logging.info('country: '+country)   
         ieinfo_country={}
         ieinfo_country["Country_Code"]=country
+
+        # Main information
+        minfo=[]
+        minfo_imp={}   
+        minfo_imp["Year"]="Import*"
+        minfo_imp[str(annual_previous_year)]=data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_IMPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)]["VALUE_IN_EUROS"].sum()
+        minfo_imp[str(annual_current_year)]= data_annual_current_year[(data_annual_current_year["DECLARANT_ISO"]==country) & (data_annual_current_year["FLOW"]==FLOW_IMPORT) & (data_annual_current_year["PRODUCT_NC"].str.strip().str.len() == 8)]["VALUE_IN_EUROS"].sum() 
+        minfo.append(minfo_imp)
         
+        minfo_exp={}  
+        minfo_exp["Year"]="Export*"
+        minfo_exp[str(annual_previous_year)]=data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_EXPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)]["VALUE_IN_EUROS"].sum()
+        minfo_exp[str( annual_current_year)]= data_annual_current_year[(data_annual_current_year["DECLARANT_ISO"]==country) & (data_annual_current_year["FLOW"]==FLOW_EXPORT) & (data_annual_current_year["PRODUCT_NC"].str.strip().str.len() == 8)]["VALUE_IN_EUROS"].sum() 
+        minfo.append(minfo_exp)
+        ieinfo_country["Main information"]=minfo
         # Main Import partner
         mips_j=[]
          
@@ -222,12 +249,12 @@ def annualProcessing():
         
         for index  in range(n_rows):  
             mip_j={}
-            mip_j["Main Partner "+str(annual_previous_year)]= mips_previous.loc[index,"PARTNER_ISO"]
-            mip_j["Tot imp "+str(annual_previous_year)]= mips_previous.loc[index,"VALUE_IN_EUROS"]
-            mip_j["Main Partner "+str(annual_current_year)]= mips_current.loc[index,"PARTNER_ISO"]
-            mip_j["Tot imp "+str(annual_current_year)]= mips_current.loc[index,"VALUE_IN_EUROS"]
+            mip_j["Main partner "+str(annual_previous_year)]= mips_previous.loc[index,"PARTNER_ISO"]
+            mip_j["Total import "+str(annual_previous_year)]= mips_previous.loc[index,"VALUE_IN_EUROS"]
+            mip_j["Main partner "+str(annual_current_year)]= mips_current.loc[index,"PARTNER_ISO"]
+            mip_j["Total import "+str(annual_current_year)]= mips_current.loc[index,"VALUE_IN_EUROS"]
             mips_j.append(mip_j)
-        ieinfo_country["MIP"]=mips_j
+        ieinfo_country["Main Import Partners"]=mips_j
         # Main Export partner
         meps_j=[]
         meps_previous= data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_EXPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PARTNER_ISO"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index() 
@@ -236,11 +263,11 @@ def annualProcessing():
         for index2 in range(n_rows):
             mep_j={}
             mep_j["Main partner "+str(annual_previous_year)]= meps_previous.loc[index2,"PARTNER_ISO"]
-            mep_j["Tot imp "+str(annual_previous_year)]= meps_previous.loc[index2,"VALUE_IN_EUROS"]
+            mep_j["Total export "+str(annual_previous_year)]= meps_previous.loc[index2,"VALUE_IN_EUROS"]
             mep_j["Main partner "+str(annual_current_year)]= meps_current.loc[index2,"PARTNER_ISO"]
-            mep_j["Tot imp "+str(annual_current_year)]= meps_current.loc[index2,"VALUE_IN_EUROS"]
+            mep_j["Total export "+str(annual_current_year)]= meps_current.loc[index2,"VALUE_IN_EUROS"]
             meps_j.append(mep_j)
-        ieinfo_country["MEP"]=meps_j
+        ieinfo_country["Main Export Partners"]=meps_j
 
          # Main Import good
         migs_j=[]
@@ -248,26 +275,30 @@ def annualProcessing():
         migs_current= data_annual_current_year[(data_annual_current_year["DECLARANT_ISO"]==country) & (data_annual_current_year["FLOW"]==FLOW_IMPORT) & (data_annual_current_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PRODUCT_NC"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index() 
         
         for index  in range(n_rows):  
+            previous_product=migs_previous.loc[index,"PRODUCT_NC"]
+            current_product=migs_current.loc[index,"PRODUCT_NC"]
             mig_j={}
-            mig_j["Main good "+str(annual_previous_year)]=cls_products[(cls_products[0]==migs_previous.loc[index,"PRODUCT_NC"]) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_previous_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>annual_previous_year) ].iat[0,4]
-            mig_j["Tot imp "+str(annual_previous_year)]= migs_previous.loc[index,"VALUE_IN_EUROS"]
-            mig_j["Main good "+str(annual_current_year)]=cls_products[(cls_products[0]==migs_current.loc[index,"PRODUCT_NC"]) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_current_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>annual_current_year) ].iat[0,4]
-            mig_j["Tot imp "+str(annual_current_year)]= migs_current.loc[index,"VALUE_IN_EUROS"]
+            mig_j["Main good "+str(annual_previous_year)]=getClsProduct(cls_products[(cls_products[0]==previous_product) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_previous_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>=annual_previous_year) ],previous_product,4)
+            mig_j["Total import "+str(annual_previous_year)]= migs_previous.loc[index,"VALUE_IN_EUROS"]
+            mig_j["Main good "+str(annual_current_year)]=getClsProduct(cls_products[(cls_products[0]==current_product) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_current_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>=annual_current_year) ],current_product,4)
+            mig_j["Total import "+str(annual_current_year)]= migs_current.loc[index,"VALUE_IN_EUROS"]
             migs_j.append(mig_j)
-        ieinfo_country["MIG"]=migs_j
+        ieinfo_country["Main Import Goods"]=migs_j
         # Main Export partner
         megs_j=[]
         megs_previous= data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_EXPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PRODUCT_NC"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index() 
         megs_current= data_annual_current_year[(data_annual_current_year["DECLARANT_ISO"]==country) & (data_annual_current_year["FLOW"]==FLOW_EXPORT) & (data_annual_current_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PRODUCT_NC"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index() 
         
         for index in range(n_rows):
+            previous_product=megs_previous.loc[index,"PRODUCT_NC"]
+            current_product=megs_current.loc[index,"PRODUCT_NC"]
             meg_j={}
-            meg_j["Main good "+str(annual_previous_year)]=cls_products[(cls_products[0]==megs_previous.loc[index,"PRODUCT_NC"]) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_previous_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>annual_previous_year) ].iat[0,4]
-            meg_j["Tot imp "+str(annual_previous_year)]= megs_previous.loc[index,"VALUE_IN_EUROS"]
-            meg_j["Main good "+str(annual_current_year)]=cls_products[(cls_products[0]==megs_current.loc[index,"PRODUCT_NC"]) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_current_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>annual_current_year) ].iat[0,4]
-            meg_j["Tot imp "+str(annual_current_year)]= megs_current.loc[index,"VALUE_IN_EUROS"]
+            meg_j["Main good "+str(annual_previous_year)]=getClsProduct(cls_products[(cls_products[0]==previous_product) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_previous_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>=annual_previous_year) ],previous_product,4)
+            meg_j["Total export "+str(annual_previous_year)]= megs_previous.loc[index,"VALUE_IN_EUROS"]
+            meg_j["Main good "+str(annual_current_year)]=getClsProduct(cls_products[(cls_products[0]==current_product) & (pd.to_datetime(cls_products[1],errors='coerce').dt.year.fillna(0)<=annual_current_year) & (pd.to_datetime(cls_products[2],errors='coerce').dt.year.fillna(2500)>=annual_current_year) ],current_product,4)
+            meg_j["Total export "+str(annual_current_year)]= megs_current.loc[index,"VALUE_IN_EUROS"]
             megs_j.append(meg_j)
-        ieinfo_country["MEG"]=megs_j
+        ieinfo_country["Main Export Goods"]=megs_j
     
         ieinfo.append(ieinfo_country)
      
@@ -301,8 +332,8 @@ def monthlyProcessing():
     cur = conn.cursor()
     # Create table Series
     logging.info('Creating Series table ')
-    cur.execute("Create table serie_per_mappa0 as select declarant_iso, period, sum(value_in_euros) as value_in_euros from comext_full where product_nc= 'TOTAL' and flow=2 group by declarant_iso, period;")
-    cur.execute("Create table serie_per_mappa as select a.declarant_iso, a.period, 100*a.value_in_euros/b.value_in_euros-100 as tendenziale from serie_per_mappa0 a, serie_per_mappa0 b where a.declarant_iso=b.declarant_iso and a.period=(b.period+100);")
+    cur.execute("Create table serie_per_mappa0 as select declarant_iso, period, flow, sum(value_in_euros) as value_in_euros from comext_full where product_nc= 'TOTAL' group by declarant_iso, period,flow;")
+    cur.execute("Create table serie_per_mappa as select a.declarant_iso, a.period, a.flow, round(100.00*( (a.value_in_euros-b.value_in_euros)*1.0  / b.value_in_euros ),2) as tendenziale from serie_per_mappa0 a, serie_per_mappa0 b where a.flow=b.flow and a.declarant_iso=b.declarant_iso and a.period=(b.period+100);")
     
     #  basket products.
     logging.info('Creating basket products table ')
@@ -325,12 +356,47 @@ def monthlyProcessing():
     if conn:
         conn.close()
 
-if __name__ == '__main__':
+
+def createMonthlyOutput():
+    DATA_FOLDER_WORKING=DATA_FOLDER_MONTHLY+os.sep+"output"
+    createFolder(DATA_FOLDER_WORKING)
+    # import export series
+    iesFiles={}
+    iesFiles[FLOW_IMPORT]=DATA_FOLDER_WORKING+os.sep+"importseries.json"
+    iesFiles[FLOW_EXPORT]=DATA_FOLDER_WORKING+os.sep+"exportseries.json"
+    ieFlows={}
     
+    conn = sqlite3.connect(SQLLITE_DB)
+    serie = pd.read_sql_query("SELECT * from serie_per_mappa", conn)
+    countries=sorted(pd.unique(serie["DECLARANT_ISO"]))
+    for flow in [FLOW_IMPORT,FLOW_EXPORT]:
+        ieSeries=[]
+        for country  in countries:
+            logging.info('country: '+country)   
+            ieIseries_country={}
+            ieIseries_country["country"]=country
+            serie_country=serie[(serie["DECLARANT_ISO"]==country) & (serie["FLOW"]==flow)]
+            for index, row in serie_country.iterrows():
+                ieIseries_country[str(row["PERIOD"])]=row["tendenziale"]
+            ieSeries.append(ieIseries_country)
+        ieFlows[flow]=ieSeries
+    if conn:
+        conn.close()
+    #print(iesFiles)
+    
+    for flow in [FLOW_IMPORT,FLOW_EXPORT]:
+        logging.info('File '+iesFiles[flow])
+        with open(iesFiles[flow], 'w') as f:
+            json.dump(ieFlows[flow], f, ensure_ascii=False, indent = 4,cls=NpEncoder)
+
+
+if __name__ == '__main__':
+
+  #downloadAndExtractComextAnnualDATA()  
   #downloadAndExtractComextMonthlyDATA(URL_COMEXT_PRODUCTS, PREFIX_FULL)
   #downloadAndExtractComextMonthlyDATA(URL_COMEXT_TR, PREFIX_TRANSPORT)
-  #  downloadAndExtractComextAnnualDATA()
   #downloadfile(URL_COMEXT_CLS_PRODUCTS,CLS_PRODUCTS_FILE)
-  #createFolders()
+   
   #annualProcessing()
-  monthlyProcessing()
+  #monthlyProcessing()
+  createMonthlyOutput()
