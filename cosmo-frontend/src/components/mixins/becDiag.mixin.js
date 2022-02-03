@@ -159,62 +159,61 @@ export default {
           callbacks: {
             title: function (tooltipItem, data) {
               console.log(tooltipItem, data);
-              var dt = new Date(data['labels'][tooltipItem[0]['index']]);
+            },
+            label: function (tooltipItem, data) {
+              console.log(tooltipItem, data);
+              var dt = new Date(data['labels'][tooltipItem.index]);
               var longYear = dt.toLocaleDateString("en", {
                 year: "numeric"
               });
               var shortMonth = dt.toLocaleString("en-US", {
                 month: "short"
               });
-              return shortMonth + "-" + longYear;
-            },
-            label: function (tooltipItem, data) {
-              console.log(tooltipItem, data);
-              return data['datasets'][0]['data'][tooltipItem.index]['y'];
+              return shortMonth + "-" + longYear + ", " + data['datasets'][0]['data'][tooltipItem.index]['y'];
             }
           }
         },
 
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              display: true
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              min: startMin,
+              stepSize: 12,
+              callback: function (value, index) {
+                var year = startYear + index;
+                return year;
               }
-            }],
-            xAxes: [{
-              ticks: {
-                min: startMin,
-                stepSize: 12,
-                callback: function (value, index) {
-                  var year = startYear + index;
-                  return year;
-                }
-              },
-              gridLines: {
-                display: true
-              },
-              type: "linear",
-              position: "bottom"
-            }]
-          }
-        };
+            },
+            gridLines: {
+              display: true
+            },
+            type: "linear",
+            position: "bottom"
+          }]
+        }
+      };
+    }
+  }
+};
+/*
+  plugins: {
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy'
+        },
+      zoom: {
+        enabled: true,
+        mode: 'xy',
       }
     }
-  };
-  /*
-    plugins: {
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: 'xy'
-          },
-        zoom: {
-          enabled: true,
-          mode: 'xy',
-        }
-      }
-    },
-  */
+  },
+*/
