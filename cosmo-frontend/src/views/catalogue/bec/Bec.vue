@@ -49,7 +49,7 @@
           </span>
         </CCardHeader>
         <CCardBody v-show="isMainChart">
-          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
+          <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
           <scatter-chart :chartData="chartData" :options="options" id="bec" />
           <vue-slider
             v-if="isSlider && isBecFull"
@@ -707,4 +707,13 @@ export default {
   font-size: 0.875rem;
   font-weight: 500;
 }
+.circle-spin {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+}
+.align-right {
+  text-align: right;
+}
+
 </style>

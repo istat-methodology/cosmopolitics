@@ -29,6 +29,7 @@
           <line-chart
             :chartData="chartData"
             :options="optionsTrade"
+            :height="500"
             id="trade"
           />
         </CCardBody>
