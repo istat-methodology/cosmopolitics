@@ -7,7 +7,7 @@ export default {
     timePeriod: null,
     timeNothing: -1,
     maxTimeStep: 0,
-
+/*
     covidEstimationTableTitle: null,
     covidEstimationTableFields: null,
     covidEstimationTableData: null,
@@ -17,6 +17,8 @@ export default {
     modelTableFields: null,
     modelTableData: null,
 
+  */
+    
     cast: {
       indexStart: 0
     }
@@ -91,10 +93,7 @@ export default {
     },
     buildBecCharts(dataR) {
       this.timeLapse = [];
-      this.covidEstimationTableData = [];
-      this.modelTableData = [];
-
-
+      
       var diagNorm = [];
       var diagACF = [];
 

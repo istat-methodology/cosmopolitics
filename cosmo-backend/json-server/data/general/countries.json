@@ -1,4 +1,5 @@
-[{
+[
+  {
     "country": "AT",
     "coordinates": {
       "latitude": "47.516231",
@@ -14,7 +15,6 @@
     },
     "name": "Belgium"
   },
-
   {
     "country": "BG",
     "coordinates": {
@@ -71,7 +71,6 @@
     },
     "name": "Spain"
   },
-
   {
     "country": "FI",
     "coordinates": {
@@ -80,7 +79,6 @@
     },
     "name": "Finland"
   },
-
   {
     "country": "FR",
     "coordinates": {
@@ -89,7 +87,6 @@
     },
     "name": "France"
   },
-
   {
     "country": "GB",
     "coordinates": {
@@ -98,7 +95,6 @@
     },
     "name": "United Kingdom"
   },
-
   {
     "country": "GR",
     "coordinates": {
@@ -107,7 +103,6 @@
     },
     "name": "Greece"
   },
-
   {
     "country": "HR",
     "coordinates": {
@@ -116,7 +111,6 @@
     },
     "name": "Croatia"
   },
-
   {
     "country": "HU",
     "coordinates": {
@@ -125,7 +119,6 @@
     },
     "name": "Hungary"
   },
-
   {
     "country": "IE",
     "coordinates": {
@@ -174,7 +167,6 @@
     },
     "name": "Malta"
   },
-
   {
     "country": "NL",
     "coordinates": {
@@ -191,7 +183,6 @@
     },
     "name": "Poland"
   },
-
   {
     "country": "PT",
     "coordinates": {
@@ -200,7 +191,6 @@
     },
     "name": "Portugal"
   },
-
   {
     "country": "RO",
     "coordinates": {
@@ -217,7 +207,6 @@
     },
     "name": "Sweden"
   },
-
   {
     "country": "SI",
     "coordinates": {

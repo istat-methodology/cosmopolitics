@@ -225,10 +225,6 @@
       </template>
     </CModal>
   </div>
-  <!--circle-spin
-    v-bind:loading="isLoading"
-    class="circle-spin"
-  ></circle-spin-->
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -267,8 +263,7 @@ export default {
 
     becPeriodValue: "",
     becPeriod: [],
-
-    isSlider: false,
+   
 
     isMainChart: true,
     isDiagNorm: true,
@@ -328,6 +323,7 @@ export default {
     },
     handleSubmit() {
       this.$v.$touch(); 
+      this.spinnerStart(true);
       if (
         !this.$v.flowSelected.$invalid &&
         !this.$v.becSelected.$invalid &&
@@ -341,12 +337,11 @@ export default {
           partner: this.partnerSelected.id,
           fcst: 0, 
         };
-
         this.$store.dispatch("bec/findByFilters", form).then(() => {
           this.buildBecCharts(this.becCharts);
           if (this.timeLapse) {
-            this.chartData = this.getBecChart(0, this.isBecFull);
-            this.isSlider = true;
+            this.spinnerStart(false);
+            this.chartData = this.getBecChart(0);     
           }
         });
       }
@@ -382,5 +377,13 @@ export default {
 .card-header span {
   font-size: 0.875rem;
   font-weight: 500;
+}
+.circle-spin {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+}
+.align-right {
+  text-align: right;
 }
 </style>

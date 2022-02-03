@@ -52,8 +52,8 @@
   },
   "graph": {
     "stats": {
-      "density": "Densità del grafo",
-      "centrality": "Centralità",
+      "density": "Diffusione delle merci",
+      "centrality": "Forza di esportazione",
       "vulnerability": "Vulnerabilità",
       "hubness": "Hubness"
     },
@@ -86,7 +86,7 @@
       },
       "metrics": {
         "subtitle": "<br><br><b>Metriche</b>",
-        "body": "<br>Le metriche seguenti derivano dalle misure di centralità standard calcolate nella graph analysis.<br><br><b>Diffusione del prodotto:<br><ul></b><li><b> Densità del grafo:</b> Rappresenta quanto il prodotto è diffuso all’interno del grafo.</li><li><b>Vulnerabilità: </b> è calcolata come 1 - indegree centrality per ogni paese. La vulnerabilità riflette il fatto che un paese che riceve un prodotto da più paesi fornitori distinti è meno dipendente da un singolo paese per l’approvvigionamento di quel prodotto.</li><li><b>Forza di esportazione: </b> è la outdegree centrality per ogni paese.</li><li><b>Hubness: </b> è la betweenness centrality per ogni paese.</ul>",
+        "body": "<br>Le metriche seguenti derivano dalle misure di centralità standard calcolate nella graph analysis.<br><ul><li><b>Diffusione delle merci:</b> Densità del grafo. Rappresenta quanto il prodotto è diffuso all’interno del grafo.</li><li><b>Forza di esportazione: </b> è la outdegree centrality per ogni paese.</li><li><b>Vulnerabilità: </b> è calcolata come 1 - indegree centrality per ogni paese. La vulnerabilità riflette il fatto che un paese che riceve un prodotto da più paesi fornitori distinti è meno dipendente da un singolo paese per l’approvvigionamento di quel prodotto.</li><li><b>Hubness: </b> è la betweenness centrality per ogni paese.</ul>",
         "keywords": ""
       },
       "filter": {
