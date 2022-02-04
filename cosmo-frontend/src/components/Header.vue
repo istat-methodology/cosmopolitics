@@ -58,8 +58,8 @@ export default {
   data() {
     return {
       langs: ["it", "en"],
-      selectedIt: false,
-      selectedEn: true
+      selectedIt: true,
+      selectedEn: false
     };
   },
   computed: {
