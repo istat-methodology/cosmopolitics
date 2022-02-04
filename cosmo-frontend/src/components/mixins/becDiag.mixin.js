@@ -166,10 +166,10 @@ export default {
               var longYear = dt.toLocaleDateString("en", {
                 year: "numeric"
               });
-              var shortMonth = dt.toLocaleString("en-US", {
-                month: "short"
+              var longMonth = dt.toLocaleString("en-US", {
+                month: "long"
               });
-              return shortMonth + "-" + longYear + ", " + data['datasets'][0]['data'][tooltipItem.index]['y'];
+              return longMonth + "," + longYear + ";  " + data['datasets'][0]['data'][tooltipItem.index]['y'];
             }
           }
         },
