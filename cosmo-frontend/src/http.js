@@ -40,7 +40,7 @@ axiosHack.interceptors.response.use(
   },
   error => {
     store.dispatch("coreui/loading", false);
-    manageResponseError(error);
+    manageServerError(error , "json");
     return Promise.reject(error);
   }
 );
@@ -53,7 +53,7 @@ axiosR.interceptors.response.use(
   },
   error => {
     store.dispatch("coreui/loading", false);
-    manageResponseError(error);
+    manageServerError(error, "R");
     return Promise.reject(error);
   }
 );
@@ -66,44 +66,18 @@ axiosPython.interceptors.response.use(
   },
   error => {
     store.dispatch("coreui/loading", false);
-    manageResponseError(error);
+    manageServerError(error, "python");
     return Promise.reject(error);
   }
 );
 
 export { axiosAuth, axiosHack, axiosR, axiosPython };
 
-function manageResponseError(error) {
-  console.log("Error status", error.response.status);
+function manageServerError(error, server){
+  console.log("[Error] Ops, something went wrong in " + server);
   var err = {
-    code: error.response.status,
-    message: ""
+    code: 500,
+    message: "Sorry, something went wrong in " + server + " server!"
   };
-  // Unauthotized access
-  if (error.response.status === 401) {
-    //User logged
-    if ("jwt-auth" in error.response.headers) {
-      //redirect to login page
-      store.dispatch("error/multipleLogin");
-    } else {
-      //unauthorized
-      store.dispatch("error/unauthorized", err);
-    }
-  } else if (error.response.status === 400) {
-    //Bad request
-    err.message = error.response.data.message;
-    store.dispatch("error/serverError", err);
-  } else if (error.response.status === 500) {
-    if (error.response.data.message.includes("AuthenticatedFilter")) {
-      //redirect to login page
-      store.dispatch("error/tokenExpired");
-    } else {
-      //internal server error
-      err.message = error.response.data.message;
-      store.dispatch("error/serverError", err);
-    }
-  } else {
-    err.message = "Sorry, something went wrong!";
-    store.dispatch("error/serverError", err);
-  }
+  store.dispatch("error/serverError", err);
 }
