@@ -169,7 +169,7 @@ export default {
               var longMonth = dt.toLocaleString("en-US", {
                 month: "long"
               });
-              return longMonth + "," + longYear + ";  " + data['datasets'][0]['data'][tooltipItem.index]['y'];
+              return longMonth + ", " + longYear + " :  " + data['datasets'][0]['data'][tooltipItem.index]['y'];
             }
           }
         },

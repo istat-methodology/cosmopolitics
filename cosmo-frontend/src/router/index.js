@@ -36,7 +36,7 @@ const routes = [{
       {
         path: "catalogue/map",
         name: "Map",
-        component: () => import("../views/catalogue/map/GeoMap"),
+        component: () => import("../views/catalogue/map/Map"),
         meta: {
           authorize: []
         }
@@ -50,6 +50,14 @@ const routes = [{
         }
       },
       {
+        path: "catalogue/graph",
+        name: "GraphLite",
+        component: () => import("../views/catalogue/graph/GraphFormLite"),
+        meta: {
+          authorize: []
+        }
+      },
+      {
         path: "catalogue/graphplus",
         name: "GraphPlus",
         component: () => import("../views/catalogue/graph/GraphFormPlus"),
@@ -58,7 +66,7 @@ const routes = [{
         }
       },
       {
-        path: "catalogue/graphslider",
+        path: "catalogue/graphLite",
         name: "GraphSlider",
         component: () => import("../views/catalogue/graph/GraphSlider"),
         meta: {
@@ -93,14 +101,6 @@ const routes = [{
         path: "catalogue/trade",
         name: "Trade",
         component: () => import("../views/catalogue/trade/Trade"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/geomap",
-        name: "GeoMap",
-        component: () => import("../views/catalogue/map/GeoMap"),
         meta: {
           authorize: []
         }

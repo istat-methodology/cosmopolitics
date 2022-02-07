@@ -165,7 +165,7 @@ import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter";
 import VueSlider from "vue-slider-component";
 
 export default {
-  name: "GeoMap",
+  name: "Map",
   components: {
     LMap,
     LTileLayer,

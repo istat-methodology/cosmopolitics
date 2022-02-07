@@ -50,6 +50,18 @@
           }}
         </router-link>
       </li>
+      <li class="c-sidebar-nav-item">
+        <router-link
+          tag="a"
+          :to="{ name: 'GraphLite' }"
+          class="c-sidebar-nav-link"
+          :class="{ 'c-active c-active-success': isGraph }"
+        >
+          <CIcon name="cil-layers" class="c-sidebar-nav-icon" />{{
+            $t("sidebar.graph") + " LITE"
+          }}
+        </router-link>
+      </li>
       <!-- li class="c-sidebar-nav-item">
         <router-link
           tag="a"
