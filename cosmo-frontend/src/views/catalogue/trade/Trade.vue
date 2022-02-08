@@ -76,7 +76,7 @@
       :title="$t('trade.modal.main.title')"
       :show.sync="isModalHelp"
       size="lg"
-    ><p v-html="$t('trade.modal.main.body')"></p>
+      ><p v-html="$t('trade.modal.main.body')"></p>
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
           >Close</CButton
@@ -153,7 +153,7 @@ export default {
         });
       }
     },
-    getData(data, id) {      
+    getData(data, id) {
       if (data != null) {
         return [data, id];
       }

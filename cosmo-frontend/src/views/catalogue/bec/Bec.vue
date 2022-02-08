@@ -1,4 +1,3 @@
-
 <template>
   <div class="row">
     <div class="col-9">
@@ -322,7 +321,7 @@
             :placeholder="$t('timeseries.form.fields.flow_placeholder')"
             v-model="flowSelected"
             :class="{
-              'is-invalid': $v.flowSelected.$error,
+              'is-invalid': $v.flowSelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.countryFilter"
@@ -334,7 +333,7 @@
             :placeholder="$t('timeseries.form.fields.country_placeholder')"
             v-model="countrySelected"
             :class="{
-              'is-invalid': $v.countrySelected.$error,
+              'is-invalid': $v.countrySelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.partnerFilter"
@@ -346,7 +345,7 @@
             :placeholder="$t('timeseries.form.fields.partner_placeholder')"
             v-model="partnerSelected"
             :class="{
-              'is-invalid': $v.partnerSelected.$error,
+              'is-invalid': $v.partnerSelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.becFilter"
@@ -358,7 +357,7 @@
             :placeholder="$t('timeseries.form.fields.bec_placeholder')"
             v-model="becSelected"
             :class="{
-              'is-invalid': $v.becSelected.$error,
+              'is-invalid': $v.becSelected.$error
             }"
           />
 
@@ -369,7 +368,7 @@
             placeholder="Prevision"
             v-model="previsionSelected"
             :class="{
-              'is-invalid': $v.previsionSelected.$error,
+              'is-invalid': $v.previsionSelected.$error
             }"
           />
           <template v-if="isForecasting">
@@ -459,7 +458,7 @@ export default {
     ScatterChart,
     LineChart,
     VueSlider,
-    exporter,
+    exporter
   },
   mixins: [paletteMixin, becDiagMixin, becMixin, spinnerMixin],
   data: () => ({
@@ -500,7 +499,7 @@ export default {
     countryFilter: "digit Country",
     partnerFilter: "digit Partner",
     becFilter: "digit Bec",
-    isBecFull: true,
+    isBecFull: true
   }),
   computed: {
     ...mapGetters("classification", [
@@ -509,7 +508,7 @@ export default {
       "becs",
       "flows",
       "previsions",
-      "timeNext",
+      "timeNext"
     ]),
     ...mapGetters("bec", ["becCharts", "becDate"]),
     isForecasting() {
@@ -534,24 +533,24 @@ export default {
     },
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
-    },
+    }
   },
   validations: {
     flowSelected: {
-      required,
+      required
     },
     countrySelected: {
-      required,
+      required
     },
     partnerSelected: {
-      required,
+      required
     },
     becSelected: {
-      required,
+      required
     },
     previsionSelected: {
-      required,
-    },
+      required
+    }
   },
   methods: {
     helpOn(showModal) {
@@ -587,7 +586,7 @@ export default {
     handleModel() {
       this.isModel = !this.isModel;
     },
-   
+
     // add to resume
     handleSubmit() {
       this.$v.$touch(); //validate form data
@@ -603,11 +602,11 @@ export default {
           var: this.becSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: this.previsionSelected.id,
+          fcst: this.previsionSelected.id
         };
         if (this.isForecasting) {
           var restriction = [];
-          this.prevision.forEach((element) => {
+          this.prevision.forEach(element => {
             if (element.selected) {
               restriction.push(element.restriction);
             }
@@ -635,28 +634,25 @@ export default {
 
     //add to resume prevision
     createForecast() {
-
-      const months= [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December"
-        ];
-
-
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
 
       const form = {
         flow: this.flowSelected.id,
         country: this.countrySelected.country,
-        partner: this.partnerSelected.id,
+        partner: this.partnerSelected.id
       };
       this.$store.dispatch("bec/findLastDate", form).then(() => {
         var yearOfBec = this.becDate[0].substr(2, 2);
@@ -677,12 +673,12 @@ export default {
           this.prevision.push({
             selected: false,
             month: element,
-            restriction: 0,
+            restriction: 0
           });
           month = month + 1;
         }
       });
-    },
+    }
   },
 
   created() {
@@ -690,7 +686,7 @@ export default {
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
     this.$store.dispatch("classification/getBecs");
-  },
+  }
 };
 </script>
 <style>
@@ -715,5 +711,4 @@ export default {
 .align-right {
   text-align: right;
 }
-
 </style>

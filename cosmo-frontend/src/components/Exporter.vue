@@ -26,20 +26,20 @@ export default {
   props: {
     filename: {
       Type: String,
-      default: () => "",
+      default: () => ""
     },
     data: {
       Type: Array,
-      default: () => [],
+      default: () => []
     },
     options: {
       Type: Array,
-      default: () => ["jpeg", "png", "pdf", "json", "csv"],
+      default: () => ["jpeg", "png", "pdf", "json", "csv"]
     },
     source: {
       Type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   methods: {
     getTitle(typeformat) {
@@ -51,16 +51,16 @@ export default {
           this.toJSON(this.data[0], this.filename + "." + type);
           break;
         case "csv":
-          this.toCSV(this.data[0], this.filename + "."+ type);
+          this.toCSV(this.data[0], this.filename + "." + type);
           break;
         case "jpeg":
-          this.toJPEG(this.data[1], this.filename + "."+ type);
+          this.toJPEG(this.data[1], this.filename + "." + type);
           break;
         case "png":
-          this.toPNG(this.data[1], this.filename + "."+ type);
+          this.toPNG(this.data[1], this.filename + "." + type);
           break;
         case "pdf":
-          this.toPDF(this.data[1], this.filename + "."+ type);
+          this.toPDF(this.data[1], this.filename + "." + type);
           break;
 
         default:
@@ -68,7 +68,7 @@ export default {
       }
     },
     toBody(id) {
-      html2canvas(this.getCanvas(id), { useCORS: true }).then((canvas) => {
+      html2canvas(this.getCanvas(id), { useCORS: true }).then(canvas => {
         document.body.appendChild(canvas);
       });
     },
@@ -110,9 +110,9 @@ export default {
             keys = Object.keys(dat[0]);
             result += keys.join(columnDelimiter);
             result += lineDelimiter;
-            dat.forEach(function (item) {
+            dat.forEach(function(item) {
               ctr = 0;
-              keys.forEach(function (key) {
+              keys.forEach(function(key) {
                 if (ctr > 0) result += columnDelimiter;
                 result += item[key];
                 ctr++;
@@ -120,7 +120,7 @@ export default {
               result += lineDelimiter;
             });
           } else {
-            dat.forEach(function (item) {
+            dat.forEach(function(item) {
               result += columnDelimiter;
               result += item;
             });
@@ -133,16 +133,16 @@ export default {
     },
     toJPEG(id, filename) {
       html2canvas(this.getCanvas(id), {
-        useCORS: true,
-      }).then((canvas) => {
+        useCORS: true
+      }).then(canvas => {
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
         saveAs(imgData, filename);
       });
     },
     toPNG(id, filename) {
       html2canvas(this.getCanvas(id), {
-        useCORS: true,
-      }).then((canvas) => {
+        useCORS: true
+      }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         saveAs(imgData, filename);
       });
@@ -150,8 +150,8 @@ export default {
     toPDF(id, filename) {
       let pdf = new jsPDF("l", "px");
       html2canvas(this.getCanvas(id), {
-        useCORS: true,
-      }).then((canvas) => {
+        useCORS: true
+      }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
@@ -176,7 +176,7 @@ export default {
       return this.source == "graph"
         ? document.getElementById(id).querySelector("canvas")
         : document.getElementById(id);
-    },
-  },
+    }
+  }
 };
 </script>

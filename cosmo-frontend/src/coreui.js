@@ -18,6 +18,7 @@ import {
   CToggler,
   CSidebar,
   CSidebarBrand,
+  CSidebarMinimizer,
   CFooter,
   CIcon,
   CCard,
@@ -54,6 +55,7 @@ Vue.component("CDropdownItem", CDropdownItem);
 Vue.component("CToggler", CToggler);
 Vue.component("CSidebar", CSidebar);
 Vue.component("CSidebarBrand", CSidebarBrand);
+Vue.component("CSidebarMinimizer", CSidebarMinimizer);
 Vue.component("CIcon", CIcon);
 Vue.component("CFooter", CFooter);
 Vue.component("CCard", CCard);

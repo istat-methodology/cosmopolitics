@@ -10,7 +10,7 @@ export default {
     },
     colors: [],
     dataLegend: [],
-    legendMonth:"Dec"
+    legendMonth: "Dec"
   }),
   methods: {
     getRadius(marker, min, max, data) {
@@ -61,7 +61,7 @@ export default {
         .selectAll("*")
         .remove();
       this.colorlegend("#Legend", linearScale, {
-        title: "Monthly year - on - year " + importexport  + " change( % )",
+        title: "Monthly year - on - year " + importexport + " change( % )",
         boxHeight: 15,
         axis: true
       });

@@ -3,6 +3,7 @@
     "submit": "Go!",
     "exporter": "export",
     "mandatory": "Mandatory fields",
+    "update": "Data updated on {update}",
     "footer": {
       "experimental": "Experimental Statistics 2022",
       "coreui": "Powered by"
@@ -16,7 +17,7 @@
     "home": "Home",
     "map": "Interactive map",
     "graph": "Graph analysis",
-    "timeseries": "Time series visualization",
+    "timeseries": "Time series",
     "timeseriescomplete": "Time series complete",
     "trade": "Basket of traded products"
   },
@@ -32,9 +33,9 @@
       "link": "Go to Graph analisys section"
     },
     "timeseries": {
-      "title": "Time Series visualization",
+      "title": "Time Series",
       "body": "<b>Visualization tool</b> for <b>monthly COMEXT</b> foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats.",
-      "link": "Go to Time series visualization section"
+      "link": "Go to Time series section"
     },
     "trade": {
       "title": "Changes in basket composition of traded products (CPA - classification of products by activity) by Member State",

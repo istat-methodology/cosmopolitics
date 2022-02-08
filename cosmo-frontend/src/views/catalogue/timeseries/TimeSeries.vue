@@ -1,4 +1,3 @@
-
 <template>
   <div class="row">
     <div class="col-9">
@@ -50,7 +49,11 @@
         </CCardHeader>
         <CCardBody v-show="isMainChart">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
-          <scatter-chart :chartData="chartData" :options="options" id="timeseries" />
+          <scatter-chart
+            :chartData="chartData"
+            :options="options"
+            id="timeseries"
+          />
         </CCardBody>
       </CCard>
       <CCard v-if="chartDataDiagNorm">
@@ -161,7 +164,7 @@
             :placeholder="$t('timeseries.form.fields.flow_placeholder')"
             v-model="flowSelected"
             :class="{
-              'is-invalid': $v.flowSelected.$error,
+              'is-invalid': $v.flowSelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.countryFilter"
@@ -173,7 +176,7 @@
             :placeholder="$t('timeseries.form.fields.country_placeholder')"
             v-model="countrySelected"
             :class="{
-              'is-invalid': $v.countrySelected.$error,
+              'is-invalid': $v.countrySelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.partnerFilter"
@@ -185,7 +188,7 @@
             :placeholder="$t('timeseries.form.fields.partner_placeholder')"
             v-model="partnerSelected"
             :class="{
-              'is-invalid': $v.partnerSelected.$error,
+              'is-invalid': $v.partnerSelected.$error
             }"
           />
           <label class="card-label mt-3" :title="this.becFilter"
@@ -197,7 +200,7 @@
             :placeholder="$t('timeseries.form.fields.bec_placeholder')"
             v-model="becSelected"
             :class="{
-              'is-invalid': $v.becSelected.$error,
+              'is-invalid': $v.becSelected.$error
             }"
           />
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
@@ -243,7 +246,7 @@ export default {
   components: {
     ScatterChart,
     LineChart,
-    exporter,
+    exporter
   },
   mixins: [paletteMixin, becDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
@@ -253,17 +256,15 @@ export default {
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
-  
+
     timeSelected: null,
 
-   
     chartData: null,
     chartDataDiagNorm: null,
     chartDataDiagACF: null,
 
     becPeriodValue: "",
     becPeriod: [],
-   
 
     isMainChart: true,
     isDiagNorm: true,
@@ -276,35 +277,34 @@ export default {
     flowFilter: "digit flows",
     countryFilter: "digit Country",
     partnerFilter: "digit Partner",
-    becFilter: "digit Bec",
-    
+    becFilter: "digit Bec"
   }),
   computed: {
     ...mapGetters("classification", [
       "countries",
       "partners",
       "becs",
-      "flows",     
-      "timeNext",
+      "flows",
+      "timeNext"
     ]),
     ...mapGetters("bec", ["becCharts", "becDate"]),
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
-    },
+    }
   },
   validations: {
     flowSelected: {
-      required,
+      required
     },
     countrySelected: {
-      required,
+      required
     },
     partnerSelected: {
-      required,
+      required
     },
     becSelected: {
-      required,
-    },
+      required
+    }
   },
   methods: {
     helpOn(showModal) {
@@ -314,7 +314,7 @@ export default {
     handleMainChart() {
       this.isMainChart = !this.isMainChart;
     },
-    
+
     handleDiagNorm() {
       this.isDiagNorm = !this.isDiagNorm;
     },
@@ -322,7 +322,7 @@ export default {
       this.isDiagACF = !this.isDiagACF;
     },
     handleSubmit() {
-      this.$v.$touch(); 
+      this.$v.$touch();
       this.spinnerStart(true);
       if (
         !this.$v.flowSelected.$invalid &&
@@ -335,13 +335,13 @@ export default {
           var: this.becSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: 0, 
+          fcst: 0
         };
         this.$store.dispatch("bec/findByFilters", form).then(() => {
           this.buildBecCharts(this.becCharts);
           if (this.timeLapse) {
             this.spinnerStart(false);
-            this.chartData = this.getBecChart(0);     
+            this.chartData = this.getBecChart(0);
           }
         });
       }
@@ -350,18 +350,18 @@ export default {
       if (data != null) {
         return [data, id];
       }
-      return null
+      return null;
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
     this.$store.dispatch("classification/getBecs");
-  },
+  }
 };
 </script>
 <style>

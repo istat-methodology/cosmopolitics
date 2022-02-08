@@ -40,7 +40,7 @@ axiosHack.interceptors.response.use(
   },
   error => {
     store.dispatch("coreui/loading", false);
-    manageServerError(error , "json");
+    manageServerError(error, "json");
     return Promise.reject(error);
   }
 );
@@ -73,7 +73,7 @@ axiosPython.interceptors.response.use(
 
 export { axiosAuth, axiosHack, axiosR, axiosPython };
 
-function manageServerError(error, server){
+function manageServerError(error, server) {
   console.log("[Error] Ops, something went wrong in " + server);
   var err = {
     code: 500,

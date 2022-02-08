@@ -13,7 +13,13 @@
     <CHeaderBrand class="mx-auto d-lg-none" to="/">
       <img src="/img/istat-logo.png" height="20" />
     </CHeaderBrand>
-    <CHeaderNav class="d-md-down-none mr-auto" />
+    <CHeaderNav class="d-md-down-none mr-auto">
+      <CHeaderNavItem class="px-3">
+        <!-- MANAGE DATE DYNAMICALLY-->
+        <CIcon name="cil-tags" />
+        {{ $t("common.update", { update: "08/02/2022" }) }}
+      </CHeaderNavItem>
+    </CHeaderNav>
     <CHeaderNav class="mr-lang">
       <ul class="ul-lang d-none d-md-flex">
         <li class="nav-item">

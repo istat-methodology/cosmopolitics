@@ -3,6 +3,7 @@
     "submit": "Esegui!",
     "exporter": "Esporta",
     "mandatory": "Campi obbligatori",
+    "update": "Dati aggiornati il {update}",
     "footer": {
       "experimental": "Statistiche sperimentali 2022",
       "coreui": "Con il supporto di"
@@ -16,7 +17,7 @@
     "home": "Home",
     "map": "Mappa Interattiva",
     "graph": "Graph analysis",
-    "timeseries": "Visualizzazione Serie storiche",
+    "timeseries": "Serie storiche",
     "trade": "Paniere dei prodotti"
   },
   "landing": {
@@ -33,7 +34,7 @@
     "timeseries": {
       "title": "Visualizzazione Serie storiche",
       "body": "<b>Strumento di visualizzazione</b> delle serie <b>mensili</b> di dati sul commercio estero <b>COMEXT</b>. Questa sezione consente una lettura facile e comprensibile nonostante la mole di dati sottostanti. Utile come strumento di divulgazione. Le serie sono fornite in valore ed il <b>download è disponibile</b> in vari formati.",
-      "link": "Vai alla sezione Visualizzazione Serie storiche"
+      "link": "Vai alla sezione Serie storiche"
     },
     "trade": {
       "title": "Variazioni nella composizione del paniere dei prodotti importati ed esportato (classificazione CPA – classificazione dei prodotti per attività economica) per Paese Membro",

@@ -19,7 +19,7 @@ const state = {
   weights: [
     { id: 1, descr: true },
     { id: 2, descr: false }
-  ],
+  ]
   /*
   timeNext: [
     { id: 0, descr: "March 2021", value: "202103" },

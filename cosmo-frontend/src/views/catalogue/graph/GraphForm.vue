@@ -46,7 +46,7 @@
         <CCardBody class="card-no-border">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
           <network
-            id="graph"            
+            id="graph"
             class="network"
             ref="graph"
             :nodes="network.nodes"
@@ -211,12 +211,26 @@
     </CModal>
 
     <CModal
-      :title="isMainModal?  $t('graph.modal.main.title'): $t('graph.modal.filter.title')"
+      :title="
+        isMainModal
+          ? $t('graph.modal.main.title')
+          : $t('graph.modal.filter.title')
+      "
       :show.sync="isModalHelp"
       size="lg"
     >
-      <p v-html="isMainModal ? $t('graph.modal.main.subtitle') + $t('graph.modal.main.body') + $t('graph.modal.metrics.subtitle') + $t('graph.modal.metrics.body')+ $t('graph.modal.metrics.keywords')  : $t('graph.modal.filter.body')+ $t('graph.modal.filter.keywords')"></p>
-      
+      <p
+        v-html="
+          isMainModal
+            ? $t('graph.modal.main.subtitle') +
+              $t('graph.modal.main.body') +
+              $t('graph.modal.metrics.subtitle') +
+              $t('graph.modal.metrics.body') +
+              $t('graph.modal.metrics.keywords')
+            : $t('graph.modal.filter.body') + $t('graph.modal.filter.keywords')
+        "
+      ></p>
+
       <template #footer>
         <CButton
           color="outline-primary"
@@ -284,14 +298,13 @@ export default {
     base64: "",
     error: "",
     dataUrl: "",
-    
+
     modalTitle: " About on ",
     modalBody: " About on ",
 
     isModalHelp: false,
-    isMainModal :false,
-    isFilterModal : false,
-
+    isMainModal: false,
+    isFilterModal: false,
 
     paragraph: [],
     main: [],
@@ -345,7 +358,6 @@ export default {
     }
   },
   methods: {
-    
     helpOn(showModal, mainModal) {
       this.isMainModal = mainModal;
       this.isModalHelp = showModal;
@@ -493,7 +505,7 @@ export default {
       return ids;
     },
 
-    getData(id,ref) {
+    getData(id, ref) {
       var nodes = [];
       var edges = [];
       for (var edgeId in this.network.edges) {
@@ -510,7 +522,7 @@ export default {
           y: this.network.nodes[nodeId].y
         });
       }
-      let jsonData = JSON.stringify({ nodes, edges });      
+      let jsonData = JSON.stringify({ nodes, edges });
       console.log(this.$refs[ref]);
       return [jsonData, id];
     }
@@ -519,7 +531,6 @@ export default {
     // ---------------------------------------
     // @TODO Improve modal management
     // ---------------------------------------
-    
 
     this.$store.dispatch("period/findByName", "graph");
     this.$store.dispatch("coreui/setContext", Context.Graph);

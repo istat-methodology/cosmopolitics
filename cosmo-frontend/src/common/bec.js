@@ -22,7 +22,8 @@ export function buildCharts(dataR) {
       if (type == "covid") {
         chartDataArray.push({
           dataName: type,
-          data: [{
+          data: [
+            {
               x: 122,
               y: 100
             },

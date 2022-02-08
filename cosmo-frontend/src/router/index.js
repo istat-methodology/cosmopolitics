@@ -10,7 +10,8 @@ Vue.use(VueRouter);
 
 //Vue.http.headers.common['Access-Control-Allow-Origin'] ="*";
 
-const routes = [{
+const routes = [
+  {
     path: "/error",
     component: Error,
     meta: {
@@ -25,7 +26,8 @@ const routes = [{
     meta: {
       authorize: []
     },
-    children: [{
+    children: [
+      {
         path: "catalogue",
         name: "Catalogue",
         component: () => import("../views/catalogue/Catalogue"),
@@ -51,8 +53,8 @@ const routes = [{
       },
       {
         path: "catalogue/graph",
-        name: "GraphLite",
-        component: () => import("../views/catalogue/graph/GraphFormLite"),
+        name: "GraphIntra",
+        component: () => import("../views/catalogue/graph/GraphFormIntra"),
         meta: {
           authorize: []
         }
@@ -153,9 +155,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // redirect to unauthorized page if not logged in and trying to access a restricted page
-  const {
-    authorize
-  } = to.meta;
+  const { authorize } = to.meta;
   const isAuthenticated = store.getters["auth/isAuthenticated"];
   const userRole = store.getters["auth/role"];
 

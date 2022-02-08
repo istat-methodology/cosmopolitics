@@ -43,7 +43,8 @@
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <!--Math.round(marker.series)  -->
                 <span class="tooltip-span"
-                  >{{ marker.name }} {{ ie }} {{ marker.series.toFixed(1) + "%"}} 
+                  >{{ marker.name }} {{ ie }}
+                  {{ marker.series.toFixed(1) + "%" }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
@@ -61,7 +62,7 @@
                   </CTab>
                   <CTab title="Import partners">
                     <CDataTable
-                      :items="importDataItems"                  
+                      :items="importDataItems"
                       :fields="importFields"
                       hover
                     />
@@ -138,7 +139,7 @@
       :show.sync="isModalHelp"
       size="lg"
     >
-     <p v-html="$t('map.modal.main.body')"></p>
+      <p v-html="$t('map.modal.main.body')"></p>
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
           >Close</CButton
@@ -269,7 +270,7 @@ export default {
         this.selectedCountry.code = feature.properties.iso_a2;
         this.selectedCountry.name = feature.properties.admin;
         layer.options.fillColor = "#00000000";
-        if (value != undefined) {          
+        if (value != undefined) {
           layer.options.fillColor = this.getColor(value, -60, 60);
           layer.options.color = "gray"; //this.getColor(value,-60,60);
           layer.bindTooltip(
@@ -280,7 +281,8 @@ export default {
               "<span> " +
               this.ie +
               "</span> " +
-              value.toFixed(1) + "%" +
+              value.toFixed(1) +
+              "%" +
               "</span>" +
               " </div>",
             { permanent: false, sticky: true }
