@@ -48,6 +48,7 @@ const actions = {
             }
           }
         });
+
         commit("SET_INFO", data);
       })
       .catch(err => {
