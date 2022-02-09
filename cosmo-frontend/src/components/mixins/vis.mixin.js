@@ -65,7 +65,7 @@ export default {
             maxVisible: 30,
             drawThreshold: 5
           },
-          customScalingFunction: function(min, max, total, value) {
+          customScalingFunction: function (min, max, total, value) {
             if (max === min) {
               return 0.5;
             } else {
@@ -170,7 +170,7 @@ export default {
             maxVisible: 30,
             drawThreshold: 5
           },
-          customScalingFunction: function(min, max, total, value) {
+          customScalingFunction: function (min, max, total, value) {
             if (max === min) {
               return 0.5;
             } else {
@@ -249,7 +249,10 @@ export default {
         },
         timestep: 0.5,
         adaptiveTimestep: true,
-        wind: { x: 0, y: 0 }
+        wind: {
+          x: 0,
+          y: 0
+        }
       },
       interaction: {
         hideEdgesOnDrag: false,
@@ -263,24 +266,64 @@ export default {
       }
     },
     solverSelected: "forceAtlas2Based",
-    solverOptions: [
-      { text: "barnesHut", value: "barnesHut" },
-      { text: "forceAtlas2Based", value: "forceAtlas2Based" },
-      { text: "repulsion", value: "repulsion" },
-      { text: "hierarchicalRepulsion", value: "hierarchicalRepulsion" }
+    solverOptions: [{
+        text: "barnesHut",
+        value: "barnesHut"
+      },
+      {
+        text: "forceAtlas2Based",
+        value: "forceAtlas2Based"
+      },
+      {
+        text: "repulsion",
+        value: "repulsion"
+      },
+      {
+        text: "hierarchicalRepulsion",
+        value: "hierarchicalRepulsion"
+      }
     ],
     smoothTypeSelected: "continuous",
-    smoothTypeOptions: [
-      { text: "dynamic", value: "dynamic" },
-      { text: "continuous", value: "continuous" },
-      { text: "discrete", value: "discrete" },
-      { text: "diagonalCross", value: "diagonalCross" },
-      { text: "straightCross", value: "straightCross" },
-      { text: "horizontal", value: "horizontal" },
-      { text: "vertical", value: "vertical" },
-      { text: "curvedCW", value: "curvedCW" },
-      { text: "curvedCCW", value: "curvedCCW" },
-      { text: "cubicBezier", value: "cubicBezier" }
+    smoothTypeOptions: [{
+        text: "dynamic",
+        value: "dynamic"
+      },
+      {
+        text: "continuous",
+        value: "continuous"
+      },
+      {
+        text: "discrete",
+        value: "discrete"
+      },
+      {
+        text: "diagonalCross",
+        value: "diagonalCross"
+      },
+      {
+        text: "straightCross",
+        value: "straightCross"
+      },
+      {
+        text: "horizontal",
+        value: "horizontal"
+      },
+      {
+        text: "vertical",
+        value: "vertical"
+      },
+      {
+        text: "curvedCW",
+        value: "curvedCW"
+      },
+      {
+        text: "curvedCCW",
+        value: "curvedCCW"
+      },
+      {
+        text: "cubicBezier",
+        value: "cubicBezier"
+      }
     ]
   }),
   methods: {
@@ -303,13 +346,11 @@ export default {
       const selectedNode = this.getNode(network, nodeId);
       if (selectedNode) {
         nodeMetric = {
-          centrality: metrics.degree_centrality[selectedNode.label].toPrecision(
-            4
-          ),
-          vulnerability: metrics.vulnerability[selectedNode.label].toPrecision(
-            4
-          ),
-          hubness: metrics.hubness[selectedNode.label].toPrecision(4)
+          centrality: metrics.degree_centrality[selectedNode.label].toPrecision(4),
+          vulnerability: metrics.vulnerability[selectedNode.label].toPrecision(4),
+          hubness: metrics.hubness[selectedNode.label].toPrecision(4),
+          exportationstrength: metrics["exportation strenght"][selectedNode.label].toPrecision(4),
+
         };
       }
       return nodeMetric;

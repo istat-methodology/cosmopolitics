@@ -55,7 +55,8 @@
   "graph": {
     "stats": {
       "density": "Product spread",
-      "centrality": "Exportation strength:",
+      "centrality": "Centrality:",      
+      "exportationstrength" : "Exportation strength:",
       "vulnerability": "Vulnerability:",
       "hubness": "Hubness:"
     },

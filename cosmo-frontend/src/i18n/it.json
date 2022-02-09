@@ -54,7 +54,8 @@
   "graph": {
     "stats": {
       "density": "Diffusione delle merci",
-      "centrality": "Forza di esportazione",
+      "centrality": "Centralità",
+      "exportationstrength": "Forza di esportazione",
       "vulnerability": "Vulnerabilità",
       "hubness": "Hubness"
     },
