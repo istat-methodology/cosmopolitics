@@ -58,7 +58,7 @@
                 <h5>{{ this.infoTitle }}</h5>
                 <CTabs v-if="infoData" variant="tabs" :active-tab="0">
                   <CTab title="Main">
-                    <CDataTable :items="micro" :fields="mainFields" hover />
+                    <CDataTable :items="micro" hover />
                   </CTab>
                   <CTab title="Import partners">
                     <CDataTable :items="importDataItems" hover />
