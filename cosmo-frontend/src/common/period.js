@@ -1,11 +1,4 @@
 export function getPeriod(start, end) {
-  //const months = Array.from({length: 12}, (item, i) => {
-  //   return new Date(0, i).toLocaleString('en-US', {month: 'short'})
-  //});
-  //console.log(months);
-  //timePeriod: [
-  //      { id: "201912", name: "Dec 19" },
-  //d3.timeFormat('%b-%y') rembember mybe to use!!!
   var arr = new Array();
   var dt = new Date(start);
   var de = new Date(end);
@@ -22,7 +15,6 @@ export function getPeriod(start, end) {
     var item = { id: idString, name: nameString };
     arr.push(item);
     dt.setMonth(dt.getMonth() + 1);
-  }
-  //console.log(arr);
+  } 
   return arr;
 }

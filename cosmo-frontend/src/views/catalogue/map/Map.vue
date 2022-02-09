@@ -296,7 +296,7 @@ export default {
       if (seriesPeriod > "202011") {
         return 0;
       } else {
-        return localSeries ? localSeries[seriesPeriod] : 1;
+        return localSeries ? localSeries[seriesPeriod] : 0;
       }
     },
     buildPeriodSeries() {
