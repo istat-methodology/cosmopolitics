@@ -38,17 +38,20 @@ const actions = {
     return geomapService
       .findByName(name)
       .then(data => {
-        console.log(data);
-        data[0]["Main Import"].forEach(obj => {
-          for (const key in obj) {
-            console.log(obj[key]);
-            var val = obj[key];
-            if (typeof val === 'number') {
-              obj[key] = val.toLocaleString('en-US');
-            }
+        var data0 = data[0]
+        for (const key0 in data0) {
+          if (key0 !="Country_Code") {
+            data0[key0].forEach(obj => {             
+              for (const key in obj) {
+                console.log(obj[key]);
+                var val = obj[key];
+                if (typeof val === 'number') {
+                  obj[key] = val.toLocaleString('en-US');
+                }
+              }
+            });
           }
-        });
-
+        }
         commit("SET_INFO", data);
       })
       .catch(err => {
