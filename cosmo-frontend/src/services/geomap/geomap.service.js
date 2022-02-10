@@ -23,7 +23,7 @@ function findByName(name) {
     .get("/ieinfo?Country_Code=" + name)
     .then(res => {
       var data = res.data ? res.data : {};
-      console.log(data);
+      //console.log(data);
       return data;
     })
     .catch(err => {
