@@ -1,6 +1,4 @@
-import {
-  geomapService
-} from "@/services";
+import { geomapService } from "@/services";
 
 const state = {
   geomap: null,
@@ -20,9 +18,7 @@ const mutations = {
 };
 
 const actions = {
-  findAll({
-    commit
-  }) {
+  findAll({ commit }) {
     return geomapService
       .findAll()
       .then(data => {
@@ -32,20 +28,18 @@ const actions = {
         console.log(err);
       });
   },
-  getInfo({
-    commit
-  }, name) {
+  getInfo({ commit }, name) {
     return geomapService
       .findByName(name)
-      .then(data => {        
+      .then(data => {
         for (const key in data[0]) {
-          if (key !="Country_Code") {
-            data[0][key].forEach(obj => {             
+          if (key != "Country_Code") {
+            data[0][key].forEach(obj => {
               for (const key in obj) {
                 console.log(obj[key]);
                 var val = obj[key];
-                if (typeof val === 'number') {
-                  obj[key] = val.toLocaleString('en-US');
+                if (typeof val === "number") {
+                  obj[key] = val.toLocaleString("en-US");
                 }
               }
             });
@@ -57,9 +51,7 @@ const actions = {
         console.log(err);
       });
   },
-  getSeries({
-    commit
-  }, name) {
+  getSeries({ commit }, name) {
     return geomapService
       .getSeries(name)
       .then(data => {

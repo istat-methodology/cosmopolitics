@@ -1,5 +1,4 @@
 export default {
-
   data: () => ({
     isInfo: false,
     infoTitle: ""
@@ -29,5 +28,4 @@ export default {
       this.isInfo = false;
     }
   }
-
 };

@@ -68,14 +68,6 @@ const routes = [
         }
       },
       {
-        path: "catalogue/graphLite",
-        name: "GraphSlider",
-        component: () => import("../views/catalogue/graph/GraphSlider"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
         path: "catalogue/bec",
         name: "Bec",
         component: () => import("../views/catalogue/bec/Bec"),

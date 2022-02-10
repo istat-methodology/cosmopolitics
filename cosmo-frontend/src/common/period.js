@@ -15,6 +15,6 @@ export function getPeriod(start, end) {
     var item = { id: idString, name: nameString };
     arr.push(item);
     dt.setMonth(dt.getMonth() + 1);
-  } 
+  }
   return arr;
 }
