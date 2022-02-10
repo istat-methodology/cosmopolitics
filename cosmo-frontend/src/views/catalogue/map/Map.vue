@@ -105,11 +105,11 @@
         </CCardBody>
         <CCardFooter>
           <vue-slider
-            v-if="timePeriod"
+            v-if="timePeriodMap"
             :adsorb="true"
             :tooltip="'none'"
             v-model="seriesPeriod"
-            :data="timePeriod"
+            :data="timePeriodMap"
             :data-value="'id'"
             :data-label="'name'"
             @change="handleCounterChange"
@@ -201,13 +201,13 @@ export default {
     titleImportExport: "Load Import",
     isImport: false,
     isExport: false,
-    ie: "Export",
-    startTime: "2019",
+    ie: "Export",    
     modalHelpTitle: " About on ",
     isModalHelp: false
+    
   }),
-  computed: {
-    ...mapGetters("period", ["timePeriod"]),
+  computed: {   
+    ...mapGetters("metadata", ["timePeriodMap","seriesPeriodMap"]),
     ...mapGetters("geomap", {
       markers: "geomap",
       infoData: "infoData",
@@ -296,6 +296,7 @@ export default {
       if (seriesPeriod > "202011") {
         return 0;
       } else {
+        
         return localSeries ? localSeries[seriesPeriod] : 0;
       }
     },
@@ -434,7 +435,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("period/findByName", "map");
+    this.$store.dispatch("metadata/getMetadata");
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.getDataSeries("exportseries");
   }
