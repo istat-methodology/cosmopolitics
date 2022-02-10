@@ -58,7 +58,7 @@
                 <h5>{{ this.infoTitle }}</h5>
                 <CTabs v-if="infoData" variant="tabs" :active-tab="0">
                   <CTab title="Main">
-                    <CDataTable :items="micro" :fields="mainFields" hover />
+                    <CDataTable :items="micro" hover />
                   </CTab>
                   <CTab title="Import partners">
                     <CDataTable :items="importDataItems" hover />
@@ -296,7 +296,7 @@ export default {
       if (seriesPeriod > "202011") {
         return 0;
       } else {
-        return localSeries ? localSeries[seriesPeriod] : 1;
+        return localSeries ? localSeries[seriesPeriod] : 0;
       }
     },
     buildPeriodSeries() {

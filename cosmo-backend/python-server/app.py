@@ -1,5 +1,3 @@
-from flask import Flask, request, Response
-from flask_cors import CORS
 import os
 import pandas as pd
 import numpy as np
@@ -8,471 +6,379 @@ import math
 from networkx.readwrite import json_graph
 import json
 import networkx as nx
+import pickle
+
+DATA_AVAILABLE="data"+os.sep+"dataAvailable"
+SEP=","
+DATA_EXTENTION=".dat"
+NTSR_PROD_FILE="data"+os.sep+"NSTR.txt"
+NTSR_DIGITS=3 # numero di digits per classificazione Transporti
+NODIMAX=70
+criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
 
-DATA_AVAILABLE = "data"+os.sep+"dataAvailable"
-SEP = ","
-DATA_EXTENTION = ".dat"
-TIME_FTM = (2, 2+6)
-NTSR_PROD_FILE = "data"+os.sep+"NSTR.txt"
-
-
-def data_extraction(date):
-    return date[TIME_FTM[0]:TIME_FTM[1]]
-
-
-def load_files_available():
+def load_files_available(): 
+    # legge i file disponibili nella cartella data_avilable
+    # in funzione dei mesi caricati si crea il dataset  
+    # della finestra temporale presente nella cartella
+    print("### load_files_available...") 
     # reads DATA_AVAILABLE dir
     # DATA_EXTENTION separator
-    N_dfs = 0
+    listDataframes=[]
     for f in os.listdir(DATA_AVAILABLE):
         if f.endswith(DATA_EXTENTION):
-            print(f, data_extraction(f), "...loading")
-            N_dfs += 1
-            if N_dfs == 1:
-                df = pd.read_csv(DATA_AVAILABLE+os.sep+f, sep=SEP)
-
-                print("\t", "shape", df.shape)
-                # break
-                continue
-            appo = pd.read_csv(DATA_AVAILABLE+os.sep+f, sep=SEP)
-            print("\t", "shape", appo.shape)
-            df = df.append(appo)
-
-            df = df[df["PRODUCT_NSTR"] != "TOT"]
-            df = df[df["DECLARANT_ISO"] != "EU"]
-            df = df[df["PARTNER_ISO"] != "EU"]
-
+            appo=pd.read_csv(DATA_AVAILABLE+os.sep+f,sep=SEP)
+            listDataframes.append(appo)
+            print ("\t","shape",appo.shape)  
+            
+    df=pd.concat(listDataframes,axis=0)        
+    df=df[df["PRODUCT_NSTR"]!="TOT"]
+    df=df[df["DECLARANT_ISO"]!="EU"]
+    df=df[df["PARTNER_ISO"]!="EU"]     
+    df=df[["PRODUCT_NSTR","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']]                  
+    df.columns=["PRODUCT","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']
+    print("### load_files_available exit") 
+    print(df.columns)
     return df
 
-
-df_transport = load_files_available()
-
-
-def load_COMEXPLUS():
-    print("COMEX-PLUS loading...")
-    df_ITGS_plus = pd.read_csv(
-        "data/stima_comext_ITGS_201901_202012..csv", sep=",")
-
-    df_ITGS_plus.head()
-    df_ITGS_plus["product_NC"] = df_ITGS_plus["product_NC"].astype(str)
-
-    df_CN = pd.read_csv("data/CN.txt", sep="\t")
-    print(df_CN.info())
-
-    df_CN.columns = ["00", "01", "02", "03", "04", "05", "06"]
-
-    # ["product_NC"]#.apply(lambda x: CNcod2Prod[int(x)])
-    # df_CN.set_index("00")
-    # df_ITGS_plus
-    df_ITGS_plus.columns = ["PRODUCT_NC", "DECLARANT_ISO", "consign",
-                            "PARTNER_ISO", "FLOW", "PERIOD", "TRANSPORT_MODE", "VALUE_IN_EUROS"]
-    # df_ITGS_plus.to_csv("save.csv",sep=",")
-    df_ITGS_plus["PRODUCT_NC"] = df_ITGS_plus["PRODUCT_NC"].astype("str")
-
-    df = pd.merge(df_ITGS_plus, df_CN, left_on="PRODUCT_NC", right_on="00")[
-        ["PRODUCT_NC", "04", "DECLARANT_ISO", "consign", "PARTNER_ISO", "FLOW", "PERIOD", "TRANSPORT_MODE", "VALUE_IN_EUROS"]]
-
-    df = df[df["PRODUCT_NC"] != "TOT"]
-    df = df[df["DECLARANT_ISO"] != "EU"]
-    df = df[df["PARTNER_ISO"] != "EU"]
-    df[["PRODUCT_NC", "04"]].drop_duplicates().to_csv(
-        "data/COMEXPLUS_PROD.csv", index=False)
-
-    return df
+def load_file_intraEU(): 
+    df_transportIntra=pd.read_csv("data/cpa_intra/cpa_intra.csv",low_memory=False,usecols=["DECLARANT_ISO","PARTNER_ISO","FLOW","cpa"
+                                                                                ,"PERIOD","val_cpa"])
+    df_transportIntra.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","PERIOD","VALUE_IN_EUROS"]
+    df_transportIntra=df_transportIntra[df_transportIntra.PRODUCT.str.strip().str.len()==3]
+    return df_transportIntra
 
 
-df_transportCOMEXPLUS = load_COMEXPLUS()
+def build_NTSR_dict():
+    #build dict mapping NTSR prod and viceversa
+    NTSR_prod=pd.read_csv(NTSR_PROD_FILE,"\t",index_col=0)#.to_dict()
+    print(NTSR_prod)
+    NTSR_prod_dict=NTSR_prod.to_dict()
+    NTSR_prod_dict=NTSR_prod_dict['AGRICULTURAL PRODUCTS AND LIVE ANIMALS']
+    prod_NTSR_dict=NTSR_prod.reset_index()
+    prod_NTSR_dict=prod_NTSR_dict[prod_NTSR_dict['0'].str.len()==NTSR_DIGITS]
+    prod_NTSR_dict=prod_NTSR_dict.set_index("AGRICULTURAL PRODUCTS AND LIVE ANIMALS").to_dict()["0"]
+    return prod_NTSR_dict
 
 
-# build dict mapping NTSR prod and viceversa
-NTSR_prod = pd.read_csv(NTSR_PROD_FILE, "\t", index_col=0)  # .to_dict()
-NTSR_prod_dict = NTSR_prod.to_dict()
-NTSR_prod_dict = NTSR_prod_dict['AGRICULTURAL PRODUCTS AND LIVE ANIMALS']
-prod_NTSR_dict = NTSR_prod.reset_index()
+def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport_estrazione):
+    #estraggo dalla tabella solo le informazioni richieste nei filtri richiesti al runtime
 
-prod_NTSR_dict = prod_NTSR_dict[prod_NTSR_dict['0'].str.len() == 3]
-prod_NTSR_dict = prod_NTSR_dict.set_index(
-    "AGRICULTURAL PRODUCTS AND LIVE ANIMALS").to_dict()["0"]
-
-
-# tg_country paese di interesse di cui elimino un edge
-# G_prod = b (Grafo delle importazioni)
-# G_all = G  (Grafo delle importazioni)
-def delete_link(GG_prod, GG_all, tg_country, country_del):
-
-    deg_all = nx.out_degree_centrality(GG_all)
-
-    poss_source = nx.in_degree_centrality(GG_prod)
-
-    source = {key: value for key, value in poss_source.items() if value == 0.0}
-
-    lista_source = list(source.keys())
-
-    lista_source = set(lista_source)-set([country_del])
-
-    Out_suggestions = {}
-
-    for r in lista_source:
-
-        if r in deg_all.keys():
-            try:
-                Gu = GG_prod.to_undirected()
-                path_actual = nx.shortest_path(
-                    Gu, source=tg_country, target=r, weight="weight")
-            except nx.NetworkXNoPath:
-                path_actual = 'No actual path'
-
-            try:
-                Ga = GG_all.to_undirected()
-                path_all = nx.shortest_path(
-                    Ga, source=tg_country, target=r, weight="weight")
-            except nx.NetworkXNoPath:
-                path_all = 'No path'
-
-            Out_suggestions[r] = {
-                "num_exportations": deg_all[r],
-                "path_actual": path_actual,
-                "path_all": path_all,
-            }
-        else:
-            print(r + " not present")
-
-    return Out_suggestions
-
-
-def estrai_tabella_per_grafo(tg_period, tg_perc, listaMezzi, flow, product, criterio, selezioneMezziEdges, DS_COMEX):
-    if (DS_COMEX == True):
-        df_transport_estrazione = df_transport
-    else:
-        df_transport_estrazione = df_transportCOMEXPLUS
-
+    print("### estrai_tabella_per_grafo...") 
+    print("ESTRAGGO TABELLA COMEX")
+    #df_transport_estrazione=df_transport
+    df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["FLOW"]==flow]
+    print("1",df_transport_estrazione.shape)
     if tg_period is not None:
-        df_transport_estrazione = df_transport_estrazione[
-            df_transport_estrazione["PERIOD"] == tg_period]
-
-    if listaMezzi is not None:
-        df_transport_estrazione = df_transport_estrazione[df_transport_estrazione["TRANSPORT_MODE"].isin(
-            listaMezzi)]
-
-    df_transport_estrazione = df_transport_estrazione[df_transport_estrazione["FLOW"] == flow]
-
+        df_transport_estrazione = df_transport_estrazione[df_transport_estrazione["PERIOD"]==tg_period]
+    print("2",df_transport_estrazione.shape)
+    #seleziona i mezzi nel grafo
+    if listaMezzi is not None:    
+        df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["TRANSPORT_MODE"].isin(listaMezzi)]
+    print("3",df_transport_estrazione.shape)
+    print(df_transport_estrazione)
     if product is not None:
-        if (DS_COMEX == True):
-            df_transport_estrazione = df_transport_estrazione[
-                df_transport_estrazione["PRODUCT_NSTR"] == product]
-        else:
-            df_transport_estrazione = df_transport_estrazione[
-                df_transport_estrazione["PRODUCT_NC"] == product]
+        df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["PRODUCT"]==product]
+    print("4",df_transport_estrazione.shape,product,type(product))
 
+    #costruisce una query per eliminare i mezzi in un arco nel grafo
     def build_query_mezzi(selezioneMezziEdges):
-        listQuery = []
-        for edge in selezioneMezziEdges:  # ['edgesSelected']:
-
-            From = edge["from"]
-            To = edge["to"]
-            exclude = str(edge["exclude"])
-
-            listQuery.append("((DECLARANT_ISO == '"+From+"' & PARTNER_ISO == '"+To+"' & TRANSPORT_MODE in " +
-                             exclude+")|(DECLARANT_ISO == '"+To+"' & PARTNER_ISO == '"+From+"' & TRANSPORT_MODE in "+exclude+"))")
+        listQuery=[]
+        for edge in selezioneMezziEdges:#['edgesSelected']:
+            From=edge["from"]
+            To=edge["to"]
+            exclude=str(edge["exclude"])
+            listQuery.append("((DECLARANT_ISO == '"+From+"' & PARTNER_ISO == '"+To+"' & TRANSPORT_MODE in "+exclude+")|(DECLARANT_ISO == '"+To+"' & PARTNER_ISO == '"+From+"' & TRANSPORT_MODE in "+exclude+"))")
         return "not ("+("|".join(listQuery))+")"
-
+    
     if (selezioneMezziEdges is not None):
-        Query = build_query_mezzi(selezioneMezziEdges)
+        Query=build_query_mezzi(selezioneMezziEdges)
+        print("QUERY selezione MezziEdge:")
+        df_transport_estrazione=df_transport_estrazione.query(Query)
+    print(df_transport_estrazione.shape)   
 
-        df_transport_estrazione = df_transport_estrazione.query(Query)
-
-    # aggrega
-    if (DS_COMEX == True):
-        df_transport_estrazione = df_transport_estrazione.groupby(["DECLARANT_ISO", "PARTNER_ISO"]).sum(
-        ).reset_index()[["DECLARANT_ISO", "PARTNER_ISO", "VALUE_IN_EUROS", "QUANTITY_IN_KG"]]
-    else:
-        df_transport_estrazione = df_transport_estrazione.groupby(["DECLARANT_ISO", "PARTNER_ISO"]).sum(
-        ).reset_index()[["DECLARANT_ISO", "PARTNER_ISO", "VALUE_IN_EUROS"]]
-
-    df_transport_estrazione = df_transport_estrazione.sort_values(
-        criterio, ascending=False)
-
-    # taglio sui nodi
+    #aggrega indimendentemente dai mezzi o produtti ed ordina secondo il criterio scelto VALUE o QUANTITY 
+    df_transport_estrazione=df_transport_estrazione.groupby(["DECLARANT_ISO","PARTNER_ISO"]).sum().reset_index()[["DECLARANT_ISO","PARTNER_ISO",criterio]]
+    df_transport_estrazione=df_transport_estrazione.sort_values(criterio,ascending=False)    
+    #taglio sui nodi 
     if tg_perc is not None:
-        SUM = df_transport_estrazione[criterio].sum()
-        df_transport_estrazione = df_transport_estrazione[df_transport_estrazione[criterio].cumsum(
-            skipna=False)/SUM*100 < tg_perc]
-
+        SUM = df_transport_estrazione[criterio].sum()     
+        df_transport_estrazione = df_transport_estrazione[df_transport_estrazione[criterio].cumsum(skipna=False)/SUM*100<tg_perc] 
+    print("### estrai_tabella_per_grafo exit")     
     return df_transport_estrazione
 
+def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag): 
+    # costruisce sulla base della tabella filtrata
+    # il grafo con le relative metriche
+    print("### makeGraph... ")     
 
-def makeGraph(tab4graph, pos_ini, weight_flag, flow, AnalisiFlag):
-
-    def calc_metrics(Grafo, FlagWeight):
+    def calc_metrics(Grafo,FlagWeight):
+        print("### metrics... ")     
         in_deg = nx.in_degree_centrality(Grafo)
-
-        Metrics = {}
-        vulner = {}
+        Metrics ={}
+        vulner={}
         for k, v in in_deg.items():
-
-            if v != 0:
-                vulner[k] = 1-v
+            if v!=0:      
+                vulner[k]=1-v
             else:
-                vulner[k] = 0
-            Metrics = {
-                "degree_centrality": nx.degree_centrality(Grafo),
-                "density": nx.density(Grafo),
-                "vulnerability": vulner,
-                "degree_centrality": nx.out_degree_centrality(Grafo),
-                "exportation strenght": nx.out_degree_centrality(Grafo),
-                "hubness": nx.closeness_centrality(Grafo.to_undirected())
-                # "hubness":nx.betweenness_centrality(Grafo, weight="weight")
+                vulner[k]=0            
+            Metrics={
+            "degree_centrality":nx.degree_centrality(Grafo),
+            "density":nx.density(Grafo),
+            "vulnerability":vulner,
+            #"degree_centrality":nx.out_degree_centrality(Grafo),
+            "exportation strenght":nx.out_degree_centrality(Grafo),
+            "hubness":nx.closeness_centrality(Grafo.to_undirected())
+            #"hubness":nx.betweenness_centrality(Grafo, weight="weight")
             }
+        print("### metrics... ")     
+        return Metrics 
 
-        return Metrics
+
 
     G = nx.DiGraph()
-    if flow == 1:
-        print("import")
-        country_from = "PARTNER_ISO"
-        country_to = "DECLARANT_ISO"
 
-    if flow == 2:
-        print("export")
-        country_from = "DECLARANT_ISO"
-        country_to = "PARTNER_ISO"
-    weight = "VALUE_IN_EUROS"
 
-    if weight_flag == True:
-        Wsum = tab4graph[weight].sum()
-        edges = [(i, j, w/Wsum) for i, j, w in tab4graph.loc[:,
-                                                             [country_from, country_to, weight]].values]
-    if weight_flag == False:
-        edges = [(i, j, 1) for i, j, w in tab4graph.loc[:, [
-            country_from, country_to, weight]].values]
-        # G.add_edge(i,j)
+    # assegno i ruoli da e a
+    if flow==1:
+        print("FLOW: import")
+        country_from="PARTNER_ISO"
+        country_to="DECLARANT_ISO"
+        
+    if flow==2:
+        print("FLOW: export")    
+        country_from="DECLARANT_ISO"
+        country_to="PARTNER_ISO"
+
+    # costruisco il grafo con edges e nodi
+    # se il grafo è pesato
+    # assegno il peso VALUE o QUANTITY in funzione del criterio scelto per ordinare il mercato
+    # ed eseguire il taglio      
+    if weight_flag==True:
+        weight=criterio
+        Wsum=tab4graph[weight].sum()
+        edges=[ (i,j,w/Wsum) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
+    if weight_flag==False:
+        edges=[ (i,j,1) for i,j in tab4graph.loc[:,[country_from,country_to]].values]
     G.add_weighted_edges_from(edges)
-    MetricG = calc_metrics(G, weight_flag)
 
-    import pickle
-    with open("G_dump.pkl", "wb") as f:
-        pickle.dump(G, f)
+    #Calcolo le metriche
+    MetricG=calc_metrics(G,weight_flag)	
+    print (MetricG)
 
-    GG = json_graph.node_link_data(G)
-    Nodes = GG["nodes"]
-    Links = GG["links"]
+  #passo alla rappresentazione json del grafo
+    GG=json_graph.node_link_data(G)
+    Nodes=GG["nodes"]
+    Links=GG["links"] 
+    print("------------------")
+    print(GG["nodes"])
+    print(GG["links"])
+    print("------------------")
 
     if pos_ini is None:
-        pos_ini = {}
+        pos_ini={}
         random.seed(8)
         for node in Nodes:
-            x = random.uniform(0, 1)
-            y = random.uniform(0, 1)
-            pos_ini[node['id']] = np.array([x, y])
-    try:
-        coord = nx.spring_layout(G, k=5/math.sqrt(G.order()), pos=pos_ini)
-        coord = nx.spring_layout(
-            G, k=5/math.sqrt(G.order()), pos=coord)  # stable solution
-        # coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=coord) # stable solution
-    except:
-        return None, None, None
+            x= random.uniform(0, 1)
+            y= random.uniform(0, 1)
+            pos_ini[node['id']]=np.array([x,y])
+    else:
+        print("-- POSIZIONE DEI NODI PRECEDENTE ACQUISITA --")
 
-    nx.draw(G, pos=coord, with_labels=True)
+    try:
+        print (pos_ini)
+        coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=pos_ini)
+        coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=coord) # stable solution
+        #coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=coord) # stable solution
+    except:
+        return None,None,None
 
     #########################################################
-    df_coord = pd.DataFrame.from_dict(coord, orient='index')
+    df_coord = pd.DataFrame.from_dict(coord,orient='index')
     df_coord.columns = ['x', 'y']
+
     df = pd.DataFrame(GG["nodes"])
-    df.columns = ['label']
+    df.columns=['label']
     df['id'] = np.arange(df.shape[0])
-    df = df[['id', 'label']]
+    df = df[['id', 'label']]    
     out = pd.merge(df, df_coord, left_on='label', right_index=True)
-
     dict_nodes = out.T.to_dict().values()
-    dfe = pd.DataFrame(GG["links"])[["source", "target"]]
-
-    res = dfe.set_index('source').join(
-        out[['label', 'id']].set_index('label'), on='source', how='left')
-    res.columns = ['target', 'source_id']
-    res2 = res.set_index('target').join(
-        out[['label', 'id']].set_index('label'), on='target', how='left')
-    res2.columns = ['from', 'to']
+    
+    dfe = pd.DataFrame(GG["links"])[["source" , "target"]]
+    res = dfe.set_index('source').join(out[['label','id']].set_index('label'), on='source', how='left')
+    res.columns=['target', 'source_id']
+    res2 = res.set_index('target').join(out[['label','id']].set_index('label'), on='target', how='left')
+    res2.columns=['from','to']
     res2.reset_index(drop=True, inplace=True)
-    dict_edges = res2.T.to_dict().values()
+    dict_edges= res2.T.to_dict().values()
 
-    if AnalisiFlag is not None:
-        print(AnalisiFlag)
-        if len(AnalisiFlag) == 1:  # just one connection
-            Analisi = delete_link(
-                G, G_ALL, AnalisiFlag[0]["to"], AnalisiFlag[0]["from"])
-            new_dict = {"nodes": list(dict_nodes), "edges": list(
-                dict_edges), "metriche": MetricG, "Analisi": Analisi}
-        else:
-            new_dict = {"nodes": list(dict_nodes), "edges": list(
-                dict_edges), "metriche": MetricG}
+    new_dict = { "nodes": list(dict_nodes), "edges": list(dict_edges),"metriche":MetricG}
 
-    else:
-        new_dict = {"nodes": list(dict_nodes), "edges": list(
-            dict_edges), "metriche": MetricG}
-
-    JSON = json.dumps(new_dict)
-
-    return coord, JSON, G
-
+    JSON=json.dumps(new_dict) 
+    print("### makeGraph exit")     
+    return coord,JSON,G
 
 def jsonpos2coord(jsonpos):
-    coord = {}
-    for id, x, y in pd.DataFrame.from_dict(jsonpos["nodes"])[["label", "x", "y"]].values:
+    print("### jsonpos2coord... ")     
+    coord={}
+    for id,x,y in pd.DataFrame.from_dict(jsonpos["nodes"]) [["label","x","y"]].values:
 
-        coord[id] = np.array([x, y])
-    return coord
-
-
-# CREA GRAFO IMPORT ALL
-tabALL4graph = estrai_tabella_per_grafo(
-    None, None, None, 1, None, "VALUE_IN_EUROS", None, True)
-_, _, G_ALL = makeGraph(tabALL4graph, None, False, 1, None)
-print(tabALL4graph.head())
-
-print(len(json_graph.node_link_data(G_ALL)["nodes"]))
+        coord[id]=np.array([x,y])
+    print("### jsonpos2coord exit ")     
+    return coord    
 
 
+df_transport = load_files_available()  
+df_transportIntra = load_file_intraEU()      
+
+prod_NTSR_dict=build_NTSR_dict()
+
+
+from flask import Flask,request,Response
+from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources=r'/*')
 
 ###########GRAPH METHOD#######################################################
-# @app.route('/wordtradegraph/<tg_period>/<tg_perc>/<listaMezzi>/<criterio>/<product>/<flow>')
-# def wordtradegraph(tg_period,tg_perc,listaMezzi,criterio,product,flow):
-
-
-@app.route('/wordtradegraph', methods=['POST', 'GET'])
+#@app.route('/wordtradegraph/<tg_period>/<tg_perc>/<listaMezzi>/<criterio>/<product>/<flow>')
+#def wordtradegraph(tg_period,tg_perc,listaMezzi,criterio,product,flow):
+#@app.route('/wordtradegraphextra', methods=['POST','GET'])        
+@app.route('/wordtradegraph', methods=['POST','GET'])
 def wordtradegraph():
-    DS_COMEX = True
-    if request.method == 'POST':
-
-        print("Word Trade Graph method get ....")
-        criterio = "VALUE_IN_EUROS"  # VALUE_IN_EUROS 	QUANTITY_IN_KG
-
-        jReq = dict(request.json)
-
-        tg_perc = int(jReq['tg_perc'])
-        tg_period = int(jReq['tg_period'])
-
-        pos = jReq['pos']
-        if pos == "None":
-            pos = None
+    print("### wordtradegraph...")
+    if request.method == 'POST':        
+        print ("Word Trade Graph method get ....")
+        
+        print("criterio per costruire il grafo:",criterio )
+        jReq=dict(request.json)
+        print("------ jReq",jReq)
+        tg_perc=int(jReq['tg_perc'])
+        tg_period=int(jReq['tg_period'])
+        pos=jReq['pos']
+        if pos=="None":
+            pos=None
         else:
-            print("pos-----", pos)
-            print("pos-----", type(pos))
+            print ("Gestisci posizione dei nodi precedenti -----",pos)
+            print ("pos-----",type(pos))            
+            pos=jsonpos2coord(pos)
 
-            pos = jsonpos2coord(pos)
-
-        # 0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
-        # listaMezzi=map(int,(jReq['listaMezzi']).split(","))#[0,1,2,3,4,5,7,8,9]
-        listaMezzi = jReq['listaMezzi']  # [0,1,2,3,4,5,7,8,9]
-
-        flow = int(jReq['flow'])
-
-        product = str(jReq['product'])
-
-        weight_flag = bool(jReq['weight_flag'])
-
-        selezioneMezziEdges = jReq['selezioneMezziEdges']
-        if selezioneMezziEdges == "None":
-            selezioneMezziEdges = None
+        #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
+        #listaMezzi=map(int,(jReq['listaMezzi']).split(","))#[0,1,2,3,4,5,7,8,9] 
+        listaMezzi=jReq['listaMezzi']#[0,1,2,3,4,5,7,8,9]         
+        flow=int(jReq['flow'])        
+        product=str(jReq['product'])       
+        weight_flag=bool(jReq['weight_flag'])       
+        selezioneMezziEdges=jReq['selezioneMezziEdges']  
+        if selezioneMezziEdges=="None":
+            selezioneMezziEdges=None
         else:
             pass
             print(selezioneMezziEdges)
             print(type(selezioneMezziEdges))
-        # --------------------
+        #--------------------
+        
+        
 
-        tab4graph = estrai_tabella_per_grafo(
-            tg_period, tg_perc, listaMezzi, flow, product, criterio, selezioneMezziEdges, DS_COMEX)
+        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport)
+        print("tab4graph.shape",tab4graph.shape)
 
-        AnalisiFlag = selezioneMezziEdges
+        #controllo se la dimensione del grafo è troppo grande
+        #conto il numerp dei nodi
+        #se sono maggiori di una soglia NODIMAX 
+        #invio un messaggio al client
+        NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
+        if NUM_NODI > NODIMAX:
+            return "Graph is too wide  \n Decrease the treshold"
 
-        pos, JSON, G = makeGraph(
-            tab4graph, pos, weight_flag, flow, AnalisiFlag)
+
+        #AnalisiFlag=selezioneMezziEdges ########################################
+        
+        pos,JSON,G=makeGraph(tab4graph,pos,weight_flag,flow,None)
 
         if pos is None:
             if JSON is None:
-                return "Graph empty \n Increase the treshold"
-
+                return "Graph empty \n Increase the treshold"       
         resp = Response(response=JSON,
-                        status=200,
-                        mimetype="application/json")
-
+                    status=200,
+                    mimetype="application/json")
+        print("### wordtradegraph exit")
         return resp
 
     else:
+        print("### wordtradegraph exit")
         return str("only post")
 
-
-@app.route('/wordtradegraphplus', methods=['POST', 'GET'])
+@app.route('/wordtradegraphintra', methods=['POST','GET'])
 def wordtradegraphplus():
-    DS_COMEX = False
     if request.method == 'POST':
+        
+        print ("Word Trade INTRA_EU Graph method get ....")
 
-        print("Word Trade Graph method get ....")
-        criterio = "VALUE_IN_EUROS"  # VALUE_IN_EUROS 	QUANTITY_IN_KG
-
-        jReq = dict(request.json)
-
-        tg_perc = int(jReq['tg_perc'])
-        tg_period = int(jReq['tg_period'])
-
-        pos = jReq['pos']
-        if pos == "None":
-            pos = None
+        
+        print("criterio per costruire il grafo:",criterio )
+        jReq=dict(request.json)
+        print("------ jReq",jReq)
+        tg_perc=int(jReq['tg_perc'])
+        tg_period=int(jReq['tg_period'])
+        pos=jReq['pos']
+        if pos=="None":
+            pos=None
         else:
-            print("pos-----", pos)
-            print("pos-----", type(pos))
+            print ("Gestisci posizione dei nodi precedenti -----",pos)
+            print ("pos-----",type(pos))            
+            pos=jsonpos2coord(pos)
 
-            pos = jsonpos2coord(pos)
+        #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
+        #listaMezzi=map(int,(jReq['listaMezzi']).split(","))#[0,1,2,3,4,5,7,8,9] 
+        #listaMezzi=jReq['listaMezzi']#[0,1,2,3,4,5,7,8,9]         
+        flow=int(jReq['flow'])        
+        product=str(jReq['product'])       
+        weight_flag=bool(jReq['weight_flag'])       
+        #selezioneMezziEdges=jReq['selezioneMezziEdges']  
+        #if selezioneMezziEdges=="None":
+        #    selezioneMezziEdges=None
+        #else:
+        #    pass
+        #    print(selezioneMezziEdges)
+        #    print(type(selezioneMezziEdges))
+        #--------------------
+        
+        
 
-        # 0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
-        # listaMezzi=map(int,(jReq['listaMezzi']).split(","))#[0,1,2,3,4,5,7,8,9]
-        listaMezzi = jReq['listaMezzi']  # [0,1,2,3,4,5,7,8,9]
+        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,None,df_transportIntra)
+        print("tab4graph.shape",tab4graph.shape)
+        #AnalisiFlag=selezioneMezziEdges ########################################
 
-        flow = int(jReq['flow'])
+        #controllo se la dimensione del grafo è troppo grande
+        #conto il numerp dei nodi
+        #se sono maggiori di una soglia NODIMAX 
+        #invio un messaggio al client
+        NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
+        if NUM_NODI > NODIMAX:
+            return "Graph is too wide  \n Decrease the treshold"
 
-        product = str(jReq['product'])
 
-        weight_flag = bool(jReq['weight_flag'])
-
-        selezioneMezziEdges = jReq['selezioneMezziEdges']
-        if selezioneMezziEdges == "None":
-            selezioneMezziEdges = None
-        else:
-            pass
-            print(selezioneMezziEdges)
-            print(type(selezioneMezziEdges))
-        # --------------------
-
-        tab4graph = estrai_tabella_per_grafo(
-            tg_period, tg_perc, listaMezzi, flow, product, criterio, selezioneMezziEdges, DS_COMEX)
-
-        AnalisiFlag = selezioneMezziEdges
-
-        pos, JSON, G = makeGraph(
-            tab4graph, pos, weight_flag, flow, AnalisiFlag)
+        pos,JSON,G=makeGraph(tab4graph,pos,weight_flag,flow,None)
 
         if pos is None:
             if JSON is None:
-                return "Graph empty \n Increase the treshold"
-
+                return "Graph empty \n Increase the treshold"       
         resp = Response(response=JSON,
-                        status=200,
-                        mimetype="application/json")
-
+                    status=200,
+                    mimetype="application/json")
+        print("### wordtradegraph intra EU exit")
         return resp
 
     else:
+        print("### wordtradegraph intra EU exit")
         return str("only post")
 
-
+  
 @app.route('/hello')
 def hello():
-    return str(' world')
-
-
+     return str(' world')
+        
 if __name__ == '__main__':
-    IP = '0.0.0.0'
-    port = 5500
+    IP='0.0.0.0'
+    port=5500
     app.run(host=IP, port=port)

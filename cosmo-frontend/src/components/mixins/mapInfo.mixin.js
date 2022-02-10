@@ -1,96 +1,8 @@
-var previusYear = "2019";
-var currentYear = "2020";
-
 export default {
+
   data: () => ({
     isInfo: false,
-    infoTitle: "",
-    mainFields: [
-      {
-        key: "Year",
-        label: ""
-      },
-      {
-        key: previusYear,
-        label: previusYear
-      },
-      {
-        key: currentYear,
-        label: currentYear
-      }
-    ],
-    importFields: [
-      {
-        key: "main_p_" + previusYear,
-        label: "Main partners " + previusYear
-      },
-      {
-        key: "tot_imp_" + previusYear,
-        label: "Total import " + previusYear
-      },
-      {
-        key: "main_p_" + currentYear,
-        label: "Main partners " + currentYear
-      },
-      {
-        key: "tot_imp_" + currentYear,
-        label: "Total import " + currentYear
-      }
-    ],
-    exportFields: [
-      {
-        key: "main_p_" + previusYear,
-        label: "Main partners " + previusYear
-      },
-      {
-        key: "tot_exp_" + previusYear,
-        label: "Total export " + previusYear
-      },
-      {
-        key: "main_p_" + currentYear,
-        label: "Main partners " + currentYear
-      },
-      {
-        key: "tot_exp_" + currentYear,
-        label: "Total export " + currentYear
-      }
-    ],
-    importGoodsFields: [
-      {
-        key: "main_g_" + previusYear,
-        label: "Main goods " + previusYear
-      },
-      {
-        key: "tot_imp_" + previusYear,
-        label: "Total import " + previusYear
-      },
-      {
-        key: "main_g_" + currentYear,
-        label: "Main goods " + currentYear
-      },
-      {
-        key: "tot_imp_" + currentYear,
-        label: "Total import " + currentYear
-      }
-    ],
-    exportGoodsFields: [
-      {
-        key: "main_g_" + previusYear,
-        label: "Main goods " + previusYear
-      },
-      {
-        key: "tot_exp_" + previusYear,
-        label: "Total export " + previusYear
-      },
-      {
-        key: "main_g_" + currentYear,
-        label: "Main goods " + currentYear
-      },
-      {
-        key: "tot_exp_" + currentYear,
-        label: "Total export " + currentYear
-      }
-    ]
+    infoTitle: ""
   }),
   methods: {
     openInfo(marker) {
@@ -117,4 +29,5 @@ export default {
       this.isInfo = false;
     }
   }
+
 };

@@ -37,11 +37,10 @@ const actions = {
   }, name) {
     return geomapService
       .findByName(name)
-      .then(data => {
-        var data0 = data[0]
-        for (const key0 in data0) {
-          if (key0 !="Country_Code") {
-            data0[key0].forEach(obj => {             
+      .then(data => {        
+        for (const key in data[0]) {
+          if (key !="Country_Code") {
+            data[0][key].forEach(obj => {             
               for (const key in obj) {
                 console.log(obj[key]);
                 var val = obj[key];
