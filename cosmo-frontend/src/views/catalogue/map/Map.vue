@@ -207,7 +207,7 @@ export default {
     
   }),
   computed: {   
-    ...mapGetters("metadata", ["timePeriodMap","seriesPeriodMap"]),
+    ...mapGetters("metadata", ["timePeriodMap"]),
     ...mapGetters("geomap", {
       markers: "geomap",
       infoData: "infoData",

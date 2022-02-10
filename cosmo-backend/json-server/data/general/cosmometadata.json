@@ -1,31 +1,29 @@
-[
-    {
-        "ProcessingDay": "09-02-2022, 13:52:50",
-        "annualCurrentYear": 2020,
-        "annualPreviousYear": 2019,
-        "lastData": "11, 2021",
-        "windowMonths": 36,
-        "monthsToExtract": 48,
-        "offsetMonthToExtract": 3,
-        "map": {
-            "timeSelected": "202002",
-            "timeStart": "2018,11",
-            "timeEnd": "2021,11"
-        },
-        "graph": {
-            "timeSelected": "202202",
-            "timeStart": "2018,11",
-            "timeEnd": "2021,11"
-        },
-        "graph-plus": {
-            "timeSelected": "202202",
-            "timeStart": "2018,11",
-            "timeEnd": "2021,11"
-        },
-        "trade": {
-            "timeSelected": "202202",
-            "timeStart": "2018,11",
-            "timeEnd": "2021,11"
-        }
+{
+    "ProcessingDay": "09-02-2022, 13:52:50",
+    "annualCurrentYear": 2020,
+    "annualPreviousYear": 2019,
+    "lastData": "11, 2021",
+    "windowMonths": 36,
+    "monthsToExtract": 48,
+    "offsetMonthToExtract": 3,
+    "map": {
+        "timeSelected": "202002",
+        "timeStart": "2018,11",
+        "timeEnd": "2021,11"
+    },
+    "graph": {
+        "timeSelected": "202202",
+        "timeStart": "2018,11",
+        "timeEnd": "2021,11"
+    },
+    "graph-plus": {
+        "timeSelected": "202202",
+        "timeStart": "2018,11",
+        "timeEnd": "2021,11"
+    },
+    "trade": {
+        "timeSelected": "202202",
+        "timeStart": "2018,11",
+        "timeEnd": "2021,11"
     }
-]
+}

@@ -28,10 +28,10 @@ const actions = {
 };
 const getters = {
   timePeriodMap: state => {
-    return getPeriod(state.metadata[0]["map"]["timeStart"], state.metadata[0]["map"]["timeEnd"]);    
+    return getPeriod(state.metadata.map.timeStart, state.metadata.map.timeEnd);    
   },
-  seriesPeriodMap: state => {
-    return state.metadata[0]["map"]["timeSelected"];
+  seriesPeriod: state => {
+    return state.metadata.map.timeSelected;
   }
 };
 export const metadata = {
