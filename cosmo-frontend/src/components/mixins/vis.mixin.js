@@ -65,7 +65,7 @@ export default {
             maxVisible: 30,
             drawThreshold: 5
           },
-          customScalingFunction: function (min, max, total, value) {
+          customScalingFunction: function(min, max, total, value) {
             if (max === min) {
               return 0.5;
             } else {
@@ -170,7 +170,7 @@ export default {
             maxVisible: 30,
             drawThreshold: 5
           },
-          customScalingFunction: function (min, max, total, value) {
+          customScalingFunction: function(min, max, total, value) {
             if (max === min) {
               return 0.5;
             } else {
@@ -266,7 +266,8 @@ export default {
       }
     },
     solverSelected: "forceAtlas2Based",
-    solverOptions: [{
+    solverOptions: [
+      {
         text: "barnesHut",
         value: "barnesHut"
       },
@@ -284,7 +285,8 @@ export default {
       }
     ],
     smoothTypeSelected: "continuous",
-    smoothTypeOptions: [{
+    smoothTypeOptions: [
+      {
         text: "dynamic",
         value: "dynamic"
       },
@@ -346,11 +348,16 @@ export default {
       const selectedNode = this.getNode(network, nodeId);
       if (selectedNode) {
         nodeMetric = {
-          centrality: metrics.degree_centrality[selectedNode.label].toPrecision(4),
-          vulnerability: metrics.vulnerability[selectedNode.label].toPrecision(4),
+          centrality: metrics.degree_centrality[selectedNode.label].toPrecision(
+            4
+          ),
+          vulnerability: metrics.vulnerability[selectedNode.label].toPrecision(
+            4
+          ),
           hubness: metrics.hubness[selectedNode.label].toPrecision(4),
-          exportationstrength: metrics["exportation strenght"][selectedNode.label].toPrecision(4),
-
+          exportationstrength: metrics["exportation strenght"][
+            selectedNode.label
+          ].toPrecision(4)
         };
       }
       return nodeMetric;

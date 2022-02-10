@@ -21,7 +21,7 @@ function findByName(filter) {
     .get("/" + endpoint + "/" + filter.country)
     .then(res => {
       var data = res.data ? res.data : {};
-      console.log(data);
+      //console.log(data);
       return data;
     })
     .catch(err => {

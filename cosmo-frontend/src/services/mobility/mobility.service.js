@@ -11,7 +11,7 @@ function findByName(filter) {
     )
     .then(res => {
       var data = res.data ? res.data : {};
-      console.log(data);
+      //console.log(data);
       return data;
     })
     .catch(err => {
@@ -28,7 +28,7 @@ function chartsByName(filter) {
     )
     .then(res => {
       var data = res.data ? res.data : {};
-      console.log(data);
+      //console.log(data);
       return data;
     })
     .catch(err => {

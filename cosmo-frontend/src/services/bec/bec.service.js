@@ -29,7 +29,7 @@ function findByFilters(form) {
     .get("/itsa", { params: params })
     .then(res => {
       var data = res.data ? res.data : {};
-      console.log(data);
+      //console.log(data);
       return data;
     })
     .catch(err => {
@@ -46,7 +46,7 @@ function findLastDate(form) {
     .get("/lastdate", { params: params })
     .then(res => {
       var data = res.data ? res.data : {};
-      console.log(data);
+      //console.log(data);
       return data;
     })
     .catch(err => {

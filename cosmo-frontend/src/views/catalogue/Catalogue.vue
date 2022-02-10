@@ -72,7 +72,7 @@
 <script>
 import { Context } from "@/common";
 export default {
-  name: "Metadata",
+  name: "Catalogue",
   created() {
     this.$store.dispatch("coreui/setContext", Context.Home);
   }

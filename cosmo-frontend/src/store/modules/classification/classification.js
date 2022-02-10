@@ -20,35 +20,6 @@ const state = {
     { id: 1, descr: true },
     { id: 2, descr: false }
   ]
-  /*
-  timeNext: [
-    { id: 0, descr: "March 2021", value: "202103" },
-    { id: 1, descr: "April 2021", value: "202104" },
-    { id: 2, descr: "May 2021", value: "202105" },
-    { id: 3, descr: "June 2021", value: "202106" },
-    { id: 4, descr: "July 2021", value: "202107" },
-    { id: 5, descr: "August 2021", value: "202108" },
-    { id: 6, descr: "September 2021", value: "202109" },
-    { id: 7, descr: "October 2021", value: "202110" },
-    { id: 8, descr: "November 2021", value: "202111" },
-    { id: 9, descr: "December 2021", value: "202112" }
-  ],
-  */
-  /*timeTrade: [
-    "Jan-20",
-    "Feb-20",
-    "Mar-20",
-    "Apr-20",
-    "May-20",
-    "Jun-20",
-    "Jul-20",
-    "Aug-20",
-    "Sep-20",
-    "Oct-20",
-    "Nov-20",
-    "Dec-20"
-  ]
-  */
 };
 const mutations = {
   SET_COUNTRIES(state, countries) {
