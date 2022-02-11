@@ -7,7 +7,7 @@ function getMetadata() {
   return axiosHack
     .get("/metadata")
     .then(res => {
-      var data = res.data ? res.data : {};     
+      var data = res.data ? res.data : {};
       return data;
     })
     .catch(err => {

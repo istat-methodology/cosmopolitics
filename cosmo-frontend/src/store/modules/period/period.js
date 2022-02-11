@@ -4,13 +4,13 @@ const state = {
   timePeriod: null,
   periodValue: "",
   metadata: {
-    "ProcessingDay": "09-02-2022, 13:52:50",
-    "annualCurrentYear": 2020,
-    "annualPreviousYear": 2019,
-    "lastData": "11, 2021",
-    "windowMonths": 36,
-    "monthsToExtract": 48,
-    "offsetMonthToExtract": 3
+    ProcessingDay: "09-02-2022, 13:52:50",
+    annualCurrentYear: 2020,
+    annualPreviousYear: 2019,
+    lastData: "11, 2021",
+    windowMonths: 36,
+    monthsToExtract: 48,
+    offsetMonthToExtract: 3
   }
 };
 const mutations = {

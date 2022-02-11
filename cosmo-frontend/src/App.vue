@@ -12,21 +12,15 @@ export default {
     this.$store.dispatch("auth/reloadCredentials");
     //Clear messages
     this.$store.dispatch("message/clear");
-    // load metadata 
+    // load metadata
     this.$store.dispatch("metadata/getMetadata");
     // load classifications
-    // graph
     this.$store.dispatch("classification/getTransports");
     this.$store.dispatch("classification/getProducts");
     //timeseries
-    
     this.$store.dispatch("classification/getCountries");
-
     this.$store.dispatch("classification/getPartners");
     this.$store.dispatch("classification/getBecs");
-    //trade
-    
-
   }
 };
 </script>

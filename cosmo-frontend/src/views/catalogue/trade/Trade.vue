@@ -170,7 +170,6 @@ export default {
       }
     });
     this.$store.dispatch("coreui/setContext", Context.Trade);
-    this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("trade/findByName", {
       country: this.countrySelected.country,
       flow: this.flowSelected.id

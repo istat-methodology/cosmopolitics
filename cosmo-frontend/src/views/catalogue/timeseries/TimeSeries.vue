@@ -22,7 +22,7 @@
                 {{ this.partnerSelected.descr }}</span
               >
               <span v-else
-                >{{ $t("timeseries.card.title") }} –
+                >{{ $t("timeseries.card.title") }} -
                 {{ $t("timeseries.card.comext") }}</span
               >
             </span>

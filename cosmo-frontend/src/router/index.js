@@ -68,25 +68,9 @@ const routes = [
         }
       },
       {
-        path: "catalogue/bec",
-        name: "Bec",
-        component: () => import("../views/catalogue/bec/Bec"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
         path: "catalogue/timeseries",
         name: "TimeSeries",
         component: () => import("../views/catalogue/timeseries/TimeSeries"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/mobility",
-        name: "Mobility",
-        component: () => import("../views/catalogue/mobility/Mobility"),
         meta: {
           authorize: []
         }

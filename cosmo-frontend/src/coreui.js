@@ -10,6 +10,7 @@ import {
   CSubheader,
   CHeaderBrand,
   CHeaderNav,
+  CHeaderNavItem,
   CHeaderNavLink,
   CDropdown,
   CDropdownDivider,
@@ -47,6 +48,7 @@ Vue.component("CHeader", CHeader);
 Vue.component("CSubheader", CSubheader);
 Vue.component("CHeaderBrand", CHeaderBrand);
 Vue.component("CHeaderNav", CHeaderNav);
+Vue.component("CHeaderNavItem", CHeaderNavItem);
 Vue.component("CHeaderNavLink", CHeaderNavLink);
 Vue.component("CDropdown", CDropdown);
 Vue.component("CDropdownDivider", CDropdownDivider);
