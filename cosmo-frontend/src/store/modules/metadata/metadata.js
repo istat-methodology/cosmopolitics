@@ -38,13 +38,13 @@ const getters = {
   },
 
   mapSeries: state => {
-    return state.metadata.map.timeStart;
+    return state.metadata.map.timeSelected;
   },
   graphSeries: state => {
-    return state.metadata.graph.timeStart;
+    return state.metadata.graph.timeSelected;
   },
   tradeSeries: state => {
-    return state.metadata.trade.timeStart;
+    return state.metadata.trade.timeSelected;
   }
   
 };

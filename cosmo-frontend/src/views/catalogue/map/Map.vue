@@ -23,32 +23,29 @@
               :options-style="styleFunction"
               @click="openInfoOnFeature"
             ></l-geo-json>
-            <!-- Circle markers -->
+
             <l-circle-marker
               v-for="(marker, i) in markerPeriodSeries"
               v-bind:key="i"
               :lat-lng="[
                 marker.coordinates.latitude,
-                marker.coordinates.longitude
+                marker.coordinates.longitude,
               ]"
               :visible="!isMarker"
               :fillOpacity="0.65"
-              :radius="
-                getRadius(marker.series, markerMin, markerMax, dataLegend)
-              "
+              :radius="getRadius(marker.series)"
               :color="getColor(marker.series, markerMin, markerMax)"
               :fillColor="getColor(marker.series, markerMin, markerMax)"
               @click="openInfo(marker)"
             >
               <l-tooltip :options="{ interactive: true, permanent: false }">
-                <!--Math.round(marker.series)  -->
                 <span class="tooltip-span"
                   >{{ marker.name }} {{ ie }}
-                  {{ marker.series.toFixed(1) + "%" }}
+                  {{ marker.series + "%" }}
                 </span>
               </l-tooltip>
             </l-circle-marker>
-            <!-- Legend -->
+
             <l-control position="topright">
               <div id="Legend" class="legend"></div>
             </l-control>
@@ -58,7 +55,7 @@
                 <h5>{{ this.infoTitle }}</h5>
                 <CTabs v-if="infoData" variant="tabs" :active-tab="0">
                   <CTab title="Main">
-                    <CDataTable :items="micro" hover />
+                    <CDataTable :items="micro" :fields="mainFields" hover />
                   </CTab>
                   <CTab title="Import partners">
                     <CDataTable :items="importDataItems" hover />
@@ -141,13 +138,14 @@ import {
   LTileLayer,
   LControl,
   LTooltip,
-  LCircleMarker
+  LCircleMarker,
 } from "vue2-leaflet";
 import mapMixin from "@/components/mixins/map.mixin";
 import mapInfoMixin from "@/components/mixins/mapInfo.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter";
 import VueSlider from "vue-slider-component";
+//import * as d3 from "d3";
 
 export default {
   name: "Map",
@@ -158,7 +156,7 @@ export default {
     LControl,
     LCircleMarker,
     LTooltip,
-    VueSlider
+    VueSlider,
   },
   mixins: [mapMixin, mapInfoMixin, sliderMixin],
   data: () => ({
@@ -167,7 +165,10 @@ export default {
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     center: [51.16423, 1.45412],
     zoom: 4,
-    seriesPeriod: "202004",
+    // ---------------------------------------
+    // @TODO Change hard coded value
+    // ---------------------------------------
+    seriesPeriod: "201812",
     markerPeriodSeries: [],
     markerMax: 60,
     markerMin: -60,
@@ -181,16 +182,16 @@ export default {
           opacity: 1,
           color: "gray",
           dashArray: "",
-          fillOpacity: 0.7
+          fillOpacity: 0.7,
         },
         over: {
           weight: 1,
           opacity: 1,
           color: "black",
           dashArray: "",
-          fillOpacity: 0.7
-        }
-      }
+          fillOpacity: 0.7,
+        },
+      },
     },
     btnFeatureMarker: "F",
     titleFeatureMarker: "Change view to Feature mode",
@@ -201,21 +202,20 @@ export default {
     titleImportExport: "Load Import",
     isImport: false,
     isExport: false,
-    ie: "Export",    
+    ie: "Export",
     modalHelpTitle: " About on ",
-    isModalHelp: false
-    
+    isModalHelp: false,
   }),
-  computed: {   
-    ...mapGetters("metadata", ["mapPeriod"]),
+  computed: {
+    ...mapGetters("metadata", ["mapPeriod", "mapSeries"]),
     ...mapGetters("geomap", {
       markers: "geomap",
       infoData: "infoData",
-      seriesData: "seriesData"
+      seriesData: "seriesData",
     }),
     ...mapGetters("countries", {
       geoJson: "countriesBorders",
-      jsonData: "jsonData"
+      jsonData: "jsonData",
     }),
     micro() {
       return this.infoData ? this.infoData[0]["Main information"] : [];
@@ -234,7 +234,7 @@ export default {
     },
     options() {
       return {
-        onEachFeature: this.onEachFeatureFunction
+        onEachFeature: this.onEachFeatureFunction,
       };
     },
     styleFunction() {
@@ -244,7 +244,7 @@ export default {
           opacity: this.layer.style.defaultopacity,
           color: this.layer.style.default.color,
           dashArray: this.layer.style.default.dashArray,
-          fillOpacity: this.layer.style.default.fillOpacity
+          fillOpacity: this.layer.style.default.fillOpacity,
         };
       };
     },
@@ -255,17 +255,20 @@ export default {
         this.selectedCountry.name = feature.properties.admin;
         layer.options.fillColor = "#00000000";
         if (value != undefined) {
-          layer.options.fillColor = this.getColor(value, -60, 60);
+          layer.options.fillColor = this.getColor(
+            value,
+            this.markerMin,
+            this.markerMax
+          );
           layer.options.color = "gray"; //this.getColor(value,-60,60);
+          //layer.options.color = this.getColor(value,this.markerMin, this.markerMax);
           layer.bindTooltip(
             "<div>" +
-              //feature.properties.iso_a2 +
-              //"<br>" +
               feature.properties.admin +
               "<span> " +
               this.ie +
               "</span> " +
-              value.toFixed(1) +
+              value +
               "%" +
               "</span>" +
               " </div>",
@@ -273,11 +276,11 @@ export default {
           );
           layer.on({
             mouseover: this.mouseover,
-            mouseout: this.mouseout
+            mouseout: this.mouseout,
           });
         }
       };
-    }
+    },
   },
   methods: {
     helpOn(showModal) {
@@ -290,62 +293,53 @@ export default {
       this.buildFeatures();
     },
     getPeriodSeries(marker, seriesData, seriesPeriod) {
-      const localSeries = seriesData.find(serie => {
+      const localSeries = seriesData.find((serie) => {
         return serie.country == marker.country;
       });
-      if (seriesPeriod > "202011") {
-        return 0;
-      } else {
-        
-        return localSeries ? localSeries[seriesPeriod] : 0;
-      }
+      //if (seriesPeriod > "202011") {
+      //  return 0;
+      //} else {
+
+      return localSeries ? localSeries[seriesPeriod] : 0;
+      //}
     },
     buildPeriodSeries() {
-      this.markerPeriodSeries = this.markers.map(marker => {
+      this.markerPeriodSeries = this.markers.map((marker) => {
         return {
           ...marker,
           series: this.getPeriodSeries(
             marker,
             this.seriesData,
             this.seriesPeriod
-          )
+          ),
         };
       });
-      if (this.seriesPeriod < "202011") {
-        this.dataLegend = this.getDataLegend(
-          this.seriesData,
-          this.seriesPeriod
-        );
-        this.markerMax = this.getMax(this.seriesData);
-        this.markerMin = this.getMin(this.seriesData);
-        this.setLegend(
-          this.markerMin,
-          this.markerMax,
-          this.dataLegend,
-          this.ie
-        );
-      }
+
+      this.dataLegend = this.getDataLegend(this.seriesData, this.seriesPeriod);
+      this.markerMax = this.getMax(this.seriesData);
+      this.markerMin = this.getMin(this.seriesData);
+      this.setLegend(this.markerMin, this.markerMax, this.dataLegend, this.ie);
     },
     buildFeatures() {
       this.$store
         .dispatch("countries/getDataSeries", this.seriesName)
-        .then(seriesData => {
+        .then((seriesData) => {
           this.$store.dispatch("countries/getCountriesBorders", {
             seriesData: seriesData,
-            seriesPeriod: this.seriesPeriod
+            seriesPeriod: this.seriesPeriod,
           });
         });
     },
     setShooter() {
       let pluginOptions = {
-        hideElementsWithSelectors: []
+        hideElementsWithSelectors: [],
       };
 
       new SimpleMapScreenshoter(pluginOptions).addTo(this.$refs.map.mapObject);
     },
     getDataLegend(seriesData, seriesPeriod) {
       var data = [];
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key == seriesPeriod) {
             //console.log(key);
@@ -357,7 +351,7 @@ export default {
     },
     getMax(seriesData) {
       var max = 1;
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             if (max < obj[key]) {
@@ -366,12 +360,12 @@ export default {
           }
         }
       });
-      //console.log(max);
+      max = 60;
       return max;
     },
     getMin(seriesData) {
       var min = -1;
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             //console.log(obj[key]);
@@ -382,6 +376,7 @@ export default {
         }
       });
       //console.log(min);
+      min = -60;
       return min;
     },
     setFeatureMarker() {
@@ -415,14 +410,14 @@ export default {
       var layer = e.target;
       layer.setStyle({
         color: this.layer.style.over.color,
-        dashArray: this.layer.style.over.dashArray
+        dashArray: this.layer.style.over.dashArray,
       });
     },
     mouseout(e) {
       var layer = e.target;
       layer.setStyle({
         color: this.layer.style.default.color,
-        dashArray: this.layer.style.default.dashArray
+        dashArray: this.layer.style.default.dashArray,
       });
     },
     getDataSeries() {
@@ -432,13 +427,12 @@ export default {
           this.buildFeatures();
         });
       });
-    }
+    },
   },
   created() {
-    
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.getDataSeries("exportseries");
-  }
+  },
 };
 </script>
 <style scoped>

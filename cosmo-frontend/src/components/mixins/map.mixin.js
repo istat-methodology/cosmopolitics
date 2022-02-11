@@ -10,25 +10,33 @@ export default {
     },
     colors: [],
     dataLegend: [],
-    legendMonth: "Dec"
+
   }),
   methods: {
-    getRadius(marker, min, max, data) {
+    getRadius(marker) {
       const minimum = 15;
       const factor = 5;
-      const zoomFactor = this.zoom >= 5 ? 1 : this.zoom / 10; // adjust divisor for best optics
-      const d = Math.abs(marker);
-      let radius = Math.floor(Math.log(d) * factor * zoomFactor) + minimum;
-      //let sqrtScale = d3.scaleSqrt().domain([0, data.length - 1]).range([min,max]);
-      //let radius = Math.floor(sqrtScale(d) * factor * zoomFactor) + minimum;
-      //console.log("getRadius marker:" + marker);
-      //console.log("getRadius radius:" + radius);
-      console.log("m- " + min + " m+ " + max + " r " + radius);
-      console.log(data);
+      const zoomFactor = this.zoom >= 5 ? 1 : this.zoom / 10; // adjust divisor for best optics      
+      let radius = 0;
+      if (marker != undefined && !isNaN(marker)) {
+        radius = Math.floor(Math.log(Math.abs(marker)) * factor * zoomFactor) + minimum;
+      }
+      console.log(radius);
       return radius;
+
     },
     getColor(marker, min, max) {
-      (min = -60), (max = 60);
+
+      if (marker != undefined) {
+        if (marker > max) {
+          marker = max
+        }
+        if (marker < min) {
+          marker = min
+        }
+      } else {
+        marker = 0
+      }
       var colorsLength = 0;
       colorsLength = this.colors.length - 1;
       var s = d3
@@ -40,7 +48,7 @@ export default {
       return this.colors[point];
     },
     setLegend(min, max, data, importexport) {
-      (min = -60), (max = 60);
+
       const colorScale = d3.interpolateRdYlGn;
       const colorRangeInfo = {
         colorStart: 0,
@@ -60,21 +68,22 @@ export default {
       d3.select("#Legend")
         .selectAll("*")
         .remove();
-      this.colorlegend("#Legend", linearScale, {
+      this.colorlegend("#Legend", linearScale, min, max, {
         title: "Monthly year - on - year " + importexport + " change( % )",
-        boxHeight: 15,
+        boxWidth: 12,
+        boxHeight: 12,
         axis: true
       });
     },
-    colorlegend(target, scale, options) {
+    colorlegend(target, scale, min, max, options) {
       var opts = options || {},
         boxWidth = opts.boxWidth || 20, // width of each box (int)
         boxHeight = opts.boxHeight || 20, // height of each box (int)
         title = opts.title || null, // draw title (string)
         htmlElement = document.getElementById(
-          target.substring(0, 1) === "#"
-            ? target.substring(1, target.length)
-            : target
+          target.substring(0, 1) === "#" ?
+          target.substring(1, target.length) :
+          target
         ), // target container element - strip the prefix #
         w = htmlElement.offsetWidth, // width of container element
         h = htmlElement.offsetHeight, // height of container element
@@ -106,11 +115,11 @@ export default {
         .scaleLinear()
         .domain(domain)
         .range([0, boxWidth * colors.length])),
-        (axis = d3.axisBottom(scaleAxis)),
-        (scalePointer = d3
-          .scaleLinear()
-          .domain([0, 350])
-          .range([-60, 60]));
+      (axis = d3.axisBottom(scaleAxis)),
+      (scalePointer = d3
+        .scaleLinear()
+        .domain([0, 350])
+        .range([min, max]));
       // set up the legend graphics context
       var legend = d3
         .select(target)
@@ -128,7 +137,7 @@ export default {
         .data(colors)
         .enter()
         .append("g")
-        .on("click", function(e, rgbColor) {
+        .on("click", function (e, rgbColor) {
           var pos = d3.pointer(e);
           var xPos = pos[0];
           var value = xPos;
@@ -141,13 +150,13 @@ export default {
         .attr("stroke", "#fff")
         .attr("class", "colorlegend-labels")
         .attr("dy", ".71em")
-        .attr("x", function(d, i) {
+        .attr("x", function (d, i) {
           return i * (boxWidth + boxSpacing);
         })
-        .attr("y", function() {
+        .attr("y", function () {
           return boxHeight;
         })
-        .style("text-anchor", function() {
+        .style("text-anchor", function () {
           return "middle";
         })
         .style("pointer-events", "none");
@@ -156,12 +165,12 @@ export default {
       legendBoxes
         .append("rect")
 
-        .attr("x", function(d, i) {
+        .attr("x", function (d, i) {
           return i * (boxWidth + boxSpacing);
         })
         .attr("width", boxWidth)
         .attr("height", boxHeight)
-        .style("fill", function(d, i) {
+        .style("fill", function (d, i) {
           return colors[i];
         });
 
@@ -196,14 +205,21 @@ export default {
       return this;
     },
     calculatePoint(i, intervalSize, colorRangeInfo) {
-      var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
-      return useEndAsStart
-        ? colorEnd - i * intervalSize
-        : colorStart + i * intervalSize;
+      var {
+        colorStart,
+        colorEnd,
+        useEndAsStart
+      } = colorRangeInfo;
+      return useEndAsStart ?
+        colorEnd - i * intervalSize :
+        colorStart + i * intervalSize;
     },
     /* Must use an interpolated color scale, which has a range of [0, 1] */
     interpolateColors(dataLength, colorScale, colorRangeInfo) {
-      var { colorStart, colorEnd } = colorRangeInfo;
+      var {
+        colorStart,
+        colorEnd
+      } = colorRangeInfo;
       var colorRange = colorEnd - colorStart;
       var intervalSize = colorRange / dataLength;
       var i, colorPoint;

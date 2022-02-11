@@ -40,6 +40,8 @@ const actions = {
                 var val = obj[key];
                 if (typeof val === "number") {
                   obj[key] = val.toLocaleString("en-US");
+                } else {
+                  obj[key] = val.substring(0, 100) + ".";
                 }
               }
             });

@@ -1,7 +1,20 @@
 export default {
   data: () => ({
     isInfo: false,
-    infoTitle: ""
+    infoTitle: "",
+    mainFields: [{
+        key: "Year",
+        label: ""
+      },
+      {
+        key: " 2019 ",
+        label: " 2019 "
+      },
+      {
+        key: " 2020 ",
+        label: " 2020 "
+      }
+    ],
   }),
   methods: {
     openInfo(marker) {

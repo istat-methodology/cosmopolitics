@@ -4,6 +4,9 @@ const fs = require("fs");
 const flows = JSON.parse(fs.readFileSync("./data/classification/clsFlow.json"));
 const products = JSON.parse(fs.readFileSync("./data/classification/clsProducts.json"));
 const product3s = JSON.parse(fs.readFileSync("./data/classification/clsProducts3.json"));
+
+const productsTimeSeries = JSON.parse(fs.readFileSync("./data/classification/clsProductsTimeSeries.json"));
+
 const productplus = JSON.parse(fs.readFileSync("./data/classification/clsProductplus.json"));
 const transports = JSON.parse(fs.readFileSync("./data/classification/clsTransport.json"));
 
@@ -34,8 +37,8 @@ const importseries = JSON.parse(fs.readFileSync("./data/map/importseries.json"))
 const exportseries = JSON.parse(fs.readFileSync("./data/map/exportseries.json"));
 
 //trade
-const exportvqs = JSON.parse(fs.readFileSync("./data/trade/exportvqs.json"));
-const importvqs = JSON.parse(fs.readFileSync("./data/trade/importvqs.json"));
+//const exportvqs = JSON.parse(fs.readFileSync("./data/trade/exportvqs.json"));
+//const importvqs = JSON.parse(fs.readFileSync("./data/trade/importvqs.json"));
 
 module.exports = () => ({
   
@@ -57,8 +60,8 @@ module.exports = () => ({
 
   //trade
   //data
-  exportvqs,
-  importvqs,
+  //exportvqs,
+  //importvqs,
   
   //classification
   flows,  
