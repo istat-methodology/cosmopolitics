@@ -1,0 +1,1050 @@
+[
+ {
+  "id":"011",
+  "descr":"Non-perennial crops"
+ },
+ {
+  "id":"012",
+  "descr":"Perennial crops"
+ },
+ {
+  "id":"013",
+  "descr":"Planting material: live plants, bulbs, tubers and roots, cuttings and slips; mushroom spawn"
+ },
+ {
+  "id":"014",
+  "descr":"Live animals and animal products"
+ },
+ {
+  "id":"016",
+  "descr":"Agricultural and animal husbandry services (except veterinary services)"
+ },
+ {
+  "id":"017",
+  "descr":"Hunting and trapping and related services"
+ },
+ {
+  "id":"021",
+  "descr":"Forest trees and nursery services"
+ },
+ {
+  "id":"022",
+  "descr":"Wood in the rough"
+ },
+ {
+  "id":"023",
+  "descr":"Wild growing non-wood products"
+ },
+ {
+  "id":"024",
+  "descr":"Support services to forestry"
+ },
+ {
+  "id":"030",
+  "descr":"Fish and other fishing products; aquaculture products; support services to fishing"
+ },
+ {
+  "id":"051",
+  "descr":"Hard coal"
+ },
+ {
+  "id":"052",
+  "descr":"Lignite"
+ },
+ {
+  "id":"061",
+  "descr":"Crude petroleum"
+ },
+ {
+  "id":"062",
+  "descr":"Natural gas, liquefied or in gaseous state"
+ },
+ {
+  "id":"071",
+  "descr":"Iron ores"
+ },
+ {
+  "id":"072",
+  "descr":"Non-ferrous metal ores"
+ },
+ {
+  "id":"081",
+  "descr":"Stone, sand and clay"
+ },
+ {
+  "id":"089",
+  "descr":"Mining and quarrying products n.e.c."
+ },
+ {
+  "id":"091",
+  "descr":"Support services to petroleum and natural gas extraction"
+ },
+ {
+  "id":"099",
+  "descr":"Support services to other mining and quarrying"
+ },
+ {
+  "id":"101",
+  "descr":"Preserved meat and meat products"
+ },
+ {
+  "id":"102",
+  "descr":"Processed and preserved fish, crustaceans and molluscs"
+ },
+ {
+  "id":"103",
+  "descr":"Processed and preserved fruit and vegetables"
+ },
+ {
+  "id":"104",
+  "descr":"Vegetable and animal oils and fats"
+ },
+ {
+  "id":"105",
+  "descr":"Dairy products"
+ },
+ {
+  "id":"106",
+  "descr":"Grain mill products, starches and starch products"
+ },
+ {
+  "id":"107",
+  "descr":"Bakery and farinaceous products"
+ },
+ {
+  "id":"108",
+  "descr":"Other food products"
+ },
+ {
+  "id":"109",
+  "descr":"Prepared animal feeds"
+ },
+ {
+  "id":"110",
+  "descr":"Beverages"
+ },
+ {
+  "id":"120",
+  "descr":"Tobacco products"
+ },
+ {
+  "id":"131",
+  "descr":"Textile yarn and thread"
+ },
+ {
+  "id":"132",
+  "descr":"Woven textiles"
+ },
+ {
+  "id":"133",
+  "descr":"Textile finishing services"
+ },
+ {
+  "id":"139",
+  "descr":"Other textiles"
+ },
+ {
+  "id":"141",
+  "descr":"Wearing apparel, except fur apparel"
+ },
+ {
+  "id":"142",
+  "descr":"Articles of fur"
+ },
+ {
+  "id":"143",
+  "descr":"Knitted and crocheted apparel"
+ },
+ {
+  "id":"151",
+  "descr":"Tanned and dressed leather; luggage, handbags, saddlery and harness; dressed and dyed fur"
+ },
+ {
+  "id":"152",
+  "descr":"Footwear"
+ },
+ {
+  "id":"161",
+  "descr":"Wood, sawn and planed"
+ },
+ {
+  "id":"162",
+  "descr":"Products of wood, cork, straw and plaiting materials"
+ },
+ {
+  "id":"171",
+  "descr":"Pulp, paper and paperboard"
+ },
+ {
+  "id":"172",
+  "descr":"Articles of paper and paperboard"
+ },
+ {
+  "id":"181",
+  "descr":"Printing services and services related to printing"
+ },
+ {
+  "id":"182",
+  "descr":"Reproduction services of recorded media"
+ },
+ {
+  "id":"191",
+  "descr":"Coke oven products"
+ },
+ {
+  "id":"192",
+  "descr":"Refined petroleum products"
+ },
+ {
+  "id":"201",
+  "descr":"Basic chemicals, fertilisers and nitrogen compounds, plastics and synthetic rubber in primary forms"
+ },
+ {
+  "id":"202",
+  "descr":"Pesticides and other agrochemical products"
+ },
+ {
+  "id":"203",
+  "descr":"Paints, varnishes and similar coatings, printing ink and mastics"
+ },
+ {
+  "id":"204",
+  "descr":"Soap and detergents, cleaning and polishing preparations, perfumes and toilet preparations"
+ },
+ {
+  "id":"205",
+  "descr":"Other chemical products"
+ },
+ {
+  "id":"206",
+  "descr":"Man-made fibres"
+ },
+ {
+  "id":"211",
+  "descr":"Basic pharmaceutical products"
+ },
+ {
+  "id":"212",
+  "descr":"Pharmaceutical preparations"
+ },
+ {
+  "id":"221",
+  "descr":"Rubber products"
+ },
+ {
+  "id":"222",
+  "descr":"Plastic products"
+ },
+ {
+  "id":"231",
+  "descr":"Glass and glass products"
+ },
+ {
+  "id":"232",
+  "descr":"Refractory products"
+ },
+ {
+  "id":"233",
+  "descr":"Clay building materials"
+ },
+ {
+  "id":"234",
+  "descr":"Other porcelain and ceramic products"
+ },
+ {
+  "id":"235",
+  "descr":"Cement, lime and plaster"
+ },
+ {
+  "id":"236",
+  "descr":"Articles of concrete, cement and plaster"
+ },
+ {
+  "id":"237",
+  "descr":"Cut, shaped and finished stone"
+ },
+ {
+  "id":"239",
+  "descr":"Other non-metallic mineral products"
+ },
+ {
+  "id":"241",
+  "descr":"Basic iron and steel and ferro-alloys"
+ },
+ {
+  "id":"242",
+  "descr":"Tubes, pipes, hollow profiles and related fittings, of steel"
+ },
+ {
+  "id":"243",
+  "descr":"Other products of the first processing of steel"
+ },
+ {
+  "id":"244",
+  "descr":"Basic precious and other non-ferrous metals"
+ },
+ {
+  "id":"245",
+  "descr":"Casting services of metals"
+ },
+ {
+  "id":"251",
+  "descr":"Structural metal products"
+ },
+ {
+  "id":"252",
+  "descr":"Tanks, reservoirs and containers of metal"
+ },
+ {
+  "id":"253",
+  "descr":"Steam generators, except central heating hot water boilers"
+ },
+ {
+  "id":"254",
+  "descr":"Weapons and ammunition"
+ },
+ {
+  "id":"255",
+  "descr":"Forging, pressing, stamping and roll-forming services of metal; powder metallurgy"
+ },
+ {
+  "id":"256",
+  "descr":"Treatment and coating services of metals; machining"
+ },
+ {
+  "id":"257",
+  "descr":"Cutlery, tools and general hardware"
+ },
+ {
+  "id":"259",
+  "descr":"Other fabricated metal products"
+ },
+ {
+  "id":"261",
+  "descr":"Electronic components and boards"
+ },
+ {
+  "id":"262",
+  "descr":"Computers and peripheral equipment"
+ },
+ {
+  "id":"263",
+  "descr":"Communication equipment"
+ },
+ {
+  "id":"264",
+  "descr":"Consumer electronics"
+ },
+ {
+  "id":"265",
+  "descr":"Measuring, testing and navigating equipment; watches and clocks"
+ },
+ {
+  "id":"266",
+  "descr":"Irradiation, electromedical and electrotherapeutic equipment"
+ },
+ {
+  "id":"267",
+  "descr":"Optical instruments and photographic equipment"
+ },
+ {
+  "id":"268",
+  "descr":"Magnetic and optical media"
+ },
+ {
+  "id":"271",
+  "descr":"Electric motors, generators, transformers and electricity distribution and control apparatus"
+ },
+ {
+  "id":"272",
+  "descr":"Batteries and accumulators"
+ },
+ {
+  "id":"273",
+  "descr":"Wiring and wiring devices"
+ },
+ {
+  "id":"274",
+  "descr":"Electric lighting equipment"
+ },
+ {
+  "id":"275",
+  "descr":"Domestic appliances"
+ },
+ {
+  "id":"279",
+  "descr":"Other electrical equipment"
+ },
+ {
+  "id":"281",
+  "descr":"General-purpose machinery"
+ },
+ {
+  "id":"282",
+  "descr":"Other general-purpose machinery"
+ },
+ {
+  "id":"283",
+  "descr":"Agricultural and forestry machinery"
+ },
+ {
+  "id":"284",
+  "descr":"Metal forming machinery and machine tools"
+ },
+ {
+  "id":"289",
+  "descr":"Other special-purpose machinery"
+ },
+ {
+  "id":"291",
+  "descr":"Motor vehicles"
+ },
+ {
+  "id":"292",
+  "descr":"Bodies (coachwork) for motor vehicles; trailers and semi-trailers"
+ },
+ {
+  "id":"293",
+  "descr":"Parts and accessories for motor vehicles"
+ },
+ {
+  "id":"301",
+  "descr":"Ships and boats"
+ },
+ {
+  "id":"302",
+  "descr":"Railway locomotives and rolling stock"
+ },
+ {
+  "id":"303",
+  "descr":"Air and spacecraft and related machinery"
+ },
+ {
+  "id":"304",
+  "descr":"Military fighting vehicles"
+ },
+ {
+  "id":"309",
+  "descr":"Transport equipment n.e.c."
+ },
+ {
+  "id":"310",
+  "descr":"Furniture"
+ },
+ {
+  "id":"321",
+  "descr":"Jewellery, bijouterie and related articles"
+ },
+ {
+  "id":"322",
+  "descr":"Musical instruments"
+ },
+ {
+  "id":"323",
+  "descr":"Sports goods"
+ },
+ {
+  "id":"324",
+  "descr":"Games and toys"
+ },
+ {
+  "id":"325",
+  "descr":"Medical and dental instruments and supplies"
+ },
+ {
+  "id":"329",
+  "descr":"Manufactured goods n.e.c."
+ },
+ {
+  "id":"331",
+  "descr":"Repair services of fabricated metal products, machinery and equipment"
+ },
+ {
+  "id":"332",
+  "descr":"Installation services of industrial machinery and equipment"
+ },
+ {
+  "id":"351",
+  "descr":"Electricity, transmission and distribution services"
+ },
+ {
+  "id":"352",
+  "descr":"Manufactured gas; distribution services of gaseous fuels through mains"
+ },
+ {
+  "id":"353",
+  "descr":"Steam and air conditioning supply services"
+ },
+ {
+  "id":"360",
+  "descr":"Natural water; water treatment and supply services"
+ },
+ {
+  "id":"370",
+  "descr":"Sewerage services; sewage sludge"
+ },
+ {
+  "id":"381",
+  "descr":"Waste; waste collection services"
+ },
+ {
+  "id":"382",
+  "descr":"Waste treatment and disposal services"
+ },
+ {
+  "id":"383",
+  "descr":"Materials recovery services; secondary raw materials"
+ },
+ {
+  "id":"390",
+  "descr":"Remediation services and other waste management services"
+ },
+ {
+  "id":"410",
+  "descr":"Buildings and building construction works"
+ },
+ {
+  "id":"421",
+  "descr":"Roads and railways; construction works for roads and railways"
+ },
+ {
+  "id":"422",
+  "descr":"Constructions and construction works for utility projects"
+ },
+ {
+  "id":"429",
+  "descr":"Constructions and construction works for other civil engineering projects"
+ },
+ {
+  "id":"431",
+  "descr":"Demolition and site preparation works"
+ },
+ {
+  "id":"432",
+  "descr":"Electrical, plumbing and other construction installation works"
+ },
+ {
+  "id":"433",
+  "descr":"Building completion and finishing works"
+ },
+ {
+  "id":"439",
+  "descr":"Other specialised construction works"
+ },
+ {
+  "id":"451",
+  "descr":"Trade services of motor vehicles"
+ },
+ {
+  "id":"452",
+  "descr":"Maintenance and repair services of motor vehicles"
+ },
+ {
+  "id":"453",
+  "descr":"Trade services of motor vehicle parts and accessories"
+ },
+ {
+  "id":"454",
+  "descr":"Trade, maintenance and repair services of motorcycles and related parts and accessories"
+ },
+ {
+  "id":"461",
+  "descr":"Wholesale trade services on a fee or contract basis"
+ },
+ {
+  "id":"462",
+  "descr":"Wholesale trade services of agricultural raw materials and live animals"
+ },
+ {
+  "id":"463",
+  "descr":"Wholesale trade services of food, beverages and tobacco"
+ },
+ {
+  "id":"464",
+  "descr":"Wholesale trade services of household goods"
+ },
+ {
+  "id":"465",
+  "descr":"Wholesale trade services of information and communication equipment"
+ },
+ {
+  "id":"466",
+  "descr":"Wholesale trade services of other machinery, equipment and supplies"
+ },
+ {
+  "id":"467",
+  "descr":"Other specialised wholesale trade services"
+ },
+ {
+  "id":"469",
+  "descr":"Non-specialised wholesale trade services"
+ },
+ {
+  "id":"470",
+  "descr":"Retail trade services, except of motor vehicles and motorcycles"
+ },
+ {
+  "id":"491",
+  "descr":"Passenger rail transport services, interurban"
+ },
+ {
+  "id":"492",
+  "descr":"Freight rail transport services"
+ },
+ {
+  "id":"493",
+  "descr":"Other passenger land transport services"
+ },
+ {
+  "id":"494",
+  "descr":"Freight transport services by road and removal services"
+ },
+ {
+  "id":"495",
+  "descr":"Transport services via pipeline"
+ },
+ {
+  "id":"501",
+  "descr":"Sea and coastal passenger water transport services"
+ },
+ {
+  "id":"502",
+  "descr":"Sea and coastal freight water transport services"
+ },
+ {
+  "id":"503",
+  "descr":"Inland passenger water transport services"
+ },
+ {
+  "id":"504",
+  "descr":"Inland freight water transport services"
+ },
+ {
+  "id":"511",
+  "descr":"Passenger air transport services"
+ },
+ {
+  "id":"512",
+  "descr":"Freight air transport and space transport services"
+ },
+ {
+  "id":"521",
+  "descr":"Warehousing and storage services"
+ },
+ {
+  "id":"522",
+  "descr":"Support services for transportation"
+ },
+ {
+  "id":"531",
+  "descr":"Postal services under universal service obligation"
+ },
+ {
+  "id":"532",
+  "descr":"Other postal and courier services"
+ },
+ {
+  "id":"551",
+  "descr":"Hotel and similar accommodation services"
+ },
+ {
+  "id":"552",
+  "descr":"Holiday and other short stay accommodation services"
+ },
+ {
+  "id":"553",
+  "descr":"Camping ground, recreational and vacation camp services"
+ },
+ {
+  "id":"559",
+  "descr":"Other accommodation services"
+ },
+ {
+  "id":"561",
+  "descr":"Restaurant and mobile food serving services"
+ },
+ {
+  "id":"562",
+  "descr":"Event catering services and other food serving services"
+ },
+ {
+  "id":"563",
+  "descr":"Beverage serving services"
+ },
+ {
+  "id":"581",
+  "descr":"Publishing services of books, periodicals and other publishing services"
+ },
+ {
+  "id":"582",
+  "descr":"Software publishing services"
+ },
+ {
+  "id":"591",
+  "descr":"Motion picture, video and television programme services"
+ },
+ {
+  "id":"592",
+  "descr":"Sound recording and music publishing services"
+ },
+ {
+  "id":"601",
+  "descr":"Radio broadcasting services"
+ },
+ {
+  "id":"602",
+  "descr":"Television programming and broadcasting services; broadcasting originals"
+ },
+ {
+  "id":"611",
+  "descr":"Wired telecommunications services"
+ },
+ {
+  "id":"612",
+  "descr":"Wireless telecommunications services"
+ },
+ {
+  "id":"613",
+  "descr":"Satellite telecommunications services"
+ },
+ {
+  "id":"619",
+  "descr":"Other telecommunications services"
+ },
+ {
+  "id":"620",
+  "descr":"Computer programming, consultancy and related services"
+ },
+ {
+  "id":"631",
+  "descr":"Data processing, hosting and related services; web portals"
+ },
+ {
+  "id":"639",
+  "descr":"Other information services"
+ },
+ {
+  "id":"641",
+  "descr":"Monetary intermediation services"
+ },
+ {
+  "id":"642",
+  "descr":"Services of holding companies"
+ },
+ {
+  "id":"643",
+  "descr":"Services of trusts, funds and similar financial entities"
+ },
+ {
+  "id":"649",
+  "descr":"Other financial services, except insurance and pension funding"
+ },
+ {
+  "id":"651",
+  "descr":"Insurance services"
+ },
+ {
+  "id":"652",
+  "descr":"Reinsurance services"
+ },
+ {
+  "id":"653",
+  "descr":"Pension funding services"
+ },
+ {
+  "id":"661",
+  "descr":"Services auxiliary to financial services, except insurance and pension funding"
+ },
+ {
+  "id":"662",
+  "descr":"Services auxiliary to insurance and pension funding"
+ },
+ {
+  "id":"663",
+  "descr":"Fund management services"
+ },
+ {
+  "id":"681",
+  "descr":"Buying and selling services of own real estate"
+ },
+ {
+  "id":"682",
+  "descr":"Rental and operating services of own or leased real estate"
+ },
+ {
+  "id":"683",
+  "descr":"Real estate services on a fee or contract basis"
+ },
+ {
+  "id":"691",
+  "descr":"Legal services"
+ },
+ {
+  "id":"692",
+  "descr":"Accounting, bookkeeping and auditing services; tax consulting services"
+ },
+ {
+  "id":"701",
+  "descr":"Services of head offices"
+ },
+ {
+  "id":"702",
+  "descr":"Management consulting services"
+ },
+ {
+  "id":"711",
+  "descr":"Architectural and engineering services and related technical consulting services"
+ },
+ {
+  "id":"712",
+  "descr":"Technical testing and analysis services"
+ },
+ {
+  "id":"720",
+  "descr":"Interdisciplinary research and experimental development services"
+ },
+ {
+  "id":"721",
+  "descr":"Research and experimental development services in natural sciences and engineering"
+ },
+ {
+  "id":"722",
+  "descr":"Research and experimental development services in social sciences and humanities"
+ },
+ {
+  "id":"731",
+  "descr":"Advertising services"
+ },
+ {
+  "id":"732",
+  "descr":"Market research and public opinion polling services"
+ },
+ {
+  "id":"741",
+  "descr":"Specialised design services"
+ },
+ {
+  "id":"742",
+  "descr":"Photographic services"
+ },
+ {
+  "id":"743",
+  "descr":"Translation and interpretation services"
+ },
+ {
+  "id":"749",
+  "descr":"Other professional, scientific and technical services n.e.c."
+ },
+ {
+  "id":"750",
+  "descr":"Veterinary services"
+ },
+ {
+  "id":"771",
+  "descr":"Rental and leasing services of motor vehicles"
+ },
+ {
+  "id":"772",
+  "descr":"Rental and leasing services of personal and household goods"
+ },
+ {
+  "id":"773",
+  "descr":"Rental and leasing services of other machinery, equipment and tangible goods"
+ },
+ {
+  "id":"774",
+  "descr":"Licensing services for the right to use intellectual property and similar products, except copyrighted works"
+ },
+ {
+  "id":"781",
+  "descr":"Services provided by employment placement agencies"
+ },
+ {
+  "id":"782",
+  "descr":"Temporary employment agency services"
+ },
+ {
+  "id":"783",
+  "descr":"Other human resources provision services"
+ },
+ {
+  "id":"791",
+  "descr":"Travel agency and tour operator services"
+ },
+ {
+  "id":"799",
+  "descr":"Other reservation services and related services"
+ },
+ {
+  "id":"801",
+  "descr":"Private security services"
+ },
+ {
+  "id":"802",
+  "descr":"Security systems services"
+ },
+ {
+  "id":"803",
+  "descr":"Investigation services"
+ },
+ {
+  "id":"811",
+  "descr":"Combined facilities support services"
+ },
+ {
+  "id":"812",
+  "descr":"Cleaning services"
+ },
+ {
+  "id":"813",
+  "descr":"Landscape services"
+ },
+ {
+  "id":"821",
+  "descr":"Office administrative and support services"
+ },
+ {
+  "id":"822",
+  "descr":"Call centre services"
+ },
+ {
+  "id":"823",
+  "descr":"Convention and trade show organisation services"
+ },
+ {
+  "id":"829",
+  "descr":"Business support services n.e.c."
+ },
+ {
+  "id":"841",
+  "descr":"Administration services of the State and the economic and social policy of the community"
+ },
+ {
+  "id":"842",
+  "descr":"Provision of services to the community as a whole"
+ },
+ {
+  "id":"843",
+  "descr":"Compulsory social security services"
+ },
+ {
+  "id":"851",
+  "descr":"Pre-primary education services"
+ },
+ {
+  "id":"852",
+  "descr":"Primary education services"
+ },
+ {
+  "id":"853",
+  "descr":"Secondary education services"
+ },
+ {
+  "id":"854",
+  "descr":"Higher education services"
+ },
+ {
+  "id":"855",
+  "descr":"Other education services"
+ },
+ {
+  "id":"856",
+  "descr":"Educational support services"
+ },
+ {
+  "id":"861",
+  "descr":"Hospital services"
+ },
+ {
+  "id":"862",
+  "descr":"Medical and dental practice services"
+ },
+ {
+  "id":"869",
+  "descr":"Other human health services"
+ },
+ {
+  "id":"871",
+  "descr":"Residential nursing care services"
+ },
+ {
+  "id":"872",
+  "descr":"Residential care services for mental retardation, mental health and substance abuse"
+ },
+ {
+  "id":"873",
+  "descr":"Residential care services for the elderly and disabled"
+ },
+ {
+  "id":"879",
+  "descr":"Other residential care services"
+ },
+ {
+  "id":"881",
+  "descr":"Social work services without accommodation for the elderly and disabled"
+ },
+ {
+  "id":"889",
+  "descr":"Other social work services without accommodation"
+ },
+ {
+  "id":"900",
+  "descr":"Creative, arts and entertainment services"
+ },
+ {
+  "id":"910",
+  "descr":"Library, archive, museum and other cultural services"
+ },
+ {
+  "id":"920",
+  "descr":"Gambling and betting services"
+ },
+ {
+  "id":"931",
+  "descr":"Sporting services"
+ },
+ {
+  "id":"932",
+  "descr":"Amusement and recreation services"
+ },
+ {
+  "id":"941",
+  "descr":"Services furnished by business, employers and professional membership organisations"
+ },
+ {
+  "id":"942",
+  "descr":"Services furnished by trade unions"
+ },
+ {
+  "id":"949",
+  "descr":"Services furnished by other membership organisations"
+ },
+ {
+  "id":"951",
+  "descr":"Repair services of computers and communication equipment"
+ },
+ {
+  "id":"952",
+  "descr":"Repair services of personal and household goods"
+ },
+ {
+  "id":"960",
+  "descr":"Other personal services"
+ },
+ {
+  "id":"970",
+  "descr":"Services of households as employers of domestic personnel"
+ },
+ {
+  "id":"981",
+  "descr":"Undifferentiated goods produced by private households for own use"
+ },
+ {
+  "id":"982",
+  "descr":"Undifferentiated services produced by private households for own use"
+ },
+ {
+  "id":"990",
+  "descr":"Services provided by extraterritorial organisations and bodies"
+ }
+]

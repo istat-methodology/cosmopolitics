@@ -1,0 +1,354 @@
+[
+ {
+  "id":"01",
+  "descr":"Products of agriculture, hunting and related services"
+ },
+ {
+  "id":"02",
+  "descr":"Products of forestry, logging and related services"
+ },
+ {
+  "id":"03",
+  "descr":"Fish and other fishing products; aquaculture products; support services to fishing"
+ },
+ {
+  "id":"05",
+  "descr":"Coal and lignite"
+ },
+ {
+  "id":"06",
+  "descr":"Crude petroleum and natural gas"
+ },
+ {
+  "id":"07",
+  "descr":"Metal ores"
+ },
+ {
+  "id":"08",
+  "descr":"Other mining and quarrying products"
+ },
+ {
+  "id":"09",
+  "descr":"Mining support services"
+ },
+ {
+  "id":"10",
+  "descr":"Food products"
+ },
+ {
+  "id":"11",
+  "descr":"Beverages"
+ },
+ {
+  "id":"12",
+  "descr":"Tobacco products"
+ },
+ {
+  "id":"13",
+  "descr":"Textiles"
+ },
+ {
+  "id":"14",
+  "descr":"Wearing apparel"
+ },
+ {
+  "id":"15",
+  "descr":"Leather and related products"
+ },
+ {
+  "id":"16",
+  "descr":"Wood and of products of wood and cork, except furniture; articles of straw and plaiting materials"
+ },
+ {
+  "id":"17",
+  "descr":"Paper and paper products"
+ },
+ {
+  "id":"18",
+  "descr":"Printing and reproduction services of recorded media"
+ },
+ {
+  "id":"19",
+  "descr":"Coke and refined petroleum products"
+ },
+ {
+  "id":"20",
+  "descr":"Chemicals and chemical products"
+ },
+ {
+  "id":"21",
+  "descr":"Basic pharmaceutical products and pharmaceutical preparations"
+ },
+ {
+  "id":"22",
+  "descr":"Rubber and plastic products"
+ },
+ {
+  "id":"23",
+  "descr":"Other non-metallic mineral products"
+ },
+ {
+  "id":"24",
+  "descr":"Basic metals"
+ },
+ {
+  "id":"25",
+  "descr":"Fabricated metal products, except machinery and equipment"
+ },
+ {
+  "id":"26",
+  "descr":"Computer, electronic and optical products"
+ },
+ {
+  "id":"27",
+  "descr":"Electrical equipment"
+ },
+ {
+  "id":"28",
+  "descr":"Machinery and equipment n.e.c."
+ },
+ {
+  "id":"29",
+  "descr":"Motor vehicles, trailers and semi-trailers"
+ },
+ {
+  "id":"30",
+  "descr":"Other transport equipment"
+ },
+ {
+  "id":"31",
+  "descr":"Furniture"
+ },
+ {
+  "id":"32",
+  "descr":"Other manufactured goods"
+ },
+ {
+  "id":"33",
+  "descr":"Repair and installation services of machinery and equipment"
+ },
+ {
+  "id":"35",
+  "descr":"Electricity, gas, steam and air conditioning"
+ },
+ {
+  "id":"36",
+  "descr":"Natural water; water treatment and supply services"
+ },
+ {
+  "id":"37",
+  "descr":"Sewerage services; sewage sludge"
+ },
+ {
+  "id":"38",
+  "descr":"Waste collection, treatment and disposal services; materials recovery services"
+ },
+ {
+  "id":"39",
+  "descr":"Remediation services and other waste management services"
+ },
+ {
+  "id":"41",
+  "descr":"Buildings and building construction works"
+ },
+ {
+  "id":"42",
+  "descr":"Constructions and construction works for civil engineering"
+ },
+ {
+  "id":"43",
+  "descr":"Specialised construction works"
+ },
+ {
+  "id":"45",
+  "descr":"Wholesale and retail trade and repair services of motor vehicles and motorcycles"
+ },
+ {
+  "id":"46",
+  "descr":"Wholesale trade services, except of motor vehicles and motorcycles"
+ },
+ {
+  "id":"47",
+  "descr":"Retail trade services, except of motor vehicles and motorcycles"
+ },
+ {
+  "id":"49",
+  "descr":"Land transport services and transport services via pipelines"
+ },
+ {
+  "id":"50",
+  "descr":"Water transport services"
+ },
+ {
+  "id":"51",
+  "descr":"Air transport services"
+ },
+ {
+  "id":"52",
+  "descr":"Warehousing and support services for transportation"
+ },
+ {
+  "id":"53",
+  "descr":"Postal and courier services"
+ },
+ {
+  "id":"55",
+  "descr":"Accommodation services"
+ },
+ {
+  "id":"56",
+  "descr":"Food and beverage serving services"
+ },
+ {
+  "id":"58",
+  "descr":"Publishing services"
+ },
+ {
+  "id":"59",
+  "descr":"Motion picture, video and television programme production services, sound recording and music publishing"
+ },
+ {
+  "id":"60",
+  "descr":"Programming and broadcasting services"
+ },
+ {
+  "id":"61",
+  "descr":"Telecommunications services"
+ },
+ {
+  "id":"62",
+  "descr":"Computer programming, consultancy and related services"
+ },
+ {
+  "id":"63",
+  "descr":"Information services"
+ },
+ {
+  "id":"64",
+  "descr":"Financial services, except insurance and pension funding"
+ },
+ {
+  "id":"65",
+  "descr":"Insurance, reinsurance and pension funding services, except compulsory social security"
+ },
+ {
+  "id":"66",
+  "descr":"Services auxiliary to financial services and insurance services"
+ },
+ {
+  "id":"68",
+  "descr":"Real estate services"
+ },
+ {
+  "id":"69",
+  "descr":"Legal and accounting services"
+ },
+ {
+  "id":"70",
+  "descr":"Services of head offices; management consulting services"
+ },
+ {
+  "id":"71",
+  "descr":"Architectural and engineering services; technical testing and analysis services"
+ },
+ {
+  "id":"72",
+  "descr":"Scientific research and development services"
+ },
+ {
+  "id":"73",
+  "descr":"Advertising and market research services"
+ },
+ {
+  "id":"74",
+  "descr":"Other professional, scientific and technical services"
+ },
+ {
+  "id":"75",
+  "descr":"Veterinary services"
+ },
+ {
+  "id":"77",
+  "descr":"Rental and leasing services"
+ },
+ {
+  "id":"78",
+  "descr":"Employment services"
+ },
+ {
+  "id":"79",
+  "descr":"Travel agency, tour operator and other reservation services and related services"
+ },
+ {
+  "id":"80",
+  "descr":"Security and investigation services"
+ },
+ {
+  "id":"81",
+  "descr":"Services to buildings and landscape"
+ },
+ {
+  "id":"82",
+  "descr":"Office administrative, office support and other business support services"
+ },
+ {
+  "id":"84",
+  "descr":"Public administration and defence services; compulsory social security services"
+ },
+ {
+  "id":"85",
+  "descr":"Education services"
+ },
+ {
+  "id":"86",
+  "descr":"Human health services"
+ },
+ {
+  "id":"87",
+  "descr":"Residential care services"
+ },
+ {
+  "id":"88",
+  "descr":"Social work services without accommodation"
+ },
+ {
+  "id":"90",
+  "descr":"Creative, arts and entertainment services"
+ },
+ {
+  "id":"91",
+  "descr":"Library, archive, museum and other cultural services"
+ },
+ {
+  "id":"92",
+  "descr":"Gambling and betting services"
+ },
+ {
+  "id":"93",
+  "descr":"Sporting services and amusement and recreation services"
+ },
+ {
+  "id":"94",
+  "descr":"Services furnished by membership organisations"
+ },
+ {
+  "id":"95",
+  "descr":"Repair services of computers and personal and household goods"
+ },
+ {
+  "id":"96",
+  "descr":"Other personal services"
+ },
+ {
+  "id":"97",
+  "descr":"Services of households as employers of domestic personnel"
+ },
+ {
+  "id":"98",
+  "descr":"Undifferentiated goods and services produced by private households for own use"
+ },
+ {
+  "id":"99",
+  "descr":"Services provided by extraterritorial organisations and bodies"
+ }
+]

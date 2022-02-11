@@ -7,29 +7,47 @@ from networkx.readwrite import json_graph
 import json
 import networkx as nx
 import pickle
-
+import logging.config
+import datetime
 DATA_AVAILABLE="data"+os.sep+"dataAvailable"
 SEP=","
 DATA_EXTENTION=".dat"
 NTSR_PROD_FILE="data"+os.sep+"NSTR.txt"
 NTSR_DIGITS=3 # numero di digits per classificazione Transporti
 NODIMAX=70
+INTRA_FILE="data/cpa_intra.csv"
+EXTRA_FILE="data/tr_extra_ue.csv"
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
+logging.config.fileConfig('./logging.conf')
+logger = logging.getLogger('graphLog')
 
 def load_files_available(): 
+    #EXTRA_FILE
+    logging.info("### load_files_available EXTRA_FILE...") 
+    df=pd.read_csv(EXTRA_FILE,sep=SEP,dtype={"PRODUCT_NSTR": object,"FLOW":np.int8,"PERIOD":np.int32,"TRANSPORT_MODE":np.int8} )
+    df.columns=["PRODUCT","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']
+    
+    #df['PERIOD']=pd.to_datetime(df['PERIOD'], format="%Y%m")
+    
+    #print(list(df["PERIOD"].unique()))
+    #print (df.shape)
+    #print(df.info())
+    return df
+
     # legge i file disponibili nella cartella data_avilable
     # in funzione dei mesi caricati si crea il dataset  
     # della finestra temporale presente nella cartella
-    print("### load_files_available...") 
+    
     # reads DATA_AVAILABLE dir
     # DATA_EXTENTION separator
+    '''
     listDataframes=[]
     for f in os.listdir(DATA_AVAILABLE):
         if f.endswith(DATA_EXTENTION):
             appo=pd.read_csv(DATA_AVAILABLE+os.sep+f,sep=SEP)
             listDataframes.append(appo)
-            print ("\t","shape",appo.shape)  
+            logging.info("shape: "+str(appo.shape))  
             
     df=pd.concat(listDataframes,axis=0)        
     df=df[df["PRODUCT_NSTR"]!="TOT"]
@@ -37,22 +55,35 @@ def load_files_available():
     df=df[df["PARTNER_ISO"]!="EU"]     
     df=df[["PRODUCT_NSTR","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']]                  
     df.columns=["PRODUCT","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']
-    print("### load_files_available exit") 
-    print(df.columns)
+    logging.info("### load_files_available exit") 
     return df
+    '''
+    
 
 def load_file_intraEU(): 
-    df_transportIntra=pd.read_csv("data/cpa_intra/cpa_intra.csv",low_memory=False,usecols=["DECLARANT_ISO","PARTNER_ISO","FLOW","cpa"
+    #df_transportIntra=pd.read_csv(INTRA_FILE,low_memory=False,dtype={"PRODUCT": object, "DECLARANT_ISO": object, "PARTNER_ISO": object,"FLOW":np.int8,"PERIOD":np.int16,"VALUE_IN_EUROS":np.int64} )
+    df_transportIntra=pd.read_csv(INTRA_FILE,low_memory=False,dtype={"PRODUCT": object,"FLOW":np.int8,"PERIOD":np.int32,"TRANSPORT_MODE":np.int8} )
+    '''
+    df_transportIntra=pd.read_csv(INTRA_FILE,low_memory=False,usecols=["DECLARANT_ISO","PARTNER_ISO","FLOW","cpa"
                                                                                 ,"PERIOD","val_cpa"])
     df_transportIntra.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","PERIOD","VALUE_IN_EUROS"]
-    df_transportIntra=df_transportIntra[df_transportIntra.PRODUCT.str.strip().str.len()==3]
+    df_transportIntra=df_transportIntra[df_transportIntra.PRODUCT.str.len()==3]
+    '''
+    
+    #df_transportIntra['PERIOD']=pd.to_datetime(df_transportIntra['PERIOD'], format="%Y%m")
+    
+
+
+    #print(list(df_transportIntra["PERIOD"].unique()))
+    #print (df_transportIntra.shape)
+    #print(df_transportIntra.info())
     return df_transportIntra
 
 
 def build_NTSR_dict():
     #build dict mapping NTSR prod and viceversa
     NTSR_prod=pd.read_csv(NTSR_PROD_FILE,"\t",index_col=0)#.to_dict()
-    print(NTSR_prod)
+    
     NTSR_prod_dict=NTSR_prod.to_dict()
     NTSR_prod_dict=NTSR_prod_dict['AGRICULTURAL PRODUCTS AND LIVE ANIMALS']
     prod_NTSR_dict=NTSR_prod.reset_index()
@@ -60,26 +91,28 @@ def build_NTSR_dict():
     prod_NTSR_dict=prod_NTSR_dict.set_index("AGRICULTURAL PRODUCTS AND LIVE ANIMALS").to_dict()["0"]
     return prod_NTSR_dict
 
-
 def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport_estrazione):
     #estraggo dalla tabella solo le informazioni richieste nei filtri richiesti al runtime
-
-    print("### estrai_tabella_per_grafo...") 
-    print("ESTRAGGO TABELLA COMEX")
+    logging.info("### estrai_tabella_per_grafo...") 
+    logging.info("ESTRAGGO TABELLA COMEX") 
+    
     #df_transport_estrazione=df_transport
     df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["FLOW"]==flow]
-    print("1",df_transport_estrazione.shape)
+    #print("###",df_transport_estrazione.shape)
     if tg_period is not None:
+        #tg_period=datetime.datetime.strptime(str(tg_period), '%Y%m')
+        tg_period=np.int32(tg_period)
         df_transport_estrazione = df_transport_estrazione[df_transport_estrazione["PERIOD"]==tg_period]
-    print("2",df_transport_estrazione.shape)
+    #print("###",df_transport_estrazione.shape)
     #seleziona i mezzi nel grafo
     if listaMezzi is not None:    
         df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["TRANSPORT_MODE"].isin(listaMezzi)]
-    print("3",df_transport_estrazione.shape)
-    print(df_transport_estrazione)
+    #print("###",df_transport_estrazione.shape)
+    
     if product is not None:
+        #print("product:",product,type(product))
         df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["PRODUCT"]==product]
-    print("4",df_transport_estrazione.shape,product,type(product))
+    #print("###",df_transport_estrazione.shape)
 
     #costruisce una query per eliminare i mezzi in un arco nel grafo
     def build_query_mezzi(selezioneMezziEdges):
@@ -93,9 +126,8 @@ def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,
     
     if (selezioneMezziEdges is not None):
         Query=build_query_mezzi(selezioneMezziEdges)
-        print("QUERY selezione MezziEdge:")
+        logging.info("QUERY selezione MezziEdge:")
         df_transport_estrazione=df_transport_estrazione.query(Query)
-    print(df_transport_estrazione.shape)   
 
     #aggrega indimendentemente dai mezzi o produtti ed ordina secondo il criterio scelto VALUE o QUANTITY 
     df_transport_estrazione=df_transport_estrazione.groupby(["DECLARANT_ISO","PARTNER_ISO"]).sum().reset_index()[["DECLARANT_ISO","PARTNER_ISO",criterio]]
@@ -104,16 +136,16 @@ def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,
     if tg_perc is not None:
         SUM = df_transport_estrazione[criterio].sum()     
         df_transport_estrazione = df_transport_estrazione[df_transport_estrazione[criterio].cumsum(skipna=False)/SUM*100<tg_perc] 
-    print("### estrai_tabella_per_grafo exit")     
+        logging.info("### estrai_tabella_per_grafo exit")     
     return df_transport_estrazione
 
 def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag): 
     # costruisce sulla base della tabella filtrata
     # il grafo con le relative metriche
-    print("### makeGraph... ")     
+    logging.info("### makeGraph... ")     
 
     def calc_metrics(Grafo,FlagWeight):
-        print("### metrics... ")     
+        logging.info("### metrics... ")     
         in_deg = nx.in_degree_centrality(Grafo)
         Metrics ={}
         vulner={}
@@ -131,7 +163,7 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
             "hubness":nx.closeness_centrality(Grafo.to_undirected())
             #"hubness":nx.betweenness_centrality(Grafo, weight="weight")
             }
-        print("### metrics... ")     
+        logging.info("### metrics... ")     
         return Metrics 
 
 
@@ -141,12 +173,12 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
 
     # assegno i ruoli da e a
     if flow==1:
-        print("FLOW: import")
+        logging.info("FLOW: import")
         country_from="PARTNER_ISO"
         country_to="DECLARANT_ISO"
         
     if flow==2:
-        print("FLOW: export")    
+        logging.info("FLOW: export")    
         country_from="DECLARANT_ISO"
         country_to="PARTNER_ISO"
 
@@ -164,16 +196,13 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
 
     #Calcolo le metriche
     MetricG=calc_metrics(G,weight_flag)	
-    print (MetricG)
+    
 
   #passo alla rappresentazione json del grafo
     GG=json_graph.node_link_data(G)
     Nodes=GG["nodes"]
     Links=GG["links"] 
-    print("------------------")
-    print(GG["nodes"])
-    print(GG["links"])
-    print("------------------")
+
 
     if pos_ini is None:
         pos_ini={}
@@ -183,10 +212,10 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
             y= random.uniform(0, 1)
             pos_ini[node['id']]=np.array([x,y])
     else:
-        print("-- POSIZIONE DEI NODI PRECEDENTE ACQUISITA --")
+            logging.info("-- POSIZIONE DEI NODI PRECEDENTE ACQUISITA --")
 
     try:
-        print (pos_ini)
+        #logging.info(str(pos_ini))
         coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=pos_ini)
         coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=coord) # stable solution
         #coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=coord) # stable solution
@@ -215,24 +244,22 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     new_dict = { "nodes": list(dict_nodes), "edges": list(dict_edges),"metriche":MetricG}
 
     JSON=json.dumps(new_dict) 
-    print("### makeGraph exit")     
+    logging.info("### makeGraph exit")     
     return coord,JSON,G
 
 def jsonpos2coord(jsonpos):
-    print("### jsonpos2coord... ")     
+    logging.info("### jsonpos2coord... ")     
     coord={}
     for id,x,y in pd.DataFrame.from_dict(jsonpos["nodes"]) [["label","x","y"]].values:
 
         coord[id]=np.array([x,y])
-    print("### jsonpos2coord exit ")     
+    logging.info("### jsonpos2coord exit ")     
     return coord    
-
 
 df_transport = load_files_available()  
 df_transportIntra = load_file_intraEU()      
 
 prod_NTSR_dict=build_NTSR_dict()
-
 
 from flask import Flask,request,Response
 from flask_cors import CORS
@@ -245,21 +272,21 @@ CORS(app, resources=r'/*')
 #@app.route('/wordtradegraphextra', methods=['POST','GET'])        
 @app.route('/wordtradegraph', methods=['POST','GET'])
 def wordtradegraph():
-    print("### wordtradegraph...")
+    logging.info("### wordtradegraph EXTRA...")
     if request.method == 'POST':        
-        print ("Word Trade Graph method get ....")
+        logging.info("Word Trade Graph method get EXTRA....")
         
-        print("criterio per costruire il grafo:",criterio )
+        logging.info("criterio per costruire il grafo: "+criterio )
         jReq=dict(request.json)
-        print("------ jReq",jReq)
+        logging.info("------ jReq",jReq)
         tg_perc=int(jReq['tg_perc'])
         tg_period=int(jReq['tg_period'])
         pos=jReq['pos']
         if pos=="None":
             pos=None
         else:
-            print ("Gestisci posizione dei nodi precedenti -----",pos)
-            print ("pos-----",type(pos))            
+            logging.info("Gestisci posizione dei nodi precedenti -----",pos)
+            logging.info("pos-----",type(pos))            
             pos=jsonpos2coord(pos)
 
         #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
@@ -273,14 +300,12 @@ def wordtradegraph():
             selezioneMezziEdges=None
         else:
             pass
-            print(selezioneMezziEdges)
-            print(type(selezioneMezziEdges))
+            logging.info(selezioneMezziEdges)
+            logging.info(type(selezioneMezziEdges))
         #--------------------
-        
-        
-
+                
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport)
-        print("tab4graph.shape",tab4graph.shape)
+        logging.info("tab4graph.shape: "+str(tab4graph.shape))
 
         #controllo se la dimensione del grafo è troppo grande
         #conto il numerp dei nodi
@@ -301,31 +326,31 @@ def wordtradegraph():
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
-        print("### wordtradegraph exit")
+        logging.info("### wordtradegraph exit")
         return resp
 
     else:
-        print("### wordtradegraph exit")
+        logging.info("### wordtradegraph exit")
         return str("only post")
 
 @app.route('/wordtradegraphintra', methods=['POST','GET'])
 def wordtradegraphplus():
     if request.method == 'POST':
         
-        print ("Word Trade INTRA_EU Graph method get ....")
+        logging.info("Word Trade INTRA_EU Graph method get ....")
 
         
-        print("criterio per costruire il grafo:",criterio )
+        logging.info("criterio per costruire il grafo:"+criterio )
         jReq=dict(request.json)
-        print("------ jReq",jReq)
+        logging.info("------ jReq",jReq)
         tg_perc=int(jReq['tg_perc'])
         tg_period=int(jReq['tg_period'])
         pos=jReq['pos']
         if pos=="None":
             pos=None
         else:
-            print ("Gestisci posizione dei nodi precedenti -----",pos)
-            print ("pos-----",type(pos))            
+            logging.info("Gestisci posizione dei nodi precedenti -----")
+            logging.info("pos-----",type(pos))            
             pos=jsonpos2coord(pos)
 
         #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
@@ -346,7 +371,7 @@ def wordtradegraphplus():
         
 
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,None,df_transportIntra)
-        print("tab4graph.shape",tab4graph.shape)
+        logging.info("tab4graph.shape"+str(tab4graph.shape))
         #AnalisiFlag=selezioneMezziEdges ########################################
 
         #controllo se la dimensione del grafo è troppo grande
@@ -366,15 +391,14 @@ def wordtradegraphplus():
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
-        print("### wordtradegraph intra EU exit")
+        logging.info("### wordtradegraph intra EU exit")
         return resp
 
     else:
-        print("### wordtradegraph intra EU exit")
+        logging.info("### wordtradegraph intra EU exit")
         return str("only post")
-
   
-@app.route('/hello')
+@app.route('/refreshdata')
 def hello():
      return str(' world')
         
