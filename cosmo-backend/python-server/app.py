@@ -79,7 +79,7 @@ def load_file_intraEU():
     #print(df_transportIntra.info())
     return df_transportIntra
 
-
+'''
 def build_NTSR_dict():
     #build dict mapping NTSR prod and viceversa
     NTSR_prod=pd.read_csv(NTSR_PROD_FILE,"\t",index_col=0)#.to_dict()
@@ -90,7 +90,7 @@ def build_NTSR_dict():
     prod_NTSR_dict=prod_NTSR_dict[prod_NTSR_dict['0'].str.len()==NTSR_DIGITS]
     prod_NTSR_dict=prod_NTSR_dict.set_index("AGRICULTURAL PRODUCTS AND LIVE ANIMALS").to_dict()["0"]
     return prod_NTSR_dict
-
+'''
 def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport_estrazione):
     #estraggo dalla tabella solo le informazioni richieste nei filtri richiesti al runtime
     logging.info("### estrai_tabella_per_grafo...") 
@@ -259,7 +259,7 @@ def jsonpos2coord(jsonpos):
 df_transport = load_files_available()  
 df_transportIntra = load_file_intraEU()      
 
-prod_NTSR_dict=build_NTSR_dict()
+#prod_NTSR_dict=build_NTSR_dict()
 
 from flask import Flask,request,Response
 from flask_cors import CORS
