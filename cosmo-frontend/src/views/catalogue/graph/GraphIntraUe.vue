@@ -9,13 +9,9 @@
           >
           <span v-else>{{ $t("graph.card.title") }} </span>
           <span class="pl-2" v-if="nodeMetric">
-            <!--span class="text-primary"
+            <span class="text-primary"
               >, {{ $t("graph.stats.centrality") }} </span
             >{{ nodeMetric.centrality }}
-            -->
-            <span class="text-primary"
-              >, {{ $t("graph.stats.exportationstrength") }} </span
-            >{{ nodeMetric.exportationstrength }}
             <span class="text-primary"
               >, {{ $t("graph.stats.vulnerability") }} </span
             >{{ nodeMetric.vulnerability }}
@@ -61,11 +57,11 @@
             @hover-node="handleOverNode"
           />
           <vue-slider
-            v-if="timePeriod"
+            v-if="graphPeriod"
             :adsorb="true"
             :tooltip="'none'"
             v-model="periodValue"
-            :data="timePeriod"
+            :data="graphPeriod"
             :data-value="'id'"
             :data-label="'name'"
             @change="handleSliderChange"
@@ -92,9 +88,9 @@
             >{{ $t("graph.form.fields.period") }}*</label
           >
           <v-select
-            v-if="timePeriod"
+            v-if="graphPeriod"
             label="name"
-            :options="timePeriod"
+            :options="graphPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
             :class="{
@@ -111,19 +107,6 @@
             v-model="percentage"
             :class="{
               'is-invalid': $v.percentage.$error
-            }"
-          />
-          <label class="card-label mt-2"
-            >{{ $t("graph.form.fields.transport") }}*</label
-          >
-          <v-select
-            label="descr"
-            multiple
-            :options="transports"
-            :placeholder="$t('graph.form.fields.transport_placeholder')"
-            v-model="transport"
-            :class="{
-              'is-invalid': $v.transport.$error
             }"
           />
           <label class="card-label mt-2"
@@ -260,7 +243,7 @@ import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
 
 export default {
-  name: "GraphVisjs",
+  name: "GraphIntraUe",
   components: { Network, VueSlider, exporter },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
@@ -315,6 +298,7 @@ export default {
     filter: []
   }),
   computed: {
+    ...mapGetters("metadata", ["graphPeriod"]),
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", [
       "transports",
@@ -322,7 +306,6 @@ export default {
       "flows",
       "weights"
     ]),
-    ...mapGetters("period", ["timePeriod"]),
     network() {
       return this.nodes && this.edges
         ? {
@@ -469,8 +452,6 @@ export default {
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: "None",
-        // NEXT UPDATE
-        //pos: { nodes: this.nodes },
         selezioneMezziEdges: "None"
       };
       this.spinnerStart(true);
@@ -534,14 +515,7 @@ export default {
     }
   },
   created() {
-    // ---------------------------------------
-    // @TODO Improve modal management
-    // ---------------------------------------
-
-    this.$store.dispatch("period/findByName", "graph");
-    this.$store.dispatch("coreui/setContext", Context.Graph);
-    this.$store.dispatch("classification/getTransports");
-    this.$store.dispatch("classification/getProducts");
+    this.$store.dispatch("coreui/setContext", Context.GraphIntra);
   }
 };
 </script>

@@ -233,7 +233,7 @@
 import { mapGetters } from "vuex";
 import { Context } from "@/common";
 import paletteMixin from "@/components/mixins/palette.mixin";
-import becDiagMixin from "@/components/mixins/becDiag.mixin";
+import timeseriesDiagMixin from "@/components/mixins/timeseriesDiag.mixin";
 import timeseriesMixin from "@/components/mixins/timeseries.mixin";
 import ScatterChart from "@/components/charts/ScatterChart";
 import LineChart from "@/components/charts/LineChart";
@@ -248,7 +248,7 @@ export default {
     LineChart,
     exporter
   },
-  mixins: [paletteMixin, becDiagMixin, timeseriesMixin, spinnerMixin],
+  mixins: [paletteMixin, timeseriesDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
     spinner: false,
     //Form fields
@@ -358,9 +358,6 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
-    this.$store.dispatch("classification/getCountries");
-    this.$store.dispatch("classification/getPartners");
-    this.$store.dispatch("classification/getBecs");
   }
 };
 </script>

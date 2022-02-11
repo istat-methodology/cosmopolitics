@@ -108,19 +108,19 @@ export default {
       descr: "Export"
     },
     spinner: false,
-    tradePeriod: [],
+    labelPeriod: [],
     modalHelpTitle: " About on ",
     isModalHelp: false
   }),
   computed: {
     ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
     ...mapGetters("trade", ["charts"]),
-    ...mapGetters("period", ["timePeriod"]),
+    ...mapGetters("metadata", ["tradePeriod"]),
     chartData() {
       var chartData = {};
       chartData.datasets = [];
-      if (this.timePeriod) {
-        chartData.labels = this.tradePeriod;
+      if (this.tradePeriod) {
+        chartData.labels = this.labelPeriod;
         if (this.charts) {
           this.charts.data.forEach(element => {
             const color = this.getColor();
@@ -165,8 +165,8 @@ export default {
   },
   created() {
     this.$store.dispatch("period/findByName", "trade").then(() => {
-      for (const period of this.timePeriod) {
-        this.tradePeriod.push(period.name);
+      for (const period of this.tradePeriod) {
+        this.labelPeriod.push(period.name);
       }
     });
     this.$store.dispatch("coreui/setContext", Context.Trade);

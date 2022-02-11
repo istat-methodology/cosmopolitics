@@ -41,7 +41,7 @@
       <li class="c-sidebar-nav-item">
         <router-link
           tag="a"
-          :to="{ name: 'Graph' }"
+          :to="{ name: 'GraphExtraUe' }"
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-success': isGraph }"
         >
@@ -53,7 +53,7 @@
       <li class="c-sidebar-nav-item">
         <router-link
           tag="a"
-          :to="{ name: 'GraphIntra' }"
+          :to="{ name: 'GraphIntraUe' }"
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-success': isGraphIntra }"
         >

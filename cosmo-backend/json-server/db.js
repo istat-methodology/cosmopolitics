@@ -6,7 +6,9 @@ const products = JSON.parse(fs.readFileSync("./data/classification/clsProducts.j
 const product3s = JSON.parse(fs.readFileSync("./data/classification/clsProducts3.json"));
 const productplus = JSON.parse(fs.readFileSync("./data/classification/clsProductplus.json"));
 const transports = JSON.parse(fs.readFileSync("./data/classification/clsTransport.json"));
+
 const becs = JSON.parse(fs.readFileSync("./data/classification/clsBec.json"));
+
 const partners = JSON.parse(fs.readFileSync("./data/classification/clsPartners.json"));
 
 //general json
@@ -17,7 +19,7 @@ const countries = JSON.parse(fs.readFileSync("./data/general/countries.json"));
 // slider && select period 
 // input for start end date
 const timeperiod = JSON.parse(fs.readFileSync("./data/general/timeperiod.json"));
-const metadata = JSON.parse(fs.readFileSync("./data/general/cosmometadata.json"));
+const metadata = JSON.parse(fs.readFileSync("./data/general/metadata.json"));
 
 //map json
 //service static
