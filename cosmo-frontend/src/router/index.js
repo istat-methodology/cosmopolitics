@@ -45,16 +45,16 @@ const routes = [
       },
       {
         path: "catalogue/graph",
-        name: "Graph",
-        component: () => import("../views/catalogue/graph/GraphForm"),
+        name: "GraphExtraUe",
+        component: () => import("../views/catalogue/graph/GraphExtraUe"),
         meta: {
           authorize: []
         }
       },
       {
         path: "catalogue/graph",
-        name: "GraphIntra",
-        component: () => import("../views/catalogue/graph/GraphFormIntra"),
+        name: "GraphIntraUe",
+        component: () => import("../views/catalogue/graph/GraphIntraUe"),
         meta: {
           authorize: []
         }

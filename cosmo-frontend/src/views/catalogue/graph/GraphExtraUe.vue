@@ -9,9 +9,13 @@
           >
           <span v-else>{{ $t("graph.card.title") }} </span>
           <span class="pl-2" v-if="nodeMetric">
-            <span class="text-primary"
+            <!--span class="text-primary"
               >, {{ $t("graph.stats.centrality") }} </span
             >{{ nodeMetric.centrality }}
+            -->
+            <span class="text-primary"
+              >, {{ $t("graph.stats.exportationstrength") }} </span
+            >{{ nodeMetric.exportationstrength }}
             <span class="text-primary"
               >, {{ $t("graph.stats.vulnerability") }} </span
             >{{ nodeMetric.vulnerability }}
@@ -57,11 +61,11 @@
             @hover-node="handleOverNode"
           />
           <vue-slider
-            v-if="timePeriod"
+            v-if="graphPeriod"
             :adsorb="true"
             :tooltip="'none'"
             v-model="periodValue"
-            :data="timePeriod"
+            :data="graphPeriod"
             :data-value="'id'"
             :data-label="'name'"
             @change="handleSliderChange"
@@ -88,13 +92,13 @@
             >{{ $t("graph.form.fields.period") }}*</label
           >
           <v-select
-            v-if="timePeriod"
+            v-if="graphPeriod"
             label="name"
-            :options="timePeriod"
+            :options="graphPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
             :class="{
-              'is-invalid': $v.selectedPeriod.$error
+              'is-invalid': $v.selectedPeriod.$error,
             }"
             @input="updateSlider"
           />
@@ -106,7 +110,20 @@
             :placeholder="$t('graph.form.fields.percentage_placeholder')"
             v-model="percentage"
             :class="{
-              'is-invalid': $v.percentage.$error
+              'is-invalid': $v.percentage.$error,
+            }"
+          />
+          <label class="card-label mt-2"
+            >{{ $t("graph.form.fields.transport") }}*</label
+          >
+          <v-select
+            label="descr"
+            multiple
+            :options="transports"
+            :placeholder="$t('graph.form.fields.transport_placeholder')"
+            v-model="transport"
+            :class="{
+              'is-invalid': $v.transport.$error,
             }"
           />
           <label class="card-label mt-2"
@@ -118,7 +135,7 @@
             :placeholder="$t('graph.form.fields.product_placeholder')"
             v-model="product"
             :class="{
-              'is-invalid': $v.product.$error
+              'is-invalid': $v.product.$error,
             }"
           />
           <label class="card-label mt-2"
@@ -130,7 +147,7 @@
             :placeholder="$t('graph.form.fields.flow_placeholder')"
             v-model="flow"
             :class="{
-              'is-invalid': $v.flow.$error
+              'is-invalid': $v.flow.$error,
             }"
           />
           <label class="card-label mt-2"
@@ -142,7 +159,7 @@
             :placeholder="$t('graph.form.fields.weight_placeholder')"
             v-model="weight"
             :class="{
-              'is-invalid': $v.weight.$error
+              'is-invalid': $v.weight.$error,
             }"
           />
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
@@ -243,7 +260,7 @@ import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
 
 export default {
-  name: "GraphLite",
+  name: "GraphExtraUe",
   components: { Network, VueSlider, exporter },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
@@ -278,7 +295,7 @@ export default {
       widthPx: 2159,
       heightScreenCm: 28.58,
       heightPaperCm: 9.05,
-      heightPx: 1086
+      heightPx: 1086,
     },
     working: false,
     url: "",
@@ -295,54 +312,54 @@ export default {
 
     paragraph: [],
     main: [],
-    filter: []
+    filter: [],
   }),
   computed: {
+    ...mapGetters("metadata", ["graphPeriod"]),
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", [
       "transports",
       "products",
       "flows",
-      "weights"
+      "weights",
     ]),
-    ...mapGetters("period", ["timePeriod"]),
     network() {
       return this.nodes && this.edges
         ? {
             nodes: this.nodes,
             edges: this.edges,
-            options: this.options
+            options: this.options,
           }
         : {
             nodes: [],
             edges: [],
-            options: null
+            options: null,
           };
     },
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    }
+    },
   },
   validations: {
     selectedPeriod: {
-      required
+      required,
     },
     percentage: {
       required,
-      numeric
+      numeric,
     },
     transport: {
-      required
+      required,
     },
     product: {
-      required
+      required,
     },
     flow: {
-      required
+      required,
     },
     weight: {
-      required
-    }
+      required,
+    },
   },
   methods: {
     helpOn(showModal, mainModal) {
@@ -362,7 +379,7 @@ export default {
       //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
-      selectedGraph.edges.forEach(edgeId => {
+      selectedGraph.edges.forEach((edgeId) => {
         const selectedEdge = this.getEdge(this.network, edgeId);
         const sourceNode = this.getNode(this.network, selectedEdge.from);
         const destinationNode = this.getNode(this.network, selectedEdge.to);
@@ -376,7 +393,7 @@ export default {
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
-          destination: destinationNode
+          destination: destinationNode,
         });
       });
       //console.log(this.edgeFromTo);
@@ -398,12 +415,12 @@ export default {
     },
     applyConstraints() {
       const constraints = [];
-      this.selectedEdges.forEach(edge => {
+      this.selectedEdges.forEach((edge) => {
         this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.network, edge.from).label,
           to: this.getNode(this.network, edge.to).label,
-          exclude: this.getIds(this.transportConstraint)
+          exclude: this.getIds(this.transportConstraint),
         });
       });
       // ---------------------------------------
@@ -417,7 +434,7 @@ export default {
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints
+        selezioneMezziEdges: constraints,
       };
       this.$store.dispatch("graphVisjs/postGraph", form);
       this.$store.dispatch(
@@ -430,7 +447,7 @@ export default {
 
     setTransportConstraintStart() {
       let transport = this.transportConstraintStart.filter(
-        o => !this.transportConstraint.find(o2 => o.id === o2.id)
+        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
       );
       this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
@@ -452,7 +469,9 @@ export default {
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: "None",
-        selezioneMezziEdges: "None"
+        // NEXT UPDATE
+        //pos: { nodes: this.nodes },
+        selezioneMezziEdges: "None",
       };
       this.spinnerStart(true);
       this.$store.dispatch("graphVisjs/postGraph", form);
@@ -478,7 +497,7 @@ export default {
           flow: this.flow.id,
           weight_flag: this.weight.descr,
           pos: "None",
-          selezioneMezziEdges: "None"
+          selezioneMezziEdges: "None",
         };
         this.$store.dispatch("graphVisjs/postGraph", form);
         this.transportConstraintSelected = {};
@@ -486,7 +505,7 @@ export default {
     },
     getIds(selectedTransports) {
       var ids = [];
-      selectedTransports.forEach(element => {
+      selectedTransports.forEach((element) => {
         ids.push(element.id);
       });
       return ids;
@@ -498,7 +517,7 @@ export default {
       for (var edgeId in this.network.edges) {
         edges.push({
           from: this.network.edges[edgeId].from,
-          to: this.network.edges[edgeId].to
+          to: this.network.edges[edgeId].to,
         });
       }
       for (var nodeId in this.network.nodes) {
@@ -506,24 +525,17 @@ export default {
           id: this.network.nodes[nodeId].id,
           label: this.network.nodes[nodeId].label,
           x: this.network.nodes[nodeId].x,
-          y: this.network.nodes[nodeId].y
+          y: this.network.nodes[nodeId].y,
         });
       }
       let jsonData = JSON.stringify({ nodes, edges });
       console.log(this.$refs[ref]);
       return [jsonData, id];
-    }
+    },
   },
   created() {
-    // ---------------------------------------
-    // @TODO Improve modal management
-    // ---------------------------------------
-
-    this.$store.dispatch("period/findByName", "graph");
-    this.$store.dispatch("coreui/setContext", Context.GraphIntra);
-    this.$store.dispatch("classification/getTransports");
-    this.$store.dispatch("classification/getProducts");
-  }
+    this.$store.dispatch("coreui/setContext", Context.Graph);
+  },
 };
 </script>
 
@@ -558,4 +570,5 @@ export default {
   font-size: 0.875rem;
   font-weight: 500;
 }
+
 </style>

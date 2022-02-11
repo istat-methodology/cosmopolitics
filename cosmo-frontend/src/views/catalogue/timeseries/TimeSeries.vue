@@ -358,9 +358,6 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
-    this.$store.dispatch("classification/getCountries");
-    this.$store.dispatch("classification/getPartners");
-    this.$store.dispatch("classification/getBecs");
   }
 };
 </script>
