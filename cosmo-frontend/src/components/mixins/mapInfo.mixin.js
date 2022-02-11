@@ -2,7 +2,8 @@ export default {
   data: () => ({
     isInfo: false,
     infoTitle: "",
-    mainFields: [{
+    mainFields: [
+      {
         key: "Year",
         label: ""
       },
@@ -14,7 +15,7 @@ export default {
         key: " 2020 ",
         label: " 2020 "
       }
-    ],
+    ]
   }),
   methods: {
     openInfo(marker) {

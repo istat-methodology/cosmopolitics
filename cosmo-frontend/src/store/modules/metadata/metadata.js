@@ -1,11 +1,7 @@
-import {
-  metadataService
-} from "@/services";
-import {
-  getPeriod
-} from "@/common";
+import { metadataService } from "@/services";
+import { getPeriod } from "@/common";
 const state = {
-  metadata: null,
+  metadata: null
 };
 const mutations = {
   SET_METADATA(state, metadata) {
@@ -13,9 +9,7 @@ const mutations = {
   }
 };
 const actions = {
-  getMetadata({
-    commit
-  }) {
+  getMetadata({ commit }) {
     return metadataService
       .getMetadata()
       .then(data => {
@@ -31,10 +25,16 @@ const getters = {
     return getPeriod(state.metadata.map.timeStart, state.metadata.map.timeEnd);
   },
   graphPeriod: state => {
-    return getPeriod(state.metadata.graph.timeStart, state.metadata.graph.timeEnd);
+    return getPeriod(
+      state.metadata.graph.timeStart,
+      state.metadata.graph.timeEnd
+    );
   },
   tradePeriod: state => {
-    return getPeriod(state.metadata.trade.timeStart, state.metadata.trade.timeEnd);
+    return getPeriod(
+      state.metadata.trade.timeStart,
+      state.metadata.trade.timeEnd
+    );
   },
 
   mapSeries: state => {
@@ -46,7 +46,6 @@ const getters = {
   tradeSeries: state => {
     return state.metadata.trade.timeSelected;
   }
-  
 };
 export const metadata = {
   namespaced: true,
