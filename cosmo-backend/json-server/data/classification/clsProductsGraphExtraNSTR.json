@@ -1,0 +1,706 @@
+[
+ {
+  "id":"001",
+  "descr":"LIVE ANIMALS"
+ },
+ {
+  "id":"011",
+  "descr":"WHEAT, SPELT AND MESLIN"
+ },
+ {
+  "id":"012",
+  "descr":"BARLEY"
+ },
+ {
+  "id":"013",
+  "descr":"RYE"
+ },
+ {
+  "id":"014",
+  "descr":"OATS"
+ },
+ {
+  "id":"015",
+  "descr":"MAIZE"
+ },
+ {
+  "id":"016",
+  "descr":"RICE"
+ },
+ {
+  "id":"019",
+  "descr":"OTHER CEREALS N.E.S."
+ },
+ {
+  "id":"020",
+  "descr":"POTATOES"
+ },
+ {
+  "id":"031",
+  "descr":"CITRUS FRUIT"
+ },
+ {
+  "id":"035",
+  "descr":"OTHER FRUIT AND NUTS, FRESH"
+ },
+ {
+  "id":"039",
+  "descr":"OTHER VEGETABLES, FRESH OR FROZEN"
+ },
+ {
+  "id":"041",
+  "descr":"WOOL AND OTHER ANIMAL HAIR"
+ },
+ {
+  "id":"042",
+  "descr":"COTTON"
+ },
+ {
+  "id":"043",
+  "descr":"MAN-MADE FIBRES"
+ },
+ {
+  "id":"045",
+  "descr":"SILK, FLAX, JUTE, TRUE HEMP AND OTHER VEGETABLE TEXTILE MATERIALS"
+ },
+ {
+  "id":"049",
+  "descr":"RAGS AND WASTE OF TEXTILE MATERIALS"
+ },
+ {
+  "id":"051",
+  "descr":"PAPER PULP WOOD"
+ },
+ {
+  "id":"052",
+  "descr":"PIT PROPS"
+ },
+ {
+  "id":"055",
+  "descr":"OTHER WOOD IN THE ROUND"
+ },
+ {
+  "id":"056",
+  "descr":"RAILWAY OR TRAMWAY SLEEPERS OF WOOD AND OTHER WOOD ROUGHLY SQUARED, HALF SQUARED, OR SAWN"
+ },
+ {
+  "id":"057",
+  "descr":"FUEL WOOD, WOOD CHARCOAL, WOOD WASTE, CORK UNWORKED, WASTE CORK"
+ },
+ {
+  "id":"060",
+  "descr":"SUGAR BEETS"
+ },
+ {
+  "id":"090",
+  "descr":"OTHER RAW ANIMAL AND VEGETABLE MATERIALS"
+ },
+ {
+  "id":"091",
+  "descr":"RAW HIDES AND SKINS, RAW FURSKINS, WASTE"
+ },
+ {
+  "id":"092",
+  "descr":"RUBBER, NATURAL AND SYNTHETIC, RAW OR RECLAIMED"
+ },
+ {
+  "id":"099",
+  "descr":"OTHER NON-EDIBLE RAW VEGETABLE AND ANIMAL MATERIALS N.E.S."
+ },
+ {
+  "id":"111",
+  "descr":"RAW SUGAR"
+ },
+ {
+  "id":"112",
+  "descr":"REFINED SUGAR"
+ },
+ {
+  "id":"113",
+  "descr":"MOLASSES"
+ },
+ {
+  "id":"121",
+  "descr":"WINE OF FRESH GRAPES, GRAPE MUST"
+ },
+ {
+  "id":"122",
+  "descr":"BEER MADE FROM MALT"
+ },
+ {
+  "id":"125",
+  "descr":"OTHER ALCOHOLIC BEVERAGES"
+ },
+ {
+  "id":"128",
+  "descr":"NON-ALCOHOLIC BEVERAGES"
+ },
+ {
+  "id":"131",
+  "descr":"COFFEE"
+ },
+ {
+  "id":"132",
+  "descr":"COCOA AND CHOCOLATE"
+ },
+ {
+  "id":"133",
+  "descr":"TEA, MAT+, SPICES"
+ },
+ {
+  "id":"134",
+  "descr":"UNMANUFACTURED TOBACCO AND TOBACCO REFUSE"
+ },
+ {
+  "id":"135",
+  "descr":"MANUFACTURED TOBACCO"
+ },
+ {
+  "id":"136",
+  "descr":"GLUCOSE, DEXTROSE; OTHER SUGARS; SUGAR CONFECTIONERY; HONEY"
+ },
+ {
+  "id":"139",
+  "descr":"FOOD PREPARATIONS N.E.S."
+ },
+ {
+  "id":"141",
+  "descr":"MEAT, FRESH, CHILLED OR FROZEN"
+ },
+ {
+  "id":"142",
+  "descr":"FISH, CRUSTACEANS AND MOLLUSCS, FRESH, FROZEN, DRIED, SALTED OR SMOKED"
+ },
+ {
+  "id":"143",
+  "descr":"MILK AND CREAM, FRESH"
+ },
+ {
+  "id":"144",
+  "descr":"BUTTER, CHEESE, OTHER DAIRY PRODUCE"
+ },
+ {
+  "id":"145",
+  "descr":"MARGARINE, LARD AND EDIBLE FATS"
+ },
+ {
+  "id":"146",
+  "descr":"EGGS"
+ },
+ {
+  "id":"147",
+  "descr":"MEAT, DRIED, SALTED, SMOKED; PREPARED OR PRESERVED MEAT"
+ },
+ {
+  "id":"148",
+  "descr":"FISH, CRUSTACEANS AND MOLLUSCS, PREPARED OR PRESERVED"
+ },
+ {
+  "id":"161",
+  "descr":"FLOUR, CEREAL MEAL AND GROATS"
+ },
+ {
+  "id":"162",
+  "descr":"MALT"
+ },
+ {
+  "id":"163",
+  "descr":"OTHER CEREAL PREPARATIONS"
+ },
+ {
+  "id":"164",
+  "descr":"FRUIT, FROZEN, DRIED, DEHYDRATED; PREPARED AND PRESERVED FRUIT"
+ },
+ {
+  "id":"165",
+  "descr":"DRIED VEGETABLES"
+ },
+ {
+  "id":"166",
+  "descr":"PREPARED AND PRESERVED VEGETABLES"
+ },
+ {
+  "id":"167",
+  "descr":"HOPS"
+ },
+ {
+  "id":"171",
+  "descr":"CEREAL STRAW, HAY AND HUSKS"
+ },
+ {
+  "id":"172",
+  "descr":"OIL-CAKE AND RESIDUES RESULTING FROM THE EXTRACTION OF VEGETABLE OILS"
+ },
+ {
+  "id":"179",
+  "descr":"BRAN, CEREAL BY-PRODUCTS AND OTHER ANIMAL FEEDINGSTUFFS N.E.S.; WASTE FROM FOOD INDUSTRIES"
+ },
+ {
+  "id":"181",
+  "descr":"OIL-SEED FATS, OILNUTS AND OIL KERNELS"
+ },
+ {
+  "id":"182",
+  "descr":"ANIMAL AND VEGETABLE FATS AND OILS, AND PRODUCTS DERIVED THEREFROM"
+ },
+ {
+  "id":"211",
+  "descr":"COAL (ECSC)"
+ },
+ {
+  "id":"213",
+  "descr":"COAL BRIQUETTES (ECSC)"
+ },
+ {
+  "id":"221",
+  "descr":"LIGNITE (ECSC)"
+ },
+ {
+  "id":"223",
+  "descr":"LIGNITE BRIQUETTES (ECSC)"
+ },
+ {
+  "id":"224",
+  "descr":"PEAT"
+ },
+ {
+  "id":"231",
+  "descr":"COKE AND SEMI-COKE OF COAL (ECSC)"
+ },
+ {
+  "id":"233",
+  "descr":"COKE AND SEMI-COKE OF LIGNITE (ECSC)"
+ },
+ {
+  "id":"310",
+  "descr":"CRUDE PETROLEUM"
+ },
+ {
+  "id":"321",
+  "descr":"MOTOR SPIRIT"
+ },
+ {
+  "id":"323",
+  "descr":"KEROSENE, JET FUEL AND WHITE SPIRIT"
+ },
+ {
+  "id":"325",
+  "descr":"DISTILLATE FUELS"
+ },
+ {
+  "id":"327",
+  "descr":"RESIDUAL FUEL OILS"
+ },
+ {
+  "id":"330",
+  "descr":"GASEOUS HYDROCARBONS, LIQUID OR COMPRESSED"
+ },
+ {
+  "id":"341",
+  "descr":"LUBRICATING OILS AND GREASES"
+ },
+ {
+  "id":"343",
+  "descr":"PETROLEUM BITUMEN AND BITUMINOUS MIXTURES"
+ },
+ {
+  "id":"349",
+  "descr":"OTHER NON-FUEL PETROLEUM DERIVATIVES"
+ },
+ {
+  "id":"410",
+  "descr":"IRON ORE AND CONCENTRATES; EXCEPT ROASTED IRON PYRITES (ECSC)"
+ },
+ {
+  "id":"451",
+  "descr":"NON-FERROUS METAL WASTE"
+ },
+ {
+  "id":"452",
+  "descr":"COPPER ORE AND CONCENTRATES; COPPER MATTE"
+ },
+ {
+  "id":"453",
+  "descr":"BAUXITE AND CONCENTRATES"
+ },
+ {
+  "id":"455",
+  "descr":"MANGANESE ORE AND CONCENTRATES (ECSC)"
+ },
+ {
+  "id":"459",
+  "descr":"OTHER NON-FERROUS ORES AND CONCENTRATES"
+ },
+ {
+  "id":"462",
+  "descr":"IRON AND STEEL WASTE FOR REMELTING (ECSC)"
+ },
+ {
+  "id":"463",
+  "descr":"IRON AND STEEL WASTE NOT FOR REMELTING (NON-ECSC)"
+ },
+ {
+  "id":"465",
+  "descr":"IRON SLAG FOR REMELTING (NON-ECSC)"
+ },
+ {
+  "id":"466",
+  "descr":"BLAST-FURNACE DUST (ECSC)"
+ },
+ {
+  "id":"467",
+  "descr":"ROASTED IRON PYRITES (NON-ECSC)"
+ },
+ {
+  "id":"512",
+  "descr":"PIG IRON, SPIEGELEISEN AND CARBURIZED FERRO-MANGANESE (ECSC)"
+ },
+ {
+  "id":"513",
+  "descr":"FERRO-ALLOYS OTHER THAN CARBURIZED FERRO-MANGANESE (NON-ECSC)"
+ },
+ {
+  "id":"515",
+  "descr":"CRUDE STEEL (ECSC)"
+ },
+ {
+  "id":"522",
+  "descr":"SEMI-FINISHED ROLLED STEEL PRODUCTS (BLOOMS, BILLETS, SLABS, SHEET BARS, COILS) (ECSC)"
+ },
+ {
+  "id":"523",
+  "descr":"OTHER SEMI-FINISHED STEEL PRODUCTS (NON-ECSC)"
+ },
+ {
+  "id":"532",
+  "descr":"HOT-ROLLED OR -SHAPED STEEL (ECSC)"
+ },
+ {
+  "id":"533",
+  "descr":"COLD-ROLLED OR -SHAPED OR FORGED STEEL (NON-ECSC)"
+ },
+ {
+  "id":"535",
+  "descr":"WIRE ROD (ECSC)"
+ },
+ {
+  "id":"536",
+  "descr":"STEEL IRON AND STEEL WIRE (NON-ECSC)"
+ },
+ {
+  "id":"537",
+  "descr":"STEEL RAILS AND RAILWAY AND TRAMWAY TRACK-CONSTRUCTION MATERIAL (ECSC)"
+ },
+ {
+  "id":"542",
+  "descr":"SHEETS AND PLATES OF STEEL FOR RE-ROLLING; UNIVERSAL PLATES (ECSC)"
+ },
+ {
+  "id":"543",
+  "descr":"OTHER STEEL PLATES AND SHEETS (NON-ECSC)"
+ },
+ {
+  "id":"545",
+  "descr":"STEEL HOOP AND STRIP, TINPLATE (ECSC)"
+ },
+ {
+  "id":"546",
+  "descr":"OTHER STEEL HOOP AND STRIP (NON-ECSC)"
+ },
+ {
+  "id":"551",
+  "descr":"TUBES, PIPES AND FITTINGS"
+ },
+ {
+  "id":"552",
+  "descr":"IRON AND STEEL CASTINGS AND FORGINGS"
+ },
+ {
+  "id":"561",
+  "descr":"COPPER AND COPPER ALLOYS, UNWROUGHT"
+ },
+ {
+  "id":"562",
+  "descr":"ALUMINIUM AND ALUMINIUM ALLOYS, UNWROUGHT"
+ },
+ {
+  "id":"563",
+  "descr":"LEAD AND LEAD ALLOYS, UNWROUGHT"
+ },
+ {
+  "id":"564",
+  "descr":"ZINC AND ZINC ALLOYS, UNWROUGHT"
+ },
+ {
+  "id":"565",
+  "descr":"OTHER NON-FERROUS METALS AND ALLOYS THEREOF, UNWROUGHT"
+ },
+ {
+  "id":"568",
+  "descr":"FINISHED AND SEMI-FINISHED PRODUCTS OF NON-FERROUS METALS (EXCEPT MANUFACTURES)"
+ },
+ {
+  "id":"611",
+  "descr":"SAND FOR INDUSTRIAL USE"
+ },
+ {
+  "id":"612",
+  "descr":"ORDINARY SAND AND GRAVEL"
+ },
+ {
+  "id":"613",
+  "descr":"PUMICE STONE, INCLUDING PUMICEOUS SAND AND GRAVEL"
+ },
+ {
+  "id":"614",
+  "descr":"CLAY AND CLAY EARTH"
+ },
+ {
+  "id":"615",
+  "descr":"SLAG NOT FOR RECOVERY OF METALS; ASH; DROSS"
+ },
+ {
+  "id":"621",
+  "descr":"SALT, CRUDE OR REFINED"
+ },
+ {
+  "id":"622",
+  "descr":"UNROASTED IRON PYRITES"
+ },
+ {
+  "id":"623",
+  "descr":"SULPHUR"
+ },
+ {
+  "id":"631",
+  "descr":"CRUSHED OR BROKEN STONE; PEBBLES, MACADAM, TARRED MACADAM"
+ },
+ {
+  "id":"632",
+  "descr":"BUILDING AND MONUMENTAL STONE, UNWORKED"
+ },
+ {
+  "id":"633",
+  "descr":"CALCAREOUS STONE FOR INDUSTRIAL PURPOSES"
+ },
+ {
+  "id":"634",
+  "descr":"CHALK"
+ },
+ {
+  "id":"639",
+  "descr":"OTHER CRUDE MINERALS"
+ },
+ {
+  "id":"641",
+  "descr":"CEMENT"
+ },
+ {
+  "id":"642",
+  "descr":"LIME"
+ },
+ {
+  "id":"650",
+  "descr":"PLASTERS"
+ },
+ {
+  "id":"691",
+  "descr":"PUMICE STONE AGGLOMERATES; CONCRETE, CEMENT AND SIMILAR BUILDING MATERIALS"
+ },
+ {
+  "id":"692",
+  "descr":"BRICKS, ROOFING TILES AND OTHER CERAMIC BUILDING MATERIALS, REFRACTORY BUILDING MATERIALS"
+ },
+ {
+  "id":"711",
+  "descr":"SODIUM NITRATE, NATURAL"
+ },
+ {
+  "id":"712",
+  "descr":"PHOSPHATES, CRUDE, NATURAL"
+ },
+ {
+  "id":"713",
+  "descr":"POTASSIUM SALTS, CRUDE, NATURAL"
+ },
+ {
+  "id":"719",
+  "descr":"OTHER NATURAL FERTILIZERS"
+ },
+ {
+  "id":"721",
+  "descr":"BASIC SLAG (THOMAS SLAG)"
+ },
+ {
+  "id":"722",
+  "descr":"OTHER PHOSPHATIC FERTILIZERS"
+ },
+ {
+  "id":"723",
+  "descr":"POTASSIC FERTILIZERS"
+ },
+ {
+  "id":"724",
+  "descr":"NITROGENOUS FERTILIZERS"
+ },
+ {
+  "id":"729",
+  "descr":"COMPOSITE AND OTHER MANUFACTURED FERTILIZERS"
+ },
+ {
+  "id":"811",
+  "descr":"SULPHURIC ACID; OLEUM"
+ },
+ {
+  "id":"812",
+  "descr":"CAUSTIC SODA AND SODA LYE"
+ },
+ {
+  "id":"813",
+  "descr":"SODIUM CARBONATE (SODA ASH)"
+ },
+ {
+  "id":"814",
+  "descr":"CALCIUM CARBIDE"
+ },
+ {
+  "id":"819",
+  "descr":"OTHER BASIC CHEMICALS"
+ },
+ {
+  "id":"820",
+  "descr":"ALUMINIUM OXIDE AND HYDROXIDE"
+ },
+ {
+  "id":"831",
+  "descr":"BENZOLE"
+ },
+ {
+  "id":"839",
+  "descr":"PITCH, MINERAL TAR AND OTHER CRUDE MINERAL CHEMICAL DERIVATIVES FROM COAL AND NATURAL GAS"
+ },
+ {
+  "id":"841",
+  "descr":"PAPER PULP"
+ },
+ {
+  "id":"842",
+  "descr":"WASTE PAPER AND SCRAP ARTICLES OF PAPER"
+ },
+ {
+  "id":"891",
+  "descr":"PLASTIC MATERIALS, UNWORKED"
+ },
+ {
+  "id":"892",
+  "descr":"DYEING, TANNING AND COLOURING MATERIALS"
+ },
+ {
+  "id":"893",
+  "descr":"MEDICINAL AND PHARMACEUTICAL PRODUCTS; PERFUMERY AND CLEANSING PREPARATIONS"
+ },
+ {
+  "id":"894",
+  "descr":"MANUFACTURED EXPLOSIVES, FIREWORKS AND OTHER PYROTECHNIC ARTICLES, SPORTING AMMUNITION"
+ },
+ {
+  "id":"895",
+  "descr":"STARCHES AND GLUTEN"
+ },
+ {
+  "id":"896",
+  "descr":"OTHER CHEMICAL PRODUCTS AND PREPARATIONS"
+ },
+ {
+  "id":"910",
+  "descr":"TRANSPORT EQUIPMENT, WHETHER OR NOT ASSEMBLED, PARTS THEREOF"
+ },
+ {
+  "id":"920",
+  "descr":"TRACTORS; AGRICULTURAL MACHINERY AND EQUIPMENT, WHETHER OR NOT ASSEMBLED; PARTS THEREOF"
+ },
+ {
+  "id":"931",
+  "descr":"ELECTRICAL MACHINERY, APPARATUS, APPLIANCES AND ENGINES; PARTS THEREOF"
+ },
+ {
+  "id":"939",
+  "descr":"NON-ELECTRICAL MACHINERY, APPARATUS, APPLIANCES AND ENGINES; PARTS THEREOF"
+ },
+ {
+  "id":"941",
+  "descr":"FINISHED STRUCTURAL PARTS AND STRUCTURES"
+ },
+ {
+  "id":"949",
+  "descr":"OTHER MANUFACTURES OF METAL"
+ },
+ {
+  "id":"951",
+  "descr":"GLASS"
+ },
+ {
+  "id":"952",
+  "descr":"GLASSWARE, POTTERY AND OTHER MANUFACTURES OF MINERALS"
+ },
+ {
+  "id":"961",
+  "descr":"LEATHER, MANUFACTURES OF LEATHER, OF RAW HIDE AND SKINS"
+ },
+ {
+  "id":"962",
+  "descr":"TEXTILE YARN, FABRICS, MADE-UP ARTICLES AND RELATED PRODUCTS"
+ },
+ {
+  "id":"963",
+  "descr":"TRAVEL GOODS, CLOTHING, KNITTED AND CROCHETED GOODS, FOOTWEAR"
+ },
+ {
+  "id":"971",
+  "descr":"SEMI-FINISHED PRODUCTS AND MANUFACTURED ARTICLES OF RUBBER"
+ },
+ {
+  "id":"972",
+  "descr":"PAPER AND PAPERBOARD, UNWORKED"
+ },
+ {
+  "id":"973",
+  "descr":"PAPER AND PAPERBOARD MANUFACTURES"
+ },
+ {
+  "id":"974",
+  "descr":"PAPER MATTER"
+ },
+ {
+  "id":"975",
+  "descr":"FURNITURE, NEW"
+ },
+ {
+  "id":"976",
+  "descr":"WOOD AND CORK MANUFACTURES, EXCLUDING FURNITURE"
+ },
+ {
+  "id":"979",
+  "descr":"OTHER MANUFACTURED ARTICLES N.E.S."
+ },
+ {
+  "id":"991",
+  "descr":"PACKING CONTAINERS, USED"
+ },
+ {
+  "id":"992",
+  "descr":"CONSTRUCTION MATERIALS, FAIRGROUND VEHICLES AND EQUIPMENT, USED"
+ },
+ {
+  "id":"993",
+  "descr":"REMOVAL EQUIPMENT"
+ },
+ {
+  "id":"994",
+  "descr":"GOLD, COINS, MEDALS"
+ },
+ {
+  "id":"999",
+  "descr":"OTHER MANUFACTURED GOODS NOT CLASSIFIED ACCORDING TO KIND"
+ }
+]
