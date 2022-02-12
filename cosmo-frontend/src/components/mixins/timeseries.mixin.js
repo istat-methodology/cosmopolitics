@@ -22,6 +22,7 @@ export default {
       });
       return dataMap;
     },
+    /*
     getXY(arrX, arrY) {
       const dataMap = [];
       arrX.forEach((num1, index) => {
@@ -34,6 +35,7 @@ export default {
       });
       return dataMap;
     },
+    */
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
@@ -59,28 +61,6 @@ export default {
       });
       return dataMap;
     },
-    /*
-    getCoordinatesTreat() {
-      this.maxTreatY = Math.max.apply(
-        null,
-        this.timeLapse[this.maxTimeStep].tend
-      );
-      this.minTreatY = Math.min.apply(
-        null,
-        this.timeLapse[this.maxTimeStep].tend
-      );
-      var data = [{
-          x: this.treatX,
-          y: this.maxTreatY
-        },
-        {
-          x: this.treatX,
-          y: this.minTreatY
-        }
-      ];
-      return data;
-    },
-    */
     buildTimeseriesCharts(dataR) {
       this.timeLapse = [];
       this.diagNormTitle = "DiagNorm";
