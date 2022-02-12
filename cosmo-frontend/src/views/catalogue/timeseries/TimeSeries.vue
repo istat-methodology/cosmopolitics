@@ -340,7 +340,7 @@ export default {
           this.buildTimeseriesCharts(this.timeseriesCharts);
           if (this.timeLapse) {
             this.spinnerStart(false);
-            this.chartData = this.getTimeseriesChart(0);
+            this.chartData = this.getTimeseriesChart();
           }
         });
       }

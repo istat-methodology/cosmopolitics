@@ -1,12 +1,12 @@
 export default {
   data: () => ({
-    treatX: 0,
-    minTreatY: 0,
-    maxTreatY: 0,
+    //treatX: 0,
+    //minTreatY: 0,
+    //maxTreatY: 0,
     timeLapse: null,
-    timePeriod: null,
-    timeNothing: -1,
-    maxTimeStep: 0,
+    //timePeriod: null,
+    //timeNothing: -1,
+    //maxTimeStep: 0,
     cast: {
       indexStart: 0
     }
@@ -59,6 +59,7 @@ export default {
       });
       return dataMap;
     },
+    /*
     getCoordinatesTreat() {
       this.maxTreatY = Math.max.apply(
         null,
@@ -79,35 +80,14 @@ export default {
       ];
       return data;
     },
+    */
     buildTimeseriesCharts(dataR) {
       this.timeLapse = [];
-      var diagNorm = [];
-      var diagACF = [];
-
-      var indexT = 0;
-      this.buildNothingTimePeriod(dataR);
-      for (var name in dataR) {
-        switch (name) {
-          case "DIAG_NORM":
-            diagNorm.push(dataR[name]);
-            this.diagNormTitle = "DiagNorm";
-            this.chartDataDiagNorm = this.getDiagNormChart(diagNorm[0]);
-            break;
-          case "DIAG_ACF":
-            diagACF.push(dataR[name]);
-            this.diagACFTitle = "DiagACF";
-            this.chartDataDiagACF = this.getDiagACFChart(diagACF[0]);
-            break;
-          case "T1":
-            // loading only T1
-            this.timeLapse.push(dataR[name]);
-            indexT = indexT + 1;
-            break;
-          default:
-            //other
-            console.log(name);
-        }
-      }
+      this.diagNormTitle = "DiagNorm";
+      this.chartDataDiagNorm = this.getDiagNormChart(dataR["DIAG_NORM"]);
+      this.diagACFTitle = "DiagACF";
+      this.chartDataDiagACF = this.getDiagACFChart(dataR["DIAG_ACF"]);
+      this.timeLapse.push(dataR["T1"]);
       this.maxTimeStep = this.timeLapse.length - 1;
     },
     buildObject(
@@ -173,48 +153,30 @@ export default {
       };
       return chartObj;
     },
-    getTimeseriesChart(time) {
+    getTimeseriesChart() {
       var chartData = {};
-      var borderDash = 0;
-      console.log(borderDash);
-      var data = [];
       var dataXY = [];
       var chartObj = {};
       chartData.datasets = [];
       if (this.timeLapse) {
-        for (var chartType in this.timeLapse[time]) {
-          data = this.timeLapse[time][chartType];
-          dataXY = this.getCoordinates(data);
-          chartObj = {};
-          this.labels = this.timeLapse[time]["date"];
-
-          switch (chartType) {
-            case "date":
-              if (data != undefined) {
-                chartData.labels = data;
-              }
-              break;
-            case "tend":
-              var highlightIndex = parseInt(this.cast.indexStart);
-              chartObj = this.buildObjectWithContext(
-                highlightIndex,
-                "Yearly variation series",
-                false,
-                "rgba(46, 184, 92, 0.2)",
-                "rgba(255,128,0,0.6)",
-                "rgba(46, 184, 92,1)",
-                dataXY,
-                true,
-                0,
-                2,
-                0
-              );
-              chartData.datasets.push(chartObj);
-              break;
-            default:
-              console.log("this chartType " + chartType + " doesn't exist");
-          }
-        }
+        this.labels = this.timeLapse[0]["date"];
+        chartData.labels = this.timeLapse[0]["date"];
+        dataXY = this.getCoordinates(this.timeLapse[0]["tend"]);
+        var highlightIndex = parseInt(this.cast.indexStart);
+        chartObj = this.buildObjectWithContext(
+          highlightIndex,
+          "Yearly variation series",
+          false,
+          "rgba(46, 184, 92, 0.2)",
+          "rgba(255,128,0,0.6)",
+          "rgba(46, 184, 92,1)",
+          dataXY,
+          true,
+          0,
+          2,
+          0
+        );
+        chartData.datasets.push(chartObj);
       }
       return chartData;
     },
@@ -343,47 +305,6 @@ export default {
         }
       }
       return chartData;
-    },
-    buildNothingTimePeriod(dataR) {
-      var maxTimeStep;
-      var indexStart;
-      var indexEnd;
-      var tmp;
-      var label;
-      var v = 0;
-      this.timePeriod = [];
-      this.timePeriod.push({
-        key: "row",
-        label: ""
-      });
-      for (var name in dataR) {
-        if (name.substr(0, 1) == "T") {
-          if (name != "Treat_number") {
-            console.log("Nothing found");
-            maxTimeStep = name;
-          }
-        }
-      }
-      indexStart = dataR["Treat_number"];
-      indexEnd = dataR[maxTimeStep].date.length - 1;
-      this.cast.indexStart = indexEnd;
-      for (var i = indexStart; i <= indexEnd; i++) {
-        tmp = dataR[maxTimeStep].date[i];
-        var dt = new Date(tmp);
-        var shortYear = dt.toLocaleDateString("en", {
-          year: "2-digit"
-        });
-        var shortMonth = dt.toLocaleString("en-US", {
-          month: "short"
-        });
-        label = shortMonth + "-" + shortYear;
-        this.timePeriod.push({
-          key: "T" + (v + 1),
-          label: label,
-          _classes: "align-right"
-        });
-        v++;
-      }
     }
   }
 };
