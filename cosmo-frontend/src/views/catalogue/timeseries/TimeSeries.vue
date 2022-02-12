@@ -256,21 +256,20 @@ export default {
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
-
-    timeSelected: null,
+    
+    //timeSelected: null,
 
     chartData: null,
     chartDataDiagNorm: null,
     chartDataDiagACF: null,
 
-    becPeriodValue: "",
-    becPeriod: [],
 
     isMainChart: true,
     isDiagNorm: true,
     isDiagACF: true,
-    download_status: "Download Charts",
-    modalHelpTitle: " About on ",
+
+    //download_status: "Download Charts",
+    //modalHelpTitle: " About on ",
     isModalHelp: false,
 
     // help on filter as title
@@ -287,7 +286,7 @@ export default {
       "flows",
       "timeNext"
     ]),
-    ...mapGetters("bec", ["becCharts", "becDate"]),
+    ...mapGetters("timeseries", ["timeseriesCharts", "timeseriesDate"]),
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
     }
@@ -337,11 +336,11 @@ export default {
           partner: this.partnerSelected.id,
           fcst: 0
         };
-        this.$store.dispatch("bec/findByFilters", form).then(() => {
-          this.buildBecCharts(this.becCharts);
+        this.$store.dispatch("timeseries/findByFilters", form).then(() => {
+          this.buildTimeseriesCharts(this.timeseriesCharts);
           if (this.timeLapse) {
             this.spinnerStart(false);
-            this.chartData = this.getBecChart(0);
+            this.chartData = this.getTimeseriesChart(0);
           }
         });
       }

@@ -9,7 +9,10 @@ import { geomap } from "./modules/geomap/geomap";
 import { graphVisjs } from "./modules/graphVisjs/graphVisjs";
 import { trade } from "./modules/trade/trade";
 import { classification } from "./modules/classification/classification";
+
 import { bec } from "./modules/bec/bec";
+import { timeseries } from "./modules/timeseries/timeseries";
+
 import { countries } from "./modules/countries/countries";
 
 // Time period
@@ -29,6 +32,7 @@ export default new Vuex.Store({
     trade,
     classification,
     bec,
+    timeseries,
     period,
     countries,
     metadata

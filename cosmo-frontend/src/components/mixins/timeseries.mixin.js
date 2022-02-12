@@ -7,18 +7,6 @@ export default {
     timePeriod: null,
     timeNothing: -1,
     maxTimeStep: 0,
-    /*
-    covidEstimationTableTitle: null,
-    covidEstimationTableFields: null,
-    covidEstimationTableData: null,
-
-
-    modelTableTitle: null,
-    modelTableFields: null,
-    modelTableData: null,
-
-  */
-
     cast: {
       indexStart: 0
     }
@@ -49,16 +37,13 @@ export default {
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
-        dataMap.push(
-          {
-            x: index,
-            y: index
-          },
-          {
-            x: index,
-            y: element
-          }
-        );
+        dataMap.push({
+          x: index,
+          y: index
+        }, {
+          x: index,
+          y: element
+        });
       });
       return dataMap;
     },
@@ -83,8 +68,7 @@ export default {
         null,
         this.timeLapse[this.maxTimeStep].tend
       );
-      var data = [
-        {
+      var data = [{
           x: this.treatX,
           y: this.maxTreatY
         },
@@ -95,9 +79,8 @@ export default {
       ];
       return data;
     },
-    buildBecCharts(dataR) {
+    buildTimeseriesCharts(dataR) {
       this.timeLapse = [];
-
       var diagNorm = [];
       var diagACF = [];
 
@@ -115,21 +98,14 @@ export default {
             this.diagACFTitle = "DiagACF";
             this.chartDataDiagACF = this.getDiagACFChart(diagACF[0]);
             break;
-          case "Treat_number":
-            this.treatX = dataR[name];
-            break;
-          default:
-            if (name.substr(0, 1) == "T") {
-              console.log("Nothing found");
-            }
-            if (name.substr(0, 1) == "F") {
-              console.log("Forcasting found: " + indexT);
-            }
-            if (name.substr(0, 1) == "N") {
-              console.log("Nowcasting found: " + indexT);
-            }
+          case "T1":
+            // loading only T1
             this.timeLapse.push(dataR[name]);
             indexT = indexT + 1;
+            break;
+          default:
+            //other
+            console.log(name);
         }
       }
       this.maxTimeStep = this.timeLapse.length - 1;
@@ -176,7 +152,7 @@ export default {
       chartObj = {
         label: label,
         fill: fill,
-        backgroundColor: function(context) {
+        backgroundColor: function (context) {
           var index = context.dataIndex;
           var value = context.dataset.data[index];
           if (value) {
@@ -197,7 +173,7 @@ export default {
       };
       return chartObj;
     },
-    getBecChart(time) {
+    getTimeseriesChart(time) {
       var chartData = {};
       var borderDash = 0;
       console.log(borderDash);
@@ -293,8 +269,7 @@ export default {
             case "dsh_y_pos":
               borderDash = 5;
               maxDsh = diag[chartType].length - 1;
-              dataXY = [
-                {
+              dataXY = [{
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -318,8 +293,7 @@ export default {
               break;
             case "dsh_y_neg":
               (borderDash = 5), (maxDsh = diag[chartType].length - 1);
-              dataXY = [
-                {
+              dataXY = [{
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -343,8 +317,7 @@ export default {
               break;
             case "lne_y":
               diag[chartType].forEach((element, index) => {
-                dataXY = [
-                  {
+                dataXY = [{
                     x: index,
                     y: 0
                   },

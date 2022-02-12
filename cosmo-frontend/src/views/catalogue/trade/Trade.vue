@@ -131,7 +131,7 @@ export default {
               borderColor: color.border,
               data: element.value,
               showLine: true,
-              pointRadius: 3
+              pointRadius: 2
             });
           });
         }
