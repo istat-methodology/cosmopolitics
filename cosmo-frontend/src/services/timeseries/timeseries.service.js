@@ -7,23 +7,24 @@ function findByFilters(form) {
   var object = {};
   if (form.fcst != "2") {
     object = {
-      
+      //dataTyoe: form.dataType,
       flow: form.flow,
       var: form.var,
       country: form.country,
       partner: form.partner,
       fcst: form.fcst,
-      dataTyoe: form.dataType
+      
     };
   } else {
     object = {
+      //dataTyoe: form.dataType,
       flow: form.flow,
       var: form.var,
       country: form.country,
       partner: form.partner,
       fcst: form.fcst,
       fcstpolind: form.fcstpolind,
-      dataTyoe: form.dataType
+      
     };
   }
   const params = object;
