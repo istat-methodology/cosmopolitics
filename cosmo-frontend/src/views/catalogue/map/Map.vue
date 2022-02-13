@@ -296,12 +296,7 @@ export default {
       const localSeries = seriesData.find(serie => {
         return serie.country == marker.country;
       });
-      //if (seriesPeriod > "202011") {
-      //  return 0;
-      //} else {
-
       return localSeries ? localSeries[seriesPeriod] : 0;
-      //}
     },
     buildPeriodSeries() {
       this.markerPeriodSeries = this.markers.map(marker => {
@@ -368,14 +363,12 @@ export default {
       seriesData.forEach(obj => {
         for (const key in obj) {
           if (key != "country") {
-            //console.log(obj[key]);
             if (min > obj[key]) {
               min = obj[key];
             }
           }
         }
       });
-      //console.log(min);
       min = -60;
       return min;
     },

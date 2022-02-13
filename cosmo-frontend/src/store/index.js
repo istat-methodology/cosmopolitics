@@ -10,7 +10,7 @@ import { graphVisjs } from "./modules/graphVisjs/graphVisjs";
 import { trade } from "./modules/trade/trade";
 import { classification } from "./modules/classification/classification";
 
-import { bec } from "./modules/bec/bec";
+
 import { timeseries } from "./modules/timeseries/timeseries";
 
 import { countries } from "./modules/countries/countries";
@@ -30,8 +30,7 @@ export default new Vuex.Store({
     geomap,
     graphVisjs,
     trade,
-    classification,
-    bec,
+    classification,   
     timeseries,
     period,
     countries,

@@ -1,4 +1,6 @@
-import { classificationService } from "@/services";
+import {
+  classificationService
+} from "@/services";
 
 const state = {
   countries: [],
@@ -7,18 +9,45 @@ const state = {
   transports: [],
   partners: [],
   becs: [],
-  flows: [
-    { id: 1, descr: "Import" },
-    { id: 2, descr: "Export" }
+  dataType: [{
+      "id": 1,
+      "descr": "Yearly variation series"
+    },
+    {
+      "id": 2,
+      "descr": "Raw data"
+    }
   ],
-  previsions: [
-    { id: 0, descr: "Interrupted Time Series" },
-    { id: 1, descr: "Nowcasting" },
-    { id: 2, descr: "Forecasting" }
+  flows: [{
+      id: 1,
+      descr: "Import"
+    },
+    {
+      id: 2,
+      descr: "Export"
+    }
   ],
-  weights: [
-    { id: 1, descr: true },
-    { id: 2, descr: false }
+  previsions: [{
+      id: 0,
+      descr: "Interrupted Time Series"
+    },
+    {
+      id: 1,
+      descr: "Nowcasting"
+    },
+    {
+      id: 2,
+      descr: "Forecasting"
+    }
+  ],
+  weights: [{
+      id: 1,
+      descr: true
+    },
+    {
+      id: 2,
+      descr: false
+    }
   ]
 };
 const mutations = {
@@ -42,7 +71,9 @@ const mutations = {
   }
 };
 const actions = {
-  getCountries({ commit }) {
+  getCountries({
+    commit
+  }) {
     return classificationService
       .findAll("countries")
       .then(data => {
@@ -52,7 +83,9 @@ const actions = {
         console.log(err);
       });
   },
-  getProducts({ commit }) {
+  getProducts({
+    commit
+  }) {
     return classificationService
       .findAll("product3s")
       .then(data => {
@@ -62,7 +95,9 @@ const actions = {
         console.log(err);
       });
   },
-  getProductPlus({ commit }) {
+  getProductPlus({
+    commit
+  }) {
     return classificationService
       .findAll("productplus")
       .then(data => {
@@ -72,7 +107,9 @@ const actions = {
         console.log(err);
       });
   },
-  getTransports({ commit }) {
+  getTransports({
+    commit
+  }) {
     return classificationService
       .findAll("transports")
       .then(data => {
@@ -82,7 +119,9 @@ const actions = {
         console.log(err);
       });
   },
-  getPartners({ commit }) {
+  getPartners({
+    commit
+  }) {
     return classificationService
       .findAll("partners")
       .then(data => {
@@ -92,7 +131,9 @@ const actions = {
         console.log(err);
       });
   },
-  getBecs({ commit }) {
+  getBecs({
+    commit
+  }) {
     return classificationService
       .findAll("becs")
       .then(data => {
@@ -118,6 +159,9 @@ const getters = {
   },
   flows: state => {
     return state.flows;
+  },
+  dataType: state => {
+    return state.dataType;
   },
   weights: state => {
     return state.weights;

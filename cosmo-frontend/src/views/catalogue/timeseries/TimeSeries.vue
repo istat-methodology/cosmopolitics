@@ -155,8 +155,21 @@
           <span class="float-left">{{ $t("timeseries.form.title") }}</span>
         </CCardHeader>
         <CCardBody>
+          
           <label class="card-label"
-            >{{ $t("timeseries.form.fields.flow") }}*</label
+            >{{ $t("timeseries.form.fields.dataType") }}*</label
+          >
+          <v-select
+            label="descr"
+            :options="dataType"
+            :placeholder="$t('timeseries.form.fields.dataType_placeholder')"
+            v-model="dataTypeSelected"
+            :class="{
+              'is-invalid': $v.dataTypeSelected.$error
+            }"
+          />
+          <label class="card-label"
+            >{{ $t("timeseries.form.fields.dataType") }}*</label
           >
           <v-select
             label="descr"
@@ -251,13 +264,13 @@ export default {
   mixins: [paletteMixin, timeseriesDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
     spinner: false,
-    //Form fields
+
+  //Form fields
+    dataTypeSelected: null,
     flowSelected: null,
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
-
-    //timeSelected: null,
 
     chartData: null,
     chartDataDiagNorm: null,
@@ -267,11 +280,10 @@ export default {
     isDiagNorm: true,
     isDiagACF: true,
 
-    //download_status: "Download Charts",
-    //modalHelpTitle: " About on ",
     isModalHelp: false,
 
     // help on filter as title
+    dataTypeFilter: "digit data type",
     flowFilter: "digit flows",
     countryFilter: "digit Country",
     partnerFilter: "digit Partner",
@@ -283,6 +295,7 @@ export default {
       "partners",
       "becs",
       "flows",
+      "dataType",
       "timeNext"
     ]),
     ...mapGetters("timeseries", ["timeseriesCharts", "timeseriesDate"]),
@@ -291,6 +304,9 @@ export default {
     }
   },
   validations: {
+    dataTypeSelected: {
+      required
+    },
     flowSelected: {
       required
     },
@@ -323,12 +339,14 @@ export default {
       this.$v.$touch();
       this.spinnerStart(true);
       if (
+        !this.$v.dataTypeSelected.$invalid &&
         !this.$v.flowSelected.$invalid &&
         !this.$v.becSelected.$invalid &&
         !this.$v.countrySelected.$invalid &&
         !this.$v.partnerSelected.$invalid
       ) {
         const form = {
+          datType: this.dataTypeSelected.id,
           flow: this.flowSelected.id,
           var: this.becSelected.id,
           country: this.countrySelected.country,

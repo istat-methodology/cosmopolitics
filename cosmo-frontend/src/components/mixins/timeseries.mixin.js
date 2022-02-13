@@ -1,12 +1,6 @@
 export default {
   data: () => ({
-    //treatX: 0,
-    //minTreatY: 0,
-    //maxTreatY: 0,
     timeLapse: null,
-    //timePeriod: null,
-    //timeNothing: -1,
-    //maxTimeStep: 0,
     cast: {
       indexStart: 0
     }
@@ -21,21 +15,7 @@ export default {
         });
       });
       return dataMap;
-    },
-    /*
-    getXY(arrX, arrY) {
-      const dataMap = [];
-      arrX.forEach((num1, index) => {
-        const num2 = arrY[index];
-        const obj = {
-          x: num1,
-          y: num2
-        };
-        dataMap.push(obj);
-      });
-      return dataMap;
-    },
-    */
+    },    
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
@@ -70,6 +50,7 @@ export default {
       this.chartDataDiagNorm = this.getDiagNormChart(dataR["DIAG_NORM"]);
       this.diagACFTitle = "DiagACF";
       this.chartDataDiagACF = this.getDiagACFChart(dataR["DIAG_ACF"]);
+      // hard coded
       this.timeLapse.push(dataR["T1"]);
       this.maxTimeStep = this.timeLapse.length - 1;
     },

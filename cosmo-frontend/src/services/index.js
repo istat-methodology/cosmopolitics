@@ -2,7 +2,7 @@ export * from "./auth.service";
 export * from "./geomap/geomap.service";
 export * from "./graphVisjs/graphVisjs.service";
 export * from "./classification/classification.service";
-export * from "./bec/bec.service";
+
 export * from "./timeseries/timeseries.service";
 export * from "./trade/trade.service";
 export * from "./countries/countries.service";
