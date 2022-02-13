@@ -110,6 +110,8 @@
         "country_placeholder": "Seleziona un paese",
         "partner": "Partner",
         "partner_placeholder": "Seleziona un partner",
+        "productsTimeSeries": "Prodotti",
+        "productsTimeSeries_placeholder": "Seleziona un prodotto",
         "bec": "Bec",
         "bec_placeholder": "Seleziona una Bec"
       }

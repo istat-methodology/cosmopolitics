@@ -113,7 +113,9 @@
         "country": "Country",
         "country_placeholder": "Select a country",
         "partner": "Partner",
-        "partner_placeholder": "Select a partner",
+        "partner_placeholder": "Select a partner",        
+        "productsTimeSeries": "Products",
+        "productsTimeSeries_placeholder": "Select a product",
         "bec": "Bec",
         "bec_placeholder": "Select a Bec"
       }

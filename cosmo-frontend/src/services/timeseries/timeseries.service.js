@@ -7,11 +7,13 @@ function findByFilters(form) {
   var object = {};
   if (form.fcst != "2") {
     object = {
+      
       flow: form.flow,
       var: form.var,
       country: form.country,
       partner: form.partner,
-      fcst: form.fcst
+      fcst: form.fcst,
+      dataTyoe: form.dataType
     };
   } else {
     object = {
@@ -20,7 +22,8 @@ function findByFilters(form) {
       country: form.country,
       partner: form.partner,
       fcst: form.fcst,
-      fcstpolind: form.fcstpolind
+      fcstpolind: form.fcstpolind,
+      dataTyoe: form.dataType
     };
   }
   const params = object;

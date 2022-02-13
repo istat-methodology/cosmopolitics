@@ -155,7 +155,6 @@
           <span class="float-left">{{ $t("timeseries.form.title") }}</span>
         </CCardHeader>
         <CCardBody>
-          
           <label class="card-label"
             >{{ $t("timeseries.form.fields.dataType") }}*</label
           >
@@ -165,7 +164,7 @@
             :placeholder="$t('timeseries.form.fields.dataType_placeholder')"
             v-model="dataTypeSelected"
             :class="{
-              'is-invalid': $v.dataTypeSelected.$error
+              'is-invalid': $v.dataTypeSelected.$error,
             }"
           />
           <label class="card-label"
@@ -177,7 +176,7 @@
             :placeholder="$t('timeseries.form.fields.flow_placeholder')"
             v-model="flowSelected"
             :class="{
-              'is-invalid': $v.flowSelected.$error
+              'is-invalid': $v.flowSelected.$error,
             }"
           />
           <label class="card-label mt-3" :title="this.countryFilter"
@@ -189,7 +188,7 @@
             :placeholder="$t('timeseries.form.fields.country_placeholder')"
             v-model="countrySelected"
             :class="{
-              'is-invalid': $v.countrySelected.$error
+              'is-invalid': $v.countrySelected.$error,
             }"
           />
           <label class="card-label mt-3" :title="this.partnerFilter"
@@ -201,7 +200,7 @@
             :placeholder="$t('timeseries.form.fields.partner_placeholder')"
             v-model="partnerSelected"
             :class="{
-              'is-invalid': $v.partnerSelected.$error
+              'is-invalid': $v.partnerSelected.$error,
             }"
           />
           <label class="card-label mt-3" :title="this.becFilter"
@@ -213,9 +212,21 @@
             :placeholder="$t('timeseries.form.fields.bec_placeholder')"
             v-model="becSelected"
             :class="{
-              'is-invalid': $v.becSelected.$error
+              'is-invalid': $v.becSelected.$error,
             }"
           />
+          <!--label class="card-label mt-3" :title="this.becFilter"
+            >{{ $t("timeseries.form.fields.productsTimeSeries") }}*</label
+          >
+          <v-select
+            label="descr"
+            :options="productsTimeSeries"
+            :placeholder="$t('timeseries.form.fields.productsTimeSeries_placeholder')"
+            v-model="productsTimeSeriesSelected"
+            :class="{
+              'is-invalid': $v.productsTimeSeriesSelected.$error,
+            }"
+          /-->
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
@@ -259,18 +270,19 @@ export default {
   components: {
     ScatterChart,
     LineChart,
-    exporter
+    exporter,
   },
   mixins: [paletteMixin, timeseriesDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
     spinner: false,
 
-  //Form fields
+    //Form fields
     dataTypeSelected: null,
     flowSelected: null,
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
+    productsTimeSeriesSelected: null,
 
     chartData: null,
     chartDataDiagNorm: null,
@@ -281,13 +293,6 @@ export default {
     isDiagACF: true,
 
     isModalHelp: false,
-
-    // help on filter as title
-    dataTypeFilter: "digit data type",
-    flowFilter: "digit flows",
-    countryFilter: "digit Country",
-    partnerFilter: "digit Partner",
-    becFilter: "digit Bec"
   }),
   computed: {
     ...mapGetters("classification", [
@@ -296,29 +301,33 @@ export default {
       "becs",
       "flows",
       "dataType",
-      "timeNext"
+      "timeNext",
+      "productsTimeSeries",
     ]),
     ...mapGetters("timeseries", ["timeseriesCharts", "timeseriesDate"]),
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
-    }
+    },
   },
   validations: {
     dataTypeSelected: {
-      required
+      required,
     },
     flowSelected: {
-      required
+      required,
     },
     countrySelected: {
-      required
+      required,
     },
     partnerSelected: {
-      required
+      required,
+    },
+    productsTimeSeriesSelected: {
+      required,
     },
     becSelected: {
-      required
-    }
+      required,
+    },
   },
   methods: {
     helpOn(showModal) {
@@ -342,6 +351,7 @@ export default {
         !this.$v.dataTypeSelected.$invalid &&
         !this.$v.flowSelected.$invalid &&
         !this.$v.becSelected.$invalid &&
+        //!this.$v.productsTimeSeriesSelected.$invalid &&
         !this.$v.countrySelected.$invalid &&
         !this.$v.partnerSelected.$invalid
       ) {
@@ -349,9 +359,10 @@ export default {
           datType: this.dataTypeSelected.id,
           flow: this.flowSelected.id,
           var: this.becSelected.id,
+        //var: this.productsTimeSeriesSelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: 0
+          fcst: 0,
         };
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
           this.buildTimeseriesCharts(this.timeseriesCharts);
@@ -370,11 +381,11 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    }
+    },
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
-  }
+  },
 };
 </script>
 <style>
