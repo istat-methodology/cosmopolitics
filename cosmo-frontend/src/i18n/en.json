@@ -106,8 +106,8 @@
     "form": {
       "title": "Search filters",
       "fields": {
-        "dataType": "Data Type",
-        "dataType_placeholder": "Select a data type",
+        "dataType": "Series type",
+        "dataType_placeholder": "Select a series type",
         "flow": "Flow",
         "flow_placeholder": "Select a flow",
         "country": "Country",

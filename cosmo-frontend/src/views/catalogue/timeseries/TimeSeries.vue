@@ -169,7 +169,7 @@
             }"
           />
           <label class="card-label"
-            >{{ $t("timeseries.form.fields.dataType") }}*</label
+            >{{ $t("timeseries.form.fields.flow") }}*</label
           >
           <v-select
             label="descr"

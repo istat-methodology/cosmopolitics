@@ -102,8 +102,8 @@
     "form": {
       "title": "Filtri di ricerca",
       "fields": {
-        "dataType": "Tipo dato",
-        "dataType_placeholder": "Seleziona il tipo di dato",
+        "dataType": "Tipo serie",
+        "dataType_placeholder": "Seleziona il tipo di serie",
         "flow": "Flusso",
         "flow_placeholder": "Seleziona il flusso",
         "country": "Paese",

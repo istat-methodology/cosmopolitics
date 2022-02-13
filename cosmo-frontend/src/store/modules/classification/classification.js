@@ -15,7 +15,7 @@ const state = {
     },
     {
       "id": 2,
-      "descr": "Raw data"
+      "descr": "Raw data series"
     }
   ],
   flows: [{

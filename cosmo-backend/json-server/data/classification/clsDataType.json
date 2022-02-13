@@ -1,11 +1,11 @@
 [
   {
     "id": 1,
-    "descr": "Trend change"
+    "descr": "Yearly variation series"
   },
 
   {
     "id": 2,
-    "descr": "Raw data"
+    "descr": "Raw data series"
   }
 ]  
