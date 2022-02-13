@@ -256,13 +256,12 @@ export default {
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
-    
+
     //timeSelected: null,
 
     chartData: null,
     chartDataDiagNorm: null,
     chartDataDiagACF: null,
-
 
     isMainChart: true,
     isDiagNorm: true,

@@ -39,13 +39,16 @@ export default {
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
-        dataMap.push({
-          x: index,
-          y: index
-        }, {
-          x: index,
-          y: element
-        });
+        dataMap.push(
+          {
+            x: index,
+            y: index
+          },
+          {
+            x: index,
+            y: element
+          }
+        );
       });
       return dataMap;
     },
@@ -112,7 +115,7 @@ export default {
       chartObj = {
         label: label,
         fill: fill,
-        backgroundColor: function (context) {
+        backgroundColor: function(context) {
           var index = context.dataIndex;
           var value = context.dataset.data[index];
           if (value) {
@@ -211,7 +214,8 @@ export default {
             case "dsh_y_pos":
               borderDash = 5;
               maxDsh = diag[chartType].length - 1;
-              dataXY = [{
+              dataXY = [
+                {
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -235,7 +239,8 @@ export default {
               break;
             case "dsh_y_neg":
               (borderDash = 5), (maxDsh = diag[chartType].length - 1);
-              dataXY = [{
+              dataXY = [
+                {
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -259,7 +264,8 @@ export default {
               break;
             case "lne_y":
               diag[chartType].forEach((element, index) => {
-                dataXY = [{
+                dataXY = [
+                  {
                     x: index,
                     y: 0
                   },
