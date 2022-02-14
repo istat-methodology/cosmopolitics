@@ -480,7 +480,7 @@ export default {
           pos: "None",
           selezioneMezziEdges: "None"
         };
-        this.$store.dispatch("graphVisjs/postGraph", form);
+        this.$store.dispatch("graphVisjs/postGraphIntra", form);
         this.transportConstraintSelected = {};
       }
     },

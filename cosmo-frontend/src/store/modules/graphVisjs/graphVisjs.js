@@ -1,4 +1,6 @@
-import { graphVisjsService } from "@/services";
+import {
+  graphVisjsService
+} from "@/services";
 
 const state = {
   graphs: [],
@@ -13,7 +15,9 @@ const mutations = {
   }
 };
 const actions = {
-  findAll({ commit }, n) {
+  findAll({
+    commit
+  }, n) {
     return graphVisjsService
       .findAll(n)
       .then(data => {
@@ -23,7 +27,9 @@ const actions = {
         console.log(err);
       });
   },
-  findById({ commit }, id) {
+  findById({
+    commit
+  }, id) {
     return graphVisjsService
       .findById(id)
       .then(data => {
@@ -42,7 +48,9 @@ const actions = {
         console.log(err);
       });
   },
-  postGraph({ commit }, form) {
+  postGraph({
+    commit
+  }, form) {
     return graphVisjsService
       .postGraph(form)
       .then(data => {
@@ -62,7 +70,31 @@ const actions = {
         console.log(err);
       });
   },
-  postGraphPlus({ commit }, form) {
+
+  postGraphIntra({
+    commit
+  }, form) {
+    return graphVisjsService
+      .postGraphIntra(form)
+      .then(data => {
+        data.nodes.forEach(node => {
+          node.x = node.x * 314;
+          node.y = node.y * 314;
+          node.shape = "image";
+          node.image = require("@/assets/flags/w40/" +
+            node.label.toLowerCase() +
+            ".png");
+          node.size = 15;
+        });
+        commit("SET_GRAPH", data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  postGraphPlus({
+    commit
+  }, form) {
     return graphVisjsService
       .postGraphPlus(form)
       .then(data => {
@@ -81,7 +113,9 @@ const actions = {
         console.log(err);
       });
   },
-  clear({ commit }) {
+  clear({
+    commit
+  }) {
     commit("SET_GRAPH", null);
   }
 };
