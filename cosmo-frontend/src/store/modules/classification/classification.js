@@ -9,14 +9,23 @@ const state = {
   transports: [],
   partners: [],
   becs: [],
-  productsTimeSeries: [],
+  productsCPA: [],
   dataType: [{
-      "id": 1,
-      "descr": "Yearly variation series"
+      id: 1,
+      descr: "Yearly variation series"
     },
     {
-      "id": 2,
-      "descr": "Raw data series"
+      id: 2,
+      descr: "Raw data series"
+    }
+  ],
+  tradeDataType: [{
+      id: 1,
+      descr: "in treated value"
+    },
+    {
+      id: 2,
+      descr: "in treated quantity"
     }
   ],
   flows: [{
@@ -26,19 +35,6 @@ const state = {
     {
       id: 2,
       descr: "Export"
-    }
-  ],
-  previsions: [{
-      id: 0,
-      descr: "Interrupted Time Series"
-    },
-    {
-      id: 1,
-      descr: "Nowcasting"
-    },
-    {
-      id: 2,
-      descr: "Forecasting"
     }
   ],
   weights: [{
@@ -70,8 +66,8 @@ const mutations = {
   SET_BECS(state, becs) {
     state.becs = becs;
   },
-  SET_PRODUCTS_TIMESERIES(state, productsTimeSeries) {
-    state.productsTimeSeries = productsTimeSeries;
+  SET_PRODUCTS_CPA(state, productsCPA) {
+    state.productsCPA = productsCPA;
   }
 };
 const actions = {
@@ -111,18 +107,18 @@ const actions = {
         console.log(err);
       });
   },
-    getProductsTimeSeries({
-      commit
-    }) {
-      return classificationService
-        .findAll("productsTimeSeries")
-        .then(data => {
-          commit("SET_PRODUCTS_TIMESERIES", data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
+  getProductsCPA({
+    commit
+  }) {
+    return classificationService
+      .findAll("productsCPA")
+      .then(data => {
+        commit("SET_PRODUCTS_CPA", data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   getTransports({
     commit
   }) {
@@ -170,8 +166,8 @@ const getters = {
   productPlus: state => {
     return state.productPlus;
   },
-  productsTimeSeries: state => {
-    return state.productsTimeSeries;
+  productsCPA: state => {
+    return state.productsCPA;
   },
   transports: state => {
     return state.transports;
@@ -182,11 +178,11 @@ const getters = {
   dataType: state => {
     return state.dataType;
   },
+  tradeDataType: state => {
+    return state.tradeDataType;
+  },
   weights: state => {
     return state.weights;
-  },
-  previsions: state => {
-    return state.previsions;
   },
   partners: state => {
     return state.partners;

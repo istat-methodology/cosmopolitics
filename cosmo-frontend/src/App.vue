@@ -17,12 +17,12 @@ export default {
     // load classifications
     this.$store.dispatch("classification/getTransports");
     this.$store.dispatch("classification/getProducts");
-    this.$store.dispatch("classification/getProductsTimeSeries");
+    
     //timeseries
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
-    this.$store.dispatch("classification/getBecs");
-    
+    this.$store.dispatch("classification/getProductsCPA");
+    this.$store.dispatch("classification/getBecs");    
   }
 };
 </script>

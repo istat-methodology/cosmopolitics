@@ -2,17 +2,19 @@ const fs = require("fs");
 
 //classification
 const flows = JSON.parse(fs.readFileSync("./data/classification/clsFlow.json"));
+
 const products = JSON.parse(fs.readFileSync("./data/classification/clsProducts.json"));
 const product3s = JSON.parse(fs.readFileSync("./data/classification/clsProducts3.json"));
 
-const productsTimeSeries = JSON.parse(fs.readFileSync("./data/classification/clsProductsTimeSeries.json"));
-const timeseries = JSON.parse(fs.readFileSync("./data/timeseries/timeseries.json"));
+
+/* change */
+const becs = JSON.parse(fs.readFileSync("./data/classification/clsBec.json"));
+/* to */
+const productsCPA = JSON.parse(fs.readFileSync("./data/classification/clsProductsCPA.json"));
+
 
 const productplus = JSON.parse(fs.readFileSync("./data/classification/clsProductplus.json"));
 const transports = JSON.parse(fs.readFileSync("./data/classification/clsTransport.json"));
-
-const becs = JSON.parse(fs.readFileSync("./data/classification/clsBec.json"));
-
 const partners = JSON.parse(fs.readFileSync("./data/classification/clsPartners.json"));
 
 //general json
@@ -38,10 +40,14 @@ const importseries = JSON.parse(fs.readFileSync("./data/map/importseries.json"))
 const exportseries = JSON.parse(fs.readFileSync("./data/map/exportseries.json"));
 
 //trade
-const exportvqs = JSON.parse(fs.readFileSync("./data/trade/exportvqs.json"));
-const importvqs = JSON.parse(fs.readFileSync("./data/trade/importvqs.json"));
+//data value
+const exportValue = JSON.parse(fs.readFileSync("./data/trade/exportValue.json"));
+const importValue = JSON.parse(fs.readFileSync("./data/trade/importValue.json"));
+//data quantity
+const exportQuantity = JSON.parse(fs.readFileSync("./data/trade/exportQuantity.json"));
+const importQuantity = JSON.parse(fs.readFileSync("./data/trade/importQuantity.json"));
 
-
+const timeseries = JSON.parse(fs.readFileSync("./data/timeseries/timeseries.json"));
 
 
 module.exports = () => ({
@@ -64,24 +70,27 @@ module.exports = () => ({
 
   //trade
   //data
-  exportvqs,
-  importvqs,
+  exportValue,
+  importValue,
   
+  
+  exportQuantity,
+  importQuantity,
+
   //classification
   flows,  
   transports,
   products,
   product3s,
   productplus,
-  becs,  
+  becs,
+  productsCPA,
   partners,
   
   // service slider select
   timeperiod,
   metadata,
-
-  productsTimeSeries,
+  
   timeseries
-
 
 });

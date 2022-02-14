@@ -55,8 +55,8 @@
   "graph": {
     "stats": {
       "density": "Product spread",
-      "centrality": "Centrality:",      
-      "exportationstrength" : "Exportation strength:",
+      "centrality": "Centrality:",
+      "exportationstrength": "Exportation strength:",
       "vulnerability": "Vulnerability:",
       "hubness": "Hubness:"
     },
@@ -113,9 +113,9 @@
         "country": "Country",
         "country_placeholder": "Select a country",
         "partner": "Partner",
-        "partner_placeholder": "Select a partner",        
-        "productsTimeSeries": "Products",
-        "productsTimeSeries_placeholder": "Select a product",
+        "partner_placeholder": "Select a partner",
+        "productsCPA": "Products",
+        "productsCPA_placeholder": "Select a product",
         "bec": "Bec",
         "bec_placeholder": "Select a Bec"
       }
@@ -132,17 +132,19 @@
     }
   },
   "trade": {
+    "card": {
+      "title": "Basket of traded products:"
+    },
     "form": {
       "title": "Trade filter",
       "fields": {
+        "dataType": "Series type",
+        "dataType_placeholder": "Select a series type",
         "country": "Country",
         "country_placeholder": "Select a country",
         "flow": "Flow",
         "flow_placeholder": "Select a flow"
       }
-    },
-    "card": {
-      "title": "Trade data:"
     },
     "modal": {
       "main": {

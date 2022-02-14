@@ -36,6 +36,7 @@ function findById(id) {
 function postGraph(formData) {
   return axiosPython
     .post("/wordtradegraph", formData)
+  //.post("/wordtradegraphintra", formData)
     .then(res => {
       var data = res.data ? res.data : {};
       //console.log(data);

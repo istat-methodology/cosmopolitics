@@ -215,18 +215,18 @@
               'is-invalid': $v.becSelected.$error,
             }"
           />
-          <!--label class="card-label mt-3" :title="this.becFilter"
-            >{{ $t("timeseries.form.fields.productsTimeSeries") }}*</label
+          <label class="card-label mt-3" :title="this.becFilter"
+            >{{ $t("timeseries.form.fields.productsCPA") }}*</label
           >
           <v-select
             label="descr"
-            :options="productsTimeSeries"
-            :placeholder="$t('timeseries.form.fields.productsTimeSeries_placeholder')"
-            v-model="productsTimeSeriesSelected"
+            :options="productsCPA"
+            :placeholder="$t('timeseries.form.fields.productsCPA_placeholder')"
+            v-model="productsCPASelected"
             :class="{
-              'is-invalid': $v.productsTimeSeriesSelected.$error,
+              'is-invalid': $v.productsCPASelected.$error,
             }"
-          /-->
+          />
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
@@ -282,7 +282,7 @@ export default {
     countrySelected: null,
     partnerSelected: null,
     becSelected: null,
-    productsTimeSeriesSelected: null,
+    productsCPASelected: null,
 
     chartData: null,
     chartDataDiagNorm: null,
@@ -302,7 +302,7 @@ export default {
       "flows",
       "dataType",
       "timeNext",
-      "productsTimeSeries",
+      "productsCPA"
     ]),
     ...mapGetters("timeseries", ["timeseriesCharts", "timeseriesDate"]),
     options() {
@@ -322,7 +322,7 @@ export default {
     partnerSelected: {
       required,
     },
-    productsTimeSeriesSelected: {
+    productsCPASelected: {
       required,
     },
     becSelected: {
@@ -351,7 +351,7 @@ export default {
         !this.$v.dataTypeSelected.$invalid &&
         !this.$v.flowSelected.$invalid &&
         !this.$v.becSelected.$invalid &&
-        //!this.$v.productsTimeSeriesSelected.$invalid &&
+        //!this.$v.productsCPASelected.$invalid &&
         !this.$v.countrySelected.$invalid &&
         !this.$v.partnerSelected.$invalid
       ) {
@@ -359,7 +359,7 @@ export default {
           datType: this.dataTypeSelected.id,
           flow: this.flowSelected.id,
           var: this.becSelected.id,
-        //var: this.productsTimeSeriesSelected.id,
+        //var: this.productsCPASelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
           fcst: 0,

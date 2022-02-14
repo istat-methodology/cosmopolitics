@@ -4,9 +4,9 @@
       <CCard>
         <CCardHeader>
           <span
-            >{{ $t("trade.card.title") }} {{ this.countrySelected.name }} -
-            {{ this.flowSelected.descr }}</span
-          >
+            >{{ $t("trade.card.title") }} {{ this.flowSelected.descr }} -
+            {{ this.countrySelected.name }}
+          </span>
           <span class="float-right">
             <button
               class="btn mr-2 float-right btn-sm btn-square"
@@ -41,6 +41,15 @@
           <span class="float-left">{{ $t("trade.form.title") }} </span>
         </CCardHeader>
         <CCardBody>
+          <label class="card-label"
+            >{{ $t("trade.form.fields.dataType") }}*</label
+          >
+          <v-select
+            label="descr"
+            :options="tradeDataType"
+            :placeholder="$t('trade.form.fields.dataType_placeholder')"
+            v-model="tradeDataTypeSelected"
+          />
           <label class="card-label"
             >{{ $t("trade.form.fields.country") }}*</label
           >
@@ -99,21 +108,30 @@ export default {
   components: { LineChart, exporter },
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
   data: () => ({
+    tradeDataTypeSelected: {
+      id: 1,
+      descr: "in treated value",
+    },
     countrySelected: {
       country: "IT",
-      name: "Italy"
+      name: "Italy",
     },
     flowSelected: {
       id: 2,
-      descr: "Export"
+      descr: "Export",
     },
     spinner: false,
     labelPeriod: [],
     modalHelpTitle: " About on ",
-    isModalHelp: false
+    isModalHelp: false,
   }),
   computed: {
-    ...mapGetters("classification", ["countries", "flows", "timeTrade"]),
+    ...mapGetters("classification", [
+      "tradeDataType",
+      "countries",
+      "flows",
+      "timeTrade",
+    ]),
     ...mapGetters("trade", ["charts"]),
     ...mapGetters("metadata", ["tradePeriod"]),
     chartData() {
@@ -122,7 +140,7 @@ export default {
       if (this.tradePeriod) {
         chartData.labels = this.labelPeriod;
         if (this.charts) {
-          this.charts.data.forEach(element => {
+          this.charts.data.forEach((element) => {
             const color = this.getColor();
             chartData.datasets.push({
               label: element.dataname,
@@ -131,14 +149,14 @@ export default {
               borderColor: color.border,
               data: element.value,
               showLine: true,
-              pointRadius: 2
+              pointRadius: 2,
             });
           });
         }
       }
       this.clearColor();
       return chartData;
-    }
+    },
   },
   methods: {
     helpOn(showModal) {
@@ -148,8 +166,9 @@ export default {
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
+          type: this.tradeDataTypeSelected.id,
           country: this.countrySelected.country,
-          flow: this.flowSelected.id
+          flow: this.flowSelected.id,
         });
       }
     },
@@ -161,7 +180,7 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    }
+    },
   },
   created() {
     this.$store.dispatch("period/findByName", "trade").then(() => {
@@ -172,9 +191,9 @@ export default {
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("trade/findByName", {
       country: this.countrySelected.country,
-      flow: this.flowSelected.id
+      flow: this.flowSelected.id,
     });
-  }
+  },
 };
 </script>
 <style>

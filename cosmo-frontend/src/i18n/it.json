@@ -37,7 +37,7 @@
       "link": "Vai alla sezione Serie storiche"
     },
     "trade": {
-      "title": "Variazioni nella composizione del paniere dei prodotti importati ed esportato (classificazione CPA – classificazione dei prodotti per attività economica) per Paese Membro",
+      "title": "Variazioni nella composizione del paniere dei prodotti importati ed esportati (classificazione CPA – classificazione dei prodotti per attività economica) per Paese Membro",
       "body": "Questa sezione fornisce, per ciascuno Stato membro, le <b>serie storiche mensili delle variazioni tendenziali</b> della composizione del paniere delle merci esportate e importate, classificate secondo le <b>cifre CPA-2 cifre.</b>",
       "link": "Vai alla sezione Paniere dei prodotti"
     }
@@ -110,8 +110,8 @@
         "country_placeholder": "Seleziona un paese",
         "partner": "Partner",
         "partner_placeholder": "Seleziona un partner",
-        "productsTimeSeries": "Prodotti",
-        "productsTimeSeries_placeholder": "Seleziona un prodotto",
+        "productsCPA": "Prodotti",
+        "productsCPA_placeholder": "Seleziona un prodotto",
         "bec": "Bec",
         "bec_placeholder": "Seleziona una Bec"
       }
@@ -128,17 +128,19 @@
     }
   },
   "trade": {
+    "card": {
+      "title": "Paniere di prodotti :"
+    },
     "form": {
       "title": "Filtri di ricerca",
       "fields": {
-        "country": "Paese",
-        "country_placeholder": "Seleziona un paese",
+        "dataType": "Tipo serie",
+        "dataType_placeholder": "Seleziona il tipo di serie",
         "flow": "Flusso",
-        "flow_placeholder": "Seleziona il flusso"
+        "flow_placeholder": "Seleziona il flusso",
+        "country": "Paese",
+        "country_placeholder": "Seleziona un paese"
       }
-    },
-    "card": {
-      "title": "Dati di commercio:"
     },
     "modal": {
       "main": {
