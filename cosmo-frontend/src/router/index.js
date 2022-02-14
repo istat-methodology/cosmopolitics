@@ -20,102 +20,51 @@ const routes = [
   },
   {
     path: "/",
-    redirect: "/catalogue",
     name: "Home",
     component: Home,
     meta: {
       authorize: []
-    },
-    children: [
-      {
-        path: "catalogue",
-        name: "Catalogue",
-        component: () => import("../views/catalogue/Catalogue"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/map",
-        name: "Map",
-        component: () => import("../views/catalogue/map/Map"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/graph",
-        name: "GraphExtraUe",
-        component: () => import("../views/catalogue/graph/GraphExtraUe"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/graph",
-        name: "GraphIntraUe",
-        component: () => import("../views/catalogue/graph/GraphIntraUe"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/graphplus",
-        name: "GraphPlus",
-        component: () => import("../views/catalogue/graph/GraphFormPlus"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/timeseries",
-        name: "TimeSeries",
-        component: () => import("../views/catalogue/timeseries/TimeSeries"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/trade",
-        name: "Trade",
-        component: () => import("../views/catalogue/trade/Trade"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/user",
-        name: "UserList",
-        component: () => import("../views/settings/user/UserList"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/user/edit/:id",
-        name: "UserEdit",
-        component: () => import("../views/settings/user/UserEdit"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/user/delete/:id",
-        name: "UserDelete",
-        component: () => import("../views/settings/user/UserDelete"),
-        meta: {
-          authorize: []
-        }
-      },
-      {
-        path: "catalogue/user/add/",
-        name: "UserAdd",
-        component: () => import("../views/settings/user/UserAdd"),
-        meta: {
-          authorize: []
-        }
-      }
-    ]
+    }
+  },
+  {
+    path: "/map",
+    name: "Map",
+    component: () => import("../views/map/Map"),
+    meta: {
+      authorize: []
+    }
+  },
+  {
+    path: "/graphextra",
+    name: "GraphExtraUe",
+    component: () => import("../views/graph/GraphExtraUe"),
+    meta: {
+      authorize: []
+    }
+  },
+  {
+    path: "/graphintra",
+    name: "GraphIntraUe",
+    component: () => import("../views/graph/GraphIntraUe"),
+    meta: {
+      authorize: []
+    }
+  },
+  {
+    path: "/timeseries",
+    name: "TimeSeries",
+    component: () => import("../views/timeseries/TimeSeries"),
+    meta: {
+      authorize: []
+    }
+  },
+  {
+    path: "/trade",
+    name: "Trade",
+    component: () => import("../views/trade/Trade"),
+    meta: {
+      authorize: []
+    }
   },
   {
     path: "*",

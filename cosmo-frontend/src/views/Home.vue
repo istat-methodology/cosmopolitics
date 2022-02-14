@@ -1,54 +1,108 @@
 <template>
-  <div class="c-app">
-    <app-sidebar></app-sidebar>
-    <CWrapper>
-      <app-toast></app-toast>
-      <app-header />
-      <div class="c-body">
-        <main class="c-main">
-          <CContainer fluid>
-            <transition name="fade" mode="out-in">
-              <router-view></router-view>
-            </transition>
-          </CContainer>
-        </main>
-        <app-footer />
+  <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="card">
+        <header class="card-header">
+          <span class="card-title">{{ $t("landing.map.title") }}</span>
+        </header>
+        <div class="card-body">
+          <p v-html="$t('landing.map.body')"></p>
+          <p class="section-link">
+            <router-link :to="{ name: 'Map' }" custom v-slot="{ navigate }">
+              <a @click="navigate" @keypress.enter="navigate" role="link">
+                {{ $t("landing.map.link") }}<chevron-right-icon />
+              </a>
+            </router-link>
+          </p>
+        </div>
       </div>
-    </CWrapper>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card">
+        <header class="card-header">
+          <span class="card-title">{{ $t("landing.graph.title") }}</span>
+        </header>
+        <div class="card-body">
+          <p v-html="$t('landing.graph.body')"></p>
+          <p class="section-link">
+            <router-link
+              :to="{ name: 'GraphExtraUe' }"
+              custom
+              v-slot="{ navigate }"
+            >
+              <a @click="navigate" @keypress.enter="navigate" role="link">
+                {{ $t("landing.graph.link") }}<chevron-right-icon />
+              </a>
+            </router-link>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card">
+        <header class="card-header">
+          <span class="card-title">{{ $t("landing.timeseries.title") }}</span>
+        </header>
+        <div class="card-body">
+          <p v-html="$t('landing.timeseries.body')"></p>
+          <p class="section-link">
+            <router-link
+              :to="{ name: 'TimeSeries' }"
+              custom
+              v-slot="{ navigate }"
+            >
+              <a @click="navigate" @keypress.enter="navigate" role="link">
+                {{ $t("landing.timeseries.link") }}<chevron-right-icon />
+              </a>
+            </router-link>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card">
+        <header class="card-header">
+          <span class="card-title">{{ $t("landing.trade.title") }}</span>
+        </header>
+        <div class="card-body">
+          <p v-html="$t('landing.trade.body')"></p>
+          <p class="section-link">
+            <router-link :to="{ name: 'Trade' }" custom v-slot="{ navigate }">
+              <a @click="navigate" @keypress.enter="navigate" role="link">
+                {{ $t("landing.trade.link") }}<chevron-right-icon />
+              </a>
+            </router-link>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Sidebar from "@/components/Sidebar";
-import Toast from "@/components/Toast";
-
+import { Context } from "@/common";
 export default {
-  name: "App",
-  components: {
-    "app-header": Header,
-    "app-footer": Footer,
-    "app-sidebar": Sidebar,
-    "app-toast": Toast
-  },
+  name: "Home",
   created() {
-    this.$store.dispatch("coreui/clearContext");
+    this.$store.dispatch("coreui/setContext", Context.Home);
   }
 };
 </script>
 
-<style lang="scss">
-// Import Main styles for this application
-@import "../assets/scss/style";
-
-//Transition
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
+<style scoped>
+.material-design-icon > .material-design-icon__svg {
+  bottom: -0.17rem;
 }
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+.card-title {
+  font-weight: 600;
+}
+a:not([href]) {
+  text-decoration: none;
+  background-color: transparent;
+  color: #321fdb;
+}
+a:not([href]):hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>
