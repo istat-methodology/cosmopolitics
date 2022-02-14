@@ -1,4 +1,3 @@
-//import { latLng } from "leaflet";
 import * as d3 from "d3";
 import * as scale from "d3-scale";
 
@@ -9,7 +8,8 @@ export default {
       code: ""
     },
     colors: [],
-    dataLegend: []
+    dataLegend: [],
+    legendTitle:""// $t("map.legend.title"),
   }),
   methods: {
     getRadius(marker) {
@@ -67,7 +67,7 @@ export default {
         .selectAll("*")
         .remove();
       this.colorlegend("#Legend", linearScale, min, max, {
-        title: "Monthly year - on - year " + importexport + " change( % )",
+        title: this.legendTitle + "Monthly year - on - year " + importexport + " change( % )",
         boxWidth: 12,
         boxHeight: 12,
         axis: true

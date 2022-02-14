@@ -25,13 +25,6 @@ export default {
       return obj ? obj.val : null;
     },
     getSliderTime(start, end) {
-      //const months = Array.from({length: 12}, (item, i) => {
-      //   return new Date(0, i).toLocaleString('en-US', {month: 'short'})
-      //});
-      //console.log(months);
-      //timePeriod: [
-      //      { id: "201912", name: "Dec 19" },
-      //d3.timeFormat('%b-%y') rembember mybe to use!!!
       var arr = new Array();
       var dt = new Date(start);
       while (dt <= end) {

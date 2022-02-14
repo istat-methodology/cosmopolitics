@@ -43,6 +43,9 @@
     }
   },
   "map": {
+    "legend": {
+      "title": "it testo"
+    },
     "modal": {
       "main": {
         "title": "Indicatori economici e del commercio internazionale",

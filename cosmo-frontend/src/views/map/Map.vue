@@ -102,6 +102,7 @@
         </CCardBody>
         <CCardFooter>
           <vue-slider
+            class="custom-label"          
             v-if="mapPeriod"
             :adsorb="true"
             :tooltip="'none'"
@@ -109,8 +110,8 @@
             :data="mapPeriod"
             :data-value="'id'"
             :data-label="'name'"
-            @change="handleCounterChange"
-          />
+
+        />
         </CCardFooter>
       </div>
     </div>
@@ -486,5 +487,12 @@ export default {
 .control-btn {
   font: bold 12px "Lucida Console", Monaco, monospace;
   text-indent: 1px;
+}
+
+.vue-slider-ltr .vue-slider-mark-label, .vue-slider-rtl .vue-slider-mark-label {
+    -webkit-transform: rotate(20deg) !important; 
+    -moz-transform: rotate(20deg) !important;
+    transform: rotate(20deg) !important;
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 </style>

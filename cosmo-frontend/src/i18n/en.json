@@ -44,6 +44,9 @@
     }
   },
   "map": {
+    "legend": {
+      "title": "en text"
+    },
     "modal": {
       "main": {
         "title": "Economic and International Trade Indicators",

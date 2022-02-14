@@ -219,9 +219,17 @@ $themeColor: #321fdb;
 @import "~vue-slider-component/lib/theme/material.scss";
 
 .vue-slider {
-  margin: 1rem 0.5rem;
+  margin: 1rem 1rem;
 }
 
 .vue-slider-mark-label {
   font-size: 12px !important;
+}
+
+.vue-slider-ltr .vue-slider-mark-label,
+.vue-slider-rtl .vue-slider-mark-label {
+  -webkit-transform: rotate(20deg) !important;
+  -moz-transform: rotate(20deg) !important;
+  transform: rotate(20deg) !important;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }

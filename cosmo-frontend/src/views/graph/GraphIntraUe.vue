@@ -419,7 +419,7 @@ export default {
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
       };
-      this.$store.dispatch("graphVisjs/postGraph", form);
+      this.$store.dispatch("graphVisjs/postGraphIntra", form);
       this.$store.dispatch(
         "message/success",
         this.$t("graph.scenario.success")
