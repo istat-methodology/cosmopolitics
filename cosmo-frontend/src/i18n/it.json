@@ -43,9 +43,19 @@
     }
   },
   "map": {
-    "legend": {
-      "title": "it testo"
+    "legend" : {
+      "title" : {
+        "export" : "Variazione tendenziale dell’export (%)",
+        "import"  : "Variazione tendenziale dell’import (%)"
+      }
     },
+        "toolbar": {
+          "information": "visualizza informazioni",
+          "marker": "imposta visualizzazione marker",
+          "feature": "imposta visualizzazione feature",
+          "import":"visualizza dati import",          
+          "export": "visualizza dati export"
+        },
     "modal": {
       "main": {
         "title": "Indicatori economici e del commercio internazionale",

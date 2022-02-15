@@ -8,8 +8,7 @@ export default {
       code: ""
     },
     colors: [],
-    dataLegend: [],
-    legendTitle:""// $t("map.legend.title"),
+    dataLegend: [],   
   }),
   methods: {
     getRadius(marker) {
@@ -46,7 +45,7 @@ export default {
       let point = Math.round(sPoint);
       return this.colors[point];
     },
-    setLegend(min, max, data, importexport) {
+    setLegend(min, max, data) {
       const colorScale = d3.interpolateRdYlGn;
       const colorRangeInfo = {
         colorStart: 0,
@@ -67,7 +66,6 @@ export default {
         .selectAll("*")
         .remove();
       this.colorlegend("#Legend", linearScale, min, max, {
-        title: this.legendTitle + "Monthly year - on - year " + importexport + " change( % )",
         boxWidth: 12,
         boxHeight: 12,
         axis: true
@@ -76,8 +74,7 @@ export default {
     colorlegend(target, scale, min, max, options) {
       var opts = options || {},
         boxWidth = opts.boxWidth || 20, // width of each box (int)
-        boxHeight = opts.boxHeight || 20, // height of each box (int)
-        title = opts.title || null, // draw title (string)
+        boxHeight = opts.boxHeight || 20, // height of each box (int)        
         htmlElement = document.getElementById(
           target.substring(0, 1) === "#"
             ? target.substring(1, target.length)
@@ -88,7 +85,7 @@ export default {
         colors = [],
         padding = [6, 4, 10, 4], // top, right, bottom, left
         boxSpacing = 0, // spacing between boxes
-        titlePadding = title ? 32 : 0,
+        
         domain = scale.domain(),
         range = scale.range(),
         isAxis = opts.axis || false,
@@ -106,8 +103,8 @@ export default {
           (w - padding[1] - padding[3] - boxSpacing * colors.length) /
           colors.length;
       }
-      if (h < boxHeight + padding[0] + padding[2] + titlePadding) {
-        boxHeight = h - padding[0] - padding[2] - titlePadding;
+      if (h < boxHeight + padding[0] + padding[2]) {
+        boxHeight = h - padding[0] - padding[2];
       }
       (scaleAxis = d3
         .scaleLinear()
@@ -184,21 +181,6 @@ export default {
 
         var axisTop = boxHeight + 1;
         legendAxis.attr("transform", "translate(" + 0 + "," + axisTop + ")");
-      }
-      // title in center of legend (bottom)
-      if (title) {
-        var legendTitle = legend
-          .append("text")
-          .attr("class", "colorlegend-title")
-          .style("text-anchor", "middle")
-          .style("font-size", "12")
-          .style("font-weight", "bold")
-          .style("pointer-events", "none")
-          .text(title);
-        legendTitle
-          .attr("dy", ".71em")
-          .attr("x", colors.length * (boxWidth / 2))
-          .attr("y", boxHeight + titlePadding);
       }
       return this;
     },

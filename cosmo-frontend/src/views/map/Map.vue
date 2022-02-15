@@ -29,7 +29,7 @@
               v-bind:key="i"
               :lat-lng="[
                 marker.coordinates.latitude,
-                marker.coordinates.longitude
+                marker.coordinates.longitude,
               ]"
               :visible="!isMarker"
               :fillOpacity="0.65"
@@ -48,6 +48,13 @@
 
             <l-control position="topright">
               <div id="Legend" class="legend"></div>
+              <div class="legend-title">
+                {{
+                  !isImport
+                    ? $t("map.legend.title.export")
+                    : $t("map.legend.title.import")
+                }}
+              </div>
             </l-control>
 
             <l-control position="bottomleft">
@@ -77,21 +84,29 @@
               <div class="leaflet-bar">
                 <a
                   class="control-btn"
-                  title="Info"
+                  :title="$t('map.toolbar.information')"
                   role="button"
                   @click="helpOn(true)"
                   >i</a
                 >
                 <a
                   class="control-btn"
-                  :title="this.titleFeatureMarker"
+                  :title="
+                    !isMarker
+                      ? $t('map.toolbar.feature')
+                      : $t('map.toolbar.marker')
+                  "
                   role="button"
                   @click="setFeatureMarker()"
                   >{{ this.btnFeatureMarker }}</a
                 >
                 <a
                   class="control-btn"
-                  :title="this.titleImportExport"
+                  :title="
+                    !isImport
+                      ? $t('map.toolbar.import')
+                      : $t('map.toolbar.export')
+                  "
                   role="button"
                   @click="setImportExport()"
                   >{{ this.btnImportExport }}</a
@@ -100,9 +115,10 @@
             </l-control>
           </l-map>
         </CCardBody>
-        <CCardFooter>
-          <vue-slider         
-            
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-12">
+          <vue-slider
             v-if="mapPeriod"
             :adsorb="true"
             :tooltip="'none'"
@@ -111,10 +127,8 @@
             :data-value="'id'"
             :data-label="'name'"
             @change="handleCounterChange"
-
-
-        />
-        </CCardFooter>
+          />
+        </div>
       </div>
     </div>
     <!-- Marker modal -->
@@ -141,7 +155,7 @@ import {
   LTileLayer,
   LControl,
   LTooltip,
-  LCircleMarker
+  LCircleMarker,
 } from "vue2-leaflet";
 import mapMixin from "@/components/mixins/map.mixin";
 import mapInfoMixin from "@/components/mixins/mapInfo.mixin";
@@ -159,7 +173,7 @@ export default {
     LControl,
     LCircleMarker,
     LTooltip,
-    VueSlider
+    VueSlider,
   },
   mixins: [mapMixin, mapInfoMixin, sliderMixin],
   data: () => ({
@@ -175,8 +189,6 @@ export default {
     markerPeriodSeries: [],
     markerMax: 60,
     markerMin: -60,
-    //delta: 2000,
-    //features
     enableTooltip: true,
     layer: {
       style: {
@@ -185,40 +197,41 @@ export default {
           opacity: 1,
           color: "gray",
           dashArray: "",
-          fillOpacity: 0.7
+          fillOpacity: 0.7,
         },
         over: {
           weight: 1,
           opacity: 1,
           color: "black",
           dashArray: "",
-          fillOpacity: 0.7
-        }
-      }
+          fillOpacity: 0.7,
+        },
+      },
     },
     btnFeatureMarker: "F",
-    titleFeatureMarker: "Change view to Feature mode",
+
     isMarker: false,
     isFeature: false,
     seriesName: "exportseries",
     btnImportExport: "IMP",
-    titleImportExport: "Load Import",
+
     isImport: false,
     isExport: false,
+
     ie: "Export",
-    modalHelpTitle: " About on ",
-    isModalHelp: false
+
+    isModalHelp: false,
   }),
   computed: {
     ...mapGetters("metadata", ["mapPeriod", "mapSeries"]),
     ...mapGetters("geomap", {
       markers: "geomap",
       infoData: "infoData",
-      seriesData: "seriesData"
+      seriesData: "seriesData",
     }),
     ...mapGetters("countries", {
       geoJson: "countriesBorders",
-      jsonData: "jsonData"
+      jsonData: "jsonData",
     }),
     micro() {
       return this.infoData ? this.infoData[0]["Main information"] : [];
@@ -237,7 +250,7 @@ export default {
     },
     options() {
       return {
-        onEachFeature: this.onEachFeatureFunction
+        onEachFeature: this.onEachFeatureFunction,
       };
     },
     styleFunction() {
@@ -247,7 +260,7 @@ export default {
           opacity: this.layer.style.defaultopacity,
           color: this.layer.style.default.color,
           dashArray: this.layer.style.default.dashArray,
-          fillOpacity: this.layer.style.default.fillOpacity
+          fillOpacity: this.layer.style.default.fillOpacity,
         };
       };
     },
@@ -263,8 +276,7 @@ export default {
             this.markerMin,
             this.markerMax
           );
-          layer.options.color = "gray"; //this.getColor(value,-60,60);
-          //layer.options.color = this.getColor(value,this.markerMin, this.markerMax);
+          layer.options.color = "gray";
           layer.bindTooltip(
             "<div>" +
               feature.properties.admin +
@@ -279,11 +291,11 @@ export default {
           );
           layer.on({
             mouseover: this.mouseover,
-            mouseout: this.mouseout
+            mouseout: this.mouseout,
           });
         }
       };
-    }
+    },
   },
   methods: {
     helpOn(showModal) {
@@ -296,20 +308,20 @@ export default {
       this.buildFeatures();
     },
     getPeriodSeries(marker, seriesData, seriesPeriod) {
-      const localSeries = seriesData.find(serie => {
+      const localSeries = seriesData.find((serie) => {
         return serie.country == marker.country;
       });
       return localSeries ? localSeries[seriesPeriod] : 0;
     },
     buildPeriodSeries() {
-      this.markerPeriodSeries = this.markers.map(marker => {
+      this.markerPeriodSeries = this.markers.map((marker) => {
         return {
           ...marker,
           series: this.getPeriodSeries(
             marker,
             this.seriesData,
             this.seriesPeriod
-          )
+          ),
         };
       });
 
@@ -321,23 +333,23 @@ export default {
     buildFeatures() {
       this.$store
         .dispatch("countries/getDataSeries", this.seriesName)
-        .then(seriesData => {
+        .then((seriesData) => {
           this.$store.dispatch("countries/getCountriesBorders", {
             seriesData: seriesData,
-            seriesPeriod: this.seriesPeriod
+            seriesPeriod: this.seriesPeriod,
           });
         });
     },
     setShooter() {
       let pluginOptions = {
-        hideElementsWithSelectors: []
+        hideElementsWithSelectors: [],
       };
 
       new SimpleMapScreenshoter(pluginOptions).addTo(this.$refs.map.mapObject);
     },
     getDataLegend(seriesData, seriesPeriod) {
       var data = [];
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key == seriesPeriod) {
             //console.log(key);
@@ -349,7 +361,7 @@ export default {
     },
     getMax(seriesData) {
       var max = 1;
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             if (max < obj[key]) {
@@ -363,7 +375,7 @@ export default {
     },
     getMin(seriesData) {
       var min = -1;
-      seriesData.forEach(obj => {
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             if (min > obj[key]) {
@@ -376,28 +388,15 @@ export default {
       return min;
     },
     setFeatureMarker() {
-      if (this.btnFeatureMarker == "F") {
-        this.btnFeatureMarker = "M";
-        this.titleFeatureMarker = "Change view Marker mode";
-      } else {
-        this.btnFeatureMarker = "F";
-        this.titleFeatureMarker = "Change view to Feature mode";
-      }
+      this.btnFeatureMarker = this.btnFeatureMarker == "M" ? "F" : "M";
       this.isFeature = !this.isFeature;
       this.isMarker = !this.isMarker;
     },
     setImportExport() {
-      if (this.btnImportExport == "IMP") {
-        this.btnImportExport = "EXP";
-        this.titleImportExport = "Load Export";
-        this.seriesName = "importseries";
-        this.ie = "Import";
-      } else {
-        this.btnImportExport = "IMP";
-        this.titleImportExport = "Load Import";
-        this.seriesName = "exportseries";
-        this.ie = "Export";
-      }
+      this.btnImportExport = this.btnImportExport == "IMP" ? "EXP" : "IMP";      
+      this.seriesName = this.btnImportExport != "IMP" ? "importseries":"exportseries";
+      this.ie = this.btnImportExport != "IMP" ? "Import":"Export";
+
       this.getDataSeries(this.seriesName);
       this.isImport = !this.isImport;
       this.isExport = !this.isExport;
@@ -406,14 +405,14 @@ export default {
       var layer = e.target;
       layer.setStyle({
         color: this.layer.style.over.color,
-        dashArray: this.layer.style.over.dashArray
+        dashArray: this.layer.style.over.dashArray,
       });
     },
     mouseout(e) {
       var layer = e.target;
       layer.setStyle({
         color: this.layer.style.default.color,
-        dashArray: this.layer.style.default.dashArray
+        dashArray: this.layer.style.default.dashArray,
       });
     },
     getDataSeries() {
@@ -423,12 +422,12 @@ export default {
           this.buildFeatures();
         });
       });
-    }
+    },
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Map);
     this.getDataSeries("exportseries");
-  }
+  },
 };
 </script>
 <style scoped>
@@ -460,10 +459,17 @@ export default {
 .legend {
   background-color: transparent;
   width: 360px;
-  height: 80px;
+  height: 40px;
   /*border: 1px solid #bbb;*/
   margin-left: 10px;
   padding: 1px !important;
+}
+.legend-title {
+  margin-top: 0px;
+  margin-left: 0px;
+  font-size: 1.2em;
+  fill: rgb(102, 102, 102);
+  text-align: center;
 }
 #Legend .colorlegend-labels {
   font-size: 11px;
@@ -491,10 +497,11 @@ export default {
   text-indent: 1px;
 }
 
-.vue-slider-ltr .vue-slider-mark-label, .vue-slider-rtl .vue-slider-mark-label {
-    -webkit-transform: rotate(20deg) !important; 
-    -moz-transform: rotate(20deg) !important;
-    transform: rotate(20deg) !important;
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+.vue-slider-ltr .vue-slider-mark-label,
+.vue-slider-rtl .vue-slider-mark-label {
+  -webkit-transform: rotate(20deg) !important;
+  -moz-transform: rotate(20deg) !important;
+  transform: rotate(20deg) !important;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 </style>

@@ -45,7 +45,17 @@
   },
   "map": {
     "legend": {
-      "title": "en text"
+      "title": {
+        "export": "Monthly year-on-year export change (%)",
+        "import": "Monthly year-on-year import change (%)"
+      }
+    },
+    "toolbar": {
+      "information": "view information",
+      "marker": "set to marker view",
+      "feature": "set to feature view",
+      "import": "view import data",
+      "export": "view export data"
     },
     "modal": {
       "main": {
