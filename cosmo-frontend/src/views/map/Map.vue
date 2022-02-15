@@ -351,8 +351,7 @@ export default {
       var data = [];
       seriesData.forEach((obj) => {
         for (const key in obj) {
-          if (key == seriesPeriod) {
-            //console.log(key);
+          if (key == seriesPeriod) {         
             data.push(obj[key]);
           }
         }
@@ -360,8 +359,9 @@ export default {
       return data;
     },
     getMax(seriesData) {
+      console.log(seriesData);
       var max = 1;
-      seriesData.forEach((obj) => {
+      /*seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             if (max < obj[key]) {
@@ -370,12 +370,14 @@ export default {
           }
         }
       });
+      */
       max = 60;
       return max;
     },
     getMin(seriesData) {
       var min = -1;
-      seriesData.forEach((obj) => {
+      console.log(seriesData);
+      /*seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key != "country") {
             if (min > obj[key]) {
@@ -384,6 +386,7 @@ export default {
           }
         }
       });
+      */
       min = -60;
       return min;
     },
@@ -467,9 +470,14 @@ export default {
 .legend-title {
   margin-top: 0px;
   margin-left: 0px;
-  font-size: 1.2em;
+  font-size: 1.1em;
+  font-weight: 500;
   fill: rgb(102, 102, 102);
   text-align: center;
+  
+  
+  /*text-shadow: 0.03em 0.04em #321fdb;*/
+  
 }
 #Legend .colorlegend-labels {
   font-size: 11px;

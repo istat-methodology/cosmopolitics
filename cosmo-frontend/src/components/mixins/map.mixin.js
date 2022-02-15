@@ -126,20 +126,22 @@ export default {
         .attr("transform", "translate(" + padding[0] + "," + padding[0] + ")")
         .style("font-size", "11px")
         .style("fill", "#666");
-
+      
       var legendBoxes = legend
         .selectAll("g.legend")
         .data(colors)
         .enter()
-        .append("g")
+        .append("g")        
         .on("click", function(e, rgbColor) {
           var pos = d3.pointer(e);
           var xPos = pos[0];
-          var value = xPos;
+          var value = xPos;          
           alert(
-            "Value: " + Math.round(scalePointer(value)) + ", color: " + rgbColor
+           "Value: " + Math.round(scalePointer(value)) + ", color: " +  rgbColor 
           );
         });
+        
+
       legendBoxes
         .append("text")
         .attr("stroke", "#fff")
