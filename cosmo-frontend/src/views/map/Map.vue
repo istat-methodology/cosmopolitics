@@ -101,8 +101,8 @@
           </l-map>
         </CCardBody>
         <CCardFooter>
-          <vue-slider
-            class="custom-label"          
+          <vue-slider         
+            
             v-if="mapPeriod"
             :adsorb="true"
             :tooltip="'none'"
@@ -110,6 +110,8 @@
             :data="mapPeriod"
             :data-value="'id'"
             :data-label="'name'"
+            @change="handleCounterChange"
+
 
         />
         </CCardFooter>

@@ -219,7 +219,8 @@ $themeColor: #321fdb;
 @import "~vue-slider-component/lib/theme/material.scss";
 
 .vue-slider {
-  margin: 1rem 1rem;
+  margin: 0.1rem 0.5rem;
+
 }
 
 .vue-slider-mark-label {
@@ -228,8 +229,20 @@ $themeColor: #321fdb;
 
 .vue-slider-ltr .vue-slider-mark-label,
 .vue-slider-rtl .vue-slider-mark-label {
-  -webkit-transform: rotate(20deg) !important;
-  -moz-transform: rotate(20deg) !important;
-  transform: rotate(20deg) !important;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
+  
+      -webkit-transform: rotate(-25deg) !important;
+      -webkit-transform-origin: 1% 550% !important;      
+      transform: rotate(-25deg) !important;
+      transform-origin: 1% 550% !important;
+      filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+      
+ }
+
+ .card-footer {
+   padding: 0.5rem 2.5rem !important;
+   border-top: 1px solid !important;   
+   background-color: #fff !important;   
+   border-color: #d8dbe0 !important;   
+   padding-bottom: 2.5em !important;
+   ;
+ }
