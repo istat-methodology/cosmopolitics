@@ -40,6 +40,9 @@ const routes = [
     component: () => import("../views/graph/GraphExtraUe"),
     meta: {
       authorize: []
+    },
+    props: {
+      type: "month"
     }
   },
   {

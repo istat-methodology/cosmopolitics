@@ -15,20 +15,17 @@ export default {
         });
       });
       return dataMap;
-    },    
+    },
     getCoordinatesACF(dataArray) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
-        dataMap.push(
-          {
-            x: index,
-            y: index
-          },
-          {
-            x: index,
-            y: element
-          }
-        );
+        dataMap.push({
+          x: index,
+          y: index
+        }, {
+          x: index,
+          y: element
+        });
       });
       return dataMap;
     },
@@ -45,14 +42,20 @@ export default {
       return dataMap;
     },
     buildTimeseriesCharts(dataR) {
+
       this.timeLapse = [];
       this.diagNormTitle = "DiagNorm";
-      this.chartDataDiagNorm = this.getDiagNormChart(dataR["DIAG_NORM"]);
+      this.chartDataDiagNorm = this.getDiagNormChart(dataR["diagNorm"]);
+      //this.chartDataDiagNorm = this.getDiagNormChart(dataR["DIAG_NORM"]);
       this.diagACFTitle = "DiagACF";
-      this.chartDataDiagACF = this.getDiagACFChart(dataR["DIAG_ACF"]);
+      this.chartDataDiagACF = this.getDiagACFChart(dataR["diagACF"]);
+      //this.chartDataDiagACF = this.getDiagACFChart(dataR["DIAG_ACF"]);
       // hard coded
-      this.timeLapse.push(dataR["T1"]);
-      this.maxTimeStep = this.timeLapse.length - 1;
+      //this.timeLapse.push(dataR["T1"]);
+      //this.timeLapse.push(dataR["diagMain"]);
+      this.chartDataDiagMain = this.getTimeseriesChart(dataR["diagMain"]);
+      //this.maxTimeStep = this.timeLapse.length - 1;
+
     },
     buildObject(
       label,
@@ -96,7 +99,7 @@ export default {
       chartObj = {
         label: label,
         fill: fill,
-        backgroundColor: function(context) {
+        backgroundColor: function (context) {
           var index = context.dataIndex;
           var value = context.dataset.data[index];
           if (value) {
@@ -117,15 +120,16 @@ export default {
       };
       return chartObj;
     },
-    getTimeseriesChart() {
+    getTimeseriesChart(Main) {
       var chartData = {};
       var dataXY = [];
       var chartObj = {};
       chartData.datasets = [];
-      if (this.timeLapse) {
-        this.labels = this.timeLapse[0]["date"];
-        chartData.labels = this.timeLapse[0]["date"];
-        dataXY = this.getCoordinates(this.timeLapse[0]["tend"]);
+      if (Main) {
+        this.labels = Main["date"];
+        chartData.labels = Main["date"];
+        //dataXY = this.getCoordinates(this.timeLapse[0]["tend"]);
+        dataXY = this.getCoordinates(Main["series"]);
         var highlightIndex = parseInt(this.cast.indexStart);
         chartObj = this.buildObjectWithContext(
           highlightIndex,
@@ -144,6 +148,36 @@ export default {
       }
       return chartData;
     },
+    /*
+        getTimeseriesChart() {
+          var chartData = {};
+          var dataXY = [];
+          var chartObj = {};
+          chartData.datasets = [];
+          if (this.timeLapse) {
+            this.labels = this.timeLapse[0]["date"];
+            chartData.labels = this.timeLapse[0]["date"];
+            //dataXY = this.getCoordinates(this.timeLapse[0]["tend"]);
+            dataXY = this.getCoordinates(this.timeLapse[0]["series"]);
+            var highlightIndex = parseInt(this.cast.indexStart);
+            chartObj = this.buildObjectWithContext(
+              highlightIndex,
+              "Yearly variation series",
+              false,
+              "rgba(46, 184, 92, 0.2)",
+              "rgba(255,128,0,0.6)",
+              "rgba(46, 184, 92,1)",
+              dataXY,
+              true,
+              0,
+              2,
+              0
+            );
+            chartData.datasets.push(chartObj);
+          }
+          return chartData;
+        },
+    */
     getDiagNormChart(diag) {
       var chartData = {};
       var dataXY = [];
@@ -195,8 +229,7 @@ export default {
             case "dsh_y_pos":
               borderDash = 5;
               maxDsh = diag[chartType].length - 1;
-              dataXY = [
-                {
+              dataXY = [{
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -220,8 +253,7 @@ export default {
               break;
             case "dsh_y_neg":
               (borderDash = 5), (maxDsh = diag[chartType].length - 1);
-              dataXY = [
-                {
+              dataXY = [{
                   x: 0,
                   y: diag[chartType][0]
                 },
@@ -245,8 +277,7 @@ export default {
               break;
             case "lne_y":
               diag[chartType].forEach((element, index) => {
-                dataXY = [
-                  {
+                dataXY = [{
                     x: index,
                     y: 0
                   },

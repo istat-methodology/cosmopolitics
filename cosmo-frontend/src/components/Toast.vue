@@ -18,11 +18,11 @@ export default {
     ...mapGetters("message", ["message", "type"]),
     getMessage() {
       return this.message.split("#").pop();
-    }
+    },
   },
   created() {
     this.$store.dispatch("message/clear");
-  }
+  },
 };
 </script>
 
@@ -55,5 +55,9 @@ export default {
   color: #856404;
   background-color: #fff3cd;
   border-color: #ffeeba;
+}
+.toaster-top-center {
+  left: 37.5% !important;
+  transform: translateY(550%) !important;
 }
 </style>

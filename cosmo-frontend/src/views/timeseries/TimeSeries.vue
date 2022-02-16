@@ -41,7 +41,7 @@
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_timeseries"
-                :data="getData(chartData, 'timeseries')"
+                :data="getData(chartDataDiagMain, 'timeseries')"
               >
               </exporter>
             </span>
@@ -50,7 +50,7 @@
         <CCardBody v-show="isMainChart">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
           <scatter-chart
-            :chartData="chartData"
+            :chartData="chartDataDiagMain"
             :options="options"
             id="timeseries"
           />
@@ -179,7 +179,7 @@
               'is-invalid': $v.flowSelected.$error,
             }"
           />
-          <label class="card-label mt-3" :title="this.countryFilter"
+          <label class="card-label mt-3"
             >{{ $t("timeseries.form.fields.country") }}*</label
           >
           <v-select
@@ -191,7 +191,7 @@
               'is-invalid': $v.countrySelected.$error,
             }"
           />
-          <label class="card-label mt-3" :title="this.partnerFilter"
+          <label class="card-label mt-3"
             >{{ $t("timeseries.form.fields.partner") }}*</label
           >
           <v-select
@@ -203,7 +203,7 @@
               'is-invalid': $v.partnerSelected.$error,
             }"
           />
-          <label class="card-label mt-3" :title="this.becFilter"
+          <label class="card-label mt-3"
             >{{ $t("timeseries.form.fields.bec") }}*</label
           >
           <v-select
@@ -215,7 +215,7 @@
               'is-invalid': $v.becSelected.$error,
             }"
           />
-          <label class="card-label mt-3" :title="this.becFilter"
+          <label class="card-label mt-3"
             >{{ $t("timeseries.form.fields.productsCPA") }}*</label
           >
           <v-select
@@ -255,7 +255,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { Context } from "@/common";
+import { Context,Status } from "@/common";
 import paletteMixin from "@/components/mixins/palette.mixin";
 import timeseriesDiagMixin from "@/components/mixins/timeseriesDiag.mixin";
 import timeseriesMixin from "@/components/mixins/timeseries.mixin";
@@ -284,7 +284,7 @@ export default {
     becSelected: null,
     productsCPASelected: null,
 
-    chartData: null,
+    chartDataDiagMain: null,
     chartDataDiagNorm: null,
     chartDataDiagACF: null,
 
@@ -300,11 +300,10 @@ export default {
       "partners",
       "becs",
       "flows",
-      "dataType",
-      "timeNext",
-      "productsCPA"
+      "dataType",     
+      "productsCPA",
     ]),
-    ...mapGetters("timeseries", ["timeseriesCharts", "timeseriesDate"]),
+    ...mapGetters("timeseries", ["timeseriesCharts", "tm"]),
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
     },
@@ -337,7 +336,6 @@ export default {
     handleMainChart() {
       this.isMainChart = !this.isMainChart;
     },
-
     handleDiagNorm() {
       this.isDiagNorm = !this.isDiagNorm;
     },
@@ -359,16 +357,24 @@ export default {
           datType: this.dataTypeSelected.id,
           flow: this.flowSelected.id,
           var: this.becSelected.id,
-        //var: this.productsCPASelected.id,
+          //var: this.productsCPASelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
           fcst: 0,
         };
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
-          this.buildTimeseriesCharts(this.timeseriesCharts);
-          if (this.timeLapse) {
+          if (this.tm["status"] == Status.success) {
+            this.$store.dispatch("message/success", "eureka!!");
+            //this.buildTimeseriesCharts(this.timeseriesCharts);
+            this.buildTimeseriesCharts(this.tm);
+            //if (this.timeLapse) {
+            //  this.spinnerStart(false);
+            //  this.chartData = this.getTimeseriesChart();
+            //}
             this.spinnerStart(false);
-            this.chartData = this.getTimeseriesChart();
+          } else {
+            this.$store.dispatch("message/error", "failed!!");
+            this.spinnerStart(false);
           }
         });
       }

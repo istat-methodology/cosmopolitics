@@ -325,6 +325,7 @@ export default {
       "weights",
     ]),
     network() {
+      
       return this.nodes && this.edges
         ? {
             nodes: this.nodes,
@@ -500,7 +501,7 @@ export default {
           pos: "None",
           selezioneMezziEdges: "None",
         };
-        this.$store.dispatch("graphVisjs/postGraph", form);
+        this.$store.dispatch("graphVisjs/postGraphExtra", form);
         this.transportConstraintSelected = {};
       }
     },
@@ -536,6 +537,10 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
+    console.log(this.$route.matched[0].props.default.type);
+    
+
+
   },
 };
 </script>

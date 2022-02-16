@@ -26,10 +26,11 @@
         </CCardHeader>
         <CCardBody>
           <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
-          <line-chart
+          <line-chart        
+
             :chartData="chartData"
             :options="optionsTrade"
-            :height="500"
+            height="600"
             id="trade"
           />
         </CCardBody>
