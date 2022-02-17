@@ -45,9 +45,6 @@ import {
 
 // Time period
 import {
-  period
-} from "./modules/period/period";
-import {
   metadata
 } from "./modules/metadata/metadata";
 
@@ -69,8 +66,9 @@ export default new Vuex.Store({
     trade,
     classification,
     timeseries,
-    period,
+    
     countries,
+    // time period
     metadata
   }
 });

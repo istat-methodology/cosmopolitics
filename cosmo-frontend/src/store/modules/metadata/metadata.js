@@ -1,5 +1,9 @@
-import { metadataService } from "@/services";
-import { getPeriod } from "@/common";
+import {
+  metadataService
+} from "@/services";
+import {
+  getPeriod
+} from "@/common";
 const state = {
   metadata: null
 };
@@ -9,7 +13,9 @@ const mutations = {
   }
 };
 const actions = {
-  getMetadata({ commit }) {
+  getMetadata({
+    commit
+  }) {
     return metadataService
       .getMetadata()
       .then(data => {
@@ -22,7 +28,10 @@ const actions = {
 };
 const getters = {
   mapPeriod: state => {
-    return getPeriod(state.metadata.map.timeStart, state.metadata.map.timeEnd);
+    return getPeriod(
+      state.metadata.map.timeStart,
+      state.metadata.map.timeEnd
+    );    
   },
   graphPeriod: state => {
     return getPeriod(

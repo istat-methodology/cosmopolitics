@@ -1,7 +1,7 @@
 export function getPeriod(start, end) {
   var arr = new Array();
-  var dt = new Date(start);
-  var de = new Date(end);
+  var dt = new Date(Number(start.year), Number(start.month));
+  var de = new Date(Number(end.year), Number(end.month));
   while (dt <= de) {
     var monthIndex = dt.getMonth();
     monthIndex = monthIndex + 1;

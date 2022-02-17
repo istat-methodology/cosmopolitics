@@ -15,5 +15,4 @@ export * from "./trade/trade.service";
 export * from "./countries/countries.service";
 
 // return period from server to map graph graph plus
-export * from "./period/period.service";
 export * from "./metadata/metadata.service";

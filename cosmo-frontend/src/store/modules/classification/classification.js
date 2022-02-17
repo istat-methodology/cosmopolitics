@@ -192,10 +192,13 @@ const getters = {
   },
   timeNext: state => {
     return state.timeNext;
-  },
+  }
+  /*,
+
   timeTrade: state => {
     return state.timeTrade;
   }
+  */
 };
 export const classification = {
   namespaced: true,

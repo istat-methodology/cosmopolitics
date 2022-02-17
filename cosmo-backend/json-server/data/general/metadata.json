@@ -8,22 +8,46 @@
     "offsetMonthToExtract": 3,
     "map": {
         "timeSelected": "202002",
-        "timeStart": "2018,12",
-        "timeEnd": "2021,11"
+        "timeStart": {
+            "year": 2018,
+            "month": 12
+        },
+        "timeEnd": {
+            "year": 2021,
+            "month": 11
+        }
     },
     "graph": {
         "timeSelected": "202202",
-        "timeStart": "2020,1",
-        "timeEnd": "2021,12"
+        "timeStart": {
+            "year": 2018,
+            "month": 12
+        },
+        "timeEnd": {
+            "year": 2021,
+            "month": 11
+        }
     },
     "graph-plus": {
         "timeSelected": "202202",
-        "timeStart": "2018,11",
-        "timeEnd": "2021,11"
+        "timeStart": {
+            "year": 2018,
+            "month": 12
+        },
+        "timeEnd": {
+            "year": 2021,
+            "month": 11
+        }
     },
     "trade": {
         "timeSelected": "202202",
-        "timeStart": "2018,11",
-        "timeEnd": "2021,11"
+        "timeStart": {
+            "year": 2018,
+            "month": 12
+        },
+        "timeEnd": {
+            "year": 2021,
+            "month": 11
+        }
     }
 }

@@ -26,11 +26,10 @@
         </CCardHeader>
         <CCardBody>
           <circle-spin v-if="!this.chartData" class="circle-spin"></circle-spin>
-          <line-chart        
-
+          <line-chart
             :chartData="chartData"
             :options="optionsTrade"
-            height="600"
+            :height="600"
             id="trade"
           />
         </CCardBody>
@@ -130,8 +129,7 @@ export default {
     ...mapGetters("classification", [
       "tradeDataType",
       "countries",
-      "flows",
-      "timeTrade",
+      "flows"
     ]),
     ...mapGetters("trade", ["charts"]),
     ...mapGetters("metadata", ["tradePeriod"]),
@@ -184,11 +182,9 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("period/findByName", "trade").then(() => {
-      for (const period of this.tradePeriod) {
-        this.labelPeriod.push(period.name);
-      }
-    });
+    for (const period of this.tradePeriod) {
+      this.labelPeriod.push(period.name);
+    }
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("trade/findByName", {
       country: this.countrySelected.country,
