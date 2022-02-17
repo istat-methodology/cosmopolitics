@@ -72,6 +72,16 @@
           :data-label="'name'"
           @change="handleSliderChange"
         />
+        <vue-slider
+          v-if="graphTrimesterPeriod"
+          :adsorb="true"
+          :tooltip="'none'"
+          v-model="trimesterPeriodValue"
+          :data="graphTrimesterPeriod"
+          :data-value="'id'"
+          :data-label="'name'"
+          @change="handleSliderChange"
+        />
       </CCard>
     </div>
     <div class="col-3">
@@ -98,6 +108,20 @@
             :options="graphPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
+            :class="{
+              'is-invalid': $v.selectedPeriod.$error,
+            }"
+            @input="updateSlider"
+          />
+                    <label class="card-label"
+            >{{ $t("graph.form.fields.period") }}*</label
+          >
+          <v-select
+            v-if="graphTrimesterPeriod"
+            label="name"
+            :options="graphTrimesterPeriod"
+            :placeholder="$t('graph.form.fields.period_placeholder')"
+            v-model="selectedTrimesterPeriod"
             :class="{
               'is-invalid': $v.selectedPeriod.$error,
             }"
@@ -269,6 +293,9 @@ export default {
     selectedPeriod: { id: "202003", name: "Mar 20" },
     //Slider
     periodValue: "202003",
+
+    selectedTrimesterPeriod: { id: "20184", name: "4Q 18" },
+    trimesterPeriodValue:"20201",
     //Form fields
     percentage: 90,
     transport: null,
@@ -316,7 +343,7 @@ export default {
     filter: [],
   }),
   computed: {
-    ...mapGetters("metadata", ["graphPeriod"]),
+    ...mapGetters("metadata", ["graphPeriod","graphTrimesterPeriod"]),
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", [
       "transports",

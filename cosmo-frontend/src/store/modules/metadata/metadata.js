@@ -2,7 +2,7 @@ import {
   metadataService
 } from "@/services";
 import {
-  getPeriod
+  getPeriod, getTrimesterPeriod
 } from "@/common";
 const state = {
   metadata: null
@@ -35,6 +35,12 @@ const getters = {
   },
   graphPeriod: state => {
     return getPeriod(
+      state.metadata.graph.timeStart,
+      state.metadata.graph.timeEnd
+    );
+  },
+  graphTrimesterPeriod: state => {
+    return getTrimesterPeriod(
       state.metadata.graph.timeStart,
       state.metadata.graph.timeEnd
     );

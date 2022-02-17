@@ -88,7 +88,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .material-design-icon > .material-design-icon__svg {
   bottom: -0.17rem;

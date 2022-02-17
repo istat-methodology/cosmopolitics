@@ -79,8 +79,7 @@
           </CButton>
         </CCardBody>
       </CCard>
-    </div>
-    <!-- Marker modal -->
+    </div>   
     <CModal
       :title="$t('trade.modal.main.title')"
       :show.sync="isModalHelp"
@@ -121,8 +120,7 @@ export default {
       descr: "Export",
     },
     spinner: false,
-    labelPeriod: [],
-    modalHelpTitle: " About on ",
+    labelPeriod: [],    
     isModalHelp: false,
   }),
   computed: {
@@ -158,10 +156,7 @@ export default {
     },
   },
   methods: {
-    helpOn(showModal) {
-      this.isModalHelp = showModal;
-      this.modalHelpTitle = "About map";
-    },
+    helpOn(showModal) {  this.isModalHelp = showModal;  },
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
@@ -182,9 +177,7 @@ export default {
     },
   },
   created() {
-    for (const period of this.tradePeriod) {
-      this.labelPeriod.push(period.name);
-    }
+    for (const period of this.tradePeriod) { this.labelPeriod.push(period.name); }
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("trade/findByName", {
       country: this.countrySelected.country,

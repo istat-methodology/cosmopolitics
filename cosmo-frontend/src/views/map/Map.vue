@@ -399,7 +399,6 @@ export default {
       this.btnImportExport = this.btnImportExport == "IMP" ? "EXP" : "IMP";      
       this.seriesName = this.btnImportExport != "IMP" ? "importseries":"exportseries";
       this.ie = this.btnImportExport != "IMP" ? "Import":"Export";
-
       this.getDataSeries(this.seriesName);
       this.isImport = !this.isImport;
       this.isExport = !this.isExport;
