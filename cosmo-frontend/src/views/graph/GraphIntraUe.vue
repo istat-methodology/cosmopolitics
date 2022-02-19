@@ -98,27 +98,18 @@
           <label class="card-label"
             >{{ $t("graph.form.fields.period") }}*</label
           >
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          <div>
+           <div>
             <RadioButton
               name="options"
-              label="Montly"
+              dat="Montly"
+              :label="$t('graph.form.fields.montly')"              
               :value="selectedRadioValue"
               @change="changeValue"
             />
             <RadioButton
               name="options"
-              label="Trimester"
+              dat="Trimester"
+              :label="$t('graph.form.fields.trimester')"
               :value="selectedRadioValue"
               @change="changeValue"
             />
