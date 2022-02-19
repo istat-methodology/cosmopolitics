@@ -59,11 +59,21 @@
         </CCardBody>
 
         <vue-slider
-          v-if="graphPeriod"
+          v-if="graphPeriod && !isTrimester"
           :adsorb="true"
           :tooltip="'none'"
           v-model="periodValue"
           :data="graphPeriod"
+          :data-value="'id'"
+          :data-label="'name'"
+          @change="handleSliderChange"
+        />
+        <vue-slider
+          v-if="graphTrimesterPeriod && isTrimester"
+          :adsorb="true"
+          :tooltip="'none'"
+          v-model="trimesterPeriodValue"
+          :data="graphTrimesterPeriod"
           :data-value="'id'"
           :data-label="'name'"
           @change="handleSliderChange"
@@ -88,14 +98,50 @@
           <label class="card-label"
             >{{ $t("graph.form.fields.period") }}*</label
           >
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <div>
+            <RadioButton
+              name="options"
+              label="Montly"
+              :value="selectedRadioValue"
+              @change="changeValue"
+            />
+            <RadioButton
+              name="options"
+              label="Trimester"
+              :value="selectedRadioValue"
+              @change="changeValue"
+            />
+          </div>
           <v-select
-            v-if="graphPeriod"
+            v-if="graphPeriod && !isTrimester"
             label="name"
             :options="graphPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
             :class="{
               'is-invalid': $v.selectedPeriod.$error,
+            }"
+            @input="updateSlider"
+          />
+          <v-select
+            v-if="graphTrimesterPeriod && isTrimester"
+            label="name"
+            :options="graphTrimesterPeriod"
+            :placeholder="$t('graph.form.fields.period_placeholder')"
+            v-model="selectedTrimesterPeriod"
+            :class="{
+              'is-invalid': $v.selectedTrimesterPeriod.$error,
             }"
             @input="updateSlider"
           />
@@ -242,16 +288,20 @@ import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
+import RadioButton from "@/components/RadioButton";
 
 export default {
   name: "GraphIntraUe",
-  components: { Network, VueSlider, exporter },
+  components: { Network, VueSlider, exporter, RadioButton },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
-    //selectbox
     selectedPeriod: { id: "202003", name: "Mar 20" },
+    selectedTrimesterPeriod: { id: "20201", name: "1Q 20" },
+
     //Slider
     periodValue: "202003",
+    trimesterPeriodValue: "20201",
+
     //Form fields
     percentage: 90,
     transport: null,
@@ -293,13 +343,15 @@ export default {
     isModalHelp: false,
     isMainModal: false,
     isFilterModal: false,
+    isTrimester: true,
+    selectedRadioValue: "Montly",
 
     paragraph: [],
     main: [],
     filter: [],
   }),
   computed: {
-    ...mapGetters("metadata", ["graphPeriod"]),
+    ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", [
       "transports",
@@ -328,6 +380,9 @@ export default {
     selectedPeriod: {
       required,
     },
+    selectedTrimesterPeriod: {
+      required,
+    },
     percentage: {
       required,
       numeric,
@@ -346,6 +401,10 @@ export default {
     },
   },
   methods: {
+    changeValue(newValue) {
+      this.selectedRadioValue = newValue;
+      this.isTrimester = this.selectedRadioValue == "Montly" ? false : true;
+    },
     helpOn(showModal, mainModal) {
       this.isMainModal = mainModal;
       this.isModalHelp = showModal;
@@ -517,6 +576,7 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.GraphIntra);
+    this.changeValue("Trimester");
   },
 };
 </script>

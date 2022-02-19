@@ -43,19 +43,19 @@
     }
   },
   "map": {
-    "legend" : {
-      "title" : {
-        "export" : "Variazione tendenziale dell’export (%)",
-        "import"  : "Variazione tendenziale dell’import (%)"
+    "legend": {
+      "title": {
+        "export": "Variazione tendenziale dell’export (%)",
+        "import": "Variazione tendenziale dell’import (%)"
       }
     },
-        "toolbar": {
-          "information": "visualizza informazioni",
-          "marker": "imposta visualizzazione marker",
-          "feature": "imposta visualizzazione feature",
-          "import":"visualizza dati import",          
-          "export": "visualizza dati export"
-        },
+    "toolbar": {
+      "information": "visualizza informazioni",
+      "marker": "imposta visualizzazione marker",
+      "feature": "imposta visualizzazione feature",
+      "import": "visualizza dati import",
+      "export": "visualizza dati export"
+    },
     "modal": {
       "main": {
         "title": "Indicatori economici e del commercio internazionale",
@@ -75,6 +75,8 @@
     "form": {
       "title": "Filtri di ricerca",
       "fields": {
+        "montly": "Mensile",
+        "trimester": "Trimestrale",
         "period": "Periodo di riferimento",
         "period_placeholder": "Seleziona un periodo",
         "percentage": "Percentuale",

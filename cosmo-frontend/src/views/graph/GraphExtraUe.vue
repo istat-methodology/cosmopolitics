@@ -60,10 +60,9 @@
             @select-edge="handleSelectEdge"
             @hover-node="handleOverNode"
           />
-
         </CCardBody>
         <vue-slider
-          v-if="graphPeriod"
+          v-if="graphPeriod && !isTrimester"
           :adsorb="true"
           :tooltip="'none'"
           v-model="periodValue"
@@ -73,7 +72,7 @@
           @change="handleSliderChange"
         />
         <vue-slider
-          v-if="graphTrimesterPeriod"
+          v-if="graphTrimesterPeriod && isTrimester"
           :adsorb="true"
           :tooltip="'none'"
           v-model="trimesterPeriodValue"
@@ -102,8 +101,24 @@
           <label class="card-label"
             >{{ $t("graph.form.fields.period") }}*</label
           >
+          <div>
+            <RadioButton
+              name="options"
+              dat="Montly"
+              :label="$t('graph.form.fields.montly')"              
+              :value="selectedRadioValue"
+              @change="changeValue"
+            />
+            <RadioButton
+              name="options"
+              dat="Trimester"
+              :label="$t('graph.form.fields.trimester')"
+              :value="selectedRadioValue"
+              @change="changeValue"
+            />
+          </div>
           <v-select
-            v-if="graphPeriod"
+            v-if="graphPeriod && !isTrimester"
             label="name"
             :options="graphPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
@@ -113,11 +128,8 @@
             }"
             @input="updateSlider"
           />
-                    <label class="card-label"
-            >{{ $t("graph.form.fields.period") }}*</label
-          >
           <v-select
-            v-if="graphTrimesterPeriod"
+            v-if="graphTrimesterPeriod && isTrimester"
             label="name"
             :options="graphTrimesterPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
@@ -283,19 +295,19 @@ import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
+import RadioButton from "@/components/RadioButton";
 
 export default {
   name: "GraphExtraUe",
-  components: { Network, VueSlider, exporter },
+  components: { Network, VueSlider, exporter, RadioButton },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
     //selectbox
     selectedPeriod: { id: "202003", name: "Mar 20" },
+    selectedTrimesterPeriod: { id: "20201", name: "1Q 20" },
     //Slider
     periodValue: "202003",
-
-    selectedTrimesterPeriod: { id: "20184", name: "4Q 18" },
-    trimesterPeriodValue:"20201",
+    trimesterPeriodValue: "20201",
     //Form fields
     percentage: 90,
     transport: null,
@@ -334,6 +346,7 @@ export default {
     modalTitle: " About on ",
     modalBody: " About on ",
 
+    isTrimester: true,
     isModalHelp: false,
     isMainModal: false,
     isFilterModal: false,
@@ -343,7 +356,7 @@ export default {
     filter: [],
   }),
   computed: {
-    ...mapGetters("metadata", ["graphPeriod","graphTrimesterPeriod"]),
+    ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
     ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", [
       "transports",
@@ -352,7 +365,6 @@ export default {
       "weights",
     ]),
     network() {
-      
       return this.nodes && this.edges
         ? {
             nodes: this.nodes,
@@ -391,6 +403,10 @@ export default {
     },
   },
   methods: {
+    changeValue(newValue) {
+      this.selectedRadioValue = newValue;
+      this.isTrimester = this.selectedRadioValue == "Montly" ? false : true;
+    },
     helpOn(showModal, mainModal) {
       this.isMainModal = mainModal;
       this.isModalHelp = showModal;
@@ -565,9 +581,7 @@ export default {
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
     console.log(this.$route.matched[0].props.default.type);
-    
-
-
+    this.changeValue("Trimester");
   },
 };
 </script>

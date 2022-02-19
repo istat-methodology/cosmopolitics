@@ -76,6 +76,8 @@
     "form": {
       "title": "Graph filter",
       "fields": {
+        "montly": "Montly",
+        "trimester": "Quarter",
         "period": "Period",
         "period_placeholder": "Select a period",
         "percentage": "Percentage",
