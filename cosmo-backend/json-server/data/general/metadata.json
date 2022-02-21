@@ -1,54 +1,54 @@
 {
-    "processingDay": "2022-02-09, 13:52:50",
-    "annualCurrentYear": 2020,
-    "annualPreviousYear": 2019,
-    "lastData": "11, 2021",
-    "windowMonths": 36,
-    "monthsToExtract": 48,
-    "offsetMonthToExtract": 3,
-    "appVersion":"1.0.0",
-    "map": {
-        "timeSelected": "202002",
-        "timeStart": {
-            "year": 2018,
-            "month": 12
-        },
-        "timeEnd": {
-            "year": 2021,
-            "month": 11
-        }
-    },
-    "graph": {
-        "timeSelected": "202202",
-        "timeStart": {
-            "year": 2018,
-            "month": 12
-        },
-        "timeEnd": {
-            "year": 2021,
-            "month": 11
-        }
-    },
-    "graph-plus": {
-        "timeSelected": "202202",
-        "timeStart": {
-            "year": 2018,
-            "month": 12
-        },
-        "timeEnd": {
-            "year": 2021,
-            "month": 11
-        }
-    },
-    "trade": {
-        "timeSelected": "202202",
-        "timeStart": {
-            "year": 2018,
-            "month": 12
-        },
-        "timeEnd": {
-            "year": 2021,
-            "month": 11
-        }
-    }
+ "ProcessingDay": "21-02-2022, 16:05:26",
+ "annualCurrentYear": 2020,
+ "annualPreviousYear": 2019,
+ "lastLoadedData": "11, 2021",
+ "windowMonths": 36,
+ "monthsToTxtract": 48,
+ "offsetMonthToExtract": 3,
+ "appVersion": "1.0.0",
+ "map": {
+  "timeSelected": "202202",
+  "timeStart": {
+   "year": "2021",
+   "month": "11"
+  },
+  "timeEnd": {
+   "year": "2021",
+   "month": "11"
+  }
+ },
+ "graph": {
+  "timeSelected": "202202",
+  "timeStart": {
+   "year": "2021",
+   "month": "11"
+  },
+  "timeEnd": {
+   "year": "2021",
+   "month": "11"
+  }
+ },
+ "graphPlus": {
+  "timeSelected": "202202",
+  "timeStart": {
+   "year": "2021",
+   "month": "11"
+  },
+  "timeEnd": {
+   "year": "2021",
+   "month": "11"
+  }
+ },
+ "trade": {
+  "timeSelected": "202202",
+  "timeStart": {
+   "year": "2021",
+   "month": "11"
+  },
+  "timeEnd": {
+   "year": "2021",
+   "month": "11"
+  }
+ }
 }
