@@ -16,8 +16,13 @@
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
         <!-- MANAGE DATE DYNAMICALLY-->
-        <CIcon name="cil-tags" />
-        {{ $t("common.update", { update: "08/02/2022" }) }}
+        <span class="px-3"
+          ><CIcon name="cil-tags" />
+          {{ $t("common.update", { update }) + processingDay }}</span
+        >
+        <span class="px-3"
+          ><CIcon name="cil-tags" /><a  href="#" @click="newsOn(true)" >News</a></span
+        >
       </CHeaderNavItem>
     </CHeaderNav>
     <CHeaderNav class="mr-lang">
@@ -53,8 +58,25 @@
           >EN</CButton
         >
       </CButtonGroup>
+        <CModal
+      title="News On Version"
+      :show.sync="isModalNews"
+      size="lg" ><p>News On Version</p>
+
+      <template #footer>
+        <CButton
+          color="outline-primary"
+          square
+          size="sm"
+          @click="isModalNews = false"
+          >Close</CButton
+        >
+      </template>
+    </CModal>
     </CHeaderNav>
   </CHeader>
+
+  
 </template>
 
 <script>
@@ -65,19 +87,29 @@ export default {
     return {
       langs: ["it", "en"],
       selectedIt: true,
-      selectedEn: false
+      selectedEn: false,
+      isModalNews:false
     };
   },
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"])
+    ...mapGetters("auth", ["isAuthenticated"]),
+    /*
+    "ProcessingDay": "09-02-2022, 13:52:50",  
+    */
+    ...mapGetters("metadata", ["processingDay"]),
   },
   methods: {
     selectLanguage(lan) {
       this.$i18n.locale = lan;
       this.selectedIt = lan == "it" ? true : false;
       this.selectedEn = lan == "en" ? true : false;
-    }
-  }
+    },
+    newsOn(showModal) {
+      
+      this.isModalNews = showModal;
+    },
+
+  },
 };
 </script>
 

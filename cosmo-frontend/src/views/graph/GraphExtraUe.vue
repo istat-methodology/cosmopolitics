@@ -236,7 +236,6 @@
         placeholder="Select transport"
         v-model="transportConstraint"
       />
-
       <template #footer>
         <CButton
           color="outline-primary"

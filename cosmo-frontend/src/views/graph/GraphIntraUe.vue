@@ -57,7 +57,6 @@
             @hover-node="handleOverNode"
           />
         </CCardBody>
-
         <vue-slider
           v-if="graphPeriod && !isTrimester"
           :adsorb="true"
@@ -98,11 +97,11 @@
           <label class="card-label"
             >{{ $t("graph.form.fields.period") }}*</label
           >
-           <div>
+          <div>
             <RadioButton
               name="options"
               dat="Montly"
-              :label="$t('graph.form.fields.montly')"              
+              :label="$t('graph.form.fields.montly')"
               :value="selectedRadioValue"
               @change="changeValue"
             />
@@ -114,6 +113,7 @@
               @change="changeValue"
             />
           </div>
+          
           <v-select
             v-if="graphPeriod && !isTrimester"
             label="name"

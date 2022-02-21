@@ -2,7 +2,8 @@ import {
   metadataService
 } from "@/services";
 import {
-  getPeriod, getTrimesterPeriod
+  getPeriod,
+  getTrimesterPeriod
 } from "@/common";
 const state = {
   metadata: null
@@ -31,7 +32,7 @@ const getters = {
     return getPeriod(
       state.metadata.map.timeStart,
       state.metadata.map.timeEnd
-    );    
+    );
   },
   graphPeriod: state => {
     return getPeriod(
@@ -51,15 +52,20 @@ const getters = {
       state.metadata.trade.timeEnd
     );
   },
-
+  processingDay: state => {
+    return state.metadata ? state.metadata.processingDay : ""
+  },
+  appVersion: state => {
+    return state.metadata ? state.metadata.appVersion : ""
+  },
   mapSeries: state => {
-    return state.metadata.map.timeSelected;
+    return state.metadata ? state.metadata.map.timeSelected : ""
   },
   graphSeries: state => {
-    return state.metadata.graph.timeSelected;
+    return state.metadata ? state.metadata.graph.timeSelected : ""
   },
   tradeSeries: state => {
-    return state.metadata.trade.timeSelected;
+    return state.metadata ? state.metadata.trade.timeSelected : ""
   }
 };
 export const metadata = {

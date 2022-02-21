@@ -23,7 +23,7 @@
           <CIcon name="cil-home" class="c-sidebar-nav-icon" />{{
             $t("sidebar.home")
           }}
-          <span class="badge badge-primary">Alpha</span>
+          <span class="badge badge-primary"> Ver: {{ appVersion }}</span>
         </router-link>
       </li>
       <li class="c-sidebar-nav-title">Analysis</li>
@@ -97,6 +97,7 @@
 <script>
 import { mapGetters } from "vuex";
 
+
 export default {
   computed: {
     ...mapGetters("coreui", {
@@ -109,7 +110,11 @@ export default {
       isPolicy: "isPolicy",
       isTrade: "isTrade",
       isMobility: "isMobility"
-    })
+    }),
+    /*
+      "appVersion":"0.1",
+    */
+    ...mapGetters("metadata", ["appVersion"]),
   }
 };
 </script>
