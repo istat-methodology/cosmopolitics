@@ -20,8 +20,11 @@
           ><CIcon name="cil-tags" />
           {{ $t("common.update", { update }) + processingDay }}</span
         >
+        <!--  cilAsterisk,  cilBell,   cilStar  -->
         <span class="px-3"
-          ><CIcon name="cil-tags" /><a  href="#" @click="newsOn(true)" >News</a></span
+          ><CIcon name="cilBell" /><a href="#" @click="newsOn(true)"
+            >News</a
+          ></span
         >
       </CHeaderNavItem>
     </CHeaderNav>
@@ -58,25 +61,21 @@
           >EN</CButton
         >
       </CButtonGroup>
-        <CModal
-      title="News On Version"
-      :show.sync="isModalNews"
-      size="lg" ><p>News On Version</p>
+      <CModal title="News" :show.sync="isModalNews" size="lg"
+        ><p>News</p>
 
-      <template #footer>
-        <CButton
-          color="outline-primary"
-          square
-          size="sm"
-          @click="isModalNews = false"
-          >Close</CButton
-        >
-      </template>
-    </CModal>
+        <template #footer>
+          <CButton
+            color="outline-primary"
+            square
+            size="sm"
+            @click="isModalNews = false"
+            >Close</CButton
+          >
+        </template>
+      </CModal>
     </CHeaderNav>
   </CHeader>
-
-  
 </template>
 
 <script>
@@ -88,7 +87,7 @@ export default {
       langs: ["it", "en"],
       selectedIt: true,
       selectedEn: false,
-      isModalNews:false
+      isModalNews: false,
     };
   },
   computed: {
@@ -105,10 +104,8 @@ export default {
       this.selectedEn = lan == "en" ? true : false;
     },
     newsOn(showModal) {
-      
       this.isModalNews = showModal;
     },
-
   },
 };
 </script>

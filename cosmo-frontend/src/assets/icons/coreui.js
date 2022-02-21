@@ -10,7 +10,10 @@ import {
   cilChartLine,
   cilGraph,
   cilCompass,
-  cilTags
+  cilTags,  
+  cilAsterisk,
+  cilBell,
+  cilStar
 } from "@coreui/icons";
 
 export const iconsSet = Object.assign(
@@ -26,6 +29,9 @@ export const iconsSet = Object.assign(
     cilChartLine,
     cilGraph,
     cilCompass,
-    cilTags
+    cilTags,
+    cilAsterisk,
+    cilBell,
+    cilStar
   }
 );
