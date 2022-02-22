@@ -21,7 +21,7 @@ export default {
           Math.floor(Math.log(Math.abs(marker)) * factor * zoomFactor) +
           minimum;
       }
-      console.log(radius);
+      //console.log(radius);
       return radius;
     },
     getColor(marker, min, max) {

@@ -6,13 +6,10 @@ const flows = JSON.parse(fs.readFileSync("./data/classification/clsFlow.json"));
 const products = JSON.parse(fs.readFileSync("./data/classification/clsProducts.json"));
 const product3s = JSON.parse(fs.readFileSync("./data/classification/clsProducts3.json"));
 
-
 /* change */
 const becs = JSON.parse(fs.readFileSync("./data/classification/clsBec.json"));
 /* to */
 const productsCPA = JSON.parse(fs.readFileSync("./data/classification/clsProductsCPA.json"));
-
-
 const productplus = JSON.parse(fs.readFileSync("./data/classification/clsProductplus.json"));
 const transports = JSON.parse(fs.readFileSync("./data/classification/clsTransport.json"));
 const partners = JSON.parse(fs.readFileSync("./data/classification/clsPartners.json"));
@@ -24,7 +21,6 @@ const countries = JSON.parse(fs.readFileSync("./data/general/countries.json"));
 //service runtime server
 // slider && select period 
 // input for start end date
-const timeperiod = JSON.parse(fs.readFileSync("./data/general/timeperiod.json"));
 const metadata = JSON.parse(fs.readFileSync("./data/general/metadata.json"));
 
 //map json
@@ -49,34 +45,23 @@ const importQuantity = JSON.parse(fs.readFileSync("./data/trade/importQuantity.j
 
 const timeseries = JSON.parse(fs.readFileSync("./data/timeseries/timeseries.json"));
 
-
 module.exports = () => ({
-  
-  //map
-  //service country lat lon  
-  //marker
   countries,
   //feature
   countriesBorders,  
-  
   //data
   //view box on country  
   ieinfo,
-
   //view marker and feature 
   //data 
   importseries,
   exportseries,
-
   //trade
   //data
   exportValue,
   importValue,
-  
-  
   exportQuantity,
   importQuantity,
-
   //classification
   flows,  
   transports,
@@ -86,11 +71,7 @@ module.exports = () => ({
   becs,
   productsCPA,
   partners,
-  
   // service slider select
-  timeperiod,
   metadata,
-  
   timeseries
-
 });

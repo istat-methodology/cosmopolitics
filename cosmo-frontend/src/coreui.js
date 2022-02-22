@@ -6,6 +6,7 @@ import {
   CToaster,
   CToast,
   CModal,
+  CBadge,
   CHeader,
   CSubheader,
   CHeaderBrand,
@@ -43,6 +44,7 @@ Vue.component("CContainer", CContainer);
 Vue.component("CWrapper", CWrapper);
 Vue.component("CToaster", CToaster);
 Vue.component("CToast", CToast);
+Vue.component("CBadge", CBadge);
 Vue.component("CModal", CModal);
 Vue.component("CHeader", CHeader);
 Vue.component("CSubheader", CSubheader);
