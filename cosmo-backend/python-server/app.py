@@ -313,7 +313,8 @@ def wordtradegraph():
         #invio un messaggio al client
         NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
         if NUM_NODI > NODIMAX:
-            return "Graph is too wide  \n Decrease the treshold"
+            return json.dumps({"ERROR_MSG":"Graph is too wide  \n Decrease the treshold or change means of transport"}) 
+            #return "Graph is too wide  \n Decrease the treshold"
 
 
         #AnalisiFlag=selezioneMezziEdges ########################################
@@ -322,7 +323,8 @@ def wordtradegraph():
 
         if pos is None:
             if JSON is None:
-                return "Graph empty \n Increase the treshold"       
+                return json.dumps({"ERROR_MSG":"Graph empty \n Increase the treshold or change means of transport"})                           
+                #return "Graph empty \n Increase the treshold"       
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
@@ -380,14 +382,16 @@ def wordtradegraphplus():
         #invio un messaggio al client
         NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
         if NUM_NODI > NODIMAX:
-            return "Graph is too wide  \n Decrease the treshold"
+            return json.dumps({"ERROR_MSG":"Graph is too wide  \n Decrease the treshold or change means of transport"}) 
+            #return "Graph is too wide  \n Decrease the treshold"
 
 
         pos,JSON,G=makeGraph(tab4graph,pos,weight_flag,flow,None)
 
         if pos is None:
             if JSON is None:
-                return "Graph empty \n Increase the treshold"       
+                return json.dumps({"ERROR_MSG":"Graph empty \n Increase the treshold or change means of transport"})                           
+                #return "Graph empty \n Increase the treshold"       
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
