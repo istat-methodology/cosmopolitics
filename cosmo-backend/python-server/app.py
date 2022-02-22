@@ -313,7 +313,8 @@ def wordtradegraph():
         #invio un messaggio al client
         NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
         if NUM_NODI > NODIMAX:
-            return json.dumps({"ERROR_MSG":"Graph is too wide  \n Decrease the treshold or change means of transport"}) 
+            return json.dumps({"STATUS":"05"})                 
+            #return json.dumps({"ERROR_MSG":"Graph is too wide  \n Decrease the treshold or change means of transport"}) 
             #return "Graph is too wide  \n Decrease the treshold"
 
 
@@ -323,7 +324,8 @@ def wordtradegraph():
 
         if pos is None:
             if JSON is None:
-                return json.dumps({"ERROR_MSG":"Graph empty \n Increase the treshold or change means of transport"})                           
+                return json.dumps({"STATUS":"06"})     
+                #return json.dumps({"ERROR_MSG":"Graph empty \n Increase the treshold or change means of transport"})                           
                 #return "Graph empty \n Increase the treshold"       
         resp = Response(response=JSON,
                     status=200,
@@ -382,7 +384,8 @@ def wordtradegraphplus():
         #invio un messaggio al client
         NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
         if NUM_NODI > NODIMAX:
-            return json.dumps({"ERROR_MSG":"Graph is too wide  \n Decrease the treshold or change means of transport"}) 
+            return json.dumps({"STATUS":"05"})                 
+            #return json.dumps({"ERROR_MSG":"Graph is too wide  \n Decrease the treshold or change means of transport"}) 
             #return "Graph is too wide  \n Decrease the treshold"
 
 
@@ -390,7 +393,8 @@ def wordtradegraphplus():
 
         if pos is None:
             if JSON is None:
-                return json.dumps({"ERROR_MSG":"Graph empty \n Increase the treshold or change means of transport"})                           
+                return json.dumps({"STATUS":"06"})                 
+                #return json.dumps({"ERROR_MSG":"Graph empty \n Increase the treshold or change means of transport"})                           
                 #return "Graph empty \n Increase the treshold"       
         resp = Response(response=JSON,
                     status=200,
