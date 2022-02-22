@@ -18,7 +18,7 @@
         <!-- MANAGE DATE DYNAMICALLY-->
         <span class="px-3"
           ><CIcon name="cil-tags" />
-          {{ $t("common.update", { update }) + processingDay }}</span
+          {{ $t("common.update" )}} {{ processingDay }}</span
         >
         <!--  cilAsterisk,  cilBell,   cilStar  -->
         <span class="px-3"

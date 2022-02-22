@@ -3,7 +3,7 @@
     "submit": "Go!",
     "exporter": "export",
     "mandatory": "Mandatory fields",
-    "update": "Data updated on {update}",
+    "update": "Data updated on ",
     "footer": {
       "experimental": "Experimental Statistics 2022",
       "coreui": "Powered by"
