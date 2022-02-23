@@ -404,6 +404,10 @@ def wordtradegraphplus():
   
 @app.route('/refreshdata')
 def hello():
+     return str(' world 23022022')
+
+@app.route('/hello')
+def hello():
      return str(' world')
         
 if __name__ == '__main__':
