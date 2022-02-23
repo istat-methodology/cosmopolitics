@@ -549,6 +549,7 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.GraphIntra);
+    this.$store.dispatch("graphIntra/clear");
     this.changeValue("Trimester");
   },
 };

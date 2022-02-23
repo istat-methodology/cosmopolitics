@@ -613,7 +613,8 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
-    console.log(this.$route.matched[0].props.default.type);
+    this.$store.dispatch("graphExtra/clear");
+    //console.log(this.$route.matched[0].props.default.type);
     //this.changeValue("Trimester");
   },
 };
