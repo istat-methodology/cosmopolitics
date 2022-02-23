@@ -3,7 +3,7 @@
     "submit": "Esegui!",
     "exporter": "Esporta",
     "mandatory": "Campi obbligatori",
-    "update": "Dati aggiornati il {update}",
+    "update": "Dati aggiornati il ",
     "footer": {
       "experimental": "Statistiche sperimentali 2022",
       "coreui": "Con il supporto di"
