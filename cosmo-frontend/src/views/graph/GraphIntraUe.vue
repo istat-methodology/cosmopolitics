@@ -343,7 +343,7 @@ export default {
   }),
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
-    ...mapGetters("graphVisjs", ["nodes", "edges", "metrics"]),
+    ...mapGetters("graphIntra", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", [
       "transports",
       "products",
@@ -470,7 +470,7 @@ export default {
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints,
       };
-      this.$store.dispatch("graphVisjs/postGraphIntra", form);
+      this.$store.dispatch("graphIntra/postGraphIntra", form);
       this.$store.dispatch(
         "message/success",
         this.$t("graph.scenario.success")
@@ -506,7 +506,7 @@ export default {
         selezioneMezziEdges: "None",
       };
       this.spinnerStart(true);
-      this.$store.dispatch("graphVisjs/postGraph", form);
+      this.$store.dispatch("graphIntra/postGraphIntra", form);
     },
     handleSubmit() {
       this.$v.$touch(); //validate form data
@@ -531,7 +531,7 @@ export default {
           pos: "None",
           selezioneMezziEdges: "None",
         };
-        this.$store.dispatch("graphVisjs/postGraphIntra", form);
+        this.$store.dispatch("graphIntra/postGraphIntra", form);
         this.transportConstraintSelected = {};
       }
     },
