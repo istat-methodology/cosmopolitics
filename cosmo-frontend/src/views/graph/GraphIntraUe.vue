@@ -5,16 +5,18 @@
         <CCardHeader>
           <span> {{ $t("graph.card.title") }} Intra UE </span>
           <span v-if="graphDensity > 0">
-            <span class="text-primary"> {{ $t("graph.stats.density") }} </span
-            > {{ graphDensity }}</span
+            <span class="text-primary"> {{ $t("graph.stats.density") }} </span>
+            {{ graphDensity }}</span
           >
           <span class="pl-2" v-if="nodeMetric">
             <span class="text-primary"
-              >, {{ $t("graph.stats.centrality") }} </span
-            > {{ nodeMetric.centrality }}
+              >, {{ $t("graph.stats.centrality") }}
+            </span>
+            {{ nodeMetric.centrality }}
             <span class="text-primary"
-              >, {{ $t("graph.stats.vulnerability") }} </span
-            > {{ nodeMetric.vulnerability }}
+              >, {{ $t("graph.stats.vulnerability") }}
+            </span>
+            {{ nodeMetric.vulnerability }}
             <span class="text-primary">, {{ $t("graph.stats.hubness") }} </span
             >{{ nodeMetric.hubness }}
           </span>
@@ -113,7 +115,7 @@
               @change="changeValue"
             />
           </div>
-          
+
           <v-select
             v-if="graphPeriod && !isTrimester"
             label="name"
@@ -213,7 +215,6 @@
         </CListGroupItem>
       </CListGroup>
 
-
       <template #footer>
         <CButton
           color="outline-primary"
@@ -267,7 +268,7 @@ import { Network } from "vue-visjs";
 import { mapGetters } from "vuex";
 import { required, numeric } from "vuelidate/lib/validators";
 import VueSlider from "vue-slider-component";
-import { Context } from "@/common";
+import { Context, Status } from "@/common";
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
@@ -294,7 +295,7 @@ export default {
     //Graph modal
     edgeModal: false,
     selectedEdges: [],
-    selectedNodes: [],    
+    selectedNodes: [],
     edgeFromTo: null,
     //Metrics
     nodeMetric: null,
@@ -332,13 +333,9 @@ export default {
   }),
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
-    ...mapGetters("graphIntra", ["nodes", "edges", "metrics","status"]),
-    ...mapGetters("classification", [
-      "products",
-      "flows",
-      "weights",
-    ]),    
-     network() {
+    ...mapGetters("graphIntra", ["nodes", "edges", "metrics", "status"]),
+    ...mapGetters("classification", ["products", "flows", "weights"]),
+    network() {
       return this.nodes && this.edges
         ? {
             nodes: this.nodes,
@@ -351,9 +348,9 @@ export default {
             options: null,
           };
     },
-    graphDensity() {      
+    graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    }
+    },
   },
   validations: {
     selectedPeriod: {
@@ -394,7 +391,6 @@ export default {
       this.spinner = bool;
     },
     handleSelectEdge(selectedGraph) {
-      
       //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
@@ -439,16 +435,25 @@ export default {
         product: this.product.id,
         flow: this.flow.id,
         weight_flag: this.weight.descr,
-        pos: { nodes: this.nodes }
+        pos: { nodes: this.nodes },
       };
-      this.$store.dispatch("graphIntra/postGraphIntra", form);
-      this.$store.dispatch(
-        "message/success",
-        this.$t("graph.scenario.success")
-      );
+      this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
+        if (this.status == Status.success) {
+          this.$store.dispatch("message/success", "data matched!");
+          this.spinnerStart(false);
+        } else {
+          if (this.status == Status.wide) {
+            this.$store.dispatch("message/error", "graph too wide!");
+          }
+          if (this.status == Status.empty) {
+            this.$store.dispatch("message/error", "empy graph!");
+          }
+          this.spinnerStart(false);
+        }
+      });
       this.closeModal();
       this.spinnerStart(true);
-    },    
+    },
     closeModal() {
       this.edgeModal = false;
     },
@@ -465,10 +470,23 @@ export default {
         product: this.product.id,
         flow: this.flow.id,
         weight_flag: this.weight.descr,
-        pos: "None"        
+        pos: "None",
       };
       this.spinnerStart(true);
-      this.$store.dispatch("graphIntra/postGraphIntra", form);
+      this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
+        if (this.status == Status.success) {
+          this.$store.dispatch("message/success", "data matched!");
+          this.spinnerStart(false);
+        } else {
+          if (this.status == Status.wide) {
+            this.$store.dispatch("message/error", "graph too wide!");
+          }
+          if (this.status == Status.empty) {
+            this.$store.dispatch("message/error", "empy graph!");
+          }
+          this.spinnerStart(false);
+        }
+      });
     },
     handleSubmit() {
       this.$v.$touch(); //validate form data
@@ -478,7 +496,7 @@ export default {
         !this.$v.flow.$invalid &&
         !this.$v.weight.$invalid
       ) {
-        this.spinnerStart(true);
+        
         // ---------------------------------------
         // @TODO Change the name of the form keys
         // ---------------------------------------
@@ -488,10 +506,23 @@ export default {
           product: this.product.id,
           flow: this.flow.id,
           weight_flag: this.weight.descr,
-          pos: "None"
+          pos: "None",
         };
-        this.$store.dispatch("graphIntra/postGraphIntra", form);
-        
+        this.spinnerStart(true);
+        this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
+          if (this.status == Status.success) {
+            this.$store.dispatch("message/success", "data matched!");
+            this.spinnerStart(false);
+          } else {
+            if (this.status == Status.wide) {
+              this.$store.dispatch("message/error", "graph too wide!");
+            }
+            if (this.status == Status.empty) {
+              this.$store.dispatch("message/error", "empy graph!");
+            }
+            this.spinnerStart(false);
+          }
+        });
       }
     },
     getData(id, ref) {

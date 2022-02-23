@@ -287,7 +287,7 @@ import { Network } from "vue-visjs";
 import { mapGetters } from "vuex";
 import { required, numeric } from "vuelidate/lib/validators";
 import VueSlider from "vue-slider-component";
-import { Context } from "@/common";
+import { Context, Status } from "@/common";
 import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
@@ -356,7 +356,7 @@ export default {
   computed: {
     //...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
     ...mapGetters("metadata", ["graphPeriod"]),
-    ...mapGetters("graphExtra", ["nodes", "edges", "metrics","status"]),
+    ...mapGetters("graphExtra", ["nodes", "edges", "metrics", "status"]),
     ...mapGetters("classification", [
       "transports",
       "products",
@@ -480,15 +480,23 @@ export default {
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints,
       };
-      this.$store.dispatch("graphExtra/postGraphExtra", form);
-      this.$store.dispatch(
-        "message/success",
-        this.$t("graph.scenario.success")
-      );
-      this.closeModal();
       this.spinnerStart(true);
+      this.$store.dispatch("graphExtra/postGraphExtra", form).then(() => {
+        if (this.status == Status.success) {
+          this.$store.dispatch("message/success", "data matched!");
+          this.spinnerStart(false);
+        } else {
+          if (this.status == Status.wide) {
+            this.$store.dispatch("message/error", "graph too wide!");
+          }
+          if (this.status == Status.empty) {
+            this.$store.dispatch("message/error", "empy graph!");
+          }
+          this.spinnerStart(false);
+        }
+      });
+      this.closeModal();
     },
-
     setTransportConstraintStart() {
       let transport = this.transportConstraintStart.filter(
         (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
@@ -518,7 +526,20 @@ export default {
         selezioneMezziEdges: "None",
       };
       this.spinnerStart(true);
-      this.$store.dispatch("graphExtra/postGraphExtra", form);
+      this.$store.dispatch("graphExtra/postGraphExtra", form).then(() => {
+        if (this.status == Status.success) {
+          this.$store.dispatch("message/success", "data matched!");
+          this.spinnerStart(false);
+        } else {
+          if (this.status == Status.wide) {
+            this.$store.dispatch("message/error", "graph too wide!");
+          }
+          if (this.status == Status.empty) {
+            this.$store.dispatch("message/error", "empy graph!");
+          }
+          this.spinnerStart(false);
+        }
+      });
     },
     handleSubmit() {
       this.$v.$touch(); //validate form data
@@ -529,7 +550,6 @@ export default {
         !this.$v.flow.$invalid &&
         !this.$v.weight.$invalid
       ) {
-        this.spinnerStart(true);
         // ---------------------------------------
         // @TODO Change the name of the form keys
         // ---------------------------------------
@@ -543,7 +563,21 @@ export default {
           pos: "None",
           selezioneMezziEdges: "None",
         };
-        this.$store.dispatch("graphExtra/postGraphExtra", form);
+        this.spinnerStart(true);
+        this.$store.dispatch("graphExtra/postGraphExtra", form).then(() => {
+          if (this.status == Status.success) {
+            this.$store.dispatch("message/success", "data matched!");
+            this.spinnerStart(false);
+          } else {
+            if (this.status == Status.wide) {
+              this.$store.dispatch("message/error", "graph too wide!");
+            }
+            if (this.status == Status.empty) {
+              this.$store.dispatch("message/error", "empy graph!");
+            }
+            this.spinnerStart(false);
+          }
+        });
         this.transportConstraintSelected = {};
       }
     },
