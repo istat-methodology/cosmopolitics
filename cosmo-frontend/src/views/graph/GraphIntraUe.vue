@@ -4,17 +4,18 @@
       <CCard>
         <CCardHeader>
           <span v-if="graphDensity > 0">
-            <span class="text-primary">{{ $t("graph.stats.density") }} </span
-            >{{ graphDensity }}</span
+            <span class="text-primary"> {{ $t("graph.stats.density") }} </span
+            > {{ graphDensity }}</span
           >
-          <span v-else>{{ $t("graph.card.title") }} </span>
+          <span v-else> {{ $t("graph.card.title") }} Intra UE </span>
+
           <span class="pl-2" v-if="nodeMetric">
             <span class="text-primary"
               >, {{ $t("graph.stats.centrality") }} </span
-            >{{ nodeMetric.centrality }}
+            > {{ nodeMetric.centrality }}
             <span class="text-primary"
               >, {{ $t("graph.stats.vulnerability") }} </span
-            >{{ nodeMetric.vulnerability }}
+            > {{ nodeMetric.vulnerability }}
             <span class="text-primary">, {{ $t("graph.stats.hubness") }} </span
             >{{ nodeMetric.hubness }}
           </span>

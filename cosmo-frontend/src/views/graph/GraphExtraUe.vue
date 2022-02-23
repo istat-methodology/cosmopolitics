@@ -4,10 +4,10 @@
       <CCard>
         <CCardHeader>
           <span v-if="graphDensity > 0">
-            <span class="text-primary">{{ $t("graph.stats.density") }} </span
+            <span class="text-primary">{{ $t("graph.stats.density") }}</span
             >{{ graphDensity }}</span
           >
-          <span v-else>{{ $t("graph.card.title") }} </span>
+          <span v-else>{{ $t("graph.card.title") }} Extra UE</span>
           <span class="pl-2" v-if="nodeMetric">
             <!--span class="text-primary"
               >, {{ $t("graph.stats.centrality") }} </span
@@ -71,7 +71,7 @@
           :data-label="'name'"
           @change="handleSliderChange"
         />
-        <vue-slider
+        <!--vue-slider
           v-if="graphTrimesterPeriod && isTrimester"
           :adsorb="true"
           :tooltip="'none'"
@@ -80,7 +80,7 @@
           :data-value="'id'"
           :data-label="'name'"
           @change="handleSliderChange"
-        />
+        /-->
       </CCard>
     </div>
     <div class="col-3">
@@ -101,7 +101,7 @@
           <label class="card-label"
             >{{ $t("graph.form.fields.period") }}*</label
           >
-          <div>
+          <!--div>
             <RadioButton
               name="options"
               dat="Montly"
@@ -116,7 +116,7 @@
               :value="selectedRadioValue"
               @change="changeValue"
             />
-          </div>
+          </div-->
           <v-select
             v-if="graphPeriod && !isTrimester"
             label="name"
@@ -128,7 +128,7 @@
             }"
             @input="updateSlider"
           />
-          <v-select
+          <!--v-select
             v-if="graphTrimesterPeriod && isTrimester"
             label="name"
             :options="graphTrimesterPeriod"
@@ -138,7 +138,7 @@
               'is-invalid': $v.selectedPeriod.$error,
             }"
             @input="updateSlider"
-          />
+          /-->
           <label class="card-label mt-2"
             >{{ $t("graph.form.fields.percentage") }}*</label
           >
@@ -294,19 +294,20 @@ import visMixin from "@/components/mixins/vis.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
-import RadioButton from "@/components/RadioButton";
+//import RadioButton from "@/components/RadioButton";
 
 export default {
   name: "GraphExtraUe",
-  components: { Network, VueSlider, exporter, RadioButton },
+  //components: { Network, VueSlider, exporter, RadioButton },
+  components: { Network, VueSlider, exporter },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
     //selectbox
     selectedPeriod: { id: "202003", name: "Mar 20" },
-    selectedTrimesterPeriod: { id: "20201", name: "1Q 20" },
+    //selectedTrimesterPeriod: { id: "20201", name: "1Q 20" },
     //Slider
     periodValue: "202003",
-    trimesterPeriodValue: "20201",
+    //trimesterPeriodValue: "20201",
     //Form fields
     percentage: 90,
     transport: null,
@@ -345,7 +346,7 @@ export default {
     modalTitle: " About on ",
     modalBody: " About on ",
 
-    isTrimester: true,
+    isTrimester: false,
     isModalHelp: false,
     isMainModal: false,
     isFilterModal: false,
@@ -355,7 +356,8 @@ export default {
     filter: [],
   }),
   computed: {
-    ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
+    //...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
+    ...mapGetters("metadata", ["graphPeriod"]),
     ...mapGetters("graphExtra", ["nodes", "edges", "metrics"]),
     ...mapGetters("classification", [
       "transports",
@@ -580,7 +582,7 @@ export default {
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
     console.log(this.$route.matched[0].props.default.type);
-    this.changeValue("Trimester");
+    //this.changeValue("Trimester");
   },
 };
 </script>
