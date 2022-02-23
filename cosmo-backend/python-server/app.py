@@ -19,8 +19,6 @@ INTRA_FILE="data/cpa_intra.csv"
 EXTRA_FILE="data/tr_extra_ue.csv"
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
-logging.config.fileConfig('./logging.conf')
-logger = logging.getLogger('graphLog')
 
 def load_files_available(): 
     #EXTRA_FILE

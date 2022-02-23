@@ -1,5 +1,5 @@
 {
- "processingDay": "21-02-2022, 16:05:26",
+ "processingDay": "23-02-2022, 16:15:54",
  "annualCurrentYear": 2020,
  "annualPreviousYear": 2019,
  "lastLoadedData": "11, 2021",
@@ -11,7 +11,7 @@
   "timeSelected": "202202",
   "timeStart": {
    "year": 2018,
-   "month": 11
+   "month": 12
   },
   "timeEnd": {
    "year": 2021,
@@ -21,8 +21,8 @@
  "graph": {
   "timeSelected": "202202",
   "timeStart": {
-   "year": "2018",
-   "month": "11"
+   "year": 2018,
+   "month": 12
   },
   "timeEnd": {
    "year": 2021,
@@ -32,8 +32,8 @@
  "graphPlus": {
   "timeSelected": "202202",
   "timeStart": {
-   "year": "2018",
-   "month": "11"
+   "year": 2018,
+   "month": 12
   },
   "timeEnd": {
    "year": 2021,
@@ -43,8 +43,8 @@
  "trade": {
   "timeSelected": "202202",
   "timeStart": {
-   "year": "2018",
-   "month": "11"
+   "year": 2018,
+   "month": 12
   },
   "timeEnd": {
    "year": 2021,
