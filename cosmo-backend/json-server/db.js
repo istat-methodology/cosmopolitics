@@ -43,7 +43,7 @@ const importValue = JSON.parse(fs.readFileSync("./data/trade/importValue.json"))
 const exportQuantity = JSON.parse(fs.readFileSync("./data/trade/exportQuantity.json"));
 const importQuantity = JSON.parse(fs.readFileSync("./data/trade/importQuantity.json"));
 
-const timeseries = JSON.parse(fs.readFileSync("./data/timeseries/timeseries.json"));
+
 
 module.exports = () => ({
   countries,
@@ -72,6 +72,5 @@ module.exports = () => ({
   productsCPA,
   partners,
   // service slider select
-  metadata,
-  timeseries
+  metadata
 });
