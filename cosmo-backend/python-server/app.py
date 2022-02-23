@@ -13,11 +13,29 @@ DATA_AVAILABLE="data"+os.sep+"dataAvailable"
 SEP=","
 DATA_EXTENTION=".dat"
 NTSR_PROD_FILE="data"+os.sep+"NSTR.txt"
-NTSR_DIGITS=3 # numero di digits per classificazione Transporti
+PROD_DIGITS=3 # numero di digits per classificazione Transporti
 NODIMAX=70
 INTRA_FILE="data/cpa_intra.csv"
 EXTRA_FILE="data/tr_extra_ue.csv"
+CPA_TRIM_FILE="data/cpa_trim.csv"
+
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
+
+logging.config.fileConfig('./logging.conf')
+logger = logging.getLogger('graphLog')
+
+
+
+ 
+def load_cpa_trim():
+    def funcTrim(x):
+        return np.int32(x.replace("T",""))
+
+    df=pd.read_csv(CPA_TRIM_FILE,low_memory=False,converters={'trimestre': funcTrim},dtype={"cpa": object,"FLOW":np.int8} )
+    df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","cpa","trimestre","val_cpa"]]
+    df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","PERIOD","VALUE_IN_EUROS"]
+    df=df[df.PRODUCT.apply(lambda x : len(x.strip())==PROD_DIGITS)]
+    return df
 
 
 def load_files_available(): 
@@ -77,40 +95,29 @@ def load_file_intraEU():
     #print(df_transportIntra.info())
     return df_transportIntra
 
-'''
-def build_NTSR_dict():
-    #build dict mapping NTSR prod and viceversa
-    NTSR_prod=pd.read_csv(NTSR_PROD_FILE,"\t",index_col=0)#.to_dict()
-    
-    NTSR_prod_dict=NTSR_prod.to_dict()
-    NTSR_prod_dict=NTSR_prod_dict['AGRICULTURAL PRODUCTS AND LIVE ANIMALS']
-    prod_NTSR_dict=NTSR_prod.reset_index()
-    prod_NTSR_dict=prod_NTSR_dict[prod_NTSR_dict['0'].str.len()==NTSR_DIGITS]
-    prod_NTSR_dict=prod_NTSR_dict.set_index("AGRICULTURAL PRODUCTS AND LIVE ANIMALS").to_dict()["0"]
-    return prod_NTSR_dict
-'''
 def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport_estrazione):
+    print(df_transport_estrazione.info())
     #estraggo dalla tabella solo le informazioni richieste nei filtri richiesti al runtime
     logging.info("### estrai_tabella_per_grafo...") 
     logging.info("ESTRAGGO TABELLA COMEX") 
     
     #df_transport_estrazione=df_transport
     df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["FLOW"]==flow]
-    #print("###",df_transport_estrazione.shape)
+    print("###",df_transport_estrazione.shape)
     if tg_period is not None:
         #tg_period=datetime.datetime.strptime(str(tg_period), '%Y%m')
         tg_period=np.int32(tg_period)
         df_transport_estrazione = df_transport_estrazione[df_transport_estrazione["PERIOD"]==tg_period]
-    #print("###",df_transport_estrazione.shape)
+    print("###",df_transport_estrazione.shape)
     #seleziona i mezzi nel grafo
     if listaMezzi is not None:    
         df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["TRANSPORT_MODE"].isin(listaMezzi)]
-    #print("###",df_transport_estrazione.shape)
+    print("###",df_transport_estrazione.shape)
     
     if product is not None:
         #print("product:",product,type(product))
         df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["PRODUCT"]==product]
-    #print("###",df_transport_estrazione.shape)
+    print("###",df_transport_estrazione.shape)
 
     #costruisce una query per eliminare i mezzi in un arco nel grafo
     def build_query_mezzi(selezioneMezziEdges):
@@ -256,6 +263,7 @@ def jsonpos2coord(jsonpos):
 try:
     df_transport = load_files_available()  
     df_transportIntra = load_file_intraEU()      
+    df_trimcpa = load_cpa_trim()
 except:
     #print("#############   FILE NON TROVATI")
     logging.info("### Files non trovati ")     
@@ -406,7 +414,54 @@ def wordtradegraphplus():
     else:
         logging.info("### wordtradegraph intra EU exit")
         return str("only post")
-  
+
+@app.route('/cpatrim', methods=['POST','GET'])
+def cpatrim():
+    if request.method == 'POST':       
+        logging.info("TRIMESTRAL Word Trade INTRA_EU Graph method get ....")
+        logging.info("criterio per costruire il grafo:"+criterio )
+        jReq=dict(request.json)
+        logging.info("------ jReq",jReq)
+        tg_perc=int(jReq['tg_perc'])
+        tg_period=int(jReq['tg_period'])
+        pos=jReq['pos']
+        if pos=="None":
+            pos=None
+        else:
+            logging.info("Gestisci posizione dei nodi precedenti -----")
+            logging.info("pos-----",type(pos))            
+            pos=jsonpos2coord(pos)
+
+        flow=int(jReq['flow'])        
+        product=str(jReq['product'])       
+        weight_flag=bool(jReq['weight_flag'])       
+        
+        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,None,df_trimcpa)
+        logging.info("tab4graph.shape"+str(tab4graph.shape))
+        NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
+        if NUM_NODI > NODIMAX:
+            return json.dumps({"STATUS":"05"})                 
+        
+
+        pos,JSON,G=makeGraph(tab4graph,pos,weight_flag,flow,None)
+
+        if pos is None:
+            if JSON is None:
+                return json.dumps({"STATUS":"06"})                 
+                       
+        resp = Response(response=JSON,
+                    status=200,
+                    mimetype="application/json")
+        logging.info("### TRIMESTRAL CPA intra EU exit")
+        return resp
+
+    else:
+        logging.info("### TRIMESTRAL CPA intra EU exit")
+        return str("only post")
+
+################################################
+
+
 @app.route('/refreshdata')
 def refreshdata():
     
@@ -414,7 +469,10 @@ def refreshdata():
         global df_transport 
         df_transport = load_files_available()  
         global df_transportIntra 
-        df_transportIntra = load_file_intraEU()      
+        df_transportIntra = load_file_intraEU()    
+        global df_trimcpa 
+        df_trimcpa = load_cpa_trim()
+
         return str(' data refreshed')
     except:
         #print("#############   FILE NON TROVATI")
