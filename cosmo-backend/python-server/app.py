@@ -14,7 +14,7 @@ SEP=","
 DATA_EXTENTION=".dat"
 NTSR_PROD_FILE="data"+os.sep+"NSTR.txt"
 NTSR_DIGITS=3 # numero di digits per classificazione Transporti
-NODIMAX=71
+NODIMAX=70
 INTRA_FILE="data/cpa_intra.csv"
 EXTRA_FILE="data/tr_extra_ue.csv"
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
@@ -255,9 +255,12 @@ def jsonpos2coord(jsonpos):
         coord[id]=np.array([x,y])
     logging.info("### jsonpos2coord exit ")     
     return coord    
-
-df_transport = load_files_available()  
-df_transportIntra = load_file_intraEU()      
+try:
+    df_transport = load_files_available()  
+    df_transportIntra = load_file_intraEU()      
+except:
+    #print("#############   FILE NON TROVATI")
+    logging.info("### Files non trovati ")     
 
 #prod_NTSR_dict=build_NTSR_dict()
 
@@ -407,12 +410,23 @@ def wordtradegraphplus():
         return str("only post")
   
 @app.route('/refreshdata')
-def hello():
-     return str(' world 23022022')
+def refreshdata():
+    
+    try:
+        global df_transport 
+        df_transport = load_files_available()  
+        global df_transportIntra 
+        df_transportIntra = load_file_intraEU()      
+        return str(' data refreshed')
+    except:
+        #print("#############   FILE NON TROVATI")
+        logging.info("### Files non trovati ")  
+        return str('### Files non trovati')
+
 
 @app.route('/hello')
 def hello():
-     return str(' world')
+    return str('Hello World: version 1.0')
         
 if __name__ == '__main__':
     IP='0.0.0.0'
