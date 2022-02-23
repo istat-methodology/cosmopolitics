@@ -46,7 +46,7 @@ const getters = {
     return state.graphextra;
   },
   status: state => {
-    return state.graphintra ? state.graphintra.STATUS : "00";
+    return state.graphextra ? state.graphextra.STATUS : "00";
 
   },
   nodes: state => {
