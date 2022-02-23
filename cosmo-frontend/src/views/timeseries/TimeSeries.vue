@@ -364,7 +364,7 @@ export default {
         };
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
           if (this.tm["status"] == Status.success) {
-            this.$store.dispatch("message/success", "eureka!!");
+            this.$store.dispatch("message/success", "data matcted!");
             //this.buildTimeseriesCharts(this.timeseriesCharts);
             this.buildTimeseriesCharts(this.tm);
             //if (this.timeLapse) {

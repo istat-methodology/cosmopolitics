@@ -22,15 +22,17 @@ const actions = {
     return graphExtraService
       .postGraphExtra(form)
       .then(data => {
-        data.nodes.forEach(node => {
-          node.x = node.x * 314;
-          node.y = node.y * 314;
-          node.shape = "image";
-          node.image = require("@/assets/flags/w40/" +
-            node.label.toLowerCase() +
-            ".png");
-          node.size = 15;
-        });
+        if (data["STATUS"] == undefined) {
+          data.nodes.forEach(node => {
+            node.x = node.x * 314;
+            node.y = node.y * 314;
+            node.shape = "image";
+            node.image = require("@/assets/flags/w40/" +
+              node.label.toLowerCase() +
+              ".png");
+            node.size = 15;
+          });
+        }
         commit("SET_GRAPH_EXTRA", data);
       })
       .catch(err => {
@@ -42,6 +44,10 @@ const actions = {
 const getters = {  
   graphextra: state => {
     return state.graphextra;
+  },
+  status: state => {
+    return state.graphintra ? state.graphintra.STATUS : "00";
+
   },
   nodes: state => {
     return state.graphextra ? state.graphextra.nodes : [];

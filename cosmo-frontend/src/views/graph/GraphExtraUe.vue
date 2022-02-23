@@ -3,25 +3,23 @@
     <div class="col-9">
       <CCard>
         <CCardHeader>
+          <span> {{ $t("graph.card.title") }} Extra UE</span>
           <span v-if="graphDensity > 0">
-            <span class="text-primary">{{ $t("graph.stats.density") }}</span
+            <span class="text-primary"> {{ $t("graph.stats.density") }} </span
             >{{ graphDensity }}</span
           >
-          <span v-else>{{ $t("graph.card.title") }} Extra UE</span>
           <span class="pl-2" v-if="nodeMetric">
-            <!--span class="text-primary"
-              >, {{ $t("graph.stats.centrality") }} </span
-            >{{ nodeMetric.centrality }}
-            -->
+            <!--span class="text-primary">, {{ $t("graph.stats.centrality") }} </span>{{ nodeMetric.centrality }} -->
             <span class="text-primary"
               >, {{ $t("graph.stats.exportationstrength") }} </span
             >{{ nodeMetric.exportationstrength }}
             <span class="text-primary"
-              >, {{ $t("graph.stats.vulnerability") }} </span
-            >{{ nodeMetric.vulnerability }}
+              >, {{ $t("graph.stats.vulnerability") }}</span
+            >
+            {{ nodeMetric.vulnerability }}
             <span class="text-primary">, {{ $t("graph.stats.hubness") }} </span
-            >{{ nodeMetric.hubness }}
-          </span>
+            >{{ nodeMetric.hubness }}</span
+          >
 
           <span class="float-right">
             <button
@@ -358,7 +356,7 @@ export default {
   computed: {
     //...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
     ...mapGetters("metadata", ["graphPeriod"]),
-    ...mapGetters("graphExtra", ["nodes", "edges", "metrics"]),
+    ...mapGetters("graphExtra", ["nodes", "edges", "metrics","status"]),
     ...mapGetters("classification", [
       "transports",
       "products",

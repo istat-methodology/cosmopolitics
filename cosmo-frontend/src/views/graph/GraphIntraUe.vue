@@ -3,12 +3,11 @@
     <div class="col-9">
       <CCard>
         <CCardHeader>
+          <span> {{ $t("graph.card.title") }} Intra UE </span>
           <span v-if="graphDensity > 0">
             <span class="text-primary"> {{ $t("graph.stats.density") }} </span
             > {{ graphDensity }}</span
           >
-          <span v-else> {{ $t("graph.card.title") }} Intra UE </span>
-
           <span class="pl-2" v-if="nodeMetric">
             <span class="text-primary"
               >, {{ $t("graph.stats.centrality") }} </span
@@ -213,14 +212,7 @@
           {{ node.source.label }} - {{ node.destination.label }}
         </CListGroupItem>
       </CListGroup>
-      <label class="card-label mt-3">Transport</label>
-      <v-select
-        label="descr"
-        multiple
-        :options="transportConstraintStart"
-        placeholder="Select transport"
-        v-model="transportConstraint"
-      />
+
 
       <template #footer>
         <CButton
@@ -296,17 +288,13 @@ export default {
 
     //Form fields
     percentage: 90,
-    transport: null,
     product: null,
     flow: null,
     weight: null,
     //Graph modal
     edgeModal: false,
     selectedEdges: [],
-    selectedNodes: [],
-    transportConstraint: [],
-    transportConstraintStart: [],
-    transportConstraintSelected: {},
+    selectedNodes: [],    
     edgeFromTo: null,
     //Metrics
     nodeMetric: null,
@@ -344,14 +332,13 @@ export default {
   }),
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
-    ...mapGetters("graphIntra", ["nodes", "edges", "metrics"]),
+    ...mapGetters("graphIntra", ["nodes", "edges", "metrics","status"]),
     ...mapGetters("classification", [
-      "transports",
       "products",
       "flows",
       "weights",
-    ]),
-    network() {
+    ]),    
+     network() {
       return this.nodes && this.edges
         ? {
             nodes: this.nodes,
@@ -364,9 +351,9 @@ export default {
             options: null,
           };
     },
-    graphDensity() {
+    graphDensity() {      
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    },
+    }
   },
   validations: {
     selectedPeriod: {
@@ -378,9 +365,6 @@ export default {
     percentage: {
       required,
       numeric,
-    },
-    transport: {
-      required,
     },
     product: {
       required,
@@ -410,7 +394,7 @@ export default {
       this.spinner = bool;
     },
     handleSelectEdge(selectedGraph) {
-      this.transportConstraint = [];
+      
       //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
@@ -424,7 +408,6 @@ export default {
         } else {
           this.edgeFromTo = sourceNode.label + "-" + destinationNode.label;
         }
-
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
@@ -432,16 +415,6 @@ export default {
         });
       });
       //console.log(this.edgeFromTo);
-
-      if (selectedGraph.edges.length > 1) {
-        this.transportConstraintStart = this.transport;
-      } else {
-        this.transportConstraintStart = this.transportConstraintSelected[
-          this.edgeFromTo
-        ]
-          ? this.transportConstraintSelected[this.edgeFromTo]
-          : this.transport;
-      }
       this.edgeModal = true;
     },
     handleOverNode(event) {
@@ -451,7 +424,6 @@ export default {
     applyConstraints() {
       const constraints = [];
       this.selectedEdges.forEach((edge) => {
-        this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.network, edge.from).label,
           to: this.getNode(this.network, edge.to).label,
@@ -464,12 +436,10 @@ export default {
       const form = {
         tg_period: this.selectedPeriod.id,
         tg_perc: this.percentage,
-        listaMezzi: this.getIds(this.transport),
         product: this.product.id,
         flow: this.flow.id,
         weight_flag: this.weight.descr,
-        pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints,
+        pos: { nodes: this.nodes }
       };
       this.$store.dispatch("graphIntra/postGraphIntra", form);
       this.$store.dispatch(
@@ -478,14 +448,7 @@ export default {
       );
       this.closeModal();
       this.spinnerStart(true);
-    },
-
-    setTransportConstraintStart() {
-      let transport = this.transportConstraintStart.filter(
-        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
-      );
-      this.transportConstraintSelected[this.edgeFromTo] = transport;
-    },
+    },    
     closeModal() {
       this.edgeModal = false;
     },
@@ -499,12 +462,10 @@ export default {
       const form = {
         tg_period: val,
         tg_perc: this.percentage,
-        listaMezzi: this.getIds(this.transport),
         product: this.product.id,
         flow: this.flow.id,
         weight_flag: this.weight.descr,
-        pos: "None",
-        selezioneMezziEdges: "None",
+        pos: "None"        
       };
       this.spinnerStart(true);
       this.$store.dispatch("graphIntra/postGraphIntra", form);
@@ -513,7 +474,6 @@ export default {
       this.$v.$touch(); //validate form data
       if (
         !this.$v.percentage.$invalid &&
-        !this.$v.transport.$invalid &&
         !this.$v.product.$invalid &&
         !this.$v.flow.$invalid &&
         !this.$v.weight.$invalid
@@ -525,25 +485,15 @@ export default {
         const form = {
           tg_period: this.selectedPeriod.id,
           tg_perc: this.percentage,
-          listaMezzi: this.getIds(this.transport),
           product: this.product.id,
           flow: this.flow.id,
           weight_flag: this.weight.descr,
-          pos: "None",
-          selezioneMezziEdges: "None",
+          pos: "None"
         };
         this.$store.dispatch("graphIntra/postGraphIntra", form);
-        this.transportConstraintSelected = {};
+        
       }
     },
-    getIds(selectedTransports) {
-      var ids = [];
-      selectedTransports.forEach((element) => {
-        ids.push(element.id);
-      });
-      return ids;
-    },
-
     getData(id, ref) {
       var nodes = [];
       var edges = [];
