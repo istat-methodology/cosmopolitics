@@ -12,10 +12,10 @@ data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var
   
   #utente seleziona un partner mondiale
   dati <- dati[which(dati$PARTNER_ISO==partner_code),]
-  
+ 
   #seleziono la cpa
   dati <- dati[which(dati$cpa==var_cpa),]
-  
+  print(head(dati))
   if (tipo_var==1) {
     dati <- dati[,c(5:6)]
   } else if (tipo_var==2) {
