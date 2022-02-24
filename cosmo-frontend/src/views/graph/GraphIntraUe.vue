@@ -479,6 +479,7 @@ export default {
           weight_flag: this.weight.descr,
           pos: "None",
         };
+        
         this.requestToServer(form);
       }
     },

@@ -23,11 +23,12 @@ const actions = {
   postGraphExtra({
     commit
   }, form) {
-    const SUCCESS = "00";
+    
     return graphExtraService
       .postGraphExtra(form)
       .then(data => {
         if (data["STATUS"] == undefined) {
+          commit("SET_GRAPH_EXTRA_STATUS", "00");
           data.nodes.forEach(node => {
             node.x = node.x * 314;
             node.y = node.y * 314;
@@ -37,7 +38,6 @@ const actions = {
               ".png");
             node.size = 15;
           });
-          commit("SET_GRAPH_EXTRA_STATUS", SUCCESS);
           commit("SET_GRAPH_EXTRA", data);
         } else {
           commit("SET_GRAPH_EXTRA_STATUS", data["STATUS"]);
