@@ -165,7 +165,7 @@
             >{{ $t("graph.form.fields.product") }}*</label
           >
           <v-select
-            label="descr"
+            label= "descr"
             :options="productsExtra"
             :placeholder="$t('graph.form.fields.product_placeholder')"
             v-model="product"
@@ -364,6 +364,7 @@ export default {
       "weights",
     ]),
     network() {
+
       return this.nodes && this.edges
         ? {
             nodes: this.nodes,
@@ -546,7 +547,6 @@ export default {
           //this.$store.dispatch("message/success", "data matched!");
           this.spinnerStart(false);
         } else {
-          this.$store.dispatch("graphExtra/clear");
           if (this.status == Status.wide) {
             this.$store.dispatch(
               "message/error",

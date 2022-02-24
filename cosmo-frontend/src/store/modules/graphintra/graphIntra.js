@@ -24,11 +24,12 @@ const actions = {
   postGraphIntra({
     commit
   }, form) {
-    const SUCCESS = "00";
+    
     return graphIntraService
       .postGraphIntra(form)
       .then(data => {
         if (data["STATUS"] == undefined) {
+          commit("SET_GRAPH_INTRA_STATUS", "00");
           data.nodes.forEach(node => {
             node.x = node.x * 314;
             node.y = node.y * 314;
@@ -38,7 +39,6 @@ const actions = {
               ".png");
             node.size = 15;
           });
-          commit("SET_GRAPH_INTRA_STATUS", SUCCESS);
           commit("SET_GRAPH_INTRA", data);
         } else {
           commit("SET_GRAPH_INTRA_STATUS", data["STATUS"]);

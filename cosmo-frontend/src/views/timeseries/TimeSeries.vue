@@ -168,6 +168,18 @@
             }"
           />
           <label class="card-label"
+            >{{ $t("timeseries.form.fields.varType") }}*</label
+          >
+          <v-select
+            label="descr"
+            :options="varType"
+            :placeholder="$t('timeseries.form.fields.varType_placeholder')"
+            v-model="varTypeSelected"
+            :class="{
+              'is-invalid': $v.varTypeSelected.$error,
+            }"
+          />
+          <label class="card-label"
             >{{ $t("timeseries.form.fields.flow") }}*</label
           >
           <v-select
@@ -201,18 +213,6 @@
             v-model="partnerSelected"
             :class="{
               'is-invalid': $v.partnerSelected.$error,
-            }"
-          />
-          <label class="card-label mt-3"
-            >{{ $t("timeseries.form.fields.bec") }}*</label
-          >
-          <v-select
-            label="descr"
-            :options="becs"
-            :placeholder="$t('timeseries.form.fields.bec_placeholder')"
-            v-model="becSelected"
-            :class="{
-              'is-invalid': $v.becSelected.$error,
             }"
           />
           <label class="card-label mt-3"
@@ -255,7 +255,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { Context,Status } from "@/common";
+import { Context, Status } from "@/common";
 import paletteMixin from "@/components/mixins/palette.mixin";
 import timeseriesDiagMixin from "@/components/mixins/timeseriesDiag.mixin";
 import timeseriesMixin from "@/components/mixins/timeseries.mixin";
@@ -277,11 +277,17 @@ export default {
     spinner: false,
 
     //Form fields
+
     dataTypeSelected: null,
+
+    varTypeSelected: null,
+
     flowSelected: null,
+
     countrySelected: null,
+
     partnerSelected: null,
-    becSelected: null,
+
     productsCPASelected: null,
 
     chartDataDiagMain: null,
@@ -298,18 +304,21 @@ export default {
     ...mapGetters("classification", [
       "countries",
       "partners",
-      "becs",
       "flows",
-      "dataType",     
+      "dataType",
+      "varType",
       "productsCPA",
     ]),
-    ...mapGetters("timeseries", ["timeseriesCharts", "tm"]),
+    ...mapGetters("timeseries", ["timeseriesCharts"]),
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
     },
   },
   validations: {
     dataTypeSelected: {
+      required,
+    },
+    varTypeSelected: {
       required,
     },
     flowSelected: {
@@ -331,7 +340,6 @@ export default {
   methods: {
     helpOn(showModal) {
       this.isModalHelp = showModal;
-      this.modalHelpTitle = "About map";
     },
     handleMainChart() {
       this.isMainChart = !this.isMainChart;
@@ -347,30 +355,25 @@ export default {
       this.spinnerStart(true);
       if (
         !this.$v.dataTypeSelected.$invalid &&
+        !this.$v.varTypeSelected.$invalid &&
         !this.$v.flowSelected.$invalid &&
-        !this.$v.becSelected.$invalid &&
-        //!this.$v.productsCPASelected.$invalid &&
+        !this.$v.productsCPASelected.$invalid &&
         !this.$v.countrySelected.$invalid &&
         !this.$v.partnerSelected.$invalid
       ) {
+        //flow=1&var=3&country=IT&partner=US&dataType=1&tipovar=1
         const form = {
-          datType: this.dataTypeSelected.id,
           flow: this.flowSelected.id,
-          var: this.becSelected.id,
-          //var: this.productsCPASelected.id,
+          var: this.productsCPASelected.id,
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
-          fcst: 0,
+          dataType: this.dataTypeSelected.id,
+          varType: this.varTypeSelected.id,
         };
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
-          if (this.tm["status"] == Status.success) {
+          if (this.timeseriesCharts["status"] == Status.success) {
             this.$store.dispatch("message/success", "data matcted!");
-            //this.buildTimeseriesCharts(this.timeseriesCharts);
-            this.buildTimeseriesCharts(this.tm);
-            //if (this.timeLapse) {
-            //  this.spinnerStart(false);
-            //  this.chartData = this.getTimeseriesChart();
-            //}
+            this.buildTimeseriesCharts(this.timeseriesCharts);
             this.spinnerStart(false);
           } else {
             this.$store.dispatch("message/error", "failed!!");

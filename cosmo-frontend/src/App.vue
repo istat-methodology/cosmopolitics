@@ -49,10 +49,11 @@ export default {
     this.$store.dispatch("classification/getProducts");
     this.$store.dispatch("classification/getCountries");
     this.$store.dispatch("classification/getPartners");
+    
     this.$store.dispatch("classification/getProductsCPA");
     this.$store.dispatch("classification/getProductsIntra");
     this.$store.dispatch("classification/getProductsExtra");
-    this.$store.dispatch("classification/getBecs");    
+    
   }
 };
 </script>
