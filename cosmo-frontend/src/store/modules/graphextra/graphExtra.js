@@ -3,11 +3,15 @@ import {
 } from "@/services";
 
 const state = {
-  graphextra: []
+  graphextra: [],
+  status: ""
 };
 const mutations = {
   SET_GRAPH_EXTRA(state, graphextra) {
     state.graphextra = graphextra;
+  },
+  SET_GRAPH_EXTRA_STATUS(state, status) {
+    state.status = status;
   }
 };
 const actions = {
@@ -19,6 +23,7 @@ const actions = {
   postGraphExtra({
     commit
   }, form) {
+    const SUCCESS = "00";
     return graphExtraService
       .postGraphExtra(form)
       .then(data => {
@@ -32,22 +37,23 @@ const actions = {
               ".png");
             node.size = 15;
           });
+          commit("SET_GRAPH_EXTRA_STATUS", SUCCESS);
+          commit("SET_GRAPH_EXTRA", data);
+        } else {
+          commit("SET_GRAPH_EXTRA_STATUS", data["STATUS"]);
         }
-        commit("SET_GRAPH_EXTRA", data);
       })
       .catch(err => {
         console.log(err);
       });
   },
-
 };
-const getters = {  
+const getters = {
   graphextra: state => {
     return state.graphextra;
   },
   status: state => {
-    return state.graphextra ? state.graphextra.STATUS : "00";
-
+    return state.status;
   },
   nodes: state => {
     return state.graphextra ? state.graphextra.nodes : [];
@@ -59,7 +65,6 @@ const getters = {
     return state.graphextra ? state.graphextra.metriche : null;
   }
 };
-
 export const graphExtra = {
   namespaced: true,
   state,

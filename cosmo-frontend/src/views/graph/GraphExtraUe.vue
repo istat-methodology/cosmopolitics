@@ -166,7 +166,7 @@
           >
           <v-select
             label="descr"
-            :options="products"
+            :options="productsExtra"
             :placeholder="$t('graph.form.fields.product_placeholder')"
             v-model="product"
             :class="{
@@ -359,7 +359,7 @@ export default {
     ...mapGetters("graphExtra", ["nodes", "edges", "metrics", "status"]),
     ...mapGetters("classification", [
       "transports",
-      "products",
+      "productsExtra",
       "flows",
       "weights",
     ]),
@@ -480,21 +480,7 @@ export default {
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints,
       };
-      this.spinnerStart(true);
-      this.$store.dispatch("graphExtra/postGraphExtra", form).then(() => {
-        if (this.status == Status.success) {
-          this.$store.dispatch("message/success", "data matched!");
-          this.spinnerStart(false);
-        } else {
-          if (this.status == Status.wide) {
-            this.$store.dispatch("message/error", "graph too wide!");
-          }
-          if (this.status == Status.empty) {
-            this.$store.dispatch("message/error", "empy graph!");
-          }
-          this.spinnerStart(false);
-        }
-      });
+      this.requestToServer(form);
       this.closeModal();
     },
     setTransportConstraintStart() {
@@ -525,21 +511,7 @@ export default {
         //pos: { nodes: this.nodes },
         selezioneMezziEdges: "None",
       };
-      this.spinnerStart(true);
-      this.$store.dispatch("graphExtra/postGraphExtra", form).then(() => {
-        if (this.status == Status.success) {
-          this.$store.dispatch("message/success", "data matched!");
-          this.spinnerStart(false);
-        } else {
-          if (this.status == Status.wide) {
-            this.$store.dispatch("message/error", "graph too wide!");
-          }
-          if (this.status == Status.empty) {
-            this.$store.dispatch("message/error", "empy graph!");
-          }
-          this.spinnerStart(false);
-        }
-      });
+      this.requestToServer(form);
     },
     handleSubmit() {
       this.$v.$touch(); //validate form data
@@ -563,23 +535,33 @@ export default {
           pos: "None",
           selezioneMezziEdges: "None",
         };
-        this.spinnerStart(true);
-        this.$store.dispatch("graphExtra/postGraphExtra", form).then(() => {
-          if (this.status == Status.success) {
-            this.$store.dispatch("message/success", "data matched!");
-            this.spinnerStart(false);
-          } else {
-            if (this.status == Status.wide) {
-              this.$store.dispatch("message/error", "graph too wide!");
-            }
-            if (this.status == Status.empty) {
-              this.$store.dispatch("message/error", "empy graph!");
-            }
-            this.spinnerStart(false);
-          }
-        });
+        this.requestToServer(form);
         this.transportConstraintSelected = {};
       }
+    },
+    requestToServer(form) {
+      this.spinnerStart(true);
+      this.$store.dispatch("graphExtra/postGraphExtra", form).then(() => {
+        if (this.status == Status.success) {
+          //this.$store.dispatch("message/success", "data matched!");
+          this.spinnerStart(false);
+        } else {
+          this.$store.dispatch("graphExtra/clear");
+          if (this.status == Status.wide) {
+            this.$store.dispatch(
+              "message/error",
+              "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport"
+            );
+          }
+          if (this.status == Status.empty) {
+            this.$store.dispatch(
+              "message/error",
+              "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
+            );
+          }
+          this.spinnerStart(false);
+        }
+      });
     },
     getIds(selectedTransports) {
       var ids = [];

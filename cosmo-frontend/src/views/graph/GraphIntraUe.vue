@@ -154,7 +154,7 @@
           >
           <v-select
             label="descr"
-            :options="products"
+            :options="productsIntra"
             :placeholder="$t('graph.form.fields.product_placeholder')"
             v-model="product"
             :class="{
@@ -334,7 +334,7 @@ export default {
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
     ...mapGetters("graphIntra", ["nodes", "edges", "metrics", "status"]),
-    ...mapGetters("classification", ["products", "flows", "weights"]),
+    ...mapGetters("classification", ["productsIntra", "flows", "weights"]),
     network() {
       return this.nodes && this.edges
         ? {
@@ -437,22 +437,8 @@ export default {
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
       };
-      this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
-        if (this.status == Status.success) {
-          this.$store.dispatch("message/success", "data matched!");
-          this.spinnerStart(false);
-        } else {
-          if (this.status == Status.wide) {
-            this.$store.dispatch("message/error", "graph too wide!");
-          }
-          if (this.status == Status.empty) {
-            this.$store.dispatch("message/error", "empy graph!");
-          }
-          this.spinnerStart(false);
-        }
-      });
+      this.requestToServer(form);
       this.closeModal();
-      this.spinnerStart(true);
     },
     closeModal() {
       this.edgeModal = false;
@@ -472,21 +458,7 @@ export default {
         weight_flag: this.weight.descr,
         pos: "None",
       };
-      this.spinnerStart(true);
-      this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
-        if (this.status == Status.success) {
-          this.$store.dispatch("message/success", "data matched!");
-          this.spinnerStart(false);
-        } else {
-          if (this.status == Status.wide) {
-            this.$store.dispatch("message/error", "graph too wide!");
-          }
-          if (this.status == Status.empty) {
-            this.$store.dispatch("message/error", "empy graph!");
-          }
-          this.spinnerStart(false);
-        }
-      });
+      this.requestToServer(form);
     },
     handleSubmit() {
       this.$v.$touch(); //validate form data
@@ -496,7 +468,6 @@ export default {
         !this.$v.flow.$invalid &&
         !this.$v.weight.$invalid
       ) {
-        
         // ---------------------------------------
         // @TODO Change the name of the form keys
         // ---------------------------------------
@@ -508,22 +479,31 @@ export default {
           weight_flag: this.weight.descr,
           pos: "None",
         };
-        this.spinnerStart(true);
-        this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
-          if (this.status == Status.success) {
-            this.$store.dispatch("message/success", "data matched!");
-            this.spinnerStart(false);
-          } else {
-            if (this.status == Status.wide) {
-              this.$store.dispatch("message/error", "graph too wide!");
-            }
-            if (this.status == Status.empty) {
-              this.$store.dispatch("message/error", "empy graph!");
-            }
-            this.spinnerStart(false);
-          }
-        });
+        this.requestToServer(form);
       }
+    },
+    requestToServer(form) {
+      this.spinnerStart(true);
+      this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
+        if (this.status == Status.success) {
+          //this.$store.dispatch("message/success", "data matched!");
+          this.spinnerStart(false);
+        } else {
+          if (this.status == Status.wide) {
+            this.$store.dispatch(
+              "message/error",
+              "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport"
+            );
+          }
+          if (this.status == Status.empty) {
+            this.$store.dispatch(
+              "message/error",
+              "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
+            );
+          }
+          this.spinnerStart(false);
+        }
+      });
     },
     getData(id, ref) {
       var nodes = [];

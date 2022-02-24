@@ -10,7 +10,15 @@ const product3s = JSON.parse(fs.readFileSync("./data/classification/clsProducts3
 const becs = JSON.parse(fs.readFileSync("./data/classification/clsBec.json"));
 /* to */
 const productsCPA = JSON.parse(fs.readFileSync("./data/classification/clsProductsCPA.json"));
+
 const productplus = JSON.parse(fs.readFileSync("./data/classification/clsProductplus.json"));
+
+
+const productsIntra = JSON.parse(fs.readFileSync("./data/classification/clsProductsGraphIntra.json"));
+const productsExtra = JSON.parse(fs.readFileSync("./data/classification/clsProductsGraphExtraNSTR.json"));
+
+
+
 const transports = JSON.parse(fs.readFileSync("./data/classification/clsTransport.json"));
 const partners = JSON.parse(fs.readFileSync("./data/classification/clsPartners.json"));
 
@@ -62,14 +70,21 @@ module.exports = () => ({
   importValue,
   exportQuantity,
   importQuantity,
+  
+  
   //classification
   flows,  
+  
   transports,
+
   products,
   product3s,
   productplus,
   becs,
   productsCPA,
+  productsIntra,
+  productsExtra,
+
   partners,
   // service slider select
   metadata

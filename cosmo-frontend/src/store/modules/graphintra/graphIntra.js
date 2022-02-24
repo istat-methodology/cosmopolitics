@@ -4,11 +4,15 @@ import {
 
 const state = {
   graphintra: [],
+  status: ""
 };
 
 const mutations = {
   SET_GRAPH_INTRA(state, graphintra) {
     state.graphintra = graphintra;
+  },
+  SET_GRAPH_INTRA_STATUS(state, status) {
+    state.status = status;
   },
 };
 const actions = {
@@ -20,6 +24,7 @@ const actions = {
   postGraphIntra({
     commit
   }, form) {
+    const SUCCESS = "00";
     return graphIntraService
       .postGraphIntra(form)
       .then(data => {
@@ -33,8 +38,11 @@ const actions = {
               ".png");
             node.size = 15;
           });
+          commit("SET_GRAPH_INTRA_STATUS", SUCCESS);
+          commit("SET_GRAPH_INTRA", data);
+        } else {
+          commit("SET_GRAPH_INTRA_STATUS", data["STATUS"]);
         }
-        commit("SET_GRAPH_INTRA", data);
       })
       .catch(err => {
         console.log(err);
@@ -47,8 +55,7 @@ const getters = {
     return state.graphintra;
   },
   status: state => {
-    return state.graphintra ? state.graphintra.STATUS : "00";
-    
+    return state.status;
   },
   nodes: state => {
     return state.graphintra ? state.graphintra.nodes : [];

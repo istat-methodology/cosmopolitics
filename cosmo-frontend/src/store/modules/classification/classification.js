@@ -10,6 +10,8 @@ const state = {
   partners: [],
   becs: [],
   productsCPA: [],
+  productsIntra: [],
+  productsExtra: [],
   dataType: [{
       id: 1,
       descr: "Yearly variation series"
@@ -68,6 +70,12 @@ const mutations = {
   },
   SET_PRODUCTS_CPA(state, productsCPA) {
     state.productsCPA = productsCPA;
+  },
+  SET_PRODUCTS_INTRA(state, productsIntra) {
+    state.productsIntra = productsIntra;
+  },
+  SET_PRODUCTS_EXTRA(state, productsExtra) {
+    state.productsExtra = productsExtra;
   }
 };
 const actions = {
@@ -119,6 +127,31 @@ const actions = {
         console.log(err);
       });
   },
+getProductsIntra({
+  commit
+}) {
+  return classificationService
+    .findAll("productsIntra")
+    .then(data => {
+      commit("SET_PRODUCTS_INTRA", data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  },
+getProductsExtra({
+  commit
+}) {
+  return classificationService
+    .findAll("productsExtra")
+    .then(data => {
+      commit("SET_PRODUCTS_EXTRA", data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+},
+
   getTransports({
     commit
   }) {
@@ -166,9 +199,18 @@ const getters = {
   productPlus: state => {
     return state.productPlus;
   },
+
   productsCPA: state => {
     return state.productsCPA;
   },
+
+  productsIntra: state => {
+    return state.productsIntra;
+  },
+  productsExtra: state => {
+    return state.productsExtra;
+  },
+
   transports: state => {
     return state.transports;
   },
