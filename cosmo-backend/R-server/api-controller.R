@@ -18,8 +18,8 @@
 # basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
 
 
-basedir = ("./rscript")
-basedirData=("./data")
+basedir = ("/app/rscript")
+basedirData=("/app/data")
 
 FILE_COMEXT_IMP=paste(basedirData,"comext_imp.csv",sep="/")
 FILE_COMEXT_EXP=paste(basedirData,"comext_exp.csv",sep="/")
