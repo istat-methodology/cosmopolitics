@@ -11,15 +11,15 @@
 #basedir = ("/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/rscript")
 #basedirData=("/home/is2admin/hackathon/git/cosmopolitics/cosmo-backend/R-server/data")
 
-basedir = ("C:\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
-basedirData=("C:\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
+#basedir = ("C:\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
+#basedirData=("C:\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
 
 # basedir = ("d:/development/cosmopolitics/cosmo-backend/R-server/rscript")
 # basedirData=("d:/development/cosmopolitics/cosmo-backend/R-server/data")
 
 
-# basedir = ("/app/rscript")
-# basedirData=("/app/data")
+basedir = ("./rscript")
+basedirData=("./data")
 
 FILE_COMEXT_IMP=paste(basedirData,"comext_imp.csv",sep="/")
 FILE_COMEXT_EXP=paste(basedirData,"comext_exp.csv",sep="/")
