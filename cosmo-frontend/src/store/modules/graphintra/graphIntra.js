@@ -1,12 +1,14 @@
 import {
   graphIntraService
 } from "@/services";
+import {
+  loadImage
+} from "@/common";
 
 const state = {
   graphintra: [],
   status: ""
 };
-
 const mutations = {
   SET_GRAPH_INTRA(state, graphintra) {
     state.graphintra = graphintra;
@@ -24,21 +26,19 @@ const actions = {
   postGraphIntra({
     commit
   }, form) {
-    
+
     return graphIntraService
       .postGraphIntra(form)
       .then(data => {
         if (data["STATUS"] == undefined) {
-          commit("SET_GRAPH_INTRA_STATUS", "00");
           data.nodes.forEach(node => {
             node.x = node.x * 314;
             node.y = node.y * 314;
             node.shape = "image";
-            node.image = require("@/assets/flags/w40/" +
-              node.label.toLowerCase() +
-              ".png");
+            node.image = loadImage(node.label);
             node.size = 15;
           });
+          commit("SET_GRAPH_INTRA_STATUS", "00");
           commit("SET_GRAPH_INTRA", data);
         } else {
           commit("SET_GRAPH_INTRA_STATUS", data["STATUS"]);

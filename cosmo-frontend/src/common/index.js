@@ -7,3 +7,4 @@ export * from "./graphVisjs";
 export * from "./period";
 export * from "./jsonData";
 export * from "./status";
+export * from "./utils";
