@@ -1,5 +1,5 @@
 
-data_function<-function(flow,var_bec,country_code,partner_code){
+data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   
    if (flow==1) {
      dati <- COMEXT_IMP
@@ -7,90 +7,64 @@ data_function<-function(flow,var_bec,country_code,partner_code){
      dati <- COMEXT_EXP
    }
 
-  dati<-dati[,-1]
-  # seleziono un country
-  dati <- dati[which(dati$country==country_code),]
-  dati$PARTNER<-ifelse(dati$PARTNER=="WORLD","WO",dati$PARTNER)
+  # utente seleziona un paese UE
+  dati <- dati[which(dati$DECLARANT_ISO==country_code),]
   
-  #seleziono un partner 
-  dati <- dati[which(dati$PARTNER==partner_code),]
+  #utente seleziona un partner mondiale
+  dati <- dati[which(dati$PARTNER_ISO==partner_code),]
   
-  #seleziono la bec
-  dati <- dati[which(dati$bec==var_bec),]
+  #seleziono la cpa
+  dati <- dati[which(dati$cpa==var_cpa),]
+  
+  if (tipo_var==1) {
+    dati <- dati[,c(5:6)]
+  } else if (tipo_var==2) {
+    dati <- dati[,c(5,7)]
+  }
+  colnames(dati)<-c("PERIOD","series")
+  #tolgo le colonne che non servono alle successive elaborazioni
+  
+  
+  #metto le date nel formato per l'ordinamento
+  dati$year<-substring(dati$PERIOD,1,4)
+  dati$month<-str_sub(dati$PERIOD,-2)
+  dati$month<-as.numeric(dati$month)
+  dati$year<-as.numeric(dati$year)
+  dati$series<-as.numeric(dati$series)
+  
+  gc()
+  
+  #ordino il dataset
   dati<-dati[order(dati$year,dati$month),]
   
-  strdate = paste("01",paste(dati$month[1],min(dati$year),sep="/"),sep="/")
-  enddate = paste("01",paste(dati$month[length(dati$month)],max(dati$year),sep="/"),sep="/")
+  #creo le date nel formato per l'output
+  strdate = paste("01",paste(dati$month[1],dati$year[1],sep="/"),sep="/")
+  enddate = paste("01",paste(dati$month[length(dati$month)],dati$year[length(dati$year)],sep="/"),sep="/")
+  
   date = seq.Date(from =as.Date(strdate, "%d/%m/%Y"),
                   to=as.Date(enddate, "%d/%m/%Y"),by="month")
-
-  
   dati$date <- date
-  dati <- dati[,c(4:7)]
-
-
-
-  #rm(a1)
-  gc()
-
-  return(dati)
+  dati<-dati[,c("date","series")]
   
-}
-
-data_function_bec<-function(flow,country_code,partner_code){
+  #lunghezza db
+  l<-length(dati$series)
   
-  if (flow==1) {
-    db <- COMEXT_IMP
-  } else if (flow==2) {
-    db <- COMEXT_EXP
-  }
+  #### calcolo i tendenziali 1='Yearly variation series', "2=Raw data series"
+if (dataType==1) {
   
-  db<-db[,-1]
-  db<-as.data.frame(db)
-  
-  #seleziono paese
-  db <- db[which(db$country==country_code),]
-  db$PARTNER<-ifelse(db$PARTNER=="WORLD","WO",db$PARTNER)
-
-  #selezione un partner
-  db <- db[which(db$PARTNER==partner_code),]
-
-  for (i in 1:7)
+  dati$tend<-dati$series
+    for (i in 13:l)
   {
-    var_bec=i
-  d<- db[which(db$bec==var_bec),]
-
-  d<-aggregate(d$VAR, by=list(d$bec,d$year,d$month), FUN=sum)
-
-  colnames(d)<-c("BEC","year","month","VAR")
-  strdate = paste("01",paste(d$month[1],min(d$year),sep="/"),sep="/")
-  enddate = paste("01",paste(d$month[length(d$month)],max(d$year),sep="/"),sep="/")
-  date = seq.Date(from =as.Date(strdate, "%d/%m/%Y"),
-                  to=as.Date(enddate, "%d/%m/%Y"),by="month")
-
-  d<-d[order(d$year,d$month),]
-  d$date <- date
-  d <- d[,c(5,4,2,3)]
-
-
-
-  assign(paste0("d",i),d)
-  rm(d)
-  
+    dati$tend[i]<-dati$series[i]-dati$series[i-12]
   }
-
-  rm(db)
-  gc()
-  res<-list(d1,d2,d3,d4,d5,d6,d7)
-  return(res)
-
+  dati$tend[c(1:12)]<-NA
+  dati$series<-as.numeric(dati$tend)
+  dati<-dati[,c(1,2)]
+  
 }
 
-
-lastdate<-function(){
+  gc()
   
-  l_date<-ls()
-  l_date<-POLIND_DB$Date[length(POLIND_DB$Date)]
-  return(l_date)
+  return(dati)
   
 }
