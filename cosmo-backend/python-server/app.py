@@ -29,7 +29,7 @@ logger = logging.getLogger('graphLog')
  
 def load_cpa_trim():
     def funcTrim(x):
-        return np.int32(x.replace("T",""))
+        return np.int32(x.replace("T","0"))
 
     df=pd.read_csv(CPA_TRIM_FILE,low_memory=False,converters={'trimestre': funcTrim},dtype={"cpa": object,"FLOW":np.int8} )
     df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","cpa","trimestre","val_cpa"]]
