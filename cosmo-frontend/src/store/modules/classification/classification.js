@@ -21,7 +21,7 @@ const state = {
       descr: "Raw data series"
     }
   ],
-  tradeDataType: [{
+  varType: [{
       id: 1,
       descr: "in treated value"
     },
@@ -203,26 +203,30 @@ const getters = {
   productsCPA: state => {
     return state.productsCPA;
   },
-
+  //graph intra
   productsIntra: state => {
     return state.productsIntra;
   },
+
+  //graph extra
   productsExtra: state => {
     return state.productsExtra;
   },
-
   transports: state => {
     return state.transports;
   },
   flows: state => {
     return state.flows;
   },
+  //timeseries
   dataType: state => {
     return state.dataType;
   },
-  tradeDataType: state => {
-    return state.tradeDataType;
+  //timeseries //trade
+  varType: state => {
+    return state.varType;
   },
+
   weights: state => {
     return state.weights;
   },

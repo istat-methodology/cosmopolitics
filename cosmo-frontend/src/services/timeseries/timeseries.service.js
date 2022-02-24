@@ -8,12 +8,13 @@ export const timeseriesService = {
 function findByFilters(form) {
   var object = {};
   object = {
-    //dataType: form.dataType,
+    //flow=1&var=3&country=IT&partner=US&dataType=1&tipovar=1
     flow: form.flow,
     var: form.var,
     country: form.country,
     partner: form.partner,
-    fcst: form.fcst
+    dataType: form.dataType,
+    tipovar: form.varType
   };
   const params = object;
 

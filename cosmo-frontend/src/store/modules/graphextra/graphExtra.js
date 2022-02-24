@@ -31,11 +31,11 @@ const actions = {
           commit("SET_GRAPH_EXTRA_STATUS", "00");
           data.nodes.forEach(node => {
             node.x = node.x * 314;
-            node.y = node.y * 314;
+            node.y = node.y * 314;            
             node.shape = "image";
             node.image = require("@/assets/flags/w40/" +
-              node.label.toLowerCase() +
-              ".png");
+             node.label.toLowerCase() +
+             ".png");
             node.size = 15;
           });
           commit("SET_GRAPH_EXTRA", data);

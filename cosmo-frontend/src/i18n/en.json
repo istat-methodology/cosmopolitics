@@ -130,9 +130,7 @@
         "partner": "Partner",
         "partner_placeholder": "Select a partner",
         "productsCPA": "Products",
-        "productsCPA_placeholder": "Select a product",
-        "bec": "Bec",
-        "bec_placeholder": "Select a Bec"
+        "productsCPA_placeholder": "Select a product"
       }
     },
     "card": {

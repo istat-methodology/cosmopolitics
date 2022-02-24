@@ -42,13 +42,13 @@
         </CCardHeader>
         <CCardBody>
           <label class="card-label"
-            >{{ $t("trade.form.fields.dataType") }}*</label
+            >{{ $t("trade.form.fields.varType") }}*</label
           >
           <v-select
             label="descr"
-            :options="tradeDataType"
-            :placeholder="$t('trade.form.fields.dataType_placeholder')"
-            v-model="tradeDataTypeSelected"
+            :options="varType"
+            :placeholder="$t('trade.form.fields.varType_placeholder')"
+            v-model="varTypeSelected"
           />
           <label class="card-label"
             >{{ $t("trade.form.fields.country") }}*</label
@@ -107,7 +107,7 @@ export default {
   components: { LineChart, exporter },
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
   data: () => ({
-    tradeDataTypeSelected: {
+    varTypeSelected: {
       id: 1,
       descr: "in treated value",
     },
@@ -125,7 +125,7 @@ export default {
   }),
   computed: {
     ...mapGetters("classification", [
-      "tradeDataType",
+      "varType",
       "countries",
       "flows"
     ]),
@@ -160,7 +160,7 @@ export default {
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
-          type: this.tradeDataTypeSelected.id,
+          type: this.varTypeSelected.id,
           country: this.countrySelected.country,
           flow: this.flowSelected.id,
         });

@@ -117,8 +117,10 @@
     "form": {
       "title": "Filtri di ricerca",
       "fields": {
-        "dataType": "Tipo serie",
-        "dataType_placeholder": "Seleziona il tipo di serie",
+        "dataType": "Serie",
+        "dataType_placeholder": "Seleziona la serie",
+        "varType": "Variazione",
+        "varType_placeholder": "Seleziona la variazione",
         "flow": "Flusso",
         "flow_placeholder": "Seleziona il flusso",
         "country": "Paese",
@@ -126,9 +128,7 @@
         "partner": "Partner",
         "partner_placeholder": "Seleziona un partner",
         "productsCPA": "Prodotti",
-        "productsCPA_placeholder": "Seleziona un prodotto",
-        "bec": "Bec",
-        "bec_placeholder": "Seleziona una Bec"
+        "productsCPA_placeholder": "Seleziona un prodotto"
       }
     },
     "card": {
@@ -149,8 +149,8 @@
     "form": {
       "title": "Filtri di ricerca",
       "fields": {
-        "dataType": "Tipo serie",
-        "dataType_placeholder": "Seleziona il tipo di serie",
+        "varType": "Variazione",
+        "varType_placeholder": "Seleziona la variazione",
         "flow": "Flusso",
         "flow_placeholder": "Seleziona il flusso",
         "country": "Paese",
