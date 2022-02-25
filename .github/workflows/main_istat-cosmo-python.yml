@@ -27,7 +27,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }} istatcosmo.azurecr.io/cosmo-python-service:latest
+        tags: istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-python-service:latest
         context: ./cosmo-backend/python-server/
       
 
