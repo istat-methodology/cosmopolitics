@@ -477,7 +477,7 @@ def refreshdata():
 
 @app.route('/hello')
 def hello():
-    return str('Hello World: version 1.02')
+    return str('Hello World: version 1.03')
         
 if __name__ == '__main__':
     IP='0.0.0.0'
