@@ -28,7 +28,7 @@ jobs:
       with:
         push: true
         tags: istatcosmo.azurecr.io/cosmo-python-service:test
-        file: ./cosmo-backend/python-server/Dockerfile
+        context: ./cosmo-backend/python-server/
 
   deploy:
     runs-on: ubuntu-latest
