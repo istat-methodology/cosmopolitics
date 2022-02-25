@@ -28,7 +28,7 @@ jobs:
       with:
         push: true
         tags: istatcosmo.azurecr.io/cosmo-r-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-r-service:latest
-        context: ./cosmo-backend/r-server/
+        context: ./cosmo-backend/R-server/
       
 
   deploy:
