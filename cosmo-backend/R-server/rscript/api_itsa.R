@@ -29,7 +29,7 @@ itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   acf_list[["dsh_y_neg"]]<- rep(-conf_int_pos,length(acf[["lag"]]))
   acf_list[["dsh_x_neg"]]<- as.vector(acf[["lag"]])
   
-  reslist[["DIAG_ACF"]]<-acf_list
+  reslist[["diagACF"]]<-acf_list
   
 ##############################grafico qq_norm
   qq<-qqnorm(dati$series[c(13:l)], pch = 1, frame = FALSE, plot.it = FALSE)
@@ -48,12 +48,12 @@ itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   lne_x<-pnt_x
   normal <- data.frame(pnt_x,pnt_y,lne_x,lne_y)
   
-  reslist[["DIAG_NORM"]]<-normal
+  reslist[["diagNorm"]]<-normal
    
   # se ci sono NA nella serie, non posso fare i due grafici
   # inserisco status di errore 
-  } else {reslist[["DIAG_ACF"]]<-c("00")
-    reslist[["DIAG_NORM"]]<-c("00")
+  } else {reslist[["diagACF"]]<-c("00")
+    reslist[["diagNorm"]]<-c("00")
     }
     
 return(reslist)
