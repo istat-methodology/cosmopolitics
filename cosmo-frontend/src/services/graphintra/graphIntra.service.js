@@ -5,9 +5,12 @@ export const graphIntraService = {
 };
 
 // Post form without transport
-function postGraphIntra(formData) {
+
+function postGraphIntra(params) {
+  
+  const endpoint = !params.trimester ? "/wordtradegraphintra" : "/cpatrim";
   return axiosPython
-    .post("/wordtradegraphintra", formData)
+    .post(endpoint, params.form)
     .then(res => {
       var data = res.data ? res.data : {};
       //console.log(data);

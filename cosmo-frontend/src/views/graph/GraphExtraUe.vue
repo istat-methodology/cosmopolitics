@@ -508,8 +508,6 @@ export default {
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: "None",
-        // NEXT UPDATE
-        //pos: { nodes: this.nodes },
         selezioneMezziEdges: "None",
       };
       this.requestToServer(form);

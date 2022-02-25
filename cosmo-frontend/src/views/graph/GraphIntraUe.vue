@@ -281,11 +281,11 @@ export default {
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
     selectedPeriod: { id: "202003", name: "Mar 20" },
-    selectedTrimesterPeriod: { id: "20201", name: "1Q 20" },
+    selectedTrimesterPeriod: { id: "202001", name: "1Q 20" },
 
     //Slider
     periodValue: "202003",
-    trimesterPeriodValue: "20201",
+    trimesterPeriodValue: "202001",
 
     //Form fields
     percentage: 90,
@@ -317,9 +317,6 @@ export default {
     base64: "",
     error: "",
     dataUrl: "",
-
-    modalTitle: " About on ",
-    modalBody: " About on ",
 
     isModalHelp: false,
     isMainModal: false,
@@ -423,19 +420,23 @@ export default {
         constraints.push({
           from: this.getNode(this.network, edge.from).label,
           to: this.getNode(this.network, edge.to).label,
-          exclude: this.getIds(this.transportConstraint),
+          exclude: -99, //this.getIds(this.transportConstraint),
         });
       });
       // ---------------------------------------
       // @TODO Change the name of the form keys
       // ---------------------------------------
+      let activePeriod = this.isTrimester
+        ? this.selectedTrimesterPeriod.id
+        : this.selectedPeriod.id;
       const form = {
-        tg_period: this.selectedPeriod.id,
+        tg_period: activePeriod,
         tg_perc: this.percentage,
         product: this.product.id,
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: { nodes: this.nodes },
+        selezioneMezziEdges: constraints,
       };
       this.requestToServer(form);
       this.closeModal();
@@ -457,6 +458,7 @@ export default {
         flow: this.flow.id,
         weight_flag: this.weight.descr,
         pos: "None",
+        selezioneMezziEdges: "None",
       };
       this.requestToServer(form);
     },
@@ -471,40 +473,49 @@ export default {
         // ---------------------------------------
         // @TODO Change the name of the form keys
         // ---------------------------------------
+        let activePeriod = this.isTrimester
+          ? this.selectedTrimesterPeriod.id
+          : this.selectedPeriod.id;
         const form = {
-          tg_period: this.selectedPeriod.id,
+          tg_period: activePeriod,
           tg_perc: this.percentage,
           product: this.product.id,
           flow: this.flow.id,
           weight_flag: this.weight.descr,
           pos: "None",
+          selezioneMezziEdges: "None",
         };
-        
+
         this.requestToServer(form);
       }
     },
     requestToServer(form) {
       this.spinnerStart(true);
-      this.$store.dispatch("graphIntra/postGraphIntra", form).then(() => {
-        if (this.status == Status.success) {
-          //this.$store.dispatch("message/success", "data matched!");
-          this.spinnerStart(false);
-        } else {
-          if (this.status == Status.wide) {
-            this.$store.dispatch(
-              "message/error",
-              "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport"
-            );
+      this.$store
+        .dispatch("graphIntra/postGraphIntra", {
+          form: form,
+          trimester: this.isTrimester,
+        })
+        .then(() => {
+          if (this.status == Status.success) {
+            //this.$store.dispatch("message/success", "data matched!");
+            this.spinnerStart(false);
+          } else {
+            if (this.status == Status.wide) {
+              this.$store.dispatch(
+                "message/error",
+                "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport"
+              );
+            }
+            if (this.status == Status.empty) {
+              this.$store.dispatch(
+                "message/error",
+                "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
+              );
+            }
+            this.spinnerStart(false);
           }
-          if (this.status == Status.empty) {
-            this.$store.dispatch(
-              "message/error",
-              "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
-            );
-          }
-          this.spinnerStart(false);
-        }
-      });
+        });
     },
     getData(id, ref) {
       var nodes = [];

@@ -48,7 +48,7 @@ export function getTrimesterPeriod(start, end) {
     
     if (trimester != trimesterOfyear(new Date(dt))) {
       trimester = trimesterOfyear(new Date(dt));
-      var idString = String(longYear) + trimester;
+      var idString = String(longYear) + String ('0') + String(trimester);
       var nameString = trimester + "Q " + shortYear;
       var item = {
         id: idString,

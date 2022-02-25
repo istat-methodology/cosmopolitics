@@ -25,10 +25,10 @@ const actions = {
   },
   postGraphIntra({
     commit
-  }, form) {
+  }, params) {
 
     return graphIntraService
-      .postGraphIntra(form)
+      .postGraphIntra(params)
       .then(data => {
         if (data["STATUS"] == undefined) {
           data.nodes.forEach(node => {
