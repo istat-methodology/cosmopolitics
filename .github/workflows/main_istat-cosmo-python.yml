@@ -1,12 +1,9 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - istat-cosmo-python
+name: Cosmo Python CI/CD
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -23,15 +20,16 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://istatcosmo.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_0af740dd80254540a88ee00623211f8a }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_c68bd9995d6d4968a828e3d5e879b5c4 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername }}
+        password: ${{ secrets.AzureAppService_ContainerPassword }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: istatcosmo.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_0af740dd80254540a88ee00623211f8a }}/cosmo-python-service:${{ github.sha }}
-        file: ./Dockerfile
+        tags: istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-python-service:latest
+        context: ./cosmo-backend/python-server/
+      
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,4 +46,4 @@ jobs:
         app-name: 'istat-cosmo-python'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_8c89ee8c3224496691a9a46483669102 }}
-        images: 'istatcosmo.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_0af740dd80254540a88ee00623211f8a }}/cosmo-python-service:${{ github.sha }}'
+        images: 'istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }}'

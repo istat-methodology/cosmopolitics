@@ -7,24 +7,19 @@ data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var
      dati <- COMEXT_EXP
    }
 
-  # utente seleziona un paese UE
-  dati <- dati[which(dati$DECLARANT_ISO==country_code),]
+  # utente seleziona un paese UE,partner mondiale,cpa
+  dati <- subset(dati , DECLARANT_ISO==country_code 
+                 & PARTNER_ISO==partner_code
+                 & cpa==var_cpa)
   
-  #utente seleziona un partner mondiale
-  dati <- dati[which(dati$PARTNER_ISO==partner_code),]
- 
-  #seleziono la cpa
-  dati <- dati[which(dati$cpa==var_cpa),]
-  print(head(dati))
+  
   if (tipo_var==1) {
-    dati <- dati[,c(5:6)]
+    dati <- dati[,c(5:6)]   #dati in valore
   } else if (tipo_var==2) {
-    dati <- dati[,c(5,7)]
+    dati <- dati[,c(5,7)]   #dati in qta
   }
   colnames(dati)<-c("PERIOD","series")
-  #tolgo le colonne che non servono alle successive elaborazioni
-  
-  
+    
   #metto le date nel formato per l'ordinamento
   dati$year<-substring(dati$PERIOD,1,4)
   dati$month<-str_sub(dati$PERIOD,-2)
@@ -38,11 +33,9 @@ data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var
   dati<-dati[order(dati$year,dati$month),]
   
   #creo le date nel formato per l'output
-  strdate = paste("01",paste(dati$month[1],dati$year[1],sep="/"),sep="/")
-  enddate = paste("01",paste(dati$month[length(dati$month)],dati$year[length(dati$year)],sep="/"),sep="/")
+  date<-paste(dati$year,dati$month,"01",sep="-")
+  date<-as.Date(date)
   
-  date = seq.Date(from =as.Date(strdate, "%d/%m/%Y"),
-                  to=as.Date(enddate, "%d/%m/%Y"),by="month")
   dati$date <- date
   dati<-dati[,c("date","series")]
   
