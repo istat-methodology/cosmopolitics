@@ -21,6 +21,11 @@ CPA_TRIM_FILE="data/cpa_trim.csv"
 
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
+logging.config.fileConfig('./logging.conf')
+logger = logging.getLogger('graphLog')
+
+
+
  
 def load_cpa_trim():
     def funcTrim(x):
@@ -121,7 +126,13 @@ def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,
             From=edge["from"]
             To=edge["to"]
             exclude=str(edge["exclude"])
-            listQuery.append("((DECLARANT_ISO == '"+From+"' & PARTNER_ISO == '"+To+"' & TRANSPORT_MODE in "+exclude+")|(DECLARANT_ISO == '"+To+"' & PARTNER_ISO == '"+From+"' & TRANSPORT_MODE in "+exclude+"))")
+            # gestione grafi senza mezzi di transporto
+            print (exclude)
+            if "-99" in exclude:
+                print("###########################  no means of transport it'll exclude entire edges")
+                listQuery.append("((DECLARANT_ISO == '"+From+"' & PARTNER_ISO == '"+To+"' )|(DECLARANT_ISO == '"+To+"' & PARTNER_ISO == '"+From+"' ))")
+            else:
+                listQuery.append("((DECLARANT_ISO == '"+From+"' & PARTNER_ISO == '"+To+"' & TRANSPORT_MODE in "+exclude+")|(DECLARANT_ISO == '"+To+"' & PARTNER_ISO == '"+From+"' & TRANSPORT_MODE in "+exclude+"))")
         return "not ("+("|".join(listQuery))+")"
     
     if (selezioneMezziEdges is not None):
@@ -367,18 +378,20 @@ def wordtradegraphplus():
         flow=int(jReq['flow'])        
         product=str(jReq['product'])       
         weight_flag=bool(jReq['weight_flag'])       
-        #selezioneMezziEdges=jReq['selezioneMezziEdges']  
-        #if selezioneMezziEdges=="None":
-        #    selezioneMezziEdges=None
-        #else:
-        #    pass
-        #    print(selezioneMezziEdges)
-        #    print(type(selezioneMezziEdges))
+
+        #---------------------
+        selezioneMezziEdges=jReq['selezioneMezziEdges']  
+        if selezioneMezziEdges=="None":
+            selezioneMezziEdges=None
+        else:
+            pass
+            logging.info(selezioneMezziEdges)
+            logging.info(type(selezioneMezziEdges))
         #--------------------
         
         
 
-        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,None,df_transportIntra)
+        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,selezioneMezziEdges,df_transportIntra)
         logging.info("tab4graph.shape"+str(tab4graph.shape))
         #AnalisiFlag=selezioneMezziEdges ########################################
 
@@ -430,8 +443,23 @@ def cpatrim():
         flow=int(jReq['flow'])        
         product=str(jReq['product'])       
         weight_flag=bool(jReq['weight_flag'])       
-        
-        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,None,df_trimcpa)
+
+
+        #---------------------
+        selezioneMezziEdges=jReq['selezioneMezziEdges']  
+        if selezioneMezziEdges=="None":
+            selezioneMezziEdges=None
+        else:
+            pass
+            logging.info(selezioneMezziEdges)
+            logging.info(type(selezioneMezziEdges))
+        #--------------------
+
+
+
+
+
+        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,selezioneMezziEdges,df_trimcpa)
         logging.info("tab4graph.shape"+str(tab4graph.shape))
         NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
         if NUM_NODI > NODIMAX:
@@ -477,7 +505,7 @@ def refreshdata():
 
 @app.route('/hello')
 def hello():
-    return str('Hello World: version 1.03')
+    return str('Hello World: version 1.01')
         
 if __name__ == '__main__':
     IP='0.0.0.0'
