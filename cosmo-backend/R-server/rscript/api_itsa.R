@@ -10,12 +10,13 @@ itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   dati<-data_function(flow,var_cpa,country_code,partner_code,dataType,tipo_var)
   
   l<-length(dati$series)
-  #se il dataset è vuoto genera codice di errore 00
+  #se il dataset Ã¨ vuoto genera codice di errore 00
   status<-ifelse(length(dati$series)==0,"00","01")
   reslist[["Status"]]<-status
      
   reslist[["diagMain"]]<-dati
 
+  if (length(date)==length(date_full)) {
 ############################grafico acf
   acf_list<-list()
   acf<-acf(dati$series[c(13:l)],plot = FALSE)
@@ -48,6 +49,12 @@ itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   normal <- data.frame(pnt_x,pnt_y,lne_x,lne_y)
   
   reslist[["DIAG_NORM"]]<-normal
-  
+   
+  # se ci sono NA nella serie, non posso fare i due grafici
+  # inserisco status di errore 
+  } else {reslist[["DIAG_ACF"]]<-c("00")
+    reslist[["DIAG_NORM"]]<-c("00")
+    }
+    
 return(reslist)
 }
