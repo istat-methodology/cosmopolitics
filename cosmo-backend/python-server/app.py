@@ -21,11 +21,6 @@ CPA_TRIM_FILE="data/cpa_trim.csv"
 
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
-logging.config.fileConfig('./logging.conf')
-logger = logging.getLogger('graphLog')
-
-
-
  
 def load_cpa_trim():
     def funcTrim(x):
