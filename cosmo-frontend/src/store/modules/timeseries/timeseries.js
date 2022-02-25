@@ -2,8 +2,8 @@ import {
   timeseriesService
 } from "@/services";
 const state = {
-  timeseriesChart: null,
-  timeseriesCharts: null
+  timeseriesChart: [],
+  timeseriesCharts: []
 };
 const mutations = {
   SET_TIMESERIES_CHART(state, timeseriesChart) {
@@ -33,9 +33,6 @@ const getters = {
   },
   timeseriesCharts: state => {
     return state.timeseriesCharts;
-  },
-  tm: state => {
-    return state.tm;
   }
 };
 export const timeseries = {
