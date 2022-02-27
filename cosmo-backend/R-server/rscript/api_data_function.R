@@ -36,13 +36,14 @@ data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var
   date<-as.Date(date)
   dati$date <- date
   
+  gc()
   
   #creo le date per il confronto
   strdate = paste("01",paste(dati$month[1],dati$year[1],sep="/"),sep="/")
   enddate = paste("01",paste(dati$month[length(dati$month)],dati$year[length(dati$year)],sep="/"),sep="/")
   
   date_full = seq.Date(from =as.Date(strdate, "%d/%m/%Y"),
-                  to=as.Date(enddate, "%d/%m/%Y"),by="month")
+                       to=as.Date(enddate, "%d/%m/%Y"),by="month")
   
   #selezione sono le colonne necessarie
   dati<-dati[,c("date","series")]
@@ -53,26 +54,26 @@ data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var
     colnames(db_full)<-c("date")
     dati <- dati %>% full_join(db_full)
   }
-
+  
+  #ordino il dataset
+  dati<-dati[order(dati$date),]
+  
   #lunghezza db
   l<-length(dati$series)
   
   #### calcolo i tendenziali 1='Yearly variation series', "2=Raw data series"
-if (dataType==1) {
-  
-  dati$tend<-dati$series
+  if (dataType==1) {
+    
+    dati$tend<-dati$series
     for (i in 13:l)
-  {
-    dati$tend[i]<-dati$series[i]-dati$series[i-12]
+    {
+      dati$tend[i]<-dati$series[i]-dati$series[i-12]
+    }
+    #dati$tend[c(1:12)]<-NA
+    dati$series<-as.numeric(dati$tend)
+    dati<-dati[c(13:l),c(1,2)]
+    
   }
-  dati$tend[c(1:12)]<-NA
-  dati$series<-as.numeric(dati$tend)
-  dati<-dati[,c(1,2)]
-  
-}
-
-  gc()
-  
   return(dati)
   
 }
