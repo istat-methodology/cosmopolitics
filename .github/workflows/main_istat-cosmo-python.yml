@@ -45,5 +45,5 @@ jobs:
       with:
         app-name: 'istat-cosmo-python'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8c89ee8c3224496691a9a46483669102 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_PYTHONSERVICE }}
         images: 'istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }}'
