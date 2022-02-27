@@ -10,16 +10,20 @@ itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   dati<-data_function(flow,var_cpa,country_code,partner_code,dataType,tipo_var)
   
   l<-length(dati$series)
+  
   #se il dataset è vuoto genera codice di errore 00
   status<-ifelse(length(dati$series)==0,"00","01")
   reslist[["Status"]]<-status
      
   reslist[["diagMain"]]<-dati
-
-  if (length(date)==length(date_full)) {
+  
+  #se ci sono missing non si possono fare i grafici successivi
+  len_diff<-ifelse(sum(is.na(dati$series))>=1,1,0)
+  len_diff<-as.numeric(len_diff)
+  if (len_diff==0) {
 ############################grafico acf
   acf_list<-list()
-  acf<-acf(dati$series[c(13:l)],plot = FALSE)
+  acf<-acf(dati$series,plot = FALSE)
   acf_list[["lne_y"]]<-as.vector(acf[["acf"]])
   acf_list[["lne_x"]]<-as.vector(acf[["lag"]])
   
@@ -30,14 +34,14 @@ itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   acf_list[["dsh_x_neg"]]<- as.vector(acf[["lag"]])
   
   reslist[["diagACF"]]<-acf_list
-  
+   
 ##############################grafico qq_norm
-  qq<-qqnorm(dati$series[c(13:l)], pch = 1, frame = FALSE, plot.it = FALSE)
+  qq<-qqnorm(dati$series, pch = 1, frame = FALSE, plot.it = FALSE)
   pnt_x<-qq[[1]]
   pnt_y<-qq[[2]]
   
   # Find 1st and 3rd quartile o data
-  y <- quantile(dati$series[c(13:l)], c(0.25, 0.75), type = 5)
+  y <- quantile(dati$series, c(0.25, 0.75), type = 5)
   # Find the 1st and 3rd quartile of the normal distribution
   x <- qnorm( c(0.25, 0.75))
   # Now we can compute the intercept and slope of the line that passes through these points
