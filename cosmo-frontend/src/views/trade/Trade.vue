@@ -79,7 +79,7 @@
           </CButton>
         </CCardBody>
       </CCard>
-    </div>   
+    </div>
     <CModal
       :title="$t('trade.modal.main.title')"
       :show.sync="isModalHelp"
@@ -109,26 +109,22 @@ export default {
   data: () => ({
     varTypeSelected: {
       id: 1,
-      descr: "in treated value",
+      descr: "in treated value"
     },
     countrySelected: {
       country: "IT",
-      name: "Italy",
+      name: "Italy"
     },
     flowSelected: {
       id: 2,
-      descr: "Export",
+      descr: "Export"
     },
     spinner: false,
-    labelPeriod: [],    
-    isModalHelp: false,
+    labelPeriod: [],
+    isModalHelp: false
   }),
   computed: {
-    ...mapGetters("classification", [
-      "varType",
-      "countries",
-      "flows"
-    ]),
+    ...mapGetters("classification", ["varType", "countries", "flows"]),
     ...mapGetters("trade", ["charts"]),
     ...mapGetters("metadata", ["tradePeriod"]),
     chartData() {
@@ -137,7 +133,7 @@ export default {
       if (this.tradePeriod) {
         chartData.labels = this.labelPeriod;
         if (this.charts) {
-          this.charts.data.forEach((element) => {
+          this.charts.data.forEach(element => {
             const color = this.getColor();
             chartData.datasets.push({
               label: element.dataname,
@@ -146,23 +142,25 @@ export default {
               borderColor: color.border,
               data: element.value,
               showLine: true,
-              pointRadius: 2,
+              pointRadius: 2
             });
           });
         }
       }
       this.clearColor();
       return chartData;
-    },
+    }
   },
   methods: {
-    helpOn(showModal) {  this.isModalHelp = showModal;  },
+    helpOn(showModal) {
+      this.isModalHelp = showModal;
+    },
     handleSubmit() {
       if (this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
           type: this.varTypeSelected.id,
           country: this.countrySelected.country,
-          flow: this.flowSelected.id,
+          flow: this.flowSelected.id
         });
       }
     },
@@ -174,16 +172,18 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
-    for (const period of this.tradePeriod) { this.labelPeriod.push(period.name); }
+    for (const period of this.tradePeriod) {
+      this.labelPeriod.push(period.name);
+    }
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("trade/findByName", {
       country: this.countrySelected.country,
-      flow: this.flowSelected.id,
+      flow: this.flowSelected.id
     });
-  },
+  }
 };
 </script>
 <style>

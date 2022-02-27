@@ -375,8 +375,8 @@ export default {
           y: this.network.nodes[nodeId].y
         });
       }
-      console.log(nodes);
-      console.log(edges);
+      //console.log(nodes);
+      //console.log(edges);
       let data = JSON.stringify({ nodes, edges });
       return data;
     },

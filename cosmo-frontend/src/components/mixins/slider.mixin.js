@@ -52,7 +52,7 @@ export default {
         arr.push(item);
         dt.setMonth(dt.getMonth() + 1);
       }
-      console.log(arr);
+      //console.log(arr);
       return arr;
     }
   }

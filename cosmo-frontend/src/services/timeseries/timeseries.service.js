@@ -1,6 +1,4 @@
-import {
-  axiosR
-} from "@/http";
+import { axiosR } from "@/http";
 export const timeseriesService = {
   findByFilters
 };

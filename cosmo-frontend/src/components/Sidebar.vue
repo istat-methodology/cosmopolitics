@@ -97,7 +97,6 @@
 <script>
 import { mapGetters } from "vuex";
 
-
 export default {
   computed: {
     ...mapGetters("coreui", {
@@ -114,7 +113,7 @@ export default {
     /*
       "appVersion":"0.1",
     */
-    ...mapGetters("metadata", ["appVersion"]),
+    ...mapGetters("metadata", ["appVersion"])
   }
 };
 </script>

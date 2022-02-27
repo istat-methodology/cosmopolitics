@@ -158,22 +158,13 @@ export default {
         legend: {
           display: true
         },
-        /*tooltips: {
-          //mode: "index",
-          intersect: true
-        },
-        hover: {
-          mode: "nearest",
-          intersect: true
-        },
-        */
         tooltips: {
           callbacks: {
             title: function(tooltipItem, data) {
               console.log(tooltipItem, data);
             },
             label: function(tooltipItem, data) {
-              console.log(tooltipItem, data);
+              //console.log(tooltipItem, data);
               var dt = new Date(data["labels"][tooltipItem.index]);
               var longYear = dt.toLocaleDateString("en", {
                 year: "numeric"
@@ -191,7 +182,6 @@ export default {
             }
           }
         },
-
         scales: {
           yAxes: [
             {

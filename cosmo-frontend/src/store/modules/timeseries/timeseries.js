@@ -1,6 +1,4 @@
-import {
-  timeseriesService
-} from "@/services";
+import { timeseriesService } from "@/services";
 const state = {
   timeseriesChart: [],
   timeseriesCharts: []
@@ -14,9 +12,7 @@ const mutations = {
   }
 };
 const actions = {
-  findByFilters({
-    commit
-  }, form) {
+  findByFilters({ commit }, form) {
     return timeseriesService
       .findByFilters(form)
       .then(data => {

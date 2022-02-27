@@ -164,7 +164,7 @@
             :placeholder="$t('timeseries.form.fields.dataType_placeholder')"
             v-model="dataTypeSelected"
             :class="{
-              'is-invalid': $v.dataTypeSelected.$error,
+              'is-invalid': $v.dataTypeSelected.$error
             }"
           />
           <label class="card-label"
@@ -176,7 +176,7 @@
             :placeholder="$t('timeseries.form.fields.varType_placeholder')"
             v-model="varTypeSelected"
             :class="{
-              'is-invalid': $v.varTypeSelected.$error,
+              'is-invalid': $v.varTypeSelected.$error
             }"
           />
           <label class="card-label"
@@ -188,7 +188,7 @@
             :placeholder="$t('timeseries.form.fields.flow_placeholder')"
             v-model="flowSelected"
             :class="{
-              'is-invalid': $v.flowSelected.$error,
+              'is-invalid': $v.flowSelected.$error
             }"
           />
           <label class="card-label mt-3"
@@ -200,7 +200,7 @@
             :placeholder="$t('timeseries.form.fields.country_placeholder')"
             v-model="countrySelected"
             :class="{
-              'is-invalid': $v.countrySelected.$error,
+              'is-invalid': $v.countrySelected.$error
             }"
           />
           <label class="card-label mt-3"
@@ -212,7 +212,7 @@
             :placeholder="$t('timeseries.form.fields.partner_placeholder')"
             v-model="partnerSelected"
             :class="{
-              'is-invalid': $v.partnerSelected.$error,
+              'is-invalid': $v.partnerSelected.$error
             }"
           />
           <label class="card-label mt-3"
@@ -224,7 +224,7 @@
             :placeholder="$t('timeseries.form.fields.productsCPA_placeholder')"
             v-model="productsCPASelected"
             :class="{
-              'is-invalid': $v.productsCPASelected.$error,
+              'is-invalid': $v.productsCPASelected.$error
             }"
           />
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
@@ -270,7 +270,7 @@ export default {
   components: {
     ScatterChart,
     LineChart,
-    exporter,
+    exporter
   },
   mixins: [paletteMixin, timeseriesDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
@@ -298,7 +298,7 @@ export default {
     isDiagNorm: true,
     isDiagACF: true,
 
-    isModalHelp: false,
+    isModalHelp: false
   }),
   computed: {
     ...mapGetters("classification", [
@@ -307,35 +307,35 @@ export default {
       "flows",
       "dataType",
       "varType",
-      "productsCPA",
+      "productsCPA"
     ]),
     ...mapGetters("timeseries", ["timeseriesCharts"]),
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
-    },
+    }
   },
   validations: {
     dataTypeSelected: {
-      required,
+      required
     },
     varTypeSelected: {
-      required,
+      required
     },
     flowSelected: {
-      required,
+      required
     },
     countrySelected: {
-      required,
+      required
     },
     partnerSelected: {
-      required,
+      required
     },
     productsCPASelected: {
-      required,
+      required
     },
     becSelected: {
-      required,
-    },
+      required
+    }
   },
   methods: {
     helpOn(showModal) {
@@ -368,7 +368,7 @@ export default {
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
           dataType: this.dataTypeSelected.id,
-          varType: this.varTypeSelected.id,
+          varType: this.varTypeSelected.id
         };
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
           if (this.timeseriesCharts["status"] == Status.success) {
@@ -390,11 +390,11 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
-  },
+  }
 };
 </script>
 <style>

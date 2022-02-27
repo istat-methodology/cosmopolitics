@@ -1,6 +1,4 @@
-import {
-  graphVisjsService
-} from "@/services";
+import { graphVisjsService } from "@/services";
 
 const state = {
   graphs: [],
@@ -15,9 +13,7 @@ const mutations = {
   }
 };
 const actions = {
-  findAll({
-    commit
-  }, n) {
+  findAll({ commit }, n) {
     return graphVisjsService
       .findAll(n)
       .then(data => {
@@ -27,9 +23,7 @@ const actions = {
         console.log(err);
       });
   },
-  findById({
-    commit
-  }, id) {
+  findById({ commit }, id) {
     return graphVisjsService
       .findById(id)
       .then(data => {
@@ -48,9 +42,7 @@ const actions = {
         console.log(err);
       });
   },
-  postGraph({
-    commit
-  }, form) {
+  postGraph({ commit }, form) {
     return graphVisjsService
       .postGraph(form)
       .then(data => {
@@ -71,9 +63,7 @@ const actions = {
       });
   },
 
-  postGraphIntra({
-    commit
-  }, form) {
+  postGraphIntra({ commit }, form) {
     return graphVisjsService
       .postGraphIntra(form)
       .then(data => {
@@ -92,9 +82,7 @@ const actions = {
         console.log(err);
       });
   },
-  postGraphPlus({
-    commit
-  }, form) {
+  postGraphPlus({ commit }, form) {
     return graphVisjsService
       .postGraphPlus(form)
       .then(data => {
@@ -113,9 +101,7 @@ const actions = {
         console.log(err);
       });
   },
-  clear({
-    commit
-  }) {
+  clear({ commit }) {
     commit("SET_GRAPH", null);
   }
 };

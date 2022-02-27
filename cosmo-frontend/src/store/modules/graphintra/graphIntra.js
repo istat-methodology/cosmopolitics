@@ -1,9 +1,5 @@
-import {
-  graphIntraService
-} from "@/services";
-import {
-  loadImage
-} from "@/common";
+import { graphIntraService } from "@/services";
+import { loadImage } from "@/common";
 
 const state = {
   graphintra: [],
@@ -15,18 +11,13 @@ const mutations = {
   },
   SET_GRAPH_INTRA_STATUS(state, status) {
     state.status = status;
-  },
+  }
 };
 const actions = {
-  clear({
-    commit
-  }) {
+  clear({ commit }) {
     commit("SET_GRAPH_INTRA", null);
   },
-  postGraphIntra({
-    commit
-  }, params) {
-
+  postGraphIntra({ commit }, params) {
     return graphIntraService
       .postGraphIntra(params)
       .then(data => {
@@ -50,7 +41,6 @@ const actions = {
   }
 };
 const getters = {
-
   graph: state => {
     return state.graphintra;
   },

@@ -1,9 +1,5 @@
-import {
-  graphExtraService
-} from "@/services";
-import {
-  loadImage
-} from "@/common";
+import { graphExtraService } from "@/services";
+import { loadImage } from "@/common";
 
 const state = {
   graphextra: [],
@@ -18,21 +14,17 @@ const mutations = {
   }
 };
 const actions = {
-  clear({
-    commit
-  }) {
+  clear({ commit }) {
     commit("SET_GRAPH_EXTRA", null);
   },
-  postGraphExtra({
-    commit
-  }, form) {    
+  postGraphExtra({ commit }, form) {
     return graphExtraService
       .postGraphExtra(form)
       .then(data => {
         if (data["STATUS"] == undefined) {
           data.nodes.forEach(node => {
             node.x = node.x * 314;
-            node.y = node.y * 314;            
+            node.y = node.y * 314;
             node.shape = "image";
             node.image = loadImage(node.label);
             node.size = 15;
@@ -46,7 +38,7 @@ const actions = {
       .catch(err => {
         console.log(err);
       });
-  },
+  }
 };
 const getters = {
   graphextra: state => {

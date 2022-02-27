@@ -8,7 +8,7 @@ export default {
       code: ""
     },
     colors: [],
-    dataLegend: [],   
+    dataLegend: []
   }),
   methods: {
     getRadius(marker) {
@@ -74,7 +74,7 @@ export default {
     colorlegend(target, scale, min, max, options) {
       var opts = options || {},
         boxWidth = opts.boxWidth || 20, // width of each box (int)
-        boxHeight = opts.boxHeight || 20, // height of each box (int)        
+        boxHeight = opts.boxHeight || 20, // height of each box (int)
         htmlElement = document.getElementById(
           target.substring(0, 1) === "#"
             ? target.substring(1, target.length)
@@ -85,7 +85,6 @@ export default {
         colors = [],
         padding = [6, 4, 10, 4], // top, right, bottom, left
         boxSpacing = 0, // spacing between boxes
-        
         domain = scale.domain(),
         range = scale.range(),
         isAxis = opts.axis || false,
@@ -126,21 +125,20 @@ export default {
         .attr("transform", "translate(" + padding[0] + "," + padding[0] + ")")
         .style("font-size", "11px")
         .style("fill", "#666");
-      
+
       var legendBoxes = legend
         .selectAll("g.legend")
         .data(colors)
         .enter()
-        .append("g")        
+        .append("g")
         .on("click", function(e, rgbColor) {
           var pos = d3.pointer(e);
           var xPos = pos[0];
-          var value = xPos;          
+          var value = xPos;
           alert(
-           "Value: " + Math.round(scalePointer(value)) + ", color: " +  rgbColor 
+            "Value: " + Math.round(scalePointer(value)) + ", color: " + rgbColor
           );
         });
-        
 
       legendBoxes
         .append("text")

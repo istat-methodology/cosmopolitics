@@ -7,7 +7,6 @@ export const graphIntraService = {
 // Post form without transport
 
 function postGraphIntra(params) {
-  
   const endpoint = !params.trimester ? "/wordtradegraphintra" : "/cpatrim";
   return axiosPython
     .post(endpoint, params.form)

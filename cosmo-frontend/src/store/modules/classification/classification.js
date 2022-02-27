@@ -1,6 +1,4 @@
-import {
-  classificationService
-} from "@/services";
+import { classificationService } from "@/services";
 
 const state = {
   countries: [],
@@ -12,7 +10,8 @@ const state = {
   productsCPA: [],
   productsIntra: [],
   productsExtra: [],
-  dataType: [{
+  dataType: [
+    {
       id: 1,
       descr: "Yearly variation series"
     },
@@ -21,7 +20,8 @@ const state = {
       descr: "Raw data series"
     }
   ],
-  varType: [{
+  varType: [
+    {
       id: 1,
       descr: "in treated value"
     },
@@ -30,7 +30,8 @@ const state = {
       descr: "in treated quantity"
     }
   ],
-  flows: [{
+  flows: [
+    {
       id: 1,
       descr: "Import"
     },
@@ -39,7 +40,8 @@ const state = {
       descr: "Export"
     }
   ],
-  weights: [{
+  weights: [
+    {
       id: 1,
       descr: true
     },
@@ -79,9 +81,7 @@ const mutations = {
   }
 };
 const actions = {
-  getCountries({
-    commit
-  }) {
+  getCountries({ commit }) {
     return classificationService
       .findAll("countries")
       .then(data => {
@@ -91,9 +91,7 @@ const actions = {
         console.log(err);
       });
   },
-  getProducts({
-    commit
-  }) {
+  getProducts({ commit }) {
     return classificationService
       .findAll("product3s")
       .then(data => {
@@ -103,9 +101,7 @@ const actions = {
         console.log(err);
       });
   },
-  getProductPlus({
-    commit
-  }) {
+  getProductPlus({ commit }) {
     return classificationService
       .findAll("productplus")
       .then(data => {
@@ -115,9 +111,7 @@ const actions = {
         console.log(err);
       });
   },
-  getProductsCPA({
-    commit
-  }) {
+  getProductsCPA({ commit }) {
     return classificationService
       .findAll("productsCPA")
       .then(data => {
@@ -127,34 +121,28 @@ const actions = {
         console.log(err);
       });
   },
-getProductsIntra({
-  commit
-}) {
-  return classificationService
-    .findAll("productsIntra")
-    .then(data => {
-      commit("SET_PRODUCTS_INTRA", data);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  getProductsIntra({ commit }) {
+    return classificationService
+      .findAll("productsIntra")
+      .then(data => {
+        commit("SET_PRODUCTS_INTRA", data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
-getProductsExtra({
-  commit
-}) {
-  return classificationService
-    .findAll("productsExtra")
-    .then(data => {
-      commit("SET_PRODUCTS_EXTRA", data);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-},
+  getProductsExtra({ commit }) {
+    return classificationService
+      .findAll("productsExtra")
+      .then(data => {
+        commit("SET_PRODUCTS_EXTRA", data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
 
-  getTransports({
-    commit
-  }) {
+  getTransports({ commit }) {
     return classificationService
       .findAll("transports")
       .then(data => {
@@ -164,9 +152,7 @@ getProductsExtra({
         console.log(err);
       });
   },
-  getPartners({
-    commit
-  }) {
+  getPartners({ commit }) {
     return classificationService
       .findAll("partners")
       .then(data => {
@@ -176,9 +162,7 @@ getProductsExtra({
         console.log(err);
       });
   },
-  getBecs({
-    commit
-  }) {
+  getBecs({ commit }) {
     return classificationService
       .findAll("becs")
       .then(data => {

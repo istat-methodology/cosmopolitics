@@ -18,11 +18,11 @@ export default {
     ...mapGetters("message", ["message", "type"]),
     getMessage() {
       return this.message.split("#").pop();
-    },
+    }
   },
   created() {
     this.$store.dispatch("message/clear");
-  },
+  }
 };
 </script>
 

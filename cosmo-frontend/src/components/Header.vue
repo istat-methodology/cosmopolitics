@@ -17,8 +17,8 @@
       <CHeaderNavItem class="px-3">
         <!-- MANAGE DATE DYNAMICALLY-->
         <span class="px-3"
-          ><CIcon name="cil-tags" />
-          {{ $t("common.update" )}} {{ processingDay }}</span
+          ><CIcon name="cil-tags" /> {{ $t("common.update") }}
+          {{ processingDay }}</span
         >
         <!--  cilAsterisk,  cilBell,   cilStar  -->
         <span class="px-3"
@@ -87,7 +87,7 @@ export default {
       langs: ["it", "en"],
       selectedIt: true,
       selectedEn: false,
-      isModalNews: false,
+      isModalNews: false
     };
   },
   computed: {
@@ -95,7 +95,7 @@ export default {
     /*
     "ProcessingDay": "09-02-2022, 13:52:50",  
     */
-    ...mapGetters("metadata", ["processingDay"]),
+    ...mapGetters("metadata", ["processingDay"])
   },
   methods: {
     selectLanguage(lan) {
@@ -105,8 +105,8 @@ export default {
     },
     newsOn(showModal) {
       this.isModalNews = showModal;
-    },
-  },
+    }
+  }
 };
 </script>
 

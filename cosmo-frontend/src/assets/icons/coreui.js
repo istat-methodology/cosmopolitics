@@ -10,7 +10,7 @@ import {
   cilChartLine,
   cilGraph,
   cilCompass,
-  cilTags,  
+  cilTags,
   cilAsterisk,
   cilBell,
   cilStar
