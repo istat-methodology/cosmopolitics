@@ -6,6 +6,8 @@ name: Cosmo Python CI/CD
 on:
   workflow_dispatch:
 
+env:
+  BUILD_NUMBER: Build-${{ github.run_number }}
 jobs:
   build:
     runs-on: 'ubuntu-latest'
