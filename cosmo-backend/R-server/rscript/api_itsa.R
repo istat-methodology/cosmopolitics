@@ -3,24 +3,26 @@
 
 itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
   
-  #creo lista dei risultati per il return
-  reslist<-list()
-  
+  tryCatch(
+    expr = {
+      
+      #creo lista dei risultati per il return
+      reslist<-list()
   #carico il dataset
   dati<-data_function(flow,var_cpa,country_code,partner_code,dataType,tipo_var)
   
   l<-length(dati$series)
   
   #se il dataset è vuoto genera codice di errore 00
-  status<-ifelse(length(dati$series)==0,"00","01")
-  reslist[["Status"]]<-status
+  statusMain<-ifelse(length(dati$series)>0,"01","00")
+  reslist[["statusMain"]]<-statusMain
      
   reslist[["diagMain"]]<-dati
   
-  #se ci sono missing non si possono fare i grafici successivi
+  #se ci sono missing len_diff==1 non si possono fare i grafici successivi
   len_diff<-ifelse(sum(is.na(dati$series))>=1,1,0)
   len_diff<-as.numeric(len_diff)
-  if (len_diff==0) {
+  if (len_diff==0 & statusMain=="01") {
 ############################grafico acf
   acf_list<-list()
   acf<-acf(dati$series,plot = FALSE)
@@ -56,9 +58,21 @@ itsa<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var){
    
   # se ci sono NA nella serie, non posso fare i due grafici
   # inserisco status di errore 
-  } else {reslist[["diagACF"]]<-c("00")
-    reslist[["diagNorm"]]<-c("00")
+  } else {reslist[["statusACF"]]<-c("00")
+    reslist[["statusNorm"]]<-c("00")
     }
-    
-return(reslist)
+  return(reslist)
+  },
+  error = function(e){ 
+    reslist<-list()
+    reslist[["statusMain"]]<-c("00")
+    reslist[["diagMain"]]<-c("00")
+    reslist[["statusACF"]]<-c("00")
+    reslist[["statusNorm"]]<-c("00")
+    reslist[["error"]]<-e
+    return(reslist)
+  }
+
+)
+  
 }
