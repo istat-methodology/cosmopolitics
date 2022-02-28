@@ -20,6 +20,8 @@ data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var
   }
   colnames(dati)<-c("PERIOD","series")
   
+  if (length(dati$series)>0) {
+  
   #metto le date nel formato per l'ordinamento
   dati$year<-substring(dati$PERIOD,1,4)
   dati$month<-str_sub(dati$PERIOD,-2)
@@ -73,6 +75,7 @@ data_function<-function(flow,var_cpa,country_code,partner_code,dataType,tipo_var
     dati$series<-as.numeric(dati$tend)
     dati<-dati[c(13:l),c(1,2)]
     
+  }
   }
   return(dati)
   
