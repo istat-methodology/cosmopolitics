@@ -505,6 +505,7 @@ def refreshdata():
 
 @app.route('/hello')
 def hello():
+    print(os.environ)
     return str('Hello World: version '+str(os.getenv('BUILD_NUMBER')))
         
 if __name__ == '__main__':
