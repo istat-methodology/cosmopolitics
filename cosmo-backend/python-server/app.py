@@ -505,7 +505,7 @@ def refreshdata():
 
 @app.route('/hello')
 def hello():
-    print(os.getenv("BUILD_NUMBER"))
+    print(os.getenv('GITHUB_ENV')) 
     return str('Hello World: version '+str(os.environ))
         
 if __name__ == '__main__':
