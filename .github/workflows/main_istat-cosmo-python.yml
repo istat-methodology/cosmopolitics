@@ -17,7 +17,7 @@ jobs:
     - name: Set the value
       id: step_one
       run: |
-         echo "BUILD_NUMBER= Build-${{ github.run_number }}" >> $GITHUB_ENV
+         echo "BUILD_NUMBER= Build-${{ github.run_number }}" >> /app/.env
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
