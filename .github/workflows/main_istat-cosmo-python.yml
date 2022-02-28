@@ -30,6 +30,8 @@ jobs:
         password: ${{ secrets.AzureAppService_ContainerPassword }}
 
     - name: Build and push container image to registry
+      env:
+        BUILD_NUMBER: Build-${{ github.run_number }}
       uses: docker/build-push-action@v2
       with:
         push: true
