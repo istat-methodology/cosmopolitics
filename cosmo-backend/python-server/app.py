@@ -9,6 +9,10 @@ import networkx as nx
 import pickle
 import logging.config
 import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
+
 DATA_AVAILABLE="data"+os.sep+"dataAvailable"
 SEP=","
 DATA_EXTENTION=".dat"
@@ -506,8 +510,8 @@ def refreshdata():
 
 @app.route('/hello')
 def hello():
-    print(os.getenv('GITHUB_ENV')) 
-    return str('Hello World: version '+str(os.environ))
+     
+    return str('Hello World: version '+str(os.getenv('BUILD_NUMBER')))
         
 if __name__ == '__main__':
     IP='0.0.0.0'
