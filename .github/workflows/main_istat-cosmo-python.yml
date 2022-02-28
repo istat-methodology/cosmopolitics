@@ -9,7 +9,8 @@ on:
 jobs:
   build:
     runs-on: 'ubuntu-latest'
-  
+    env:
+      BUILD_NUMBER: Build-${{ github.run_number }}
     steps:
     - uses: actions/checkout@v2
 
@@ -28,7 +29,6 @@ jobs:
         BUILD_NUMBER: Build-${{ github.run_number }}
       uses: docker/build-push-action@v2
       with:
-        BUILD_NUMBER: Build-${{ github.run_number }}
         push: true
         tags: istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-python-service:latest
         context: ./cosmo-backend/python-server/
@@ -37,8 +37,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    env:
-        BUILD_NUMBER: Build-${{ github.run_number }}
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -50,7 +48,5 @@ jobs:
       with:
         app-name: 'istat-cosmo-python'
         slot-name: 'production'
-        env:
-          aaa:""ll"
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_PYTHONSERVICE }}
         images: 'istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }}'
