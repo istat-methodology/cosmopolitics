@@ -269,7 +269,7 @@ import { mapGetters } from "vuex";
 import { required, numeric } from "vuelidate/lib/validators";
 import VueSlider from "vue-slider-component";
 import { Context, Status } from "@/common";
-import visMixin from "@/components/mixins/vis.mixin";
+import visMixin from "@/components/mixins/graph.mixin";
 import sliderMixin from "@/components/mixins/slider.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";

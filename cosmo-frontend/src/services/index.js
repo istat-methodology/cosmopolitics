@@ -1,7 +1,6 @@
 export * from "./auth.service";
 export * from "./geomap/geomap.service";
 
-export * from "./graphVisjs/graphVisjs.service";
 //new
 export * from "./graphextra/graphExtra.service";
 export * from "./graphintra/graphIntra.service";

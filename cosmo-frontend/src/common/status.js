@@ -1,6 +1,6 @@
 export const Status = {
-  success: "00",
-  nomatch: "01",
+  success: "01",
+  nomatch: "00",
   wide: "05",
   empty: "06"
 };

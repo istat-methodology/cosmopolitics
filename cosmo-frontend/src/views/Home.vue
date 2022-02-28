@@ -20,10 +20,10 @@
     <div class="col-sm-6 col-md-4">
       <div class="card">
         <header class="card-header">
-          <span class="card-title">{{ $t("landing.graph.title") }}</span>
+          <span class="card-title">{{ $t("landing.graph.extra-ue.title") }} </span>
         </header>
         <div class="card-body">
-          <p v-html="$t('landing.graph.body')"></p>
+          <p v-html="$t('landing.graph.extra-ue.body')"></p>
           <p class="section-link">
             <router-link
               :to="{ name: 'GraphExtraUe' }"
@@ -31,7 +31,28 @@
               v-slot="{ navigate }"
             >
               <a @click="navigate" @keypress.enter="navigate" role="link">
-                {{ $t("landing.graph.link") }}<chevron-right-icon />
+                {{ $t("landing.graph.extra-ue.link") }} <chevron-right-icon />
+              </a>
+            </router-link>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card">
+        <header class="card-header">
+          <span class="card-title">{{ $t("landing.graph.intra-ue.title") }} </span>
+        </header>
+        <div class="card-body">
+          <p v-html="$t('landing.graph.intra-ue.body')"></p>
+          <p class="section-link">
+            <router-link
+              :to="{ name: 'GraphIntraUe' }"
+              custom
+              v-slot="{ navigate }"
+            >
+              <a @click="navigate" @keypress.enter="navigate" role="link">
+                {{ $t("landing.graph.intra-ue.link") }} <chevron-right-icon />
               </a>
             </router-link>
           </p>
@@ -85,7 +106,7 @@ export default {
   name: "Home",
   created() {
     this.$store.dispatch("coreui/setContext", Context.Home);
-  }
+  },
 };
 </script>
 <style scoped>

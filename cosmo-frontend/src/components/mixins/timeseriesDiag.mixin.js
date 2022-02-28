@@ -147,7 +147,7 @@ export default {
     //min 0 = first month on series
     startSeries: {
       min: 0,
-      year: 2010
+      year: 2018
     }
   }),
   methods: {

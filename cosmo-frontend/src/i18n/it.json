@@ -27,9 +27,16 @@
       "link": "Vai alla sezione Mappa interattiva"
     },
     "graph": {
-      "title": "Relazioni nel commercio internazionale",
+      "extra-ue":{
+      "title": "Relazioni nel commercio internazionale Extra UE",
       "body": "Questa sezione visualizza grafi che rappresentano il <b>commercio internazionale per prodotto e modalità di trasporto da fonte COMEXT</b>, insieme alle <b>misure globali e locali pertinenti</b> che descrivono in dettaglio la struttura delle relazioni commerciali dei paesi. Il pannello è interattivo e offre la possibilità di applicare diversi filtri e di vedere come la struttura del grafico e le misure cambiano di conseguenza.<br>Inoltre viene fornita un'animazione che mostra l'<b>evoluzione del grafico del commercio internazionale nel tempo</b>.",
-      "link": "Vai alla sezione Graph analysis"
+      "link": "Vai alla sezione Graph analysis Extra UE"
+      },
+      "intra-ue":{
+      "title": "Relazioni nel commercio internazionale Intra UE",
+      "body": "Questa sezione visualizza grafi che rappresentano il <b>commercio internazionale per prodotto e modalità di trasporto da fonte COMEXT</b>, insieme alle <b>misure globali e locali pertinenti</b> che descrivono in dettaglio la struttura delle relazioni commerciali dei paesi. Il pannello è interattivo e offre la possibilità di applicare diversi filtri e di vedere come la struttura del grafico e le misure cambiano di conseguenza.<br>Inoltre viene fornita un'animazione che mostra l'<b>evoluzione del grafico del commercio internazionale nel tempo</b>.",
+      "link": "Vai alla sezione Graph analysis Intra UE"
+      }
     },
     "timeseries": {
       "title": "Visualizzazione Serie storiche",

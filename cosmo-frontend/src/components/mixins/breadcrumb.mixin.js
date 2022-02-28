@@ -5,28 +5,28 @@ export default {
         {
           route: "Map",
           breadCrumbs: [
-            { path: "catalogue", to: "/catalogue" },
+            { path: "view", to: "/view" },
             { path: "Trade indicators", to: "" }
           ]
         },
         {
           route: "Graph",
           breadCrumbs: [
-            { path: "catalogue", to: "/catalogue" },
+            { path: "view", to: "/view" },
             { path: "Graph", to: "" }
           ]
         },
         {
           route: "Policy",
           breadCrumbs: [
-            { path: "catalogue", to: "/catalogue" },
+            { path: "view", to: "/view" },
             { path: "Policy", to: "" }
           ]
         },
         {
           route: "Trade",
           breadCrumbs: [
-            { path: "catalogue", to: "/catalogue" },
+            { path: "view", to: "/view" },
             { path: "Trade", to: "" }
           ]
         }

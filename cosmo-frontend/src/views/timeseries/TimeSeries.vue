@@ -371,7 +371,7 @@ export default {
           varType: this.varTypeSelected.id
         };
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
-          if (this.timeseriesCharts["status"] == Status.success) {
+          if (this.timeseriesCharts.statusMain == Status.success) {
             this.$store.dispatch("message/success", "data matcted!");
             this.buildTimeseriesCharts(this.timeseriesCharts);
             this.spinnerStart(false);

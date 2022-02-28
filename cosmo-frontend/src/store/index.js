@@ -6,7 +6,6 @@ import { error } from "./modules/error";
 import { coreui } from "./modules/coreui";
 import { message } from "./modules/message";
 import { geomap } from "./modules/geomap/geomap";
-import { graphVisjs } from "./modules/graphVisjs/graphVisjs";
 
 import { graphIntra } from "./modules/graphintra/graphIntra";
 import { graphExtra } from "./modules/graphextra/graphExtra";
@@ -31,7 +30,6 @@ export default new Vuex.Store({
     message,
     geomap,
 
-    graphVisjs,
     //new
     graphIntra,
     graphExtra,

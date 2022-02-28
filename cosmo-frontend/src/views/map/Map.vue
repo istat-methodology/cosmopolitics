@@ -360,35 +360,11 @@ export default {
     },
     getMax(seriesData) {
       console.log(seriesData);
-      var max = 1;
-      /*seriesData.forEach((obj) => {
-        for (const key in obj) {
-          if (key != "country") {
-            if (max < obj[key]) {
-              max = obj[key];
-            }
-          }
-        }
-      });
-      */
-      max = 60;
-      return max;
+      return 60;
     },
     getMin(seriesData) {
-      var min = -1;
       console.log(seriesData);
-      /*seriesData.forEach((obj) => {
-        for (const key in obj) {
-          if (key != "country") {
-            if (min > obj[key]) {
-              min = obj[key];
-            }
-          }
-        }
-      });
-      */
-      min = -60;
-      return min;
+      return -60;
     },
     setFeatureMarker() {
       this.btnFeatureMarker = this.btnFeatureMarker == "M" ? "F" : "M";

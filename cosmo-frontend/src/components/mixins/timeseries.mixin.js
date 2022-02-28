@@ -47,16 +47,17 @@ export default {
     buildTimeseriesCharts(dataR) {
       this.timeLapse = [];
       this.diagNormTitle = "DiagNorm";
-      this.chartDataDiagNorm = this.getDiagNormChart(dataR["diagNorm"]);
-      //this.chartDataDiagNorm = this.getDiagNormChart(dataR["DIAG_NORM"]);
+      if (dataR.statusNorm != "00"){
+        this.chartDataDiagNorm = this.getDiagNormChart(dataR["diagNorm"]);
+      }
+      
       this.diagACFTitle = "DiagACF";
-      this.chartDataDiagACF = this.getDiagACFChart(dataR["diagACF"]);
-      //this.chartDataDiagACF = this.getDiagACFChart(dataR["DIAG_ACF"]);
-      // hard coded
-      //this.timeLapse.push(dataR["T1"]);
-      //this.timeLapse.push(dataR["diagMain"]);
+      if (dataR.statusACF != "00") {
+        this.chartDataDiagACF = this.getDiagACFChart(dataR["diagACF"]);
+      }
+      
       this.chartDataDiagMain = this.getTimeseriesChart(dataR["diagMain"]);
-      //this.maxTimeStep = this.timeLapse.length - 1;
+
     },
     buildObject(
       label,
