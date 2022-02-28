@@ -199,8 +199,9 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     # ed eseguire il taglio      
     if weight_flag==True:
         weight=criterio
-        Wsum=tab4graph[weight].sum()
-        edges=[ (i,j,w/Wsum) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
+        #Wsum=tab4graph[weight].sum()
+        #edges=[ (i,j,w/Wsum) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
+        edges=[ (i,j,w) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
     if weight_flag==False:
         edges=[ (i,j,1) for i,j in tab4graph.loc[:,[country_from,country_to]].values]
     G.add_weighted_edges_from(edges)
@@ -244,11 +245,11 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     out = pd.merge(df, df_coord, left_on='label', right_index=True)
     dict_nodes = out.T.to_dict().values()
     
-    dfe = pd.DataFrame(GG["links"])[["source" , "target"]]
+    dfe = pd.DataFrame(GG["links"])[["source" , "target","weight"]]
     res = dfe.set_index('source').join(out[['label','id']].set_index('label'), on='source', how='left')
-    res.columns=['target', 'source_id']
+    res.columns=['target', 'source_id',"weight"]
     res2 = res.set_index('target').join(out[['label','id']].set_index('label'), on='target', how='left')
-    res2.columns=['from','to']
+    res2.columns=["weight",'from','to']
     res2.reset_index(drop=True, inplace=True)
     dict_edges= res2.T.to_dict().values()
 
