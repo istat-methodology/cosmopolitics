@@ -505,8 +505,8 @@ def refreshdata():
 
 @app.route('/hello')
 def hello():
-    print(os.environ)
-    return str('Hello World: version '+str(os.getenv('BUILD_NUMBER')))
+    
+    return str('Hello World: version '+str(os.environ))
         
 if __name__ == '__main__':
     IP='0.0.0.0'
