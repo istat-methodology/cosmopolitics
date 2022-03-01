@@ -5,7 +5,7 @@ var middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 server.get('/hello',(req,res)=>{
-  const args = process.argv;
+  const args = env;
   console.log(args);
   res.json({"status":args});
   
