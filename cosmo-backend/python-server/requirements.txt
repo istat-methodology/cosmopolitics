@@ -5,5 +5,4 @@ networkx
 pandas
 matplotlib
 openpyxl
-python-dotenv
 
