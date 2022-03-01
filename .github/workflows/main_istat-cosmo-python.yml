@@ -34,7 +34,8 @@ jobs:
       with:
         push: true
         tags: istatcosmo.azurecr.io/cosmo-python-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-python-service:latest
-        context: ./cosmo-backend/python-server/        
+        context: ./cosmo-backend/python-server/ 
+        args: DOCKER_TAG= run-${{ github.run_number }}
       
 
   deploy:
