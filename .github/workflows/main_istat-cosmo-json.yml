@@ -29,6 +29,7 @@ jobs:
         push: true
         tags: istatcosmo.azurecr.io/cosmo-json-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-json-service:latest
         context: ./cosmo-backend/json-server/
+        build-args: "DOCKER_TAG=run-${{ github.run_number }}"
       
 
   deploy:
