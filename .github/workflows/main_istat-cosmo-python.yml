@@ -9,16 +9,10 @@ on:
 jobs:
   build:
     runs-on: 'ubuntu-latest'
-    env:
-      BUILD_NUMBER: Build-${{ github.run_number }}
+    
     steps:
     - uses: actions/checkout@v2
     
-    - name: Set the value
-      id: step_one
-      run: |
-        echo "BUILD_NUMBER=${{ github.run_number }}" >> \app\.env
-     
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
   
@@ -30,8 +24,6 @@ jobs:
         password: ${{ secrets.AzureAppService_ContainerPassword }}
 
     - name: Build and push container image to registry
-      env:
-        BUILD_NUMBER: Build-${{ github.run_number }}
       uses: docker/build-push-action@v2
       with:
         push: true
