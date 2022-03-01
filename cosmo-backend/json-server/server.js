@@ -5,9 +5,9 @@ var middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 server.get('/hello',(req,res)=>{
-  const args = process.env;
-  console.log(args);
-  res.json({"status":args});
+  const args = process.env["APP_VERSION"];
+  console.log(args);0
+  res.json({"version":args});
   
 });
 server.get('/stop',(req,res)=>{
