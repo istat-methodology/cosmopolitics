@@ -4,6 +4,12 @@ var router = jsonServer.router(require("./db.js")());
 var middlewares = jsonServer.defaults();
 
 server.use(middlewares);
+server.get('/hello',(req,res)=>{
+  const args = process.argv;
+  console.log(args);
+  res.json({"status":args});
+  
+});
 server.get('/stop',(req,res)=>{
   res.json({"status":"OK"});
   setInterval(() => {
