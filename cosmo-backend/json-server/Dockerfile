@@ -1,4 +1,9 @@
 FROM node:alpine
+
+ARG DOCKER_TAG
+ENV APP_VERSION=$DOCKER_TAG
+RUN echo "Bulding Docker image version: $APP_VERSIO
+
 COPY . /app
 WORKDIR /app
 
