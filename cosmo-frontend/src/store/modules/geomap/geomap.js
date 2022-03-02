@@ -36,7 +36,7 @@ const actions = {
           if (key != "Country_Code") {
             data[0][key].forEach(obj => {
               for (const key in obj) {
-                console.log(obj[key]);
+                //console.log(obj[key]);
                 var val = obj[key];
                 if (typeof val === "number") {
                   obj[key] = val.toLocaleString("en-US");

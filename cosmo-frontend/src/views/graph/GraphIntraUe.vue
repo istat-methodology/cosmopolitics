@@ -96,9 +96,7 @@
           </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label"
-            >{{ $t("graph.form.fields.period") }}*</label
-          >
+          <label class="card-label">{{ $t("graph.form.fields.period") }}</label>
           <div>
             <RadioButton
               name="options"
@@ -138,9 +136,9 @@
             }"
             @input="updateSlider"
           />
-          <label class="card-label mt-2"
-            >{{ $t("graph.form.fields.percentage") }}*</label
-          >
+          <label class="card-label mt-2">{{
+            $t("graph.form.fields.percentage")
+          }}</label>
           <CInput
             title="this.percentageFilter"
             :placeholder="$t('graph.form.fields.percentage_placeholder')"
@@ -149,9 +147,9 @@
               'is-invalid': $v.percentage.$error
             }"
           />
-          <label class="card-label mt-2"
-            >{{ $t("graph.form.fields.product") }}*</label
-          >
+          <label class="card-label mt-2">{{
+            $t("graph.form.fields.product")
+          }}</label>
           <v-select
             label="descr"
             :options="productsIntra"
@@ -161,9 +159,9 @@
               'is-invalid': $v.product.$error
             }"
           />
-          <label class="card-label mt-2"
-            >{{ $t("graph.form.fields.flow") }}*</label
-          >
+          <label class="card-label mt-2">{{
+            $t("graph.form.fields.flow")
+          }}</label>
           <v-select
             label="descr"
             :options="flows"
@@ -173,19 +171,7 @@
               'is-invalid': $v.flow.$error
             }"
           />
-          <label class="card-label mt-2"
-            >{{ $t("graph.form.fields.weight") }}*</label
-          >
-          <v-select
-            label="descr"
-            :options="weights"
-            :placeholder="$t('graph.form.fields.weight_placeholder')"
-            v-model="weight"
-            :class="{
-              'is-invalid': $v.weight.$error
-            }"
-          />
-          <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
+          <p class="card-label mt-3">{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
@@ -291,7 +277,6 @@ export default {
     percentage: 90,
     product: null,
     flow: null,
-    weight: null,
     //Graph modal
     edgeModal: false,
     selectedEdges: [],
@@ -331,7 +316,7 @@ export default {
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
     ...mapGetters("graphIntra", ["nodes", "edges", "metrics", "status"]),
-    ...mapGetters("classification", ["productsIntra", "flows", "weights"]),
+    ...mapGetters("classification", ["productsIntra", "flows"]),
     network() {
       return this.nodes && this.edges
         ? {
@@ -364,9 +349,6 @@ export default {
       required
     },
     flow: {
-      required
-    },
-    weight: {
       required
     }
   },
@@ -434,7 +416,7 @@ export default {
         tg_perc: this.percentage,
         product: this.product.id,
         flow: this.flow.id,
-        weight_flag: this.weight.descr,
+        weight_flag: true,
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
       };
@@ -456,7 +438,7 @@ export default {
         tg_perc: this.percentage,
         product: this.product.id,
         flow: this.flow.id,
-        weight_flag: this.weight.descr,
+        weight_flag: true,
         pos: "None",
         selezioneMezziEdges: "None"
       };
@@ -467,8 +449,7 @@ export default {
       if (
         !this.$v.percentage.$invalid &&
         !this.$v.product.$invalid &&
-        !this.$v.flow.$invalid &&
-        !this.$v.weight.$invalid
+        !this.$v.flow.$invalid
       ) {
         // ---------------------------------------
         // @TODO Change the name of the form keys
@@ -481,7 +462,7 @@ export default {
           tg_perc: this.percentage,
           product: this.product.id,
           flow: this.flow.id,
-          weight_flag: this.weight.descr,
+          weight_flag: true,
           pos: "None",
           selezioneMezziEdges: "None"
         };
@@ -498,7 +479,6 @@ export default {
         })
         .then(() => {
           if (this.status == Status.success) {
-            //this.$store.dispatch("message/success", "data matched!");
             this.spinnerStart(false);
           } else {
             if (this.status == Status.wide) {

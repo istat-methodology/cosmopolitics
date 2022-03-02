@@ -35,11 +35,6 @@
             $t("header.userguide")
           }}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" target="_blank">{{
-            $t("header.methodology")
-          }}</a>
-        </li>
       </ul>
       <CButtonGroup role="group">
         <CButton

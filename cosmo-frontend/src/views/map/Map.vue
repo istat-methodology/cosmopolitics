@@ -326,8 +326,8 @@ export default {
       });
 
       this.dataLegend = this.getDataLegend(this.seriesData, this.seriesPeriod);
-      this.markerMax = this.getMax(this.seriesData);
-      this.markerMin = this.getMin(this.seriesData);
+      this.markerMax = this.getMax();
+      this.markerMin = this.getMin();
       this.setLegend(this.markerMin, this.markerMax, this.dataLegend, this.ie);
     },
     buildFeatures() {
@@ -358,12 +358,10 @@ export default {
       });
       return data;
     },
-    getMax(seriesData) {
-      console.log(seriesData);
+    getMax() {
       return 60;
     },
-    getMin(seriesData) {
-      console.log(seriesData);
+    getMin() {
       return -60;
     },
     setFeatureMarker() {

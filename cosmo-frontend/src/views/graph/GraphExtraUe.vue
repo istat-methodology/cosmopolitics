@@ -185,18 +185,6 @@
               'is-invalid': $v.flow.$error
             }"
           />
-          <label class="card-label mt-2"
-            >{{ $t("graph.form.fields.weight") }}*</label
-          >
-          <v-select
-            label="descr"
-            :options="weights"
-            :placeholder="$t('graph.form.fields.weight_placeholder')"
-            v-model="weight"
-            :class="{
-              'is-invalid': $v.weight.$error
-            }"
-          />
           <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
@@ -311,7 +299,6 @@ export default {
     transport: null,
     product: null,
     flow: null,
-    weight: null,
     //Graph modal
     edgeModal: false,
     selectedEdges: [],
@@ -360,8 +347,7 @@ export default {
     ...mapGetters("classification", [
       "transports",
       "productsExtra",
-      "flows",
-      "weights"
+      "flows"
     ]),
     network() {
       return this.nodes && this.edges
@@ -395,9 +381,6 @@ export default {
       required
     },
     flow: {
-      required
-    },
-    weight: {
       required
     }
   },
@@ -476,7 +459,7 @@ export default {
         listaMezzi: this.getIds(this.transport),
         product: this.product.id,
         flow: this.flow.id,
-        weight_flag: this.weight.descr,
+        weight_flag: true,
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
       };
@@ -505,7 +488,7 @@ export default {
         listaMezzi: this.getIds(this.transport),
         product: this.product.id,
         flow: this.flow.id,
-        weight_flag: this.weight.descr,
+        weight_flag: true,
         pos: "None",
         selezioneMezziEdges: "None"
       };
@@ -517,8 +500,7 @@ export default {
         !this.$v.percentage.$invalid &&
         !this.$v.transport.$invalid &&
         !this.$v.product.$invalid &&
-        !this.$v.flow.$invalid &&
-        !this.$v.weight.$invalid
+        !this.$v.flow.$invalid
       ) {
         // ---------------------------------------
         // @TODO Change the name of the form keys
@@ -529,7 +511,7 @@ export default {
           listaMezzi: this.getIds(this.transport),
           product: this.product.id,
           flow: this.flow.id,
-          weight_flag: this.weight.descr,
+          weight_flag: true,
           pos: "None",
           selezioneMezziEdges: "None"
         };

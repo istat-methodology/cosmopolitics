@@ -20,7 +20,9 @@
     <div class="col-sm-6 col-md-4">
       <div class="card">
         <header class="card-header">
-          <span class="card-title">{{ $t("landing.graph.extra-ue.title") }} </span>
+          <span class="card-title"
+            >{{ $t("landing.graph.extra-ue.title") }}
+          </span>
         </header>
         <div class="card-body">
           <p v-html="$t('landing.graph.extra-ue.body')"></p>
@@ -41,7 +43,9 @@
     <div class="col-sm-6 col-md-4">
       <div class="card">
         <header class="card-header">
-          <span class="card-title">{{ $t("landing.graph.intra-ue.title") }} </span>
+          <span class="card-title"
+            >{{ $t("landing.graph.intra-ue.title") }}
+          </span>
         </header>
         <div class="card-body">
           <p v-html="$t('landing.graph.intra-ue.body')"></p>
@@ -106,7 +110,7 @@ export default {
   name: "Home",
   created() {
     this.$store.dispatch("coreui/setContext", Context.Home);
-  },
+  }
 };
 </script>
 <style scoped>

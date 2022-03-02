@@ -46,7 +46,7 @@
           :class="{ 'c-active c-active-success': isGraph }"
         >
           <CIcon name="cil-graph" class="c-sidebar-nav-icon" />{{
-            $t("sidebar.graph") + " Extra UE"
+            $t("sidebar.graphExtra")
           }}
         </router-link>
       </li>
@@ -58,7 +58,7 @@
           :class="{ 'c-active c-active-success': isGraphIntra }"
         >
           <CIcon name="cil-graph" class="c-sidebar-nav-icon" />{{
-            $t("sidebar.graph") + " Intra UE"
+            $t("sidebar.graphWorld")
           }}
         </router-link>
       </li>

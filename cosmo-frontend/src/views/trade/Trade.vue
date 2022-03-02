@@ -116,8 +116,8 @@ export default {
       name: "Italy"
     },
     flowSelected: {
-      id: 2,
-      descr: "Export"
+      id: 1,
+      descr: "Import"
     },
     spinner: false,
     labelPeriod: [],
@@ -180,6 +180,7 @@ export default {
     }
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store.dispatch("trade/findByName", {
+      type: this.varTypeSelected.id,
       country: this.countrySelected.country,
       flow: this.flowSelected.id
     });

@@ -16,7 +16,8 @@
   "sidebar": {
     "home": "Home",
     "map": "Interactive map",
-    "graph": "Graph analysis",
+    "graphExtra": "Graph analysis: UE - Extra UE",
+    "graphWorld": "Graph analysis: UE - World",
     "timeseries": "Time series",
     "timeseriescomplete": "Time series complete",
     "trade": "Basket of traded products"
@@ -29,14 +30,14 @@
     },
     "graph": {
       "extra-ue": {
-        "title": "International Trade Relations Extra UE",
+        "title": "International Trade Relations UE - Extra UE",
         "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT transport data</strong>, along with relevant global and local measures detailing the structure of countries relations. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
-        "link": "Go to Graph analisys section Extra UE"
+        "link": "Go to Graph analisys section UE - Extra UE"
       },
       "intra-ue": {
-        "title": "International Trade Relations Intra UE",
+        "title": "International Trade Relations UE - World",
         "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT transport data</strong>, along with relevant global and local measures detailing the structure of countries relations. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
-        "link": "Go to Graph analisys section Intra UE"
+        "link": "Go to Graph analisys section UE - World"
       }
     },
     "timeseries": {

@@ -160,9 +160,6 @@ export default {
         },
         tooltips: {
           callbacks: {
-            title: function(tooltipItem, data) {
-              console.log(tooltipItem, data);
-            },
             label: function(tooltipItem, data) {
               //console.log(tooltipItem, data);
               var dt = new Date(data["labels"][tooltipItem.index]);
@@ -215,17 +212,3 @@ export default {
     }
   }
 };
-/*
-  plugins: {
-      zoom: {
-        pan: {
-          enabled: true,
-          mode: 'xy'
-        },
-      zoom: {
-        enabled: true,
-        mode: 'xy',
-      }
-    }
-  },
-*/

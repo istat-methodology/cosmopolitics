@@ -155,9 +155,9 @@
           <span class="float-left">{{ $t("timeseries.form.title") }}</span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label"
-            >{{ $t("timeseries.form.fields.dataType") }}*</label
-          >
+          <label class="card-label">{{
+            $t("timeseries.form.fields.dataType")
+          }}</label>
           <v-select
             label="descr"
             :options="dataType"
@@ -167,9 +167,9 @@
               'is-invalid': $v.dataTypeSelected.$error
             }"
           />
-          <label class="card-label"
-            >{{ $t("timeseries.form.fields.varType") }}*</label
-          >
+          <label class="card-label">{{
+            $t("timeseries.form.fields.varType")
+          }}</label>
           <v-select
             label="descr"
             :options="varType"
@@ -179,9 +179,9 @@
               'is-invalid': $v.varTypeSelected.$error
             }"
           />
-          <label class="card-label"
-            >{{ $t("timeseries.form.fields.flow") }}*</label
-          >
+          <label class="card-label">{{
+            $t("timeseries.form.fields.flow")
+          }}</label>
           <v-select
             label="descr"
             :options="flows"
@@ -191,9 +191,9 @@
               'is-invalid': $v.flowSelected.$error
             }"
           />
-          <label class="card-label mt-3"
-            >{{ $t("timeseries.form.fields.country") }}*</label
-          >
+          <label class="card-label mt-3">{{
+            $t("timeseries.form.fields.country")
+          }}</label>
           <v-select
             label="name"
             :options="countries"
@@ -203,9 +203,9 @@
               'is-invalid': $v.countrySelected.$error
             }"
           />
-          <label class="card-label mt-3"
-            >{{ $t("timeseries.form.fields.partner") }}*</label
-          >
+          <label class="card-label mt-3">{{
+            $t("timeseries.form.fields.partner")
+          }}</label>
           <v-select
             label="descr"
             :options="partners"
@@ -215,9 +215,9 @@
               'is-invalid': $v.partnerSelected.$error
             }"
           />
-          <label class="card-label mt-3"
-            >{{ $t("timeseries.form.fields.productsCPA") }}*</label
-          >
+          <label class="card-label mt-3">{{
+            $t("timeseries.form.fields.productsCPA")
+          }}</label>
           <v-select
             label="descr"
             :options="productsCPA"
@@ -227,7 +227,7 @@
               'is-invalid': $v.productsCPASelected.$error
             }"
           />
-          <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
+          <p class="card-label mt-3">{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
@@ -275,21 +275,14 @@ export default {
   mixins: [paletteMixin, timeseriesDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
     spinner: false,
-
     //Form fields
-
     dataTypeSelected: null,
-
     varTypeSelected: null,
-
     flowSelected: null,
-
     countrySelected: null,
-
     partnerSelected: null,
-
     productsCPASelected: null,
-
+    //Charts
     chartDataDiagMain: null,
     chartDataDiagNorm: null,
     chartDataDiagACF: null,
@@ -297,7 +290,6 @@ export default {
     isMainChart: true,
     isDiagNorm: true,
     isDiagACF: true,
-
     isModalHelp: false
   }),
   computed: {
@@ -352,7 +344,6 @@ export default {
     },
     handleSubmit() {
       this.$v.$touch();
-      this.spinnerStart(true);
       if (
         !this.$v.dataTypeSelected.$invalid &&
         !this.$v.varTypeSelected.$invalid &&
@@ -361,7 +352,6 @@ export default {
         !this.$v.countrySelected.$invalid &&
         !this.$v.partnerSelected.$invalid
       ) {
-        //flow=1&var=3&country=IT&partner=US&dataType=1&tipovar=1
         const form = {
           flow: this.flowSelected.id,
           var: this.productsCPASelected.id,
@@ -370,16 +360,18 @@ export default {
           dataType: this.dataTypeSelected.id,
           varType: this.varTypeSelected.id
         };
+        this.spinnerStart(true);
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
           if (this.timeseriesCharts.statusMain == Status.success) {
-            this.$store.dispatch("message/success", "data matcted!");
             this.buildTimeseriesCharts(this.timeseriesCharts);
-            this.optionsNorm.title.text+= " (in "+this.diagNormMag+")";
-            this.spinnerStart(false);
+            this.optionsNorm.title.text += " (in " + this.diagNormMag + ")";
           } else {
-            this.$store.dispatch("message/error", "failed!!");
-            this.spinnerStart(false);
+            this.$store.dispatch(
+              "message/error",
+              "Ops, something went wrong!!"
+            );
           }
+          this.spinnerStart(false);
         });
       }
     },

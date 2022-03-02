@@ -2,6 +2,7 @@ export function getPeriod(start, end) {
   var arr = new Array();
   var dt = new Date(Number(start.year), Number(start.month) - 1);
   var de = new Date(Number(end.year), Number(end.month) - 1);
+  var counter = 0;
   while (dt <= de) {
     var monthIndex = dt.getMonth();
     monthIndex = monthIndex + 1;
@@ -11,10 +12,11 @@ export function getPeriod(start, end) {
     var shortMonth = dt.toLocaleString("en-US", { month: "short" });
     var longYear = dt.toLocaleDateString("en", { year: "numeric" });
     var idString = String(longYear) + String(monthIndex);
-    var nameString = shortMonth + " " + shortYear;
+    var nameString = counter % 3 == 0 ? shortMonth + " " + shortYear : "";
     var item = { id: idString, name: nameString };
     arr.push(item);
     dt.setMonth(dt.getMonth() + 1);
+    counter++;
   }
   return arr;
 }
