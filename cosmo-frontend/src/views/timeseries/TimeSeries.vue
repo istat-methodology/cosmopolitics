@@ -374,6 +374,7 @@ export default {
           if (this.timeseriesCharts.statusMain == Status.success) {
             this.$store.dispatch("message/success", "data matcted!");
             this.buildTimeseriesCharts(this.timeseriesCharts);
+            this.optionsNorm.title.text+= " (in "+this.diagNormMag+")";
             this.spinnerStart(false);
           } else {
             this.$store.dispatch("message/error", "failed!!");

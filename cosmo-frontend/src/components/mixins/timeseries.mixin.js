@@ -1,44 +1,30 @@
 export default {
   data: () => ({
     timeLapse: null,
+    diagNormMag:"",
     cast: {
       indexStart: 0
     }
   }),
   methods: {
-    getCoordinates(dataArray) {
+    getCoordinates(dataArray,mag) {
       const dataMap = [];
       dataArray.forEach((element, index) => {
         dataMap.push({
           x: index,
-          y: element
+          y: Math.round(element/mag * 100) / 100
         });
       });
       return dataMap;
     },
-    getCoordinatesACF(dataArray) {
+    getCoordinatesNorm(n, m, mag) {
       const dataMap = [];
-      dataArray.forEach((element, index) => {
-        dataMap.push(
-          {
-            x: index,
-            y: index
-          },
-          {
-            x: index,
-            y: element
-          }
-        );
-      });
-      return dataMap;
-    },
-    getCoordinatesNorm(n, m) {
-      const dataMap = [];
+
       n.forEach((num1, index) => {
         const num2 = m[index];
         const obj = {
           x: num1,
-          y: num2
+          y: Math.round(num2/mag * 100) / 100
         };
         dataMap.push(obj);
       });
@@ -47,11 +33,13 @@ export default {
     buildTimeseriesCharts(dataR) {
       this.timeLapse = [];
       this.diagNormTitle = "DiagNorm";
+   
       if (dataR.statusNorm != "00"){
         this.chartDataDiagNorm = this.getDiagNormChart(dataR["diagNorm"]);
       }
-      
+    
       this.diagACFTitle = "DiagACF";
+       
       if (dataR.statusACF != "00") {
         this.chartDataDiagACF = this.getDiagACFChart(dataR["diagACF"]);
       }
@@ -131,11 +119,12 @@ export default {
         this.labels = Main["date"];
         chartData.labels = Main["date"];
         //dataXY = this.getCoordinates(this.timeLapse[0]["tend"]);
-        dataXY = this.getCoordinates(Main["series"]);
+        var mag=this.getMagnitude(Main["series"]);
+        dataXY = this.getCoordinates(Main["series"], mag);
         var highlightIndex = parseInt(this.cast.indexStart);
         chartObj = this.buildObjectWithContext(
           highlightIndex,
-          "Yearly variation series",
+          "Yearly variation series (in "+this.getMagnitudeLabel(mag)+")",
           false,
           "rgba(46, 184, 92, 0.2)",
           "rgba(255,128,0,0.6)",
@@ -156,7 +145,9 @@ export default {
       var chartObj = {};
       chartData.datasets = [];
       if (diag) {
-        dataXY = this.getCoordinatesNorm(diag["pnt_x"], diag["pnt_y"]);
+        var mag=this.getMagnitude(diag["pnt_y"]);
+        this.diagNormMag=this.getMagnitudeLabel(mag);
+        dataXY = this.getCoordinatesNorm(diag["pnt_x"], diag["pnt_y"], mag);
         chartObj = this.buildObject(
           "(pnt_x, pnt_y)",
           false,
@@ -170,7 +161,8 @@ export default {
         );
         chartData.datasets.push(chartObj);
         chartObj = {};
-        dataXY = this.getCoordinatesNorm(diag["lne_x"], diag["lne_y"]);
+        mag=this.getMagnitude(diag["lne_y"]);
+        dataXY = this.getCoordinatesNorm(diag["lne_x"], diag["lne_y"],mag);
         chartObj = this.buildObject(
           "(lne_x, lne_y)",
           false,
@@ -278,6 +270,16 @@ export default {
         }
       }
       return chartData;
+    },
+   getMagnitude(data){
+      var max= Math.max(...data.map(a => Math.abs(a)))
+      var order = Math.floor(Math.log(max) / Math.LN10 + 0.000000001); // because float math sucks like that
+      return Math.pow(10,order);
+    },
+    getMagnitudeLabel(mag){
+      if(mag>= Math.pow(10,9)) return "bilions";
+      else if(mag>= Math.pow(10,6)) return "milions";
+        else   return "thousands";
     }
   }
 };
