@@ -50,9 +50,9 @@ app$add_get(
 app$add_get(
   path = "/load-comext", 
   FUN = function(.req, .res) {
-    COMEXT_IMP<-loadcomext("1")
-    COMEXT_EXP<-loadcomext("2")
-    #db<-loadcomext(.req$get_param_query("flow"))
+    COMEXT_IMP<-load_comext("1")
+    COMEXT_EXP<-load_comext("2")
+    
     .res$set_body("Load data ok")
     .res$set_header("Access-Control-Allow-Origin", "*")
     .res$set_header("Access-Control-Allow-Methods","*")
