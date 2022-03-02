@@ -37,7 +37,7 @@ app$add_get(
   path = "/hello", 
   FUN = function(.req, .res) {
      
-    .res$set_body("version "+Sys.getenv("APP_VERSION"))
+    .res$set_body(paste("version ",Sys.getenv("APP_VERSION")))
     .res$set_content_type("text/plain")
     .res$set_header("Access-Control-Allow-Origin", "*")
     .res$set_header("Access-Control-Allow-Methods","*")
