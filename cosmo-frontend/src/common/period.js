@@ -36,10 +36,10 @@ export function getTrimesterPeriod(start, end) {
     var shortYear = dt.toLocaleDateString("en", {
       year: "2-digit"
     });
-    var shortMonth = dt.toLocaleString("en-US", {
+    /*var shortMonth = dt.toLocaleString("en-US", {
       month: "short"
     });
-    console.log(shortMonth);
+    console.log(shortMonth);*/
     var longYear = dt.toLocaleDateString("en", {
       year: "numeric"
     });
@@ -57,7 +57,7 @@ export function getTrimesterPeriod(start, end) {
     }
     dt.setMonth(dt.getMonth() + 1);
   }
-  console.log(trim);
+  //console.log(trim);
   return trim;
 }
 function trimesterOfyear(date) {

@@ -22,25 +22,25 @@ const actions = {
 };
 const getters = {
   mapPeriod: state => {
-    return getPeriod(state.metadata.map.timeStart, state.metadata.map.timeEnd);
+    return state.metadata ? getPeriod(state.metadata.map.timeStart, state.metadata.map.timeEnd) : null;
   },
   graphPeriod: state => {
-    return getPeriod(
+    return state.metadata ? getPeriod(
       state.metadata.graph.timeStart,
       state.metadata.graph.timeEnd
-    );
+    ) : null;
   },
   graphTrimesterPeriod: state => {
-    return getTrimesterPeriod(
+    return state.metadata ? getTrimesterPeriod(
       state.metadata.graph.timeStart,
       state.metadata.graph.timeEnd
-    );
+    ): null;
   },
   tradePeriod: state => {
-    return getPeriod(
+    return state.metadata ? getPeriod(
       state.metadata.trade.timeStart,
       state.metadata.trade.timeEnd
-    );
+    ) : null;
   },
   processingDay: state => {
     return state.metadata ? state.metadata.processingDay : "";
