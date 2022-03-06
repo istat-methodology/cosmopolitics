@@ -8,6 +8,10 @@ const mutations = {
     state.type = "toast-success";
     state.message = Date.now() + "#" + message; //force message update
   },
+  WARNING(state, message) {
+    state.type = "toast-warning";
+    state.message = Date.now() + "#" + message; //force message update
+  },
   ERROR(state, message) {
     state.type = "toast-error";
     state.message = Date.now() + "#" + message; //force message update
@@ -21,6 +25,12 @@ const mutations = {
 const actions = {
   success({ commit }, message) {
     commit("SUCCESS", message);
+  },
+  info({ commit }, message) {
+    commit("INFO", message);
+  },
+  warning({ commit }, message) {
+    commit("WARNING", message);
   },
   error({ commit }, message) {
     commit("ERROR", message);

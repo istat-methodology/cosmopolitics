@@ -41,40 +41,39 @@
           <span class="float-left">{{ $t("trade.form.title") }} </span>
         </CCardHeader>
         <CCardBody>
-          <label class="card-label"
-            >{{ $t("trade.form.fields.varType") }}*</label
-          >
+          <label class="card-label">{{
+            $t("trade.form.fields.varType")
+          }}</label>
           <v-select
             label="descr"
             :options="varType"
             :placeholder="$t('trade.form.fields.varType_placeholder')"
             v-model="varTypeSelected"
           />
-          <label class="card-label"
-            >{{ $t("trade.form.fields.country") }}*</label
-          >
+          <label class="card-label mt-3">{{
+            $t("trade.form.fields.country")
+          }}</label>
           <v-select
             label="name"
             :options="countries"
             :placeholder="$t('trade.form.fields.country_placeholder')"
             v-model="countrySelected"
           />
-          <label class="card-label mt-3"
-            >{{ $t("trade.form.fields.flow") }}*</label
-          >
+          <label class="card-label mt-3">{{
+            $t("trade.form.fields.flow")
+          }}</label>
           <v-select
             label="descr"
             :options="flows"
             :placeholder="$t('trade.form.fields.flow_placeholder')"
             v-model="flowSelected"
           />
-          <p class="card-label mt-3">*{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-2"
+            class="mt-3"
             >{{ $t("common.submit") }}
           </CButton>
         </CCardBody>

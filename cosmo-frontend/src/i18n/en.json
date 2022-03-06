@@ -131,6 +131,8 @@
       "fields": {
         "dataType": "Series type",
         "dataType_placeholder": "Select a series type",
+        "varType": "Variazione",
+        "varType_placeholder": "Seleziona la variazione",
         "flow": "Flow",
         "flow_placeholder": "Select a flow",
         "country": "Country",
@@ -150,6 +152,9 @@
         "title": "Time Series visualizatiion",
         "body": "<b>Visualization tool</b> for <b>monthly COMEXT</b> foreign trade data. Despite the large amount of underlying data, it allows an easily understandable series reading. Time series are provided in euros and <b>dowload is available</b> in various formats."
       }
+    },
+    "message":{
+      "empty": "No time series is available for the selected filters!"
     }
   },
   "trade": {
@@ -159,8 +164,8 @@
     "form": {
       "title": "Trade filter",
       "fields": {
-        "dataType": "Series type",
-        "dataType_placeholder": "Select a series type",
+        "varType": "Series type",
+        "varType_placeholder": "Select a series type",
         "country": "Country",
         "country_placeholder": "Select a country",
         "flow": "Flow",

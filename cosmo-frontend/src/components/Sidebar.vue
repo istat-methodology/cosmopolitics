@@ -34,7 +34,7 @@
           class="c-sidebar-nav-link"
           :class="{ 'c-active c-active-primary': isMap }"
         >
-          <CIcon name="cil-compass" class="c-sidebar-nav-icon" />
+          <CIcon name="cil-location-pin" class="c-sidebar-nav-icon" />
           {{ $t("sidebar.map") }}
         </router-link>
       </li>

@@ -136,7 +136,7 @@
             }"
             @input="updateSlider"
           />
-          <label class="card-label mt-2">{{
+          <label class="card-label mt-3">{{
             $t("graph.form.fields.percentage")
           }}</label>
           <CInput
@@ -147,7 +147,7 @@
               'is-invalid': $v.percentage.$error
             }"
           />
-          <label class="card-label mt-2">{{
+          <label class="card-label mt-3">{{
             $t("graph.form.fields.product")
           }}</label>
           <v-select
@@ -159,7 +159,7 @@
               'is-invalid': $v.product.$error
             }"
           />
-          <label class="card-label mt-2">{{
+          <label class="card-label mt-3">{{
             $t("graph.form.fields.flow")
           }}</label>
           <v-select
@@ -171,13 +171,12 @@
               'is-invalid': $v.flow.$error
             }"
           />
-          <p class="card-label mt-3">{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-2"
+            class="mt-3"
             >{{ $t("common.submit") }}</CButton
           >
         </CCardBody>

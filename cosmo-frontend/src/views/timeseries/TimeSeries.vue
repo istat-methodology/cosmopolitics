@@ -167,7 +167,7 @@
               'is-invalid': $v.dataTypeSelected.$error
             }"
           />
-          <label class="card-label">{{
+          <label class="card-label mt-3">{{
             $t("timeseries.form.fields.varType")
           }}</label>
           <v-select
@@ -179,7 +179,7 @@
               'is-invalid': $v.varTypeSelected.$error
             }"
           />
-          <label class="card-label">{{
+          <label class="card-label mt-3">{{
             $t("timeseries.form.fields.flow")
           }}</label>
           <v-select
@@ -227,13 +227,12 @@
               'is-invalid': $v.productsCPASelected.$error
             }"
           />
-          <p class="card-label mt-3">{{ $t("common.mandatory") }}</p>
           <CButton
             color="primary"
             shape="square"
             size="sm"
             @click="handleSubmit"
-            class="mt-2"
+            class="mt-3"
             >{{ $t("common.submit") }}</CButton
           >
         </CCardBody>
@@ -367,8 +366,8 @@ export default {
             this.optionsNorm.title.text += " (in " + this.diagNormMag + ")";
           } else {
             this.$store.dispatch(
-              "message/error",
-              "Ops, something went wrong!!"
+              "message/warning",
+              this.$t("timeseries.message.empty")
             );
           }
           this.spinnerStart(false);
