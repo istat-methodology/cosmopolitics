@@ -52,7 +52,7 @@
           <scatter-chart
             :chartData="chartDataDiagMain"
             :options="options"
-            id="timeseries"
+            id="timeseries"         
           />
         </CCardBody>
       </CCard>
@@ -300,7 +300,7 @@ export default {
       "varType",
       "productsCPA"
     ]),
-    ...mapGetters("timeseries", ["timeseriesCharts"]),
+    ...mapGetters("timeseries", ["timeseriesCharts","statusMain","statusACF","statusNorm"]),
     options() {
       return this.getOptions(this.startSeries.min, this.startSeries.year);
     }
@@ -361,10 +361,15 @@ export default {
         };
         this.spinnerStart(true);
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
-          if (this.timeseriesCharts.statusMain == Status.success) {
-            this.buildTimeseriesCharts(this.timeseriesCharts);
+          console.log("const: " + Status.success);
+          console.log("data: " + this.statusMain);
+          if (this.statusMain == Status.success) {
+            this.buildTimeseriesCharts(this.timeseriesCharts,this.statusMain,this.statusNorm, this.statusACF);
             this.optionsNorm.title.text += " (in " + this.diagNormMag + ")";
-          } else {
+          } else {            
+            this.chartDataDiagMain = null;
+            this.chartDataDiagNorm = null;
+            this.chartDataDiagACF = null;
             this.$store.dispatch(
               "message/warning",
               this.$t("timeseries.message.empty")
@@ -373,6 +378,13 @@ export default {
           this.spinnerStart(false);
         });
       }
+    },
+    removeData(chart) {
+      chart.data.labels.pop();
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.pop();
+      });
+      chart.update();
     },
     getData(data, id) {
       if (data != null) {

@@ -3,17 +3,23 @@ export default {
     diagNormMag: ""
   }),
   methods: {
-    buildTimeseriesCharts(dataR) {
-      this.chartDataDiagMain = this.getTimeseriesChart(dataR["diagMain"]);
-
-      this.diagNormTitle = "DiagNorm";
-      if (dataR.statusNorm != "00") {
-        this.chartDataDiagNorm = this.getDiagNormChart(dataR["diagNorm"]);
+    buildTimeseriesCharts(data, statusMain, statusNorm, statusACF) {
+      if (statusMain != "00") {
+        this.chartDataDiagMain = this.getTimeseriesChart(data["diagMain"]);
+      } else {
+        this.chartDataDiagMain = null;
       }
-
+      this.diagNormTitle = "DiagNorm";
+      if (statusNorm != "00") {
+        this.chartDataDiagNorm = this.getDiagNormChart(data["diagNorm"]);      
+      } else {
+        this.chartDataDiagNorm = null;
+      }
       this.diagACFTitle = "DiagACF";
-      if (dataR.statusACF != "00") {
-        this.chartDataDiagACF = this.getDiagACFChart(dataR["diagACF"]);
+      if (statusACF != "00") {
+        this.chartDataDiagACF = this.getDiagACFChart(data["diagACF"]);
+      } else {
+        this.chartDataDiagACF = null;
       }
     },
     getTimeseriesChart(data) {
