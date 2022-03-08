@@ -1,5 +1,9 @@
-import { graphExtraService } from "@/services";
-import { loadImage } from "@/common";
+import {
+  graphExtraService
+} from "@/services";
+import {
+  loadImage, getEdgeColor
+} from "@/common";
 
 const state = {
   graphextra: [],
@@ -14,10 +18,14 @@ const mutations = {
   }
 };
 const actions = {
-  clear({ commit }) {
+  clear({
+    commit
+  }) {
     commit("SET_GRAPH_EXTRA", null);
   },
-  postGraphExtra({ commit }, form) {
+  postGraphExtra({
+    commit
+  }, form) {
     return graphExtraService
       .postGraphExtra(form)
       .then(data => {
@@ -28,6 +36,9 @@ const actions = {
             node.shape = "image";
             node.image = loadImage(node.label);
             node.size = 15;
+          });
+          data.edges.forEach(edge => {
+            edge.color = getEdgeColor(edge.weight, data.edges, 9000, -9000);
           });
           commit("SET_GRAPH_EXTRA_STATUS", "00");
           commit("SET_GRAPH_EXTRA", data);

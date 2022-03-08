@@ -1,5 +1,6 @@
 import { graphIntraService } from "@/services";
-import { loadImage } from "@/common";
+import { loadImage, getEdgeColor } from "@/common";
+
 
 const state = {
   graphintra: [],
@@ -18,6 +19,7 @@ const actions = {
     commit("SET_GRAPH_INTRA", null);
   },
   postGraphIntra({ commit }, params) {
+
     return graphIntraService
       .postGraphIntra(params)
       .then(data => {
@@ -29,6 +31,11 @@ const actions = {
             node.image = loadImage(node.label);
             node.size = 15;
           });
+          
+          data.edges.forEach(edge => {
+            edge.color = getEdgeColor(edge.weight, data.edges, 9000, -9000);
+          });
+          
           commit("SET_GRAPH_INTRA_STATUS", "00");
           commit("SET_GRAPH_INTRA", data);
         } else {
