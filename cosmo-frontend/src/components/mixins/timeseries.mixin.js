@@ -86,6 +86,22 @@ export default {
       }
       return chartData;
     },
+    emptyChart() {
+      var chartData = {} ;
+      chartData.labels = "";
+      chartData.datasets = [{
+        label:"",
+        backgroundColor: "",
+        borderColor: "",
+        data: []
+      }];
+      chartData.options = {
+        legend: {
+          display: false,
+        },
+      };
+      return chartData;
+    },
     getDiagACFChart(diag) {
       var chartData = {};
       var maxDsh = "";

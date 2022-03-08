@@ -151,12 +151,12 @@ export default {
     }
   }),
   methods: {
-    getOptions(startMin, startYear) {
+    getOptions(startMin, startYear, isLegend) {
       return {
         responsive: true,
         maintainAspectRatio: false,
         legend: {
-          display: true
+          display: isLegend
         },
         tooltips: {
           callbacks: {

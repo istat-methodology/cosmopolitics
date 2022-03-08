@@ -47,12 +47,12 @@
             </span>
           </span>
         </CCardHeader>
-        <CCardBody v-show="isMainChart">
+        <CCardBody v-if="isMainChart">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
           <scatter-chart
             :chartData="chartDataDiagMain"
             :options="options"
-            id="timeseries"         
+            id="timeseries"
           />
         </CCardBody>
       </CCard>
@@ -164,7 +164,7 @@
             :placeholder="$t('timeseries.form.fields.dataType_placeholder')"
             v-model="dataTypeSelected"
             :class="{
-              'is-invalid': $v.dataTypeSelected.$error
+              'is-invalid': $v.dataTypeSelected.$error,
             }"
           />
           <label class="card-label mt-3">{{
@@ -176,7 +176,7 @@
             :placeholder="$t('timeseries.form.fields.varType_placeholder')"
             v-model="varTypeSelected"
             :class="{
-              'is-invalid': $v.varTypeSelected.$error
+              'is-invalid': $v.varTypeSelected.$error,
             }"
           />
           <label class="card-label mt-3">{{
@@ -188,7 +188,7 @@
             :placeholder="$t('timeseries.form.fields.flow_placeholder')"
             v-model="flowSelected"
             :class="{
-              'is-invalid': $v.flowSelected.$error
+              'is-invalid': $v.flowSelected.$error,
             }"
           />
           <label class="card-label mt-3">{{
@@ -200,7 +200,7 @@
             :placeholder="$t('timeseries.form.fields.country_placeholder')"
             v-model="countrySelected"
             :class="{
-              'is-invalid': $v.countrySelected.$error
+              'is-invalid': $v.countrySelected.$error,
             }"
           />
           <label class="card-label mt-3">{{
@@ -212,7 +212,7 @@
             :placeholder="$t('timeseries.form.fields.partner_placeholder')"
             v-model="partnerSelected"
             :class="{
-              'is-invalid': $v.partnerSelected.$error
+              'is-invalid': $v.partnerSelected.$error,
             }"
           />
           <label class="card-label mt-3">{{
@@ -224,7 +224,7 @@
             :placeholder="$t('timeseries.form.fields.productsCPA_placeholder')"
             v-model="productsCPASelected"
             :class="{
-              'is-invalid': $v.productsCPASelected.$error
+              'is-invalid': $v.productsCPASelected.$error,
             }"
           />
           <CButton
@@ -269,7 +269,7 @@ export default {
   components: {
     ScatterChart,
     LineChart,
-    exporter
+    exporter,
   },
   mixins: [paletteMixin, timeseriesDiagMixin, timeseriesMixin, spinnerMixin],
   data: () => ({
@@ -289,7 +289,7 @@ export default {
     isMainChart: true,
     isDiagNorm: true,
     isDiagACF: true,
-    isModalHelp: false
+    isModalHelp: false,
   }),
   computed: {
     ...mapGetters("classification", [
@@ -298,35 +298,40 @@ export default {
       "flows",
       "dataType",
       "varType",
-      "productsCPA"
+      "productsCPA",
     ]),
-    ...mapGetters("timeseries", ["timeseriesCharts","statusMain","statusACF","statusNorm"]),
+    ...mapGetters("timeseries", [
+      "timeseriesCharts",
+      "statusMain",
+      "statusACF",
+      "statusNorm",
+    ]),
     options() {
-      return this.getOptions(this.startSeries.min, this.startSeries.year);
-    }
+      return this.getOptions(this.startSeries.min, this.startSeries.year, this.statusMain != "00" ? true : false);
+    },
   },
   validations: {
     dataTypeSelected: {
-      required
+      required,
     },
     varTypeSelected: {
-      required
+      required,
     },
     flowSelected: {
-      required
+      required,
     },
     countrySelected: {
-      required
+      required,
     },
     partnerSelected: {
-      required
+      required,
     },
     productsCPASelected: {
-      required
+      required,
     },
     becSelected: {
-      required
-    }
+      required,
+    },
   },
   methods: {
     helpOn(showModal) {
@@ -357,17 +362,24 @@ export default {
           country: this.countrySelected.country,
           partner: this.partnerSelected.id,
           dataType: this.dataTypeSelected.id,
-          varType: this.varTypeSelected.id
+          varType: this.varTypeSelected.id,
         };
-        this.spinnerStart(true);
+        this.spinnerStart(true);       
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
           console.log("const: " + Status.success);
           console.log("data: " + this.statusMain);
+
           if (this.statusMain == Status.success) {
-            this.buildTimeseriesCharts(this.timeseriesCharts,this.statusMain,this.statusNorm, this.statusACF);
+            this.buildTimeseriesCharts(
+              this.timeseriesCharts,
+              this.statusMain,
+              this.statusNorm,
+              this.statusACF
+            );
             this.optionsNorm.title.text += " (in " + this.diagNormMag + ")";
-          } else {            
-            this.chartDataDiagMain = null;
+          } else {
+              
+            this.chartDataDiagMain = this.emptyChart();
             this.chartDataDiagNorm = null;
             this.chartDataDiagACF = null;
             this.$store.dispatch(
@@ -382,7 +394,7 @@ export default {
     removeData(chart) {
       chart.data.labels.pop();
       chart.data.datasets.forEach((dataset) => {
-          dataset.data.pop();
+        dataset.data.pop();
       });
       chart.update();
     },
@@ -394,11 +406,14 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    }
+    },
+    clearChart() {
+      document.getElementById("timeseries").removeChild("canvas");
+    }   
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
-  }
+  },
 };
 </script>
 <style>

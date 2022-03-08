@@ -185,7 +185,7 @@ export default {
     // ---------------------------------------
     // @TODO Change hard coded value
     // ---------------------------------------
-    seriesPeriod: "201812",
+    seriesPeriod: "202101",
     markerPeriodSeries: [],
     markerMax: 60,
     markerMin: -60,
