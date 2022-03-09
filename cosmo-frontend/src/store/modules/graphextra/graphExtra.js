@@ -2,7 +2,9 @@ import {
   graphExtraService
 } from "@/services";
 import {
-  loadImage, getEdgeColor
+  loadImage,
+  getEdgeColor,
+  getEdgeWidth
 } from "@/common";
 
 const state = {
@@ -39,6 +41,7 @@ const actions = {
           });
           data.edges.forEach(edge => {
             edge.color = getEdgeColor(edge.weight, data.edges);
+            edge.width = getEdgeWidth(edge.weight, data.edges);
           });
           commit("SET_GRAPH_EXTRA_STATUS", "00");
           commit("SET_GRAPH_EXTRA", data);

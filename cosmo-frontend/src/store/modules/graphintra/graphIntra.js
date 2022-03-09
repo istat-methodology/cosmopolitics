@@ -1,5 +1,7 @@
 import { graphIntraService } from "@/services";
-import { loadImage, getEdgeColor } from "@/common";
+import {
+  loadImage, getEdgeColor, getEdgeWidth
+} from "@/common";
 
 
 const state = {
@@ -34,6 +36,7 @@ const actions = {
           
           data.edges.forEach(edge => {
             edge.color = getEdgeColor(edge.weight, data.edges);
+            edge.width = getEdgeWidth(edge.weight, data.edges);
           });
           
           commit("SET_GRAPH_INTRA_STATUS", "00");

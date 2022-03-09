@@ -10,20 +10,27 @@ export function loadImage(img) {
   }
   return image;
 }
-
+export function getEdgeWidth(value, data) {
+  var max = getMax(data);
+  var min = getMin(data);
+  var scale = d3.scaleLinear().domain([min, max]).range([1, 5]);
+  return Math.round(scale(value));
+}
 export function getEdgeColor(value, data) {
-  const colorScale = d3.interpolateRainbow; //d3.interpolateRdYlGn;
+
+
+  var colorScale = d3.interpolateRdYlGn;
+
   const colorRangeInfo = {
     colorStart: 0,
     colorEnd: 1,
     useEndAsStart: false
   };
   const dataLength = data.length;
-  var colors = interpolateColors(     dataLength,    colorScale,    colorRangeInfo  );
+  var colors = interpolateColors(dataLength, colorScale, colorRangeInfo);
 
-  var max, min;
-  max = d3.max(data, function (d) {    return d.weight;  });
-  min = d3.min(data, function (d) {    return d.weight;  });
+  var max = getMax(data);
+  var min = getMin(data);
 
   var colorsLength = 0;
   colorsLength = colors.length - 1;
@@ -37,6 +44,23 @@ export function getEdgeColor(value, data) {
   return colors[point];
 
 }
+
+function getMin(data) {
+  var min;
+  min = d3.min(data, function (d) {
+    return d.weight;
+  });
+  return min;
+}
+
+function getMax(data) {
+  var max;
+  max = d3.max(data, function (d) {
+    return d.weight;
+  });
+  return max;
+}
+
 function calculatePoint(i, intervalSize, colorRangeInfo) {
   var {
     colorStart,
