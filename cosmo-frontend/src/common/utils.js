@@ -19,7 +19,7 @@ export function getEdgeWidth(value, data) {
 export function getEdgeColor(value, data) {
 
 
-  var colorScale = d3.interpolateRdYlGn;
+  var colorScale = d3.interpolateReds; //d3.interpolateRdYlGn;
 
   const colorRangeInfo = {
     colorStart: 0,
