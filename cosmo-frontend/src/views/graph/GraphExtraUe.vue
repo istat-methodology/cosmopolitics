@@ -115,7 +115,7 @@
           </div-->
           <v-select
             v-if="graphPeriod && !isTrimester"
-            label="name"
+            label="selectName"
             :options="graphPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
@@ -286,7 +286,7 @@ export default {
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
     //selectbox
-    selectedPeriod: { id: "202003", name: "Mar 20" },
+    selectedPeriod: { id: "202003", selectName: "Mar 20" },
     //selectedTrimesterPeriod: { id: "20201", name: "1Q 20" },
     //Slider
     periodValue: "202003",

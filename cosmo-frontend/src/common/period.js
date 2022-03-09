@@ -12,8 +12,13 @@ export function getPeriod(start, end) {
     var shortMonth = dt.toLocaleString("en-US", { month: "short" });
     var longYear = dt.toLocaleDateString("en", { year: "numeric" });
     var idString = String(longYear) + String(monthIndex);
-    var nameString = counter % 3 == 0 ? shortMonth + " " + shortYear : "";
-    var item = { id: idString, name: nameString };
+    var selectString = shortMonth + " " + shortYear;
+    var sliderString = counter % 3 == 0 ? shortMonth + " " + shortYear : "";
+    var item = {
+      id: idString,
+      name: sliderString,
+      selectName: selectString
+    };
     arr.push(item);
     dt.setMonth(dt.getMonth() + 1);
     counter++;

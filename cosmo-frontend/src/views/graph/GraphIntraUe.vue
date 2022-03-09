@@ -116,7 +116,7 @@
 
           <v-select
             v-if="graphPeriod && !isTrimester"
-            label="name"
+            label="selectName"
             :options="graphPeriod"
             :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
@@ -265,7 +265,7 @@ export default {
   components: { Network, VueSlider, exporter, RadioButton },
   mixins: [visMixin, sliderMixin, spinnerMixin],
   data: () => ({
-    selectedPeriod: { id: "202003", name: "Mar 20" },
+    selectedPeriod: { id: "202003", selectName: "Mar 20" },
     selectedTrimesterPeriod: { id: "202001", name: "1Q 20" },
 
     //Slider
