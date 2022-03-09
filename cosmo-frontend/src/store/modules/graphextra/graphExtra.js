@@ -38,7 +38,7 @@ const actions = {
             node.size = 15;
           });
           data.edges.forEach(edge => {
-            edge.color = getEdgeColor(edge.weight, data.edges, 9000, -9000);
+            edge.color = getEdgeColor(edge.weight, data.edges);
           });
           commit("SET_GRAPH_EXTRA_STATUS", "00");
           commit("SET_GRAPH_EXTRA", data);
