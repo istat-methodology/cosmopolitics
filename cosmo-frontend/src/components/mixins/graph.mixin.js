@@ -99,7 +99,7 @@ export default {
           to: {
             enabled: true,
             scaleFactor: 1,
-            type: "arrow"
+            type: "triangle"
           }
         },
         endPointOffset: {

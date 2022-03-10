@@ -49,7 +49,7 @@
         </CCardHeader>
         <CCardBody v-if="isMainChart">
           <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
-          <scatter-chart
+          <line-chart
             :chartData="chartDataDiagMain"
             :options="options"
             id="timeseries"

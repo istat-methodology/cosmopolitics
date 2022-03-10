@@ -11,7 +11,7 @@ export default {
       }
       this.diagNormTitle = "DiagNorm";
       if (statusNorm != "00") {
-        this.chartDataDiagNorm = this.getDiagNormChart(data["diagNorm"]);      
+        this.chartDataDiagNorm = this.getDiagNormChart(data["diagNorm"]);
       } else {
         this.chartDataDiagNorm = null;
       }
@@ -25,15 +25,15 @@ export default {
     getTimeseriesChart(data) {
       var chartData = {};
       chartData.datasets = [];
+      var dateLabels = this.getDate(data["date"]);
       if (data) {
-        this.labels = data["date"];
-        chartData.labels = data["date"];
+        this.labels = dateLabels;
+        chartData.labels = dateLabels;
         var mag = this.getMagnitude(data["series"]);
         chartData.datasets.push({
-          label:
-            "Yearly variation series (in " + this.getMagnitudeLabel(mag) + ")",
+          label: "Yearly variation series (in " + this.getMagnitudeLabel(mag) + ")",
           fill: false,
-          backgroundColor: function(context) {
+          backgroundColor: function (context) {
             var index = context.dataIndex;
             var value = context.dataset.data[index];
             if (value) {
@@ -45,7 +45,8 @@ export default {
             }
           },
           borderColor: "rgba(46, 184, 92,1)",
-          data: this.getCoordinates(data["series"], mag),
+          //data: this.getCoordinates(data["series"], mag),
+          data: data["series"],
           showLine: true,
           lineTension: 0,
           pointRadius: 2,
@@ -53,6 +54,21 @@ export default {
         });
       }
       return chartData;
+    },
+    getDate(data) {
+      var arr = [];
+      data.forEach((element, index) => {        
+        var dt = new Date(element);
+        var longYear = dt.toLocaleDateString("en", {
+          year: "numeric"
+        });
+        var shortMonth = dt.toLocaleString("en-US", {
+          month: "short"
+        });
+        console.log(index);
+        arr.push(shortMonth + "-" + longYear);
+      });
+      return arr;
     },
     getDiagNormChart(diag) {
       var chartData = {};
@@ -87,10 +103,10 @@ export default {
       return chartData;
     },
     emptyChart() {
-      var chartData = {} ;
+      var chartData = {};
       chartData.labels = "";
       chartData.datasets = [{
-        label:"",
+        label: "",
         backgroundColor: "",
         borderColor: "",
         data: []
@@ -118,8 +134,7 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [
-                  {
+                data: [{
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -141,8 +156,7 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [
-                  {
+                data: [{
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -164,8 +178,7 @@ export default {
                   fill: false,
                   backgroundColor: "blue",
                   borderColor: "blue",
-                  data: [
-                    {
+                  data: [{
                       x: index,
                       y: 0
                     },

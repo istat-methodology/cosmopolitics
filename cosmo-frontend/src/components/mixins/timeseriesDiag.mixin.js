@@ -18,34 +18,30 @@ export default {
         fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
       },
       scales: {
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "THEORETICAL QUANTILES"
-            },
-            ticks: {
-              stepSize: 1
-            }
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "THEORETICAL QUANTILES"
+          },
+          ticks: {
+            stepSize: 1
           }
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "SAMPLE QUANTILIES"
-            },
-            ticks: {
-              stepSize: 1
-            }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "SAMPLE QUANTILIES"
+          },
+          ticks: {
+            stepSize: 1
           }
-        ]
+        }]
       }
     },
     optionsRes: {
@@ -66,34 +62,30 @@ export default {
         fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
       },
       scales: {
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "OBSERVATIONS"
-            },
-            ticks: {
-              stepSize: 5
-            }
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "OBSERVATIONS"
+          },
+          ticks: {
+            stepSize: 5
           }
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "RESIDUALS"
-            },
-            ticks: {
-              stepSize: 1
-            }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "RESIDUALS"
+          },
+          ticks: {
+            stepSize: 1
           }
-        ]
+        }]
       }
     },
     optionsACF: {
@@ -114,34 +106,30 @@ export default {
         fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
       },
       scales: {
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "Lag"
-            },
-            ticks: {
-              stepSize: 0.1
-            }
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "Lag"
+          },
+          ticks: {
+            stepSize: 0.1
           }
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "ACF"
-            },
-            ticks: {
-              stepSize: 0.1
-            }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "ACF"
+          },
+          ticks: {
+            stepSize: 0.1
           }
-        ]
+        }]
       }
     },
     //min 0 = first month on series
@@ -160,7 +148,7 @@ export default {
         },
         tooltips: {
           callbacks: {
-            label: function(tooltipItem, data) {
+            label: function (tooltipItem, data) {
               //console.log(tooltipItem, data);
               var dt = new Date(data["labels"][tooltipItem.index]);
               var longYear = dt.toLocaleDateString("en", {
@@ -180,33 +168,33 @@ export default {
           }
         },
         scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
-              }
+          yAxes: [{
+            display: true,
+            gridLines: {
+              display: true
+            },
+            scaleLabel: {
+              display: true,
+              labelString: ""
+            },
+            ticks: {
+              beginAtZero: true
             }
-          ],
-          xAxes: [
-            {
-              ticks: {
-                min: startMin,
-                stepSize: 12,
-                callback: function(value, index) {
-                  var year = startYear + index;
-                  return year;
-                }
-              },
-              gridLines: {
-                display: true
-              },
-              type: "linear",
-              position: "bottom"
-            }
-          ]
+          }],
+          xAxes: [{
+            display: true,
+            gridLines: {
+              display: true
+            },
+            scaleLabel: {
+              display: true,
+              labelString: ""
+            },
+            ticks: {
+              stepSize: 4,
+            },
+
+          }]
         }
       };
     }

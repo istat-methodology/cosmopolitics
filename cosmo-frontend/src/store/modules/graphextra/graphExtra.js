@@ -33,14 +33,20 @@ const actions = {
       .then(data => {
         if (data["STATUS"] == undefined) {
           data.nodes.forEach(node => {
-            node.x = node.x * 314;
+            node.x = node.x * 314;            
             node.y = node.y * 314;
             node.shape = "image";
             node.image = loadImage(node.label);
             node.size = 15;
           });
           data.edges.forEach(edge => {
-            edge.color = getEdgeColor(edge.weight, data.edges);
+            edge.color = {
+              color: "#b1b7c1",
+              highlight: "#768192",
+              hover: getEdgeColor(edge.weight, data.edges),
+              inherit: "from",
+              opacity: 1.0
+            },
             edge.width = getEdgeWidth(edge.weight, data.edges);
           });
           commit("SET_GRAPH_EXTRA_STATUS", "00");
