@@ -130,9 +130,9 @@
       "title": "Search filters",
       "fields": {
         "dataType": "Series type",
-        "dataType_placeholder": "Select a series type",
-        "varType": "Variazione",
-        "varType_placeholder": "Seleziona la variazione",
+        "dataType_placeholder": "Select series type",
+        "varType": "Data type",
+        "varType_placeholder": "Select data type",
         "flow": "Flow",
         "flow_placeholder": "Select a flow",
         "country": "Country",

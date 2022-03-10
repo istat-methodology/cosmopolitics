@@ -29,9 +29,8 @@ export default {
       if (data) {
         this.labels = dateLabels;
         chartData.labels = dateLabels;
-        var mag = this.getMagnitude(data["series"]);
         chartData.datasets.push({
-          label: "Yearly variation series (in " + this.getMagnitudeLabel(mag) + ")",
+          label: "Yearly variation series",
           fill: false,
           backgroundColor: function (context) {
             var index = context.dataIndex;
@@ -45,7 +44,6 @@ export default {
             }
           },
           borderColor: "rgba(46, 184, 92,1)",
-          //data: this.getCoordinates(data["series"], mag),
           data: data["series"],
           showLine: true,
           lineTension: 0,

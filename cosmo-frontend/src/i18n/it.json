@@ -127,8 +127,8 @@
       "fields": {
         "dataType": "Serie",
         "dataType_placeholder": "Seleziona la serie",
-        "varType": "Variazione",
-        "varType_placeholder": "Seleziona la variazione",
+        "varType": "Tipo dati",
+        "varType_placeholder": "Seleziona il tipo dati",
         "flow": "Flusso",
         "flow_placeholder": "Seleziona il flusso",
         "country": "Paese",

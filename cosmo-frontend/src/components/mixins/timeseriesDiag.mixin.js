@@ -146,27 +146,14 @@ export default {
         legend: {
           display: isLegend
         },
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem, data) {
-              //console.log(tooltipItem, data);
-              var dt = new Date(data["labels"][tooltipItem.index]);
-              var longYear = dt.toLocaleDateString("en", {
-                year: "numeric"
-              });
-              var longMonth = dt.toLocaleString("en-US", {
-                month: "long"
-              });
-              return (
-                longMonth +
-                ", " +
-                longYear +
-                " :  " +
-                data["datasets"][0]["data"][tooltipItem.index]["y"]
-              );
-            }
-          }
-        },
+           tooltips: {
+               //mode: "index",
+               intersect: true
+             },
+             hover: {
+               mode: "nearest",
+               intersect: true
+             },
         scales: {
           yAxes: [{
             display: true,
