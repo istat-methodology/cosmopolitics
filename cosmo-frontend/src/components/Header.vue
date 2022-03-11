@@ -21,11 +21,11 @@
           {{ processingDay }}</span
         >
         <!--  cilAsterisk,  cilBell,   cilStar  -->
-        <span class="px-3"
+        <!--span class="px-3"
           ><CIcon name="cilBell" /><a href="#" @click="newsOn(true)"
             >News</a
           ></span
-        >
+        -->
       </CHeaderNavItem>
     </CHeaderNav>
     <CHeaderNav class="mr-lang">
