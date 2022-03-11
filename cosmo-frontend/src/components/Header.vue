@@ -18,7 +18,7 @@
         <!-- MANAGE DATE DYNAMICALLY-->
         <span class="px-3"
           ><CIcon name="cil-tags" /> {{ $t("common.update") }}
-          {{ processingDay }}</span
+          {{ lastLoadedData }}</span
         >
         <!--  cilAsterisk,  cilBell,   cilStar  -->
         <!--span class="px-3"
@@ -88,9 +88,9 @@ export default {
   computed: {
     ...mapGetters("auth", ["isAuthenticated"]),
     /*
-    "ProcessingDay": "09-02-2022, 13:52:50",  
+    "lastLoadedData": "09-02-2022, 13:52:50",  
     */
-    ...mapGetters("metadata", ["processingDay"])
+    ...mapGetters("metadata", ["lastLoadedData"])
   },
   methods: {
     selectLanguage(lan) {

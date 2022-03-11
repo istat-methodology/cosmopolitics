@@ -45,6 +45,9 @@ const getters = {
   processingDay: state => {
     return state.metadata ? state.metadata.processingDay : "";
   },
+  lastLoadedData: state => {
+      return state.metadata ? state.metadata.lastLoadedData : "";
+  },
   appVersion: state => {
     return state.metadata ? state.metadata.appVersion : "";
   },
