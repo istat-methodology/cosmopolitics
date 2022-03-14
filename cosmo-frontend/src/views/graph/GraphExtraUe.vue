@@ -206,9 +206,8 @@
           color="light"
           href="#"
           v-for="(node, index) in selectedNodes"
-          :key="index"
-        >
-          {{ node.source.label }} - {{ node.destination.label }}
+          :key="index"        >
+          {{ node.source.label }} - {{ node.destination.label }} - {{ node.weight }} - {{ node.sum }} / {{ node.percentage }}
         </CListGroupItem>
       </CListGroup>
       <label class="card-label mt-3">Transport</label>
@@ -399,10 +398,18 @@ export default {
       //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
+      var sumOfSelectedEdge = 0;
+
       selectedGraph.edges.forEach(edgeId => {
+        const selectedEdge = this.getEdge(this.network, edgeId);        
+        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
+      });
+      
+      selectedGraph.edges.forEach(edgeId => {
+
         const selectedEdge = this.getEdge(this.network, edgeId);
         const sourceNode = this.getNode(this.network, selectedEdge.from);
-        const destinationNode = this.getNode(this.network, selectedEdge.to);
+        const destinationNode = this.getNode(this.network, selectedEdge.to);       
 
         if (selectedGraph.edges.length > 1) {
           this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;
@@ -413,7 +420,10 @@ export default {
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
-          destination: destinationNode
+          destination: destinationNode,
+          weight: selectedEdge.weight,
+          sum: sumOfSelectedEdge,
+          percentage: selectedEdge.weight / sumOfSelectedEdge
         });
       });
       //console.log(this.edgeFromTo);
@@ -430,6 +440,7 @@ export default {
       this.edgeModal = true;
     },
     handleOverNode(event) {
+      
       const nodeId = event.node;
       this.nodeMetric = this.getCentrality(this.network, nodeId, this.metrics);
     },

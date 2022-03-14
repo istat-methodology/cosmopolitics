@@ -95,7 +95,7 @@
           </span>
         </CCardHeader>
         <CCardBody v-if="isDiagNorm">
-          <scatter-chart
+          <scatter-chart          
             :chartData="chartDataDiagNorm"
             :options="optionsNorm"
             id="diagnorm"
@@ -376,6 +376,7 @@ export default {
           if (this.statusMain == Status.success) {
             this.buildTimeseriesCharts(
               this.timeseriesCharts,
+              this.dataTypeSelected.descr,
               this.statusMain,
               this.statusNorm,
               this.statusACF

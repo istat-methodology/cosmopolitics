@@ -18,82 +18,30 @@ export default {
         fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
       },
       scales: {
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "THEORETICAL QUANTILES"
-            },
-            ticks: {
-              stepSize: 1
-            }
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "THEORETICAL QUANTILES"
+          },
+          ticks: {
+            stepSize: 1
           }
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "SAMPLE QUANTILIES"
-            },
-            ticks: {
-              stepSize: 1
-            }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "SAMPLE QUANTILIES"
+          },
+          ticks: {
+            stepSize: 1
           }
-        ]
-      }
-    },
-    optionsRes: {
-      responsive: true,
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      title: {
-        display: true,
-        text: "REGRESSION RESIDUALS",
-        fontColor: "#404040",
-        fontSize: 16,
-        fontWeight: "bold",
-        verticalAlign: "top",
-        horizontalAlign: "center",
-        padding: 0,
-        fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
-      },
-      scales: {
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "OBSERVATIONS"
-            },
-            ticks: {
-              stepSize: 5
-            }
-          }
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "RESIDUALS"
-            },
-            ticks: {
-              stepSize: 1
-            }
-          }
-        ]
+        }]
       }
     },
     optionsACF: {
@@ -114,34 +62,30 @@ export default {
         fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
       },
       scales: {
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "Lag"
-            },
-            ticks: {
-              stepSize: 0.1
-            }
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "Lag"
+          },
+          ticks: {
+            stepSize: 0.1
           }
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              fontSize: 16,
-              fontWeight: "bold",
-              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-              labelString: "ACF"
-            },
-            ticks: {
-              stepSize: 0.1
-            }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            fontSize: 16,
+            fontWeight: "bold",
+            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+            labelString: "ACF"
+          },
+          ticks: {
+            stepSize: 0.1
           }
-        ]
+        }]
       }
     },
     //min 0 = first month on series
@@ -167,36 +111,26 @@ export default {
           intersect: true
         },
         scales: {
-          yAxes: [
-            {
+          yAxes: [{
+            display: true,
+            gridLines: {
+              display: true
+            },
+            scaleLabel: {
               display: true,
-              gridLines: {
-                display: true
-              },
-              scaleLabel: {
-                display: true,
-                labelString: ""
-              },
-              ticks: {
-                beginAtZero: true
-              }
+              labelString: ""
             }
-          ],
-          xAxes: [
-            {
+          }],
+          xAxes: [{
+            display: true,
+            gridLines: {
+              display: true
+            },
+            scaleLabel: {
               display: true,
-              gridLines: {
-                display: true
-              },
-              scaleLabel: {
-                display: true,
-                labelString: ""
-              },
-              ticks: {
-                stepSize: 4
-              }
+              labelString: ""
             }
-          ]
+          }]
         }
       };
     }

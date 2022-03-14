@@ -3,26 +3,26 @@ export default {
     diagNormMag: ""
   }),
   methods: {
-    buildTimeseriesCharts(data, statusMain, statusNorm, statusACF) {
+    buildTimeseriesCharts(data, dataType, statusMain, statusNorm, statusACF) {
       if (statusMain != "00") {
-        this.chartDataDiagMain = this.getTimeseriesChart(data["diagMain"]);
+        this.chartDataDiagMain = this.getTimeseriesChart(data["diagMain"],dataType);
       } else {
         this.chartDataDiagMain = null;
       }
-      this.diagNormTitle = "DiagNorm";
+      this.diagNormTitle = "NQQ-Norm Plot";
       if (statusNorm != "00") {
         this.chartDataDiagNorm = this.getDiagNormChart(data["diagNorm"]);
       } else {
         this.chartDataDiagNorm = null;
       }
-      this.diagACFTitle = "DiagACF";
+      this.diagACFTitle = "AUTOCORRELATION";
       if (statusACF != "00") {
         this.chartDataDiagACF = this.getDiagACFChart(data["diagACF"]);
       } else {
         this.chartDataDiagACF = null;
       }
     },
-    getTimeseriesChart(data) {
+    getTimeseriesChart(data, dataType) {
       var chartData = {};
       chartData.datasets = [];
       var dateLabels = this.getDate(data["date"]);
@@ -30,7 +30,7 @@ export default {
         this.labels = dateLabels;
         chartData.labels = dateLabels;
         chartData.datasets.push({
-          label: "Yearly variation series",
+          label: dataType,
           fill: false,
           backgroundColor: function(context) {
             var index = context.dataIndex;
