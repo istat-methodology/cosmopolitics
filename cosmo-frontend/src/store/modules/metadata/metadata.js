@@ -22,31 +22,33 @@ const actions = {
 };
 const getters = {
   mapPeriod: state => {
-    return state.metadata ? getPeriod(state.metadata.map.timeStart, state.metadata.map.timeEnd) : null;
+    return state.metadata
+      ? getPeriod(state.metadata.map.timeStart, state.metadata.map.timeEnd)
+      : null;
   },
   graphPeriod: state => {
-    return state.metadata ? getPeriod(
-      state.metadata.graph.timeStart,
-      state.metadata.graph.timeEnd
-    ) : null;
+    return state.metadata
+      ? getPeriod(state.metadata.graph.timeStart, state.metadata.graph.timeEnd)
+      : null;
   },
   graphTrimesterPeriod: state => {
-    return state.metadata ? getTrimesterPeriod(
-      state.metadata.graph.timeStart,
-      state.metadata.graph.timeEnd
-    ): null;
+    return state.metadata
+      ? getTrimesterPeriod(
+          state.metadata.graph.timeStart,
+          state.metadata.graph.timeEnd
+        )
+      : null;
   },
   tradePeriod: state => {
-    return state.metadata ? getPeriod(
-      state.metadata.trade.timeStart,
-      state.metadata.trade.timeEnd
-    ) : null;
+    return state.metadata
+      ? getPeriod(state.metadata.trade.timeStart, state.metadata.trade.timeEnd)
+      : null;
   },
   processingDay: state => {
     return state.metadata ? state.metadata.processingDay : "";
   },
   lastLoadedData: state => {
-      return state.metadata ? state.metadata.lastLoadedData : "";
+    return state.metadata ? state.metadata.lastLoadedData : "";
   },
   appVersion: state => {
     return state.metadata ? state.metadata.appVersion : "";

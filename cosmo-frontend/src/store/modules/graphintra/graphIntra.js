@@ -1,12 +1,5 @@
-import {
-  graphIntraService
-} from "@/services";
-import {
-  loadImage,
-  getEdgeColor,
-  getEdgeWidth
-} from "@/common";
-
+import { graphIntraService } from "@/services";
+import { loadImage, getEdgeColor, getEdgeWidth } from "@/common";
 
 const state = {
   graphintra: [],
@@ -21,15 +14,10 @@ const mutations = {
   }
 };
 const actions = {
-  clear({
-    commit
-  }) {
+  clear({ commit }) {
     commit("SET_GRAPH_INTRA", null);
   },
-  postGraphIntra({
-    commit
-  }, params) {
-
+  postGraphIntra({ commit }, params) {
     return graphIntraService
       .postGraphIntra(params)
       .then(data => {
@@ -43,14 +31,14 @@ const actions = {
           });
 
           data.edges.forEach(edge => {
-            edge.color = {
-                color: "#b1b7c1",
-                highlight: "#768192",
-                hover: getEdgeColor(edge.weight, data.edges),
-                inherit: "from",
-                opacity: 1.0
-              },
-              edge.width = getEdgeWidth(edge.weight, data.edges);
+            (edge.color = {
+              color: "#b1b7c1",
+              highlight: "#768192",
+              hover: getEdgeColor(edge.weight, data.edges),
+              inherit: "from",
+              opacity: 1.0
+            }),
+              (edge.width = getEdgeWidth(edge.weight, data.edges));
           });
 
           commit("SET_GRAPH_INTRA_STATUS", "00");

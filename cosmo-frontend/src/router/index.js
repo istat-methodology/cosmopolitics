@@ -54,6 +54,25 @@ const routes = [
     }
   },
   {
+    path: "/newgraphextra",
+    name: "NewGraphExtraUe",
+    component: () => import("../views/newgraph/GraphExtraUe"),
+    meta: {
+      authorize: []
+    },
+    props: {
+      type: "month"
+    }
+  },
+  {
+    path: "/newgraphintra",
+    name: "NewGraphIntraUe",
+    component: () => import("../views/newgraph/GraphIntraUe"),
+    meta: {
+      authorize: []
+    }
+  },
+  {
     path: "/timeseries",
     name: "TimeSeries",
     component: () => import("../views/timeseries/TimeSeries"),

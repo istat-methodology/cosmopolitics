@@ -13,12 +13,13 @@ export function loadImage(img) {
 export function getEdgeWidth(value, data) {
   var max = getMax(data);
   var min = getMin(data);
-  var scale = d3.scaleLinear().domain([min, max]).range([1, 5]);
+  var scale = d3
+    .scaleLinear()
+    .domain([min, max])
+    .range([1, 5]);
   return Math.round(scale(value));
 }
 export function getEdgeColor(value, data) {
-
-
   var colorScale = d3.interpolateReds; //d3.interpolateRdYlGn
 
   const colorRangeInfo = {
@@ -42,12 +43,11 @@ export function getEdgeColor(value, data) {
   let sPoint = s(value);
   let point = Math.round(sPoint);
   return colors[point];
-
 }
 
 function getMin(data) {
   var min;
-  min = d3.min(data, function (d) {
+  min = d3.min(data, function(d) {
     return d.weight;
   });
   return min;
@@ -55,28 +55,21 @@ function getMin(data) {
 
 function getMax(data) {
   var max;
-  max = d3.max(data, function (d) {
+  max = d3.max(data, function(d) {
     return d.weight;
   });
   return max;
 }
 
 function calculatePoint(i, intervalSize, colorRangeInfo) {
-  var {
-    colorStart,
-    colorEnd,
-    useEndAsStart
-  } = colorRangeInfo;
-  return useEndAsStart ?
-    colorEnd - i * intervalSize :
-    colorStart + i * intervalSize;
+  var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+  return useEndAsStart
+    ? colorEnd - i * intervalSize
+    : colorStart + i * intervalSize;
 }
 /* Must use an interpolated color scale, which has a range of [0, 1] */
 function interpolateColors(dataLength, colorScale, colorRangeInfo) {
-  var {
-    colorStart,
-    colorEnd
-  } = colorRangeInfo;
+  var { colorStart, colorEnd } = colorRangeInfo;
   var colorRange = colorEnd - colorStart;
   var intervalSize = colorRange / dataLength;
   var i, colorPoint;

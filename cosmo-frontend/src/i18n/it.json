@@ -74,6 +74,7 @@
   },
   "graph": {
     "stats": {
+      "country": "Paese",
       "density": "Diffusione delle merci",
       "centrality": "Centralità",
       "exportationstrength": "Forza di esportazione",
@@ -83,7 +84,7 @@
     "form": {
       "title": "Filtri di ricerca",
       "fields": {
-        "montly": "Mensile",
+        "monthly": "Mensile",
         "trimester": "Trimestrale",
         "period": "Periodo di riferimento",
         "period_placeholder": "Seleziona un periodo",

@@ -75,6 +75,7 @@
   },
   "graph": {
     "stats": {
+      "country": "Country",
       "density": "Product spread",
       "centrality": "Centrality:",
       "exportationstrength": "Exportation strength:",
@@ -84,7 +85,7 @@
     "form": {
       "title": "Graph filter",
       "fields": {
-        "montly": "Montly",
+        "monthly": "Monthly",
         "trimester": "Quarter",
         "period": "Period",
         "period_placeholder": "Select a period",

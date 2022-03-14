@@ -32,7 +32,7 @@ export default {
         chartData.datasets.push({
           label: "Yearly variation series",
           fill: false,
-          backgroundColor: function (context) {
+          backgroundColor: function(context) {
             var index = context.dataIndex;
             var value = context.dataset.data[index];
             if (value) {
@@ -55,7 +55,7 @@ export default {
     },
     getDate(data) {
       var arr = [];
-      data.forEach((element, index) => {        
+      data.forEach((element, index) => {
         var dt = new Date(element);
         var longYear = dt.toLocaleDateString("en", {
           year: "numeric"
@@ -103,16 +103,18 @@ export default {
     emptyChart() {
       var chartData = {};
       chartData.labels = "";
-      chartData.datasets = [{
-        label: "",
-        backgroundColor: "",
-        borderColor: "",
-        data: []
-      }];
+      chartData.datasets = [
+        {
+          label: "",
+          backgroundColor: "",
+          borderColor: "",
+          data: []
+        }
+      ];
       chartData.options = {
         legend: {
-          display: false,
-        },
+          display: false
+        }
       };
       return chartData;
     },
@@ -132,7 +134,8 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [{
+                data: [
+                  {
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -154,7 +157,8 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [{
+                data: [
+                  {
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -176,7 +180,8 @@ export default {
                   fill: false,
                   backgroundColor: "blue",
                   borderColor: "blue",
-                  data: [{
+                  data: [
+                    {
                       x: index,
                       y: 0
                     },

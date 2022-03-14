@@ -340,7 +340,6 @@ export default {
       const selectedEdge = network.edges.find(edge => {
         return edge.id == edgeId;
       });
-      //console.log("From: " + selectedEdge.from + ", To: " + selectedEdge.to);
       return selectedEdge ? selectedEdge : null;
     },
     getCentrality(network, nodeId, metrics) {
@@ -348,6 +347,7 @@ export default {
       const selectedNode = this.getNode(network, nodeId);
       if (selectedNode) {
         nodeMetric = {
+          country: selectedNode.label,
           centrality: metrics.degree_centrality[selectedNode.label].toPrecision(
             4
           ),

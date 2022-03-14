@@ -56,6 +56,7 @@ export function getTrimesterPeriod(start, end) {
       var item = {
         id: idString,
         name: nameString,
+        selectName: nameString,
         trimester: trimester
       };
       trim.push(item);
