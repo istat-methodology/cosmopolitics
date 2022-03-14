@@ -1,12 +1,9 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - istat-cosmo-update
+name:  Cosmo Update data Service CI/CD
 
-on:
-  push:
-    branches:
-      - main
+on: 
   workflow_dispatch:
 
 jobs:
@@ -23,15 +20,16 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://istatcosmo.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_dea1fe7f83e148ffb6120e3b399c1501 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_f26ac9ac5e4a4a878b2ef8de7b96bdb1 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername }}
+        password: ${{ secrets.AzureAppService_ContainerPassword }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: istatcosmo.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_dea1fe7f83e148ffb6120e3b399c1501 }}/cosmo-update-service:${{ github.sha }}
-        file: ./Dockerfile
+        tags: istatcosmo.azurecr.io/cosmo-update-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-update-service:latest
+        context: ./cosmo-update-service/
+        build-args: "DOCKER_TAG=run-${{ github.run_number }}"
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,5 +45,5 @@ jobs:
       with:
         app-name: 'istat-cosmo-update'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_10ddc4179bd64a699e77e07080088120 }}
-        images: 'istatcosmo.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_dea1fe7f83e148ffb6120e3b399c1501 }}/cosmo-update-service:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_UPDATESERVICE }}
+        images: 'istatcosmo.azurecr.io/cosmo-update-service:run-${{ github.run_number }}'
