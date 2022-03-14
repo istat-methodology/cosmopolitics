@@ -196,7 +196,7 @@
           v-for="(node, index) in selectedNodes"
           :key="index"
         >
-          {{ node.source.label }} - {{ node.destination.label }} - {{ node.weight }} - {{ node.sum }} / {{ node.percentage }}
+          {{ node.source.label }} - {{ node.destination.label }} - {{ node.weight }} / {{ node.sum }} = {{ node.percentage }}
         </CListGroupItem>
       </CListGroup>
 

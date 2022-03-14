@@ -207,7 +207,7 @@
           href="#"
           v-for="(node, index) in selectedNodes"
           :key="index"        >
-          {{ node.source.label }} - {{ node.destination.label }} - {{ node.weight }} - {{ node.sum }} / {{ node.percentage }}
+          {{ node.source.label }} - {{ node.destination.label }} / {{ node.weight }} = {{ node.sum }} / {{ node.percentage }}
         </CListGroupItem>
       </CListGroup>
       <label class="card-label mt-3">Transport</label>
@@ -440,7 +440,7 @@ export default {
       this.edgeModal = true;
     },
     handleOverNode(event) {
-      
+
       const nodeId = event.node;
       this.nodeMetric = this.getCentrality(this.network, nodeId, this.metrics);
     },
