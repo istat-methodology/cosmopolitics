@@ -196,7 +196,7 @@
           v-for="(node, index) in selectedNodes"
           :key="index"
         >
-          {{ node.source.label }} - {{ node.destination.label }} - {{ node.weight }} / {{ node.sum }} = {{ node.percentage }}
+          {{ node.source.label }} - {{ node.destination.label }} -  perc: {{ node.percentage }} / tot: {{ node.sum }}
         </CListGroupItem>
       </CListGroup>
 
@@ -393,8 +393,8 @@ export default {
           source: sourceNode,
           destination: destinationNode,
           weight: selectedEdge.weight,
-          sum: sumOfSelectedEdge,
-          percentage: selectedEdge.weight / sumOfSelectedEdge
+          sum: (sumOfSelectedEdge / 1000000).toFixed(2),
+          percentage: (selectedEdge.weight / sumOfSelectedEdge).toFixed(2),
         });
       });
       //console.log(this.edgeFromTo);
