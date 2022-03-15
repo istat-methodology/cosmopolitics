@@ -994,32 +994,16 @@ def executeUpdate():
  
 ################################################
 
-
-@app.route('/refreshdata')
-def refreshdata():
-    
-    try:
-        global df_transport 
-        df_transport = load_files_available()  
-        global df_transportIntra 
-        df_transportIntra = load_file_intraEU()    
-        global df_trimcpa 
-        df_trimcpa = load_cpa_trim()
-
-        return str(' data refreshed')
-    except:
-        #print("#############   FILE NON TROVATI")
-        logging.info("### Files non trovati ")  
-        return str('### Files non trovati')
-
-
 @app.route('/hello')
-def hello():
+async def hello():
+    logging.info('/hello START')
     return str('Version '+str(os.environ['APP_VERSION']))
 
 @app.route('/update')
-def update():
+async def update():
+    logging.info('/update START')
     executeUpdate()
+    logging.info('/update END')
     return str('executeUpdate STARTED')
         
 if __name__ == '__main__':

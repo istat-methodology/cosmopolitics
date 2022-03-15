@@ -1,4 +1,4 @@
-flask
+flask[async]
 flask_restful
 flask_cors
 pandas
