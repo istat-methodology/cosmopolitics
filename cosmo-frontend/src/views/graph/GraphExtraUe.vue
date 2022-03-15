@@ -201,7 +201,7 @@
       :show.sync="edgeModal"
       :closeOnBackdrop="false"
     >
-      <label class="card-label mt-2">Edges</label>
+      <!--label class="card-label mt-2">Edges</label>
       <CListGroup>
         <CListGroupItem
           color="light"
@@ -209,9 +209,12 @@
           v-for="(node, index) in selectedNodes"
           :key="index"
         >
-          {{ node.source.label }} - {{ node.destination.label }} -  perc: {{ node.percentage }} / tot: {{ node.sum }}
+          {{ node.source.label }} - {{ node.destination.label }} - perc:
+          {{ node.percentage }} / tot: {{ node.sum }}
         </CListGroupItem>
-      </CListGroup>
+      </CListGroup-->
+      <CDataTable :items="selectedNodesDataTable" hover />
+
       <label class="card-label mt-3">Transport</label>
       <v-select
         label="descr"
@@ -301,6 +304,7 @@ export default {
     edgeModal: false,
     selectedEdges: [],
     selectedNodes: [],
+    selectedNodesDataTable: [],
     transportConstraint: [],
     transportConstraintStart: [],
     transportConstraintSelected: {},
@@ -403,13 +407,10 @@ export default {
       //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
+
+      this.selectedNodesDataTable = [];
       var sumOfSelectedEdge = 0;
-
-      selectedGraph.edges.forEach((edgeId) => {
-        const selectedEdge = this.getEdge(this.network, edgeId);
-        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
-      });
-
+      
       selectedGraph.edges.forEach((edgeId) => {
         const selectedEdge = this.getEdge(this.network, edgeId);
         const sourceNode = this.getNode(this.network, selectedEdge.from);
@@ -419,15 +420,27 @@ export default {
           this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;
         } else {
           this.edgeFromTo = sourceNode.label + "-" + destinationNode.label;
-        }        
+        }
         this.selectedEdges.push(selectedEdge);
+
         this.selectedNodes.push({
           source: sourceNode,
           destination: destinationNode,
           weight: selectedEdge.weight,
-          sum: (sumOfSelectedEdge /1000000).toFixed(2), 
-          percentage: (selectedEdge.weight / sumOfSelectedEdge).toFixed(2)
         });
+
+        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
+
+        var percentageFormatted = selectedEdge.weight / sumOfSelectedEdge;
+        var weightFormatted = selectedEdge.weight;
+
+        this.selectedNodesDataTable.push({
+          "From Country": sourceNode.label,
+          "To Country": destinationNode.label,
+          Total: weightFormatted.toLocaleString("en-US"),
+          Percentage: percentageFormatted.toFixed(2) + "%",
+        });
+        
       });
       //console.log(this.edgeFromTo);
 

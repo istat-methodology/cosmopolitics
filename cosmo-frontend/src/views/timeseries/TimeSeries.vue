@@ -381,7 +381,7 @@ export default {
               this.statusNorm,
               this.statusACF
             );
-            this.optionsNorm.title.text += " (in " + this.diagNormMag + ")";
+            this.optionsNorm.title.text =  "QQ-Norm Plot (in " + this.diagNormMag + ")";
           } else {
             this.chartDataDiagMain = this.emptyChart();
             this.chartDataDiagNorm = null;
