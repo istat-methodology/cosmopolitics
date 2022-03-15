@@ -1,9 +1,10 @@
 flask
 flask_restful
 flask_cors
-networkx
 pandas
-matplotlib
-openpyxl
 py7zr
+azure-functions
+azure-storage-file
+datetime
+
 
