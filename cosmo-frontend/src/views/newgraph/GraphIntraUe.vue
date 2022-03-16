@@ -1,9 +1,11 @@
 <template>
-  <div class="row">
+  <div class="row">    
     <div class="col-9">
+      
       <cosmo-graph
         :nodes="nodes"
         :edges="edges"
+        :displayTransport="false"
         :metrics="metrics"
         :spinner="spinner"
         @showinfo="showMainModal"

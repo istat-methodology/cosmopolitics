@@ -67,25 +67,17 @@
       :show.sync="edgeModal"
       :closeOnBackdrop="false"
     >
-      <label class="card-label mt-2">Edges</label>
-      <CListGroup>
-        <CListGroupItem
-          color="light"
-          href="#"
-          v-for="(node, index) in selectedNodes"
-          :key="index"
-        >
-          {{ node.source.label }} - {{ node.destination.label }}
-        </CListGroupItem>
-      </CListGroup>
-      <label class="card-label mt-3">Transport</label>
-      <v-select
-        label="descr"
-        multiple
-        :options="transportConstraintStart"
-        placeholder="Select transport"
-        v-model="transportConstraint"
-      />
+      <CDataTable :items="selectedNodesDataTable" hover />
+      <div v-if="displayTransport">
+        <label class="card-label mt-3">Transport</label>
+        <v-select
+          label="descr"
+          multiple
+          :options="transportConstraintStart"
+          placeholder="Select transport"
+          v-model="transportConstraint"
+        />
+      </div>
       <template #footer>
         <CButton
           color="outline-primary"
@@ -117,28 +109,34 @@ export default {
     edgeModal: false,
     selectedEdges: [],
     selectedNodes: [],
+    selectedNodesDataTable: [],
     transportConstraint: [],
     transportConstraintStart: [],
     transportConstraintSelected: {},
-    edgeFromTo: null
+    edgeFromTo: null,
   }),
   props: {
     nodes: {
       type: Array,
-      default: () => null
+      default: () => null,
     },
     edges: {
       type: Array,
-      default: () => null
+      default: () => null,
     },
     metrics: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
+    displayTransport: {
+      type: Boolean,
+      default: true,
+    },
+
     spinner: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     network() {
@@ -146,17 +144,17 @@ export default {
         ? {
             nodes: this.nodes,
             edges: this.edges,
-            options: this.options
+            options: this.options,
           }
         : {
             nodes: [],
             edges: [],
-            options: null
+            options: null,
           };
     },
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    }
+    },
   },
   methods: {
     showInfo() {
@@ -170,7 +168,11 @@ export default {
       //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
-      selectedGraph.edges.forEach(edgeId => {
+
+      this.selectedNodesDataTable = [];
+      var sumOfSelectedEdge = 0;
+
+      selectedGraph.edges.forEach((edgeId) => {
         const selectedEdge = this.getEdge(this.network, edgeId);
         const sourceNode = this.getNode(this.network, selectedEdge.from);
         const destinationNode = this.getNode(this.network, selectedEdge.to);
@@ -184,7 +186,19 @@ export default {
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
-          destination: destinationNode
+          destination: destinationNode,
+        });
+
+        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
+
+        var percentageFormatted = selectedEdge.weight / sumOfSelectedEdge;
+        var weightFormatted = selectedEdge.weight;
+
+        this.selectedNodesDataTable.push({
+          "From Country": sourceNode.label,
+          "To Country": destinationNode.label,
+          Total: weightFormatted.toLocaleString("en-US"),
+          Percentage: percentageFormatted.toFixed(2) + "%",
         });
       });
 
@@ -205,12 +219,12 @@ export default {
     },
     applyConstraints() {
       const constraints = [];
-      this.selectedEdges.forEach(edge => {
+      this.selectedEdges.forEach((edge) => {
         this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.network, edge.from).label,
           to: this.getNode(this.network, edge.to).label,
-          exclude: this.getIds(this.transportConstraint)
+          exclude: this.getIds(this.transportConstraint),
         });
       });
       // ---------------------------------------
@@ -224,14 +238,14 @@ export default {
         flow: this.flow.id,
         weight_flag: true,
         pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints
+        selezioneMezziEdges: constraints,
       };
       this.requestToServer(form);
       this.closeModal();
     },
     setTransportConstraintStart() {
       let transport = this.transportConstraintStart.filter(
-        o => !this.transportConstraint.find(o2 => o.id === o2.id)
+        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
       );
       this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
@@ -241,7 +255,7 @@ export default {
       for (var edgeId in this.network.edges) {
         edges.push({
           from: this.network.edges[edgeId].from,
-          to: this.network.edges[edgeId].to
+          to: this.network.edges[edgeId].to,
         });
       }
       for (var nodeId in this.network.nodes) {
@@ -249,13 +263,13 @@ export default {
           id: this.network.nodes[nodeId].id,
           label: this.network.nodes[nodeId].label,
           x: this.network.nodes[nodeId].x,
-          y: this.network.nodes[nodeId].y
+          y: this.network.nodes[nodeId].y,
         });
       }
       let jsonData = JSON.stringify({ nodes, edges });
       return [jsonData, id];
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
