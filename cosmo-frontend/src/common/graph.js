@@ -25,7 +25,10 @@ export function buildMetrics(data) {
         label: node.label,
         centrality: data.metriche.degree_centrality[node.label].toPrecision(2),
         vulnerability: data.metriche.vulnerability[node.label].toPrecision(2),
-        hubness: data.metriche.hubness[node.label].toPrecision(2)
+        hubness: data.metriche.hubness[node.label].toPrecision(2),
+        exportStrenght: data.metriche["exportation strenght"][
+          node.label
+        ].toPrecision(2)
       });
     });
   return metrics;

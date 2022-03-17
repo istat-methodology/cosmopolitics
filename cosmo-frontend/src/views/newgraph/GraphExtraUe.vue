@@ -89,10 +89,11 @@ export default {
     graphForm: null,
     //Metrics table
     metricsFields: [
-      { key: "label", _style: "width:25%" },
-      { key: "centrality", _style: "width:25%" },
-      { key: "hubness", _style: "width:25%" },
-      { key: "vulnerability", _style: "width:25%" }
+      { key: "label", _style: "width:20%" },
+      { key: "exportStrenght", _style: "width:20%" },
+      { key: "centrality", _style: "width:20%" },
+      { key: "hubness", _style: "width:20%" },
+      { key: "vulnerability", _style: "width:20%" }
     ],
     //Spinner
     spinner: false,

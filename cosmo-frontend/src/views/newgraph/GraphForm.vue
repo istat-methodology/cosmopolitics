@@ -103,7 +103,9 @@
   </CCard>
 </template>
 <script>
+import { getTransportIds } from "@/common";
 import { required, numeric } from "vuelidate/lib/validators";
+
 export default {
   name: "GraphForm",
   data: () => ({
@@ -200,19 +202,11 @@ export default {
         this.$emit("submit", {
           period: this.selectedPeriod.id,
           percentage: this.percentage,
-          transports: this.getIds(this.transport),
+          transports: getTransportIds(this.transport, this.transports),
           product: this.product.id,
           flow: this.flow.id
         });
       }
-    },
-    getIds(selectedTransports) {
-      var ids = [];
-      if (selectedTransports)
-        selectedTransports.forEach(element => {
-          ids.push(element.id);
-        });
-      return ids;
     }
   }
 };

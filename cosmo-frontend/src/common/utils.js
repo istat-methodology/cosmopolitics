@@ -80,3 +80,28 @@ function interpolateColors(dataLength, colorScale, colorRangeInfo) {
   }
   return colorArray;
 }
+
+export function getTransportIds(selectedTransports, transports) {
+  var SelectedAllException = {};
+  var ids = [];
+  try {
+    if (selectedTransports)
+      selectedTransports.forEach(element => {
+        if (element.id == 99) throw SelectedAllException;
+        ids.push(element.id);
+      });
+  } catch (error) {
+    ids = getAllTransportIds(transports);
+  }
+  //console.log(ids);
+  return ids;
+}
+
+export function getAllTransportIds(transports) {
+  var ids = [];
+  transports.forEach(element => {
+    if (element.id != 99) ids.push(element.id);
+  });
+  //console.log(ids);
+  return ids;
+}
