@@ -410,11 +410,15 @@ export default {
 
       this.selectedNodesDataTable = [];
       var sumOfSelectedEdge = 0;
+      selectedGraph.edges.forEach(edgeId => {
+        const selectedEdge = this.getEdge(this.edges, edgeId);
+        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
+      });
 
       selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = this.getEdge(this.network, edgeId);
-        const sourceNode = this.getNode(this.network, selectedEdge.from);
-        const destinationNode = this.getNode(this.network, selectedEdge.to);
+        const selectedEdge = this.getEdge(this.edges, edgeId);
+        const sourceNode = this.getNode(this.nodes, selectedEdge.from);
+        const destinationNode = this.getNode(this.nodes, selectedEdge.to);
 
         if (selectedGraph.edges.length > 1) {
           this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;
@@ -429,9 +433,7 @@ export default {
           weight: selectedEdge.weight
         });
 
-        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
-
-        var percentageFormatted = selectedEdge.weight / sumOfSelectedEdge;
+        var percentageFormatted = (selectedEdge.weight / sumOfSelectedEdge) * 100;
         var weightFormatted = selectedEdge.weight;
 
         this.selectedNodesDataTable.push({

@@ -113,38 +113,38 @@ export default {
     transportConstraint: [],
     transportConstraintStart: [],
     transportConstraintSelected: {},
-    edgeFromTo: null
+    edgeFromTo: null,
   }),
   props: {
     nodes: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     edges: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     metrics: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
     displayTransport: {
       type: Boolean,
-      default: true
+      default: true,
     },
     transports: {
       type: Array,
-      default: () => null
+      default: () => null,
     },
     spinner: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    }
+    },
   },
   methods: {
     showInfo() {
@@ -158,13 +158,16 @@ export default {
       this.selectedEdges = [];
       this.selectedNodes = [];
       this.selectedNodesDataTable = [];
-      var sumOfSelectedEdge = 0;
 
-      selectedGraph.edges.forEach(edgeId => {
+      var sumOfSelectedEdge = 0;
+      selectedGraph.edges.forEach((edgeId) => {
+        const selectedEdge = this.getEdge(this.edges, edgeId);
+        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
+      });
+      selectedGraph.edges.forEach((edgeId) => {
         const selectedEdge = this.getEdge(this.edges, edgeId);
         const sourceNode = this.getNode(this.nodes, selectedEdge.from);
         const destinationNode = this.getNode(this.nodes, selectedEdge.to);
-
         if (selectedGraph.edges.length > 1) {
           this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;
         } else {
@@ -174,19 +177,17 @@ export default {
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
-          destination: destinationNode
-        });
+          destination: destinationNode,
+        });       
 
-        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
-
-        var percentageFormatted = selectedEdge.weight / sumOfSelectedEdge;
+        var percentageFormatted = (selectedEdge.weight / sumOfSelectedEdge) * 100;
         var weightFormatted = selectedEdge.weight;
 
         this.selectedNodesDataTable.push({
           "From Country": sourceNode.label,
           "To Country": destinationNode.label,
           Total: weightFormatted.toLocaleString("en-US"),
-          Percentage: percentageFormatted.toFixed(2) + "%"
+          Percentage: percentageFormatted.toFixed(2) + "%",
         });
       });
 
@@ -200,19 +201,19 @@ export default {
           : this.transport;
       }
       this.edgeModal = true;
-    },
+    },    
     handleOverNode(event) {
       const nodeId = event.node;
       this.nodeMetric = this.getCentrality(this.nodes, nodeId, this.metrics);
     },
     applyConstraints() {
       const constraints = [];
-      this.selectedEdges.forEach(edge => {
+      this.selectedEdges.forEach((edge) => {
         this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.nodes, edge.from).label,
           to: this.getNode(this.nodes, edge.to).label,
-          exclude: this.getIds(this.transportConstraint)
+          exclude: this.getIds(this.transportConstraint),
         });
       });
       // ---------------------------------------
@@ -226,14 +227,14 @@ export default {
         flow: this.flow.id,
         weight_flag: true,
         pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints
+        selezioneMezziEdges: constraints,
       };
       this.requestToServer(form);
       this.closeModal();
     },
     setTransportConstraintStart() {
       let transport = this.transportConstraintStart.filter(
-        o => !this.transportConstraint.find(o2 => o.id === o2.id)
+        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
       );
       this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
@@ -243,7 +244,7 @@ export default {
       for (var edgeId in this.edges) {
         edges.push({
           from: this.edges[edgeId].from,
-          to: this.edges[edgeId].to
+          to: this.edges[edgeId].to,
         });
       }
       for (var nodeId in this.nodes) {
@@ -251,13 +252,13 @@ export default {
           id: this.nodes[nodeId].id,
           label: this.nodes[nodeId].label,
           x: this.nodes[nodeId].x,
-          y: this.nodes[nodeId].y
+          y: this.nodes[nodeId].y,
         });
       }
       let jsonData = JSON.stringify({ nodes, edges });
       return [jsonData, id];
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
