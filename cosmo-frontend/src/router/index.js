@@ -56,18 +56,17 @@ const routes = [
   {
     path: "/newgraphextra",
     name: "NewGraphExtraUe",
-    component: () => import("../views/newgraph/GraphExtraUe"),
+    props: { isIntra: false },
+    component: () => import("../views/newgraph/Graph"),
     meta: {
       authorize: []
-    },
-    props: {
-      type: "month"
     }
   },
   {
     path: "/newgraphintra",
     name: "NewGraphIntraUe",
-    component: () => import("../views/newgraph/GraphIntraUe"),
+    props: { isIntra: true },
+    component: () => import("../views/newgraph/Graph"),
     meta: {
       authorize: []
     }
