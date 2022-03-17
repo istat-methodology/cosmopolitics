@@ -19,12 +19,10 @@ export default {
           }
         },
         opacity: 1,
-
         fixed: {
           x: true,
           y: true
         },
-
         font: {
           color: "#343434",
           size: 14, // px
@@ -329,22 +327,22 @@ export default {
     ]
   }),
   methods: {
-    getNode(network, nodeId) {
-      const selectedNode = network.nodes.find(node => {
+    getNode(nodes, nodeId) {
+      const selectedNode = nodes.find(node => {
         return node.id == nodeId;
       });
       //console.log("Selected node: " + selectedNode.label);
       return selectedNode ? selectedNode : null;
     },
-    getEdge(network, edgeId) {
-      const selectedEdge = network.edges.find(edge => {
+    getEdge(edges, edgeId) {
+      const selectedEdge = edges.find(edge => {
         return edge.id == edgeId;
       });
       return selectedEdge ? selectedEdge : null;
     },
-    getCentrality(network, nodeId, metrics) {
+    getCentrality(nodes, nodeId, metrics) {
       var nodeMetric = null;
-      const selectedNode = this.getNode(network, nodeId);
+      const selectedNode = this.getNode(nodes, nodeId);
       if (selectedNode) {
         nodeMetric = {
           country: selectedNode.label,

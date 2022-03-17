@@ -50,9 +50,9 @@
           id="graph"
           class="network"
           ref="graph"
-          :nodes="network.nodes"
-          :edges="network.edges"
-          :options="network.options"
+          :nodes="nodes"
+          :edges="edges"
+          :options="options"
           @select-edge="handleSelectEdge"
           @hover-node="handleOverNode"
         />
@@ -118,11 +118,11 @@ export default {
   props: {
     nodes: {
       type: Array,
-      default: () => null
+      default: () => []
     },
     edges: {
       type: Array,
-      default: () => null
+      default: () => []
     },
     metrics: {
       type: Object,
@@ -132,26 +132,16 @@ export default {
       type: Boolean,
       default: true
     },
-
+    transports: {
+      type: Array,
+      default: () => null
+    },
     spinner: {
       type: Boolean,
       default: false
     }
   },
   computed: {
-    network() {
-      return this.nodes && this.edges
-        ? {
-            nodes: this.nodes,
-            edges: this.edges,
-            options: this.options
-          }
-        : {
-            nodes: [],
-            edges: [],
-            options: null
-          };
-    },
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
     }
@@ -165,17 +155,15 @@ export default {
     },
     handleSelectEdge(selectedGraph) {
       this.transportConstraint = [];
-      //console.log(selectedGraph);
       this.selectedEdges = [];
       this.selectedNodes = [];
-
       this.selectedNodesDataTable = [];
       var sumOfSelectedEdge = 0;
 
       selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = this.getEdge(this.network, edgeId);
-        const sourceNode = this.getNode(this.network, selectedEdge.from);
-        const destinationNode = this.getNode(this.network, selectedEdge.to);
+        const selectedEdge = this.getEdge(this.edges, edgeId);
+        const sourceNode = this.getNode(this.nodes, selectedEdge.from);
+        const destinationNode = this.getNode(this.nodes, selectedEdge.to);
 
         if (selectedGraph.edges.length > 1) {
           this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;
@@ -215,15 +203,15 @@ export default {
     },
     handleOverNode(event) {
       const nodeId = event.node;
-      this.nodeMetric = this.getCentrality(this.network, nodeId, this.metrics);
+      this.nodeMetric = this.getCentrality(this.nodes, nodeId, this.metrics);
     },
     applyConstraints() {
       const constraints = [];
       this.selectedEdges.forEach(edge => {
         this.setTransportConstraintStart();
         constraints.push({
-          from: this.getNode(this.network, edge.from).label,
-          to: this.getNode(this.network, edge.to).label,
+          from: this.getNode(this.nodes, edge.from).label,
+          to: this.getNode(this.nodes, edge.to).label,
           exclude: this.getIds(this.transportConstraint)
         });
       });
@@ -252,18 +240,18 @@ export default {
     getData(id) {
       var nodes = [];
       var edges = [];
-      for (var edgeId in this.network.edges) {
+      for (var edgeId in this.edges) {
         edges.push({
-          from: this.network.edges[edgeId].from,
-          to: this.network.edges[edgeId].to
+          from: this.edges[edgeId].from,
+          to: this.edges[edgeId].to
         });
       }
-      for (var nodeId in this.network.nodes) {
+      for (var nodeId in this.nodes) {
         nodes.push({
-          id: this.network.nodes[nodeId].id,
-          label: this.network.nodes[nodeId].label,
-          x: this.network.nodes[nodeId].x,
-          y: this.network.nodes[nodeId].y
+          id: this.nodes[nodeId].id,
+          label: this.nodes[nodeId].label,
+          x: this.nodes[nodeId].x,
+          y: this.nodes[nodeId].y
         });
       }
       let jsonData = JSON.stringify({ nodes, edges });

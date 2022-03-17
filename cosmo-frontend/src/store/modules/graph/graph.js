@@ -2,8 +2,8 @@ import { graphService } from "@/services";
 import { getUInodes, buildMetrics } from "@/common";
 
 const state = {
-  nodes: null,
-  edges: null,
+  nodes: [],
+  edges: [],
   metrics: null,
   metricsTable: null
 };
@@ -23,8 +23,8 @@ const mutations = {
 };
 const actions = {
   clear({ commit }) {
-    commit("SET_NODES", null);
-    commit("SET_EDGES", null);
+    commit("SET_NODES", []);
+    commit("SET_EDGES", []);
     commit("SET_METRICS", null);
     commit("SET_METRICS_TABLE", null);
   },
