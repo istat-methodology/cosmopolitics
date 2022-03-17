@@ -4,6 +4,7 @@ export * from "./geomap/geomap.service";
 //new
 export * from "./graphextra/graphExtra.service";
 export * from "./graphintra/graphIntra.service";
+export * from "./graph/graph.service";
 
 export * from "./classification/classification.service";
 

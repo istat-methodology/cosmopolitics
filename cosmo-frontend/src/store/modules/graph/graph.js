@@ -1,4 +1,4 @@
-import { graphExtraService, graphIntraService } from "@/services";
+import { graphService } from "@/services";
 import { getUInodes, buildMetrics } from "@/common";
 
 const state = {
@@ -29,7 +29,7 @@ const actions = {
     commit("SET_METRICS_TABLE", null);
   },
   postGraphExtra({ dispatch }, form) {
-    return graphExtraService
+    return graphService
       .postGraphExtra(form)
       .then(data => {
         return dispatch("store", data);
@@ -39,7 +39,7 @@ const actions = {
       });
   },
   postGraphIntra({ dispatch }, form) {
-    return graphIntraService
+    return graphService
       .postGraphIntra(form)
       .then(data => {
         return dispatch("store", data);

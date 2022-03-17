@@ -170,12 +170,10 @@ export default {
       this.$store
         .dispatch(
           this.isIntra ? "graph/postGraphIntra" : "graph/postGraphExtra",
-          this.isIntra
-            ? {
-                form: this.graphForm,
-                trimester: this.isTrimester
-              }
-            : this.graphForm
+          {
+            form: this.graphForm,
+            trimester: this.isTrimester
+          }
         )
         .then(status => {
           if (status == Status.wide) {
