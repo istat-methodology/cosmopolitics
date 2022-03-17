@@ -146,6 +146,11 @@ const actions = {
     return classificationService
       .findAll("transports")
       .then(data => {
+        //Add 'All' to the list of transports
+        data.push({
+          id: 99,
+          descr: "All"
+        });
         commit("SET_TRANSPORTS", data);
       })
       .catch(err => {

@@ -1,7 +1,6 @@
 <template>
-  <div class="row">    
+  <div class="row">
     <div class="col-9">
-      
       <cosmo-graph
         :nodes="nodes"
         :edges="edges"
@@ -18,7 +17,7 @@
       </cosmo-graph>
     </div>
     <div class="col-3">
-      <cosmo-graph-form
+      <cosmo-form
         :graphPeriod="timePeriod"
         :currentTime="selectedPeriod"
         :products="productsIntra"
@@ -77,7 +76,7 @@ export default {
   components: {
     "cosmo-slider": Slider,
     "cosmo-graph": GraphVis,
-    "cosmo-graph-form": GraphForm
+    "cosmo-form": GraphForm
   },
   data: () => ({
     isTrimester: false,
@@ -90,7 +89,7 @@ export default {
   }),
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
-    ...mapGetters("graphIntra", ["nodes", "edges", "metrics", "status"]),
+    ...mapGetters("graph", ["nodes", "edges", "metrics", "metricsTable"]),
     ...mapGetters("classification", ["productsIntra", "flows"]),
     timePeriod() {
       return this.isTrimester ? this.graphTrimesterPeriod : this.graphPeriod;
@@ -136,17 +135,17 @@ export default {
     requestToServer() {
       this.spinnerStart(true);
       this.$store
-        .dispatch("graphIntra/postGraphIntra", {
+        .dispatch("graph/postGraphIntra", {
           form: this.graphForm,
           trimester: this.isTrimester
         })
-        .then(() => {
-          if (this.status == Status.wide) {
+        .then(status => {
+          if (status == Status.wide) {
             this.$store.dispatch(
               "message/error",
               "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport"
             );
-          } else if (this.status == Status.empty) {
+          } else if (status == Status.empty) {
             this.$store.dispatch(
               "message/error",
               "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
@@ -158,7 +157,7 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.GraphIntra);
-    this.$store.dispatch("graphIntra/clear");
+    this.$store.dispatch("graph/clear");
   }
 };
 </script>

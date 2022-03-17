@@ -1,0 +1,81 @@
+import { graphExtraService, graphIntraService } from "@/services";
+import { getUInodes, buildMetrics } from "@/common";
+
+const state = {
+  nodes: null,
+  edges: null,
+  metrics: null,
+  metricsTable: null
+};
+const mutations = {
+  SET_NODES(state, nodes) {
+    state.nodes = nodes;
+  },
+  SET_EDGES(state, edges) {
+    state.edges = edges;
+  },
+  SET_METRICS(state, metrics) {
+    state.metrics = metrics;
+  },
+  SET_METRICS_TABLE(state, metricsTable) {
+    state.metricsTable = metricsTable;
+  }
+};
+const actions = {
+  clear({ commit }) {
+    commit("SET_NODES", null);
+    commit("SET_EDGES", null);
+    commit("SET_METRICS", null);
+    commit("SET_METRICS_TABLE", null);
+  },
+  postGraphExtra({ dispatch }, form) {
+    return graphExtraService
+      .postGraphExtra(form)
+      .then(data => {
+        return dispatch("store", data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  postGraphIntra({ dispatch }, form) {
+    return graphIntraService
+      .postGraphIntra(form)
+      .then(data => {
+        return dispatch("store", data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  store({ commit }, data) {
+    if (data["STATUS"] == undefined) {
+      commit("SET_NODES", getUInodes(data.nodes));
+      commit("SET_EDGES", data.edges);
+      commit("SET_METRICS", data.metriche);
+      commit("SET_METRICS_TABLE", buildMetrics(data));
+    }
+    return data["STATUS"] == undefined ? "00" : data["STATUS"];
+  }
+};
+const getters = {
+  nodes: state => {
+    return state.nodes ? state.nodes : [];
+  },
+  edges: state => {
+    return state.edges ? state.edges : [];
+  },
+  metrics: state => {
+    return state.metrics ? state.metrics : null;
+  },
+  metricsTable: state => {
+    return state.metricsTable ? state.metricsTable : [];
+  }
+};
+export const graph = {
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters
+};

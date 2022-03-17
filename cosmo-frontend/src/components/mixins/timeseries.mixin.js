@@ -5,7 +5,10 @@ export default {
   methods: {
     buildTimeseriesCharts(data, dataType, statusMain, statusNorm, statusACF) {
       if (statusMain != "00") {
-        this.chartDataDiagMain = this.getTimeseriesChart(data["diagMain"],dataType);
+        this.chartDataDiagMain = this.getTimeseriesChart(
+          data["diagMain"],
+          dataType
+        );
       } else {
         this.chartDataDiagMain = null;
       }

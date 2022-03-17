@@ -18,30 +18,34 @@ export default {
         fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
       },
       scales: {
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            fontSize: 16,
-            fontWeight: "bold",
-            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-            labelString: "THEORETICAL QUANTILES"
-          },
-          ticks: {
-            stepSize: 1
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              fontSize: 16,
+              fontWeight: "bold",
+              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+              labelString: "THEORETICAL QUANTILES"
+            },
+            ticks: {
+              stepSize: 1
+            }
           }
-        }],
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            fontSize: 16,
-            fontWeight: "bold",
-            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-            labelString: "SAMPLE QUANTILIES"
-          },
-          ticks: {
-            stepSize: 1
+        ],
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              fontSize: 16,
+              fontWeight: "bold",
+              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+              labelString: "SAMPLE QUANTILIES"
+            },
+            ticks: {
+              stepSize: 1
+            }
           }
-        }]
+        ]
       }
     },
     optionsACF: {
@@ -62,30 +66,34 @@ export default {
         fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
       },
       scales: {
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            fontSize: 16,
-            fontWeight: "bold",
-            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-            labelString: "Lag"
-          },
-          ticks: {
-            stepSize: 0.1
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              fontSize: 16,
+              fontWeight: "bold",
+              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+              labelString: "Lag"
+            },
+            ticks: {
+              stepSize: 0.1
+            }
           }
-        }],
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            fontSize: 16,
-            fontWeight: "bold",
-            fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
-            labelString: "ACF"
-          },
-          ticks: {
-            stepSize: 0.1
+        ],
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              fontSize: 16,
+              fontWeight: "bold",
+              fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+              labelString: "ACF"
+            },
+            ticks: {
+              stepSize: 0.1
+            }
           }
-        }]
+        ]
       }
     },
     //min 0 = first month on series
@@ -111,26 +119,30 @@ export default {
           intersect: true
         },
         scales: {
-          yAxes: [{
-            display: true,
-            gridLines: {
-              display: true
-            },
-            scaleLabel: {
+          yAxes: [
+            {
               display: true,
-              labelString: ""
+              gridLines: {
+                display: true
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ""
+              }
             }
-          }],
-          xAxes: [{
-            display: true,
-            gridLines: {
-              display: true
-            },
-            scaleLabel: {
+          ],
+          xAxes: [
+            {
               display: true,
-              labelString: ""
+              gridLines: {
+                display: true
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ""
+              }
             }
-          }]
+          ]
         }
       };
     }

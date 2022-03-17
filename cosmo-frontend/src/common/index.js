@@ -2,7 +2,7 @@ export * from "./role";
 export * from "./authStatus";
 export * from "./context";
 export * from "./headers";
-export * from "./graphVisjs";
+export * from "./graph";
 export * from "./period";
 export * from "./jsonData";
 export * from "./status";

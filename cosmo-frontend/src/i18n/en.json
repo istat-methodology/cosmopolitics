@@ -101,6 +101,9 @@
         "weight_placeholder": "Select weights"
       }
     },
+    "table":{
+      "title": "Graph metrics"
+    },
     "card": {
       "title": "Graph analysis"
     },

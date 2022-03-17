@@ -1,33 +1,39 @@
 <template>
-  <div class="row">
-    <div class="col-9">
-      <cosmo-graph
-        :nodes="nodes"
-        :edges="edges"
-        :metrics="metrics"
-        :spinner="spinner"
-        @showinfo="showMainModal"
-      >
-        <cosmo-slider
-          :interval="graphPeriod"
+  <div>
+    <div class="row">
+      <div class="col-9">
+        <cosmo-graph
+          :nodes="nodes"
+          :edges="edges"
+          :metrics="metrics"
+          :spinner="spinner"
+          @showinfo="showMainModal"
+        >
+          <cosmo-slider
+            :interval="graphPeriod"
+            :currentTime="selectedPeriod"
+            @change="handlePeriodChange"
+          />
+        </cosmo-graph>
+      </div>
+      <div class="col-3">
+        <cosmo-form
+          :graphPeriod="graphPeriod"
           :currentTime="selectedPeriod"
-          @change="handlePeriodChange"
+          :transports="transports"
+          :products="productsExtra"
+          :flows="flows"
+          @submit="handleSubmit"
+          @updatePeriod="handlePeriodChange"
+          @showinfo="showInfoModal"
         />
-      </cosmo-graph>
+      </div>
     </div>
-    <div class="col-3">
-      <cosmo-graph-form
-        :graphPeriod="graphPeriod"
-        :currentTime="selectedPeriod"
-        :transports="transports"
-        :products="productsExtra"
-        :flows="flows"
-        @submit="handleSubmit"
-        @updatePeriod="handlePeriodChange"
-        @showinfo="showInfoModal"
-      />
+    <div class="row">
+      <div class="col-9">
+        <cosmo-table :data="metricsTable" :fields="metricsFields" />
+      </div>
     </div>
-
     <CModal
       :title="
         isMainModal
@@ -67,18 +73,27 @@ import { Context, Status } from "@/common";
 import Slider from "@/components/Slider";
 import GraphVis from "@/views/newgraph/GraphVis";
 import GraphForm from "@/views/newgraph/GraphForm";
+import GraphTable from "@/views/newgraph/GraphTable";
 
 export default {
   name: "GraphExtraUe",
   components: {
     "cosmo-slider": Slider,
     "cosmo-graph": GraphVis,
-    "cosmo-graph-form": GraphForm
+    "cosmo-form": GraphForm,
+    "cosmo-table": GraphTable
   },
   data: () => ({
     //Default period
     selectedPeriod: { id: "202003", selectName: "Mar 20" },
     graphForm: null,
+    //Metrics table
+    metricsFields: [
+      { key: "label", _style: "width:25%" },
+      { key: "centrality", _style: "width:25%" },
+      { key: "hubness", _style: "width:25%" },
+      { key: "vulnerability", _style: "width:25%" }
+    ],
     //Spinner
     spinner: false,
     //Modal
@@ -87,7 +102,7 @@ export default {
   }),
   computed: {
     ...mapGetters("metadata", ["graphPeriod"]),
-    ...mapGetters("graphExtra", ["nodes", "edges", "metrics", "status"]),
+    ...mapGetters("graph", ["nodes", "edges", "metrics", "metricsTable"]),
     ...mapGetters("classification", ["transports", "productsExtra", "flows"])
   },
   methods: {
@@ -125,15 +140,14 @@ export default {
     requestToServer() {
       this.spinnerStart(true);
       this.$store
-        .dispatch("graphExtra/postGraphExtra", this.graphForm)
-        .then(() => {
-          if (this.status == Status.wide) {
+        .dispatch("graph/postGraphExtra", this.graphForm)
+        .then(status => {
+          if (status == Status.wide) {
             this.$store.dispatch(
               "message/error",
               "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport"
             );
-          }
-          if (this.status == Status.empty) {
+          } else if (status == Status.empty) {
             this.$store.dispatch(
               "message/error",
               "Warning N.06 Graph empty \n Increase the treshold or change means of transport"

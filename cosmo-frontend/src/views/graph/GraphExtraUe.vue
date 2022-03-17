@@ -121,7 +121,7 @@
             :placeholder="$t('graph.form.fields.period_placeholder')"
             v-model="selectedPeriod"
             :class="{
-              'is-invalid': $v.selectedPeriod.$error,
+              'is-invalid': $v.selectedPeriod.$error
             }"
             @input="updateSlider"
           />
@@ -144,7 +144,7 @@
             :placeholder="$t('graph.form.fields.percentage_placeholder')"
             v-model="percentage"
             :class="{
-              'is-invalid': $v.percentage.$error,
+              'is-invalid': $v.percentage.$error
             }"
           />
           <label class="card-label mt-3">{{
@@ -157,7 +157,7 @@
             :placeholder="$t('graph.form.fields.transport_placeholder')"
             v-model="transport"
             :class="{
-              'is-invalid': $v.transport.$error,
+              'is-invalid': $v.transport.$error
             }"
           />
           <label class="card-label mt-3">{{
@@ -169,7 +169,7 @@
             :placeholder="$t('graph.form.fields.product_placeholder')"
             v-model="product"
             :class="{
-              'is-invalid': $v.product.$error,
+              'is-invalid': $v.product.$error
             }"
           />
           <label class="card-label mt-3">{{
@@ -181,7 +181,7 @@
             :placeholder="$t('graph.form.fields.flow_placeholder')"
             v-model="flow"
             :class="{
-              'is-invalid': $v.flow.$error,
+              'is-invalid': $v.flow.$error
             }"
           />
           <CButton
@@ -322,7 +322,7 @@ export default {
       widthPx: 2159,
       heightScreenCm: 28.58,
       heightPaperCm: 9.05,
-      heightPx: 1086,
+      heightPx: 1086
     },
     working: false,
     url: "",
@@ -340,7 +340,7 @@ export default {
 
     paragraph: [],
     main: [],
-    filter: [],
+    filter: []
   }),
   computed: {
     //...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
@@ -352,35 +352,35 @@ export default {
         ? {
             nodes: this.nodes,
             edges: this.edges,
-            options: this.options,
+            options: this.options
           }
         : {
             nodes: [],
             edges: [],
-            options: null,
+            options: null
           };
     },
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    },
+    }
   },
   validations: {
     selectedPeriod: {
-      required,
+      required
     },
     percentage: {
       required,
-      numeric,
+      numeric
     },
     transport: {
-      required,
+      required
     },
     product: {
-      required,
+      required
     },
     flow: {
-      required,
-    },
+      required
+    }
   },
   methods: {
     changeValue(newValue) {
@@ -410,8 +410,8 @@ export default {
 
       this.selectedNodesDataTable = [];
       var sumOfSelectedEdge = 0;
-      
-      selectedGraph.edges.forEach((edgeId) => {
+
+      selectedGraph.edges.forEach(edgeId => {
         const selectedEdge = this.getEdge(this.network, edgeId);
         const sourceNode = this.getNode(this.network, selectedEdge.from);
         const destinationNode = this.getNode(this.network, selectedEdge.to);
@@ -426,7 +426,7 @@ export default {
         this.selectedNodes.push({
           source: sourceNode,
           destination: destinationNode,
-          weight: selectedEdge.weight,
+          weight: selectedEdge.weight
         });
 
         sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
@@ -438,9 +438,8 @@ export default {
           "From Country": sourceNode.label,
           "To Country": destinationNode.label,
           Total: weightFormatted.toLocaleString("en-US"),
-          Percentage: percentageFormatted.toFixed(2) + "%",
+          Percentage: percentageFormatted.toFixed(2) + "%"
         });
-        
       });
       //console.log(this.edgeFromTo);
 
@@ -461,12 +460,12 @@ export default {
     },
     applyConstraints() {
       const constraints = [];
-      this.selectedEdges.forEach((edge) => {
+      this.selectedEdges.forEach(edge => {
         this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.network, edge.from).label,
           to: this.getNode(this.network, edge.to).label,
-          exclude: this.getIds(this.transportConstraint),
+          exclude: this.getIds(this.transportConstraint)
         });
       });
       // ---------------------------------------
@@ -480,14 +479,14 @@ export default {
         flow: this.flow.id,
         weight_flag: true,
         pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints,
+        selezioneMezziEdges: constraints
       };
       this.requestToServer(form);
       this.closeModal();
     },
     setTransportConstraintStart() {
       let transport = this.transportConstraintStart.filter(
-        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
+        o => !this.transportConstraint.find(o2 => o.id === o2.id)
       );
       this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
@@ -509,7 +508,7 @@ export default {
         flow: this.flow.id,
         weight_flag: true,
         pos: "None",
-        selezioneMezziEdges: "None",
+        selezioneMezziEdges: "None"
       };
       this.requestToServer(form);
     },
@@ -532,7 +531,7 @@ export default {
           flow: this.flow.id,
           weight_flag: true,
           pos: "None",
-          selezioneMezziEdges: "None",
+          selezioneMezziEdges: "None"
         };
         this.requestToServer(form);
         this.transportConstraintSelected = {};
@@ -563,7 +562,7 @@ export default {
     },
     getIds(selectedTransports) {
       var ids = [];
-      selectedTransports.forEach((element) => {
+      selectedTransports.forEach(element => {
         ids.push(element.id);
       });
       return ids;
@@ -575,7 +574,7 @@ export default {
       for (var edgeId in this.network.edges) {
         edges.push({
           from: this.network.edges[edgeId].from,
-          to: this.network.edges[edgeId].to,
+          to: this.network.edges[edgeId].to
         });
       }
       for (var nodeId in this.network.nodes) {
@@ -583,18 +582,18 @@ export default {
           id: this.network.nodes[nodeId].id,
           label: this.network.nodes[nodeId].label,
           x: this.network.nodes[nodeId].x,
-          y: this.network.nodes[nodeId].y,
+          y: this.network.nodes[nodeId].y
         });
       }
       let jsonData = JSON.stringify({ nodes, edges });
       console.log(this.$refs[ref]);
       return [jsonData, id];
-    },
+    }
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Graph);
     this.$store.dispatch("graphExtra/clear");
-  },
+  }
 };
 </script>
 
