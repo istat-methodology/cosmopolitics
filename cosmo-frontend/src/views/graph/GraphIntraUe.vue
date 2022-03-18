@@ -188,7 +188,7 @@
       :show.sync="edgeModal"
       :closeOnBackdrop="false"
     >
-      <CDataTable :items="selectedNodesDataTable" hover />
+      <CDataTable :items="selectedNodesDataTable" hover sorter />
 
       <template #footer>
         <CButton

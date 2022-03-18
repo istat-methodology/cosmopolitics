@@ -213,7 +213,7 @@
           {{ node.percentage }} / tot: {{ node.sum }}
         </CListGroupItem>
       </CListGroup-->
-      <CDataTable :items="selectedNodesDataTable" hover />
+      <CDataTable :items="selectedNodesDataTable" hover sorter/>
 
       <label class="card-label mt-3">Transport</label>
       <v-select

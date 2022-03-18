@@ -67,7 +67,7 @@
       :show.sync="edgeModal"
       :closeOnBackdrop="false"
     >
-      <CDataTable :items="selectedNodesDataTable" hover />
+      <CDataTable :items="selectedNodesDataTable" hover sorter />
       <div v-if="displayTransport">
         <label class="card-label mt-3">Transport</label>
         <v-select
@@ -154,6 +154,7 @@ export default {
       this.edgeModal = false;
     },
     handleSelectEdge(selectedGraph) {
+      
       this.transportConstraint = [];
       this.selectedEdges = [];
       this.selectedNodes = [];
@@ -164,6 +165,7 @@ export default {
         const selectedEdge = this.getEdge(this.edges, edgeId);
         sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
       });
+
       selectedGraph.edges.forEach((edgeId) => {
         const selectedEdge = this.getEdge(this.edges, edgeId);
         const sourceNode = this.getNode(this.nodes, selectedEdge.from);
@@ -202,6 +204,7 @@ export default {
       }
       this.edgeModal = true;
     },    
+
     handleOverNode(event) {
       const nodeId = event.node;
       this.nodeMetric = this.getCentrality(this.nodes, nodeId, this.metrics);
