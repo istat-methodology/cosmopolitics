@@ -150,7 +150,6 @@ def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,
         df_transport_estrazione = df_transport_estrazione[df_transport_estrazione[criterio].cumsum(skipna=False)/SUM*100<tg_perc] 
         logging.info("### estrai_tabella_per_grafo exit")     
     return df_transport_estrazione
-
 def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag): 
     # costruisce sulla base della tabella filtrata
     # il grafo con le relative metriche
@@ -200,9 +199,9 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     # ed eseguire il taglio      
     if weight_flag==True:
         weight=criterio
-        #Wsum=tab4graph[weight].sum()
-        #edges=[ (i,j,w/Wsum) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
-        edges=[ (i,j,w) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
+        Wsum=tab4graph[weight].sum()
+        edges=[ (i,j,w/Wsum) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
+        #edges=[ (i,j,w) for i,j,w in tab4graph.loc[:,[country_from,country_to,weight]].values]
     if weight_flag==False:
         edges=[ (i,j,1) for i,j in tab4graph.loc[:,[country_from,country_to]].values]
     G.add_weighted_edges_from(edges)
