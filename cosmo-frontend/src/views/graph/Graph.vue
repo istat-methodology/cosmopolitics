@@ -74,9 +74,9 @@
 import { mapGetters } from "vuex";
 import { Context, Status } from "@/common";
 import Slider from "@/components/Slider";
-import GraphVis from "@/views/newgraph/GraphVis";
-import GraphForm from "@/views/newgraph/GraphForm";
-import GraphTable from "@/views/newgraph/GraphTable";
+import GraphVis from "@/views/graph/GraphVis";
+import GraphForm from "@/views/graph/GraphForm";
+import GraphTable from "@/views/graph/GraphTable";
 
 export default {
   name: "GraphExtraUe",
@@ -196,7 +196,7 @@ export default {
       "coreui/setContext",
       this.isIntra ? Context.GraphIntra : Context.Graph
     );
-    this.$store.dispatch("graphExtra/clear");
+    this.$store.dispatch("graph/clear");
   }
 };
 </script>

@@ -37,36 +37,17 @@ const routes = [
   {
     path: "/graphextra",
     name: "GraphExtraUe",
-    component: () => import("../views/graph/GraphExtraUe"),
+    props: { isIntra: false },
+    component: () => import("../views/graph/Graph"),
     meta: {
       authorize: []
-    },
-    props: {
-      type: "month"
     }
   },
   {
     path: "/graphintra",
     name: "GraphIntraUe",
-    component: () => import("../views/graph/GraphIntraUe"),
-    meta: {
-      authorize: []
-    }
-  },
-  {
-    path: "/newgraphextra",
-    name: "NewGraphExtraUe",
-    props: { isIntra: false },
-    component: () => import("../views/newgraph/Graph"),
-    meta: {
-      authorize: []
-    }
-  },
-  {
-    path: "/newgraphintra",
-    name: "NewGraphIntraUe",
     props: { isIntra: true },
-    component: () => import("../views/newgraph/Graph"),
+    component: () => import("../views/graph/Graph"),
     meta: {
       authorize: []
     }

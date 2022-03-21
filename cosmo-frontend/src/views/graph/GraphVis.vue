@@ -61,36 +61,12 @@
         <!-- Slider -->
       </slot>
     </CCard>
-    <!-- Edge modal -->
-    <CModal
-      title="Change graph constraints?"
-      :show.sync="edgeModal"
-      :closeOnBackdrop="false"
-    >
-      <CDataTable :items="selectedNodesDataTable" hover sorter />
-      <div v-if="displayTransport">
-        <label class="card-label mt-3">Transport</label>
-        <v-select
-          label="descr"
-          multiple
-          :options="transportConstraintStart"
-          placeholder="Select transport"
-          v-model="transportConstraint"
-        />
-      </div>
-      <template #footer>
-        <CButton
-          color="outline-primary"
-          square
-          size="sm"
-          @click="applyConstraints"
-          >Yes</CButton
-        >
-        <CButton color="outline-primary" square size="sm" @click="closeModal"
-          >No</CButton
-        >
-      </template>
-    </CModal>
+    <cosmo-scenario
+      :showModal="scenarioModal"
+      :items="selectedNodesTable"
+      @closeModal="closeModal"
+      @applyConstraints="applyConstraints"
+    />
   </div>
 </template>
 <script>
@@ -98,75 +74,75 @@ import { Network } from "vue-visjs";
 import visMixin from "@/components/mixins/graph.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
+import GraphScenario from "@/views/graph/GraphScenario";
 
 export default {
   name: "GraphVis",
-  components: { Network, exporter },
+  components: { Network, exporter, "cosmo-scenario": GraphScenario },
   mixins: [visMixin, spinnerMixin],
   data: () => ({
     nodeMetric: null,
-    //Edge modal
-    edgeModal: false,
+    //Scenario modal
+    scenarioModal: false,
     selectedEdges: [],
     selectedNodes: [],
-    selectedNodesDataTable: [],
+    selectedNodesTable: [],
     transportConstraint: [],
     transportConstraintStart: [],
     transportConstraintSelected: {},
-    edgeFromTo: null,
+    edgeFromTo: null
   }),
   props: {
     nodes: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     edges: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     metrics: {
       type: Object,
-      default: () => null,
+      default: () => null
     },
     displayTransport: {
       type: Boolean,
-      default: true,
+      default: true
     },
     transports: {
       type: Array,
-      default: () => null,
+      default: () => null
     },
     spinner: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     graphDensity() {
       return this.metrics ? this.metrics.density.toPrecision(4) : 0;
-    },
+    }
   },
   methods: {
     showInfo() {
       this.$emit("showinfo");
     },
     closeModal() {
-      this.edgeModal = false;
+      this.scenarioModal = false;
     },
     handleSelectEdge(selectedGraph) {
-      
       this.transportConstraint = [];
       this.selectedEdges = [];
       this.selectedNodes = [];
-      this.selectedNodesDataTable = [];
+      this.selectedNodesTable = [];
 
       var sumOfSelectedEdge = 0;
-      selectedGraph.edges.forEach((edgeId) => {
+      selectedGraph.edges.forEach(edgeId => {
         const selectedEdge = this.getEdge(this.edges, edgeId);
         sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
       });
 
-      selectedGraph.edges.forEach((edgeId) => {
+      selectedGraph.edges.forEach(edgeId => {
         const selectedEdge = this.getEdge(this.edges, edgeId);
         const sourceNode = this.getNode(this.nodes, selectedEdge.from);
         const destinationNode = this.getNode(this.nodes, selectedEdge.to);
@@ -179,17 +155,18 @@ export default {
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
-          destination: destinationNode,
-        });       
+          destination: destinationNode
+        });
 
-        var percentageFormatted = (selectedEdge.weight / sumOfSelectedEdge) * 100;
+        var percentageFormatted =
+          (selectedEdge.weight / sumOfSelectedEdge) * 100;
         var weightFormatted = selectedEdge.weight;
 
-        this.selectedNodesDataTable.push({
+        this.selectedNodesTable.push({
           "From Country": sourceNode.label,
           "To Country": destinationNode.label,
           Total: weightFormatted.toLocaleString("en-US"),
-          Percentage: percentageFormatted.toFixed(2) + "%",
+          Percentage: percentageFormatted.toFixed(2) + "%"
         });
       });
 
@@ -202,8 +179,8 @@ export default {
           ? this.transportConstraintSelected[this.edgeFromTo]
           : this.transport;
       }
-      this.edgeModal = true;
-    },    
+      this.scenarioModal = true;
+    },
 
     handleOverNode(event) {
       const nodeId = event.node;
@@ -211,12 +188,12 @@ export default {
     },
     applyConstraints() {
       const constraints = [];
-      this.selectedEdges.forEach((edge) => {
+      this.selectedEdges.forEach(edge => {
         this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.nodes, edge.from).label,
           to: this.getNode(this.nodes, edge.to).label,
-          exclude: this.getIds(this.transportConstraint),
+          exclude: this.getIds(this.transportConstraint)
         });
       });
       // ---------------------------------------
@@ -230,14 +207,14 @@ export default {
         flow: this.flow.id,
         weight_flag: true,
         pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints,
+        selezioneMezziEdges: constraints
       };
       this.requestToServer(form);
       this.closeModal();
     },
     setTransportConstraintStart() {
       let transport = this.transportConstraintStart.filter(
-        (o) => !this.transportConstraint.find((o2) => o.id === o2.id)
+        o => !this.transportConstraint.find(o2 => o.id === o2.id)
       );
       this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
@@ -247,7 +224,7 @@ export default {
       for (var edgeId in this.edges) {
         edges.push({
           from: this.edges[edgeId].from,
-          to: this.edges[edgeId].to,
+          to: this.edges[edgeId].to
         });
       }
       for (var nodeId in this.nodes) {
@@ -255,13 +232,13 @@ export default {
           id: this.nodes[nodeId].id,
           label: this.nodes[nodeId].label,
           x: this.nodes[nodeId].x,
-          y: this.nodes[nodeId].y,
+          y: this.nodes[nodeId].y
         });
       }
       let jsonData = JSON.stringify({ nodes, edges });
       return [jsonData, id];
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

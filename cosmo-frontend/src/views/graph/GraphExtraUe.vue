@@ -213,7 +213,7 @@
           {{ node.percentage }} / tot: {{ node.sum }}
         </CListGroupItem>
       </CListGroup-->
-      <CDataTable :items="selectedNodesDataTable" hover sorter/>
+      <CDataTable :items="selectedNodesDataTable" hover sorter />
 
       <label class="card-label mt-3">Transport</label>
       <v-select
@@ -433,7 +433,8 @@ export default {
           weight: selectedEdge.weight
         });
 
-        var percentageFormatted = (selectedEdge.weight / sumOfSelectedEdge) * 100;
+        var percentageFormatted =
+          (selectedEdge.weight / sumOfSelectedEdge) * 100;
         var weightFormatted = selectedEdge.weight;
 
         this.selectedNodesDataTable.push({
