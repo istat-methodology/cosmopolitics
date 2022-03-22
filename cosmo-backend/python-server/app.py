@@ -39,6 +39,17 @@ def load_cpa_trim():
     return df
 
 
+def load_NSTR_trim():
+    def funcTrim(x):
+        return np.int32(x.replace("T","0"))
+
+    df=pd.read_csv("tr_extra_ue_trim.csv",low_memory=False,converters={'TRIMESTRE': funcTrim},dtype={"PRODUCT_NSTR": object,"FLOW":np.int8} )
+    df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT_NSTR","TRIMESTRE","VALUE_IN_EUROS"]]
+    df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","PERIOD","VALUE_IN_EUROS"]
+    df=df[df.PRODUCT.apply(lambda x : len(x.strip())==PROD_DIGITS)]
+    return df
+
+
 def load_files_available(): 
     #EXTRA_FILE
     logging.info("### load_files_available EXTRA_FILE...") 
@@ -271,6 +282,7 @@ try:
     df_transport = load_files_available()  
     df_transportIntra = load_file_intraEU()      
     df_trimcpa = load_cpa_trim()
+    df_trimNSTR = load_NSTR_trim()
 except:
     #print("#############   FILE NON TROVATI")
     logging.info("### Files non trovati ")     
@@ -282,13 +294,16 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources=r'/*')
 
+
+
+
 ###########GRAPH METHOD#######################################################
 #@app.route('/wordtradegraph/<tg_period>/<tg_perc>/<listaMezzi>/<criterio>/<product>/<flow>')
 #def wordtradegraph(tg_period,tg_perc,listaMezzi,criterio,product,flow):
 #@app.route('/wordtradegraphextra', methods=['POST','GET'])        
-@app.route('/wordtradegraph', methods=['POST','GET'])
-def wordtradegraph():
-    logging.info("### wordtradegraph EXTRA...")
+@app.route('/graphExtraMonth', methods=['POST','GET'])
+def graphExtraMonth():
+    logging.info("### graphExtraMonth...")
     if request.method == 'POST':        
         logging.info("Word Trade Graph method get EXTRA....")
         
@@ -353,8 +368,10 @@ def wordtradegraph():
         logging.info("### wordtradegraph exit")
         return str("only post")
 
-@app.route('/wordtradegraphintra', methods=['POST','GET'])
-def wordtradegraphplus():
+
+
+@app.route('/graphIntraMonth', methods=['POST','GET'])
+def graphIntraMonth():
     if request.method == 'POST':
         
         logging.info("Word Trade INTRA_EU Graph method get ....")
@@ -389,8 +406,6 @@ def wordtradegraphplus():
             logging.info(selezioneMezziEdges)
             logging.info(type(selezioneMezziEdges))
         #--------------------
-        
-        
 
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,selezioneMezziEdges,df_transportIntra)
         logging.info("tab4graph.shape"+str(tab4graph.shape))
@@ -417,15 +432,15 @@ def wordtradegraphplus():
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
-        logging.info("### wordtradegraph intra EU exit")
+        logging.info("### graphIntraMonth intra EU exit")
         return resp
 
     else:
-        logging.info("### wordtradegraph intra EU exit")
+        logging.info("### graphIntraMonth intra EU exit")
         return str("only post")
 
-@app.route('/cpatrim', methods=['POST','GET'])
-def cpatrim():
+@app.route('/graphIntraTrim', methods=['POST','GET'])
+def graphIntraTrim():
     if request.method == 'POST':       
         logging.info("TRIMESTRAL Word Trade INTRA_EU Graph method get ....")
         logging.info("criterio per costruire il grafo:"+criterio )
@@ -457,9 +472,6 @@ def cpatrim():
         #--------------------
 
 
-
-
-
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,selezioneMezziEdges,df_trimcpa)
         logging.info("tab4graph.shape"+str(tab4graph.shape))
         NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
@@ -484,6 +496,81 @@ def cpatrim():
         return str("only post")
 
 ################################################
+
+
+################################################
+
+@app.route('/graphExtraTrim', methods=['POST','GET'])
+def graphExtraTrim():
+    if request.method == 'POST':       
+        logging.info("TRIMESTRAL Word Trade EXTRA_EU Graph method get ....")
+        logging.info("criterio per costruire il grafo:"+criterio )
+        jReq=dict(request.json)
+        logging.info("------ jReq",jReq)
+        tg_perc=int(jReq['tg_perc'])
+        tg_period=int(jReq['tg_period'])
+        pos=jReq['pos']
+        if pos=="None":
+            pos=None
+        else:
+            logging.info("Gestisci posizione dei nodi precedenti -----")
+            logging.info("pos-----",type(pos))            
+            pos=jsonpos2coord(pos)
+            
+        #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
+        #listaMezzi=map(int,(jReq['listaMezzi']).split(","))#[0,1,2,3,4,5,7,8,9] 
+        listaMezzi=jReq['listaMezzi']#[0,1,2,3,4,5,7,8,9]    
+        flow=int(jReq['flow'])        
+        product=str(jReq['product'])       
+        weight_flag=bool(jReq['weight_flag'])       
+        #---------------------
+        selezioneMezziEdges=jReq['selezioneMezziEdges']  
+        if selezioneMezziEdges=="None":
+            selezioneMezziEdges=None
+        else:
+            pass
+            logging.info(selezioneMezziEdges)
+            logging.info(type(selezioneMezziEdges))
+        #--------------------
+
+
+                
+        tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_trimNSTR)
+        logging.info("tab4graph.shape: "+str(tab4graph.shape))
+
+        #controllo se la dimensione del grafo è troppo grande
+        #conto il numerp dei nodi
+        #se sono maggiori di una soglia NODIMAX 
+        #invio un messaggio al client
+        NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
+        if NUM_NODI > NODIMAX:
+            return json.dumps({"STATUS":"05"})                 
+
+
+
+        
+        pos,JSON,G=makeGraph(tab4graph,pos,weight_flag,flow,None)
+
+        if pos is None:
+            if JSON is None:
+                return json.dumps({"STATUS":"06"})     
+  
+        resp = Response(response=JSON,
+                    status=200,
+                    mimetype="application/json")
+        logging.info("### graphExtraTrim exit")
+        return resp
+
+    else:
+        logging.info("### graphExtraTrim exit")
+        return str("only post")
+
+
+
+################################################
+
+
+
 
 
 @app.route('/refreshdata')
