@@ -95,15 +95,10 @@ export default {
           }
         ]
       }
-    },
-    //min 0 = first month on series
-    startSeries: {
-      min: 0,
-      year: 2018
     }
   }),
   methods: {
-    getOptions(startMin, startYear, isLegend) {
+    getOptions(isLegend) {
       return {
         responsive: true,
         maintainAspectRatio: false,
