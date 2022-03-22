@@ -139,17 +139,6 @@ export default {
           ? { id: "202003", selectName: "Mar 20" }
           : { id: "202001", selectName: "1Q 20" };
     },
-    showMainModal() {
-      this.isMainModal = true;
-      this.isHelpModal = true;
-    },
-    showInfoModal() {
-      this.isMainModal = false;
-      this.isHelpModal = true;
-    },
-    spinnerStart(bool) {
-      this.spinner = bool;
-    },
     handlePeriodChange(period) {
       this.selectedPeriod = period;
       if (this.graphForm) {
@@ -197,6 +186,17 @@ export default {
           }
           this.spinnerStart(false);
         });
+    },
+    showMainModal() {
+      this.isMainModal = true;
+      this.isHelpModal = true;
+    },
+    showInfoModal() {
+      this.isMainModal = false;
+      this.isHelpModal = true;
+    },
+    spinnerStart(bool) {
+      this.spinner = bool;
     }
   },
   created() {
