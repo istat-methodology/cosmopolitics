@@ -4,8 +4,9 @@ export const graphService = {
   postGraphIntra
 };
 function postGraphExtra(params) {
+  const endpoint = params.trimester ? "/graphExtraTrim" : "/graphExtraMonth";
   return axiosPython
-    .post("/wordtradegraph", params.form)
+    .post(endpoint, params.form)
     .then(res => {
       var data = res.data ? res.data : {};
       //console.log(data);
@@ -18,7 +19,7 @@ function postGraphExtra(params) {
 
 // Post form without transport
 function postGraphIntra(params) {
-  const endpoint = !params.trimester ? "/wordtradegraphintra" : "/cpatrim";
+  const endpoint = params.trimester ? "/graphIntraTrim" : "/graphIntraMonth";
   return axiosPython
     .post(endpoint, params.form)
     .then(res => {

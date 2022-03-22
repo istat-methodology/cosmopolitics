@@ -103,7 +103,7 @@
   </CCard>
 </template>
 <script>
-import { getTransportIds } from "@/common";
+import { getCleanTransports, getTransportIds } from "@/common";
 import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
@@ -118,7 +118,7 @@ export default {
   props: {
     displayRadio: {
       type: Boolean,
-      default: false
+      default: true
     },
     displayTransport: {
       type: Boolean,
@@ -199,10 +199,20 @@ export default {
         !this.$v.product.$invalid &&
         !this.$v.flow.$invalid
       ) {
+        //Manage "all" transports in the select
+        if (this.displayTransport) {
+          var cleanTransports = getCleanTransports(
+            this.transport,
+            this.transports
+          );
+        }
         this.$emit("submit", {
           period: this.selectedPeriod.id,
           percentage: this.percentage,
-          transports: getTransportIds(this.transport, this.transports),
+          transportIds: this.displayTransport
+            ? getTransportIds(cleanTransports)
+            : [],
+          transports: cleanTransports,
           product: this.product.id,
           flow: this.flow.id
         });

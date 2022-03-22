@@ -7,6 +7,7 @@
           :edges="edges"
           :metrics="metrics"
           :spinner="spinner"
+          :transports="selectedTransports"
           @showinfo="showMainModal"
         >
           <cosmo-slider
@@ -20,10 +21,10 @@
         <cosmo-form
           :graphPeriod="timePeriod"
           :currentTime="selectedPeriod"
+          :currentRadio="selectedRadio"
           :transports="transports"
           :products="products"
           :flows="flows"
-          :displayRadio="isIntra"
           :displayTransport="!isIntra"
           @submit="handleSubmit"
           @updatePeriod="handlePeriodChange"
@@ -93,9 +94,10 @@ export default {
     }
   },
   data: () => ({
-    //Default period
-    isTrimester: false,
+    //Default state
     selectedPeriod: { id: "202003", selectName: "Mar 20" },
+    selectedRadio: "Monthly",
+    selectedTransports: [],
     graphForm: null,
     //Metrics table
     metricsFields: [
@@ -121,18 +123,21 @@ export default {
       "flows"
     ]),
     timePeriod() {
-      return this.isTrimester ? this.graphTrimesterPeriod : this.graphPeriod;
+      return this.selectedRadio == "Monthly"
+        ? this.graphPeriod
+        : this.graphTrimesterPeriod;
     },
     products() {
       return this.isIntra ? this.productsIntra : this.productsExtra;
     }
   },
   methods: {
-    handleRadioChange(newValue) {
-      this.isTrimester = newValue == "Monthly" ? false : true;
-      this.selectedPeriod = this.isTrimester
-        ? { id: "202001", selectName: "1Q 20" }
-        : { id: "202003", selectName: "Mar 20" };
+    handleRadioChange(radioValue) {
+      this.selectedRadio = radioValue;
+      this.selectedPeriod =
+        radioValue == "Monthly"
+          ? { id: "202003", selectName: "Mar 20" }
+          : { id: "202001", selectName: "1Q 20" };
     },
     showMainModal() {
       this.isMainModal = true;
@@ -153,10 +158,13 @@ export default {
       }
     },
     handleSubmit(formFields) {
+      //Save selected transports for scenario analysis
+      this.selectedTransports = formFields.transports;
+
       this.graphForm = {
         tg_period: this.selectedPeriod.id,
         tg_perc: formFields.percentage,
-        listaMezzi: formFields.transports,
+        listaMezzi: formFields.transportIds,
         product: formFields.product,
         flow: formFields.flow,
         weight_flag: true,
@@ -172,7 +180,7 @@ export default {
           this.isIntra ? "graph/postGraphIntra" : "graph/postGraphExtra",
           {
             form: this.graphForm,
-            trimester: this.isTrimester
+            trimester: this.selectedRadio == "Monthly" ? false : true
           }
         )
         .then(status => {

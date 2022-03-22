@@ -64,6 +64,7 @@
     <cosmo-scenario
       :showModal="scenarioModal"
       :items="selectedNodesTable"
+      :transports="transports"
       @closeModal="closeModal"
       @applyConstraints="applyConstraints"
     />
