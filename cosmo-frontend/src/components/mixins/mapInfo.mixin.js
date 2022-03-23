@@ -8,12 +8,12 @@ export default {
         label: ""
       },
       {
-        key: "2019",
-        label: "2019"
-      },
-      {
         key: "2020",
         label: "2020"
+      },
+      {
+        key: "2021",
+        label: "2021"
       }
     ]
   }),
