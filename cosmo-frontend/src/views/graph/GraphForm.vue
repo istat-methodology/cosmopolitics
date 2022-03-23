@@ -199,19 +199,17 @@ export default {
         !this.$v.product.$invalid &&
         !this.$v.flow.$invalid
       ) {
-        //Manage "all" transports in the select
+        //Manage "all" transports in the select (if select is displayed)
+        var cleanTransports = [];
+        var cleanTransportIds = [];
         if (this.displayTransport) {
-          var cleanTransports = getCleanTransports(
-            this.transport,
-            this.transports
-          );
+          cleanTransports = getCleanTransports(this.transport, this.transports);
+          cleanTransportIds = getTransportIds(cleanTransports);
         }
         this.$emit("submit", {
           period: this.selectedPeriod.id,
           percentage: this.percentage,
-          transportIds: this.displayTransport
-            ? getTransportIds(cleanTransports)
-            : [],
+          transportIds: cleanTransportIds,
           transports: cleanTransports,
           product: this.product.id,
           flow: this.flow.id

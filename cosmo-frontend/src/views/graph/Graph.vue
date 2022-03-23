@@ -7,6 +7,7 @@
           :edges="edges"
           :metrics="metrics"
           :spinner="spinner"
+          :displayTransport="!isIntra"
           :transports="selectedTransports"
           @showinfo="showMainModal"
         >
@@ -146,16 +147,16 @@ export default {
         this.requestToServer();
       }
     },
-    handleSubmit(formFields) {
+    handleSubmit(form) {
       //Save selected transports for scenario analysis
-      this.selectedTransports = formFields.transports;
+      this.selectedTransports = form.transports;
 
       this.graphForm = {
         tg_period: this.selectedPeriod.id,
-        tg_perc: formFields.percentage,
-        listaMezzi: formFields.transportIds,
-        product: formFields.product,
-        flow: formFields.flow,
+        tg_perc: form.percentage,
+        listaMezzi: form.transportIds,
+        product: form.product,
+        flow: form.flow,
         weight_flag: true,
         pos: "None",
         selezioneMezziEdges: "None"

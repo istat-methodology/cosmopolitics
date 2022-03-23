@@ -63,9 +63,14 @@
     </CCard>
     <cosmo-scenario
       :showModal="scenarioModal"
-      :items="selectedNodesTable"
-      :transports="transports"
+      :data="selectedNodesTable"
+      :fields="scenarioFields"
+      :displayTransport="displayTransport"
+      :selectedTransports="localTransports"
+      :selectedScenarioTransports="scenarioTransports"
       @closeModal="closeModal"
+      @updateTransports="manageUpdateTransports"
+      @updateScenarioTransports="manageScenarioTransports"
       @applyConstraints="applyConstraints"
     />
   </div>
@@ -83,15 +88,21 @@ export default {
   mixins: [visMixin, spinnerMixin],
   data: () => ({
     nodeMetric: null,
-    //Scenario modal
-    scenarioModal: false,
     selectedEdges: [],
     selectedNodes: [],
     selectedNodesTable: [],
-    transportConstraint: [],
-    transportConstraintStart: [],
-    transportConstraintSelected: {},
-    edgeFromTo: null
+    edgeFromTo: null,
+    //Make a local copy of transports for cosmo-scenario
+    localTransports: [],
+    scenarioTransports: [],
+    //Scenario modal
+    scenarioModal: false,
+    //Metrics table
+    scenarioFields: [
+      { key: "source", _style: "width:35%" },
+      { key: "destination", _style: "width:35%" },
+      { key: "percentage", _style: "width:30%" }
+    ]
   }),
   props: {
     nodes: {
@@ -129,14 +140,22 @@ export default {
       this.$emit("showinfo");
     },
     closeModal() {
+      //Clear selected scenarios
+      this.scenarioTransports = [];
       this.scenarioModal = false;
     },
+    manageUpdateTransports(trs) {
+      this.localTransports = trs;
+    },
+    manageScenarioTransports(trs) {
+      this.scenarioTransports = trs;
+    },
     handleSelectEdge(selectedGraph) {
-      this.transportConstraint = [];
       this.selectedEdges = [];
       this.selectedNodes = [];
       this.selectedNodesTable = [];
 
+      //Compute total weight
       var sumOfSelectedEdge = 0;
       selectedGraph.edges.forEach(edgeId => {
         const selectedEdge = this.getEdge(this.edges, edgeId);
@@ -152,7 +171,6 @@ export default {
         } else {
           this.edgeFromTo = sourceNode.label + "-" + destinationNode.label;
         }
-
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,
@@ -164,60 +182,34 @@ export default {
         var weightFormatted = selectedEdge.weight;
 
         this.selectedNodesTable.push({
-          "From Country": sourceNode.label,
-          "To Country": destinationNode.label,
-          Total: weightFormatted.toLocaleString("en-US"),
-          Percentage: percentageFormatted.toFixed(2) + "%"
+          source: sourceNode.label,
+          destination: destinationNode.label,
+          total: weightFormatted.toLocaleString("en-US"),
+          percentage: percentageFormatted.toFixed(2) + "%"
         });
       });
-
-      if (selectedGraph.edges.length > 1) {
-        this.transportConstraintStart = this.transport;
-      } else {
-        this.transportConstraintStart = this.transportConstraintSelected[
-          this.edgeFromTo
-        ]
-          ? this.transportConstraintSelected[this.edgeFromTo]
-          : this.transport;
-      }
+      //Local copy of selected transports
+      this.localTransports = [...this.transports];
       this.scenarioModal = true;
     },
-
     handleOverNode(event) {
       const nodeId = event.node;
       this.nodeMetric = this.getCentrality(this.nodes, nodeId, this.metrics);
     },
-    applyConstraints() {
+    applyConstraints(transportConstraint) {
       const constraints = [];
       this.selectedEdges.forEach(edge => {
-        this.setTransportConstraintStart();
         constraints.push({
           from: this.getNode(this.nodes, edge.from).label,
           to: this.getNode(this.nodes, edge.to).label,
-          exclude: this.getIds(this.transportConstraint)
+          exclude: this.getIds(transportConstraint)
         });
       });
-      // ---------------------------------------
-      // @TODO Change the name of the form keys
-      // ---------------------------------------
-      const form = {
-        tg_period: this.selectedPeriod.id,
-        tg_perc: this.percentage,
-        listaMezzi: this.getIds(this.transport),
-        product: this.product.id,
-        flow: this.flow.id,
-        weight_flag: true,
+      this.$emit("constraints", {
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
-      };
-      this.requestToServer(form);
+      });
       this.closeModal();
-    },
-    setTransportConstraintStart() {
-      let transport = this.transportConstraintStart.filter(
-        o => !this.transportConstraint.find(o2 => o.id === o2.id)
-      );
-      this.transportConstraintSelected[this.edgeFromTo] = transport;
     },
     getData(id) {
       var nodes = [];
