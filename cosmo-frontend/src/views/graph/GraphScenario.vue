@@ -16,9 +16,20 @@
       pagination
     />
     <!-- Drag'n drop -->
+    <div class="row constraint-container">
+      <div class="col-left constraint-left">
+        Selected transports
+      </div>
+      <div class="col-center">
+        <!-- nothing -->
+      </div>
+      <div class="col-right constraint-right">
+        Transports to be removed
+      </div>
+    </div>
     <div class="row drag-container" v-if="displayTransport">
       <div
-        class="col-5 drop-zone"
+        class="col-left drop-zone"
         @drop="onDropTransports($event)"
         @dragenter.prevent
         @dragover.prevent
@@ -33,11 +44,11 @@
           {{ transport.descr }}
         </div>
       </div>
-      <div class="col-2">
+      <div class="col-center">
         <!-- Nothing -->
       </div>
       <div
-        class="col-5 drop-zone"
+        class="col-right drop-zone"
         @drop="onDropScenario($event)"
         @dragenter.prevent
         @dragover.prevent
@@ -55,13 +66,13 @@
     </div>
     <template #footer>
       <CButton
-        color="outline-primary"
-        square
+        color="primary"
+        shape="square"
         size="sm"
         @click="applyConstraints"
         >Yes</CButton
       >
-      <CButton color="outline-primary" square size="sm" @click="closeModal"
+      <CButton color="primary" shape="square" size="sm" @click="closeModal"
         >No</CButton
       >
     </template>
@@ -144,20 +155,56 @@ export default {
 };
 </script>
 <style scoped>
+.constraint-container {
+  border-top: 1px solid #d8dbe0;
+}
+.constraint-left {
+  padding: 0.6rem 1.6rem;
+  font-weight: 500;
+  margin-top: 0.6rem;
+}
+.constraint-right {
+  padding: 0.6rem 0.2rem;
+  font-weight: 500;
+  margin-top: 0.6rem;
+}
+.col-left {
+  flex: 0 0 47%;
+  max-width: 47%;
+}
+.col-right {
+  flex: 0 0 47%;
+  max-width: 47%;
+}
+.col-center {
+  flex: 0 0 6%;
+  max-width: 6%;
+}
 .drag-container {
   margin-right: 0;
   margin-left: 0;
 }
 .drop-zone {
-  background-color: #ebedef;
+  border: 1px solid #ebedef;
+  border-radius: 0.2rem;
   padding: 10px;
-  min-height: 50px;
+  min-height: 120px;
 }
 .drag-el {
-  background-color: #321fdb;
-  color: white;
-  padding: 5px;
-  margin-bottom: 10px;
+  border-radius: 0.2rem;
+  background-color: #ebedef;
+  border: 1px solid #9da5b1;
+  color: #9da5b1;
+  padding: 2px 10px;
+  margin-bottom: 4px;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+.drag-el:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
 }
 .drag-el:nth-last-of-type(1) {
   margin-bottom: 0;
