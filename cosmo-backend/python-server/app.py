@@ -25,6 +25,9 @@ criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
 #logging.config.fileConfig('./logging.conf')
 #logger = logging.getLogger('graphLog')
+logging.basicConfig(level=logging.INFO,
+    format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S')
 
 
 
