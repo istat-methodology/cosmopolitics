@@ -3,7 +3,6 @@
     <CCard>
       <CCardHeader>
         <div>
-          <span> {{ $t("graph.card.title") }} Extra UE</span>
           <span class="float-right">
             <button
               class="btn mr-2 float-right btn-sm btn-square"

@@ -92,7 +92,6 @@ button:focus {
 }
 
 /* Forms */
-
 .form-group {
   margin-bottom: 0.2rem;
 }
@@ -110,7 +109,6 @@ button:focus {
 }
 
 /* Validation styles */
-
 .help-block {
   visibility: hidden;
   font-size: 80%;
@@ -125,6 +123,23 @@ button:focus {
 .show {
   visibility: visible;
 }
+/*Tabs*/
+.nav-tabs .nav-link {
+  color: #4f5d73;
+  margin-bottom: 5px;
+}
+.nav-tabs .nav-link.active {
+  color: #321fdb;
+  background-color: white;
+  border: 0;
+  box-shadow: 0 1px 1px 0 rgb(60 75 100 / 14%), 0 2px 1px -1px rgb(60 75 100 / 12%), 0 1px 3px 0 rgb(60 75 100 / 20%);
+}
+.nav-tabs .nav-item.show .nav-link {
+  color: #321fdb;
+  background-color: white;
+}
+
+
 
 /* V-Select*/
 .vs__search::placeholder{

@@ -1,6 +1,6 @@
 <template>
   <CModal
-    title="$t('graph.scenario.title')"
+    :title="$t('graph.scenario.title')"
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
@@ -16,51 +16,53 @@
       pagination
     />
     <!-- Drag'n drop -->
-    <div class="row constraint-container">
-      <div class="col-left constraint-left">
-        {{ $t("graph.scenario.transports_selected") }}
-      </div>
-      <div class="col-center">
-        <!-- nothing -->
-      </div>
-      <div class="col-right constraint-right">
-        {{ $t("graph.scenario.transports_scenario") }}
-      </div>
-    </div>
-    <div class="row drag-container" v-if="displayTransport">
-      <div
-        class="col-left drop-zone"
-        @drop="onDropTransports($event)"
-        @dragenter.prevent
-        @dragover.prevent
-      >
-        <div
-          v-for="transport in transports"
-          :key="transport.id"
-          class="drag-el"
-          draggable="true"
-          @dragstart="startDrag($event, transport)"
-        >
-          {{ transport.descr }}
+    <div v-if="displayTransport">
+      <div class="row constraint-container">
+        <div class="col-left constraint-left">
+          {{ $t("graph.scenario.transports_selected") }}
+        </div>
+        <div class="col-center">
+          <!-- nothing -->
+        </div>
+        <div class="col-right constraint-right">
+          {{ $t("graph.scenario.transports_scenario") }}
         </div>
       </div>
-      <div class="col-center">
-        <!-- Nothing -->
-      </div>
-      <div
-        class="col-right drop-zone"
-        @drop="onDropScenario($event)"
-        @dragenter.prevent
-        @dragover.prevent
-      >
+      <div class="row drag-container">
         <div
-          v-for="scenarioTransport in scenarioTransports"
-          :key="scenarioTransport.id"
-          class="drag-el"
-          draggable="true"
-          @dragstart="startDrag($event, scenarioTransport)"
+          class="col-left drop-zone"
+          @drop="onDropTransports($event)"
+          @dragenter.prevent
+          @dragover.prevent
         >
-          {{ scenarioTransport.descr }}
+          <div
+            v-for="transport in transports"
+            :key="transport.id"
+            class="drag-el"
+            draggable="true"
+            @dragstart="startDrag($event, transport)"
+          >
+            {{ transport.descr }}
+          </div>
+        </div>
+        <div class="col-center">
+          <!-- Nothing -->
+        </div>
+        <div
+          class="col-right drop-zone"
+          @drop="onDropScenario($event)"
+          @dragenter.prevent
+          @dragover.prevent
+        >
+          <div
+            v-for="scenarioTransport in scenarioTransports"
+            :key="scenarioTransport.id"
+            class="drag-el"
+            draggable="true"
+            @dragstart="startDrag($event, scenarioTransport)"
+          >
+            {{ scenarioTransport.descr }}
+          </div>
         </div>
       </div>
     </div>

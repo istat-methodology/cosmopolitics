@@ -73,9 +73,7 @@
             @change="setProducts()"
           />
           <label v-if="products" class="card-label mt-3">
-            {{
-            $t("trade.form.fields.products")
-          }}
+            {{ $t("trade.form.fields.products") }}
           </label>
 
           <v-select
@@ -85,7 +83,7 @@
             :placeholder="$t('trade.form.fields.products_placeholder')"
             multiple
             v-model="productSelected"
-            ref = "prod"
+            ref="prod"
           />
           <CButton
             color="primary"
@@ -129,24 +127,24 @@ export default {
     productSelected: { id: 999, dataname: "All categories" },
     varTypeSelected: {
       id: 1,
-      descr: "in treated value",
+      descr: "in treated value"
     },
     countrySelected: {
       country: "IT",
-      name: "Italy",
+      name: "Italy"
     },
     flowSelected: {
       id: 1,
-      descr: "Import",
+      descr: "Import"
     },
     spinner: false,
     labelPeriod: [],
-    isModalHelp: false,
+    isModalHelp: false
   }),
   computed: {
     ...mapGetters("classification", ["varType", "countries", "flows"]),
     ...mapGetters("trade", ["charts"]),
-    ...mapGetters("metadata", ["tradePeriod"]),    
+    ...mapGetters("metadata", ["tradePeriod"]),
     products() {
       var products = [];
       if (this.tradePeriod) {
@@ -154,14 +152,14 @@ export default {
           this.charts.data.forEach((element, index) => {
             products.push({
               id: index,
-              dataname: element.dataname,
+              dataname: element.dataname
             });
           });
           products.push({ id: 99999, dataname: "All products" });
         }
       }
       return products;
-    },
+    }
   },
   methods: {
     helpOn(showModal) {
@@ -172,16 +170,16 @@ export default {
         this.$store.dispatch("trade/findByName", {
           type: this.varTypeSelected.id,
           country: this.countrySelected.country,
-          flow: this.flowSelected.id,
+          flow: this.flowSelected.id
         });
       }
       this.chartData = {};
       this.chartData.datasets = [];
       this.chartData.labels = this.labelPeriod;
 
-      this.productSelected.forEach((element) => {
+      this.productSelected.forEach(element => {
         if (element.id == 99999) {
-          this.charts.data.forEach((element) => {
+          this.charts.data.forEach(element => {
             this.buildChartObject(element.dataname, element.value);
           });
         } else {
@@ -202,10 +200,10 @@ export default {
         borderColor: color.border,
         data: value,
         showLine: true,
-        pointRadius: 2,
+        pointRadius: 2
       });
     },
-    setProducts(){
+    setProducts() {
       this.$emit(this.$refs.prod, { id: 999, dataname: "All categories" });
     },
     getData(data, id) {
@@ -216,7 +214,7 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
     for (const period of this.tradePeriod) {
@@ -227,17 +225,17 @@ export default {
       .dispatch("trade/findByName", {
         type: this.varTypeSelected.id,
         country: this.countrySelected.country,
-        flow: this.flowSelected.id,
+        flow: this.flowSelected.id
       })
       .then(() => {
         this.chartData = {};
         this.chartData.datasets = [];
         this.chartData.labels = this.labelPeriod;
-        this.charts.data.forEach((element) => {
+        this.charts.data.forEach(element => {
           this.buildChartObject(element.dataname, element.value);
         });
       });
-  },
+  }
 };
 </script>
 <style>

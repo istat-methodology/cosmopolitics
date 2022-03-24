@@ -1,8 +1,5 @@
 <template>
   <CCard>
-    <CCardHeader>
-      <span class="float-left">{{ $t("graph.table.title") }}</span>
-    </CCardHeader>
     <CCardBody>
       <CDataTable
         v-if="data"

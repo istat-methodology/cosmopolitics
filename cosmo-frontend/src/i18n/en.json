@@ -101,25 +101,23 @@
         "flow_placeholder": "Select a flow",
         "weight": "Weight",
         "weight_placeholder": "Select weights"
-      },
-      "scenario":{
-        "title": "Scenario analysis",
-        "selected_transports":"Selected transports",
-        "scenario_transports":"Transports to be removed"
-      },
-      "message":{
-        "graph_wide": "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport",
-        "graph_empty": "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
       }
+    },
+    "scenario":{
+      "title": "Scenario analysis",
+      "transports_selected":"Selected transports",
+      "transports_scenario":"Transports to be removed",
+      "success": "The graph has been modified according to the new constraints"
+    },
+    "message":{
+      "graph_wide": "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport",
+      "graph_empty": "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
     },
     "table":{
       "title": "Graph metrics"
     },
     "card": {
       "title": "Graph analysis"
-    },
-    "scenario": {
-      "success": "The graph has been modified according to the new constraints"
     },
     "modal": {
       "main": {

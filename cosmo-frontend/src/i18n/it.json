@@ -100,16 +100,17 @@
         "flow_placeholder": "Seleziona un flusso",
         "weight": "Pesi",
         "weight_placeholder": "Seleziona i pesi"
-      },
-      "scenario":{
-        "title": "Analisi di scenario",
-        "transports_selected":"Trasporti selezionati",
-        "transports_scenario":"Trasporti da rimuovere"
-      },
-      "message":{
-        "graph_wide": "Warning N.05: Grafo troppo ampio  \n Ridurre la soglia o cambiare i mezzi di trasporto",
-        "graph_empty": "Warning N.06 Graph vuoto \n Ridurre la soglia o cambiare i mezzi di trasporto"
       }
+    },
+    "scenario":{
+      "title": "Analisi di scenario",
+      "transports_selected":"Trasporti selezionati",
+      "transports_scenario":"Trasporti da rimuovere",
+      "success": "Il grafo è stato modificato coerentemente con i vincoli"
+    },
+    "message":{
+      "graph_wide": "Warning N.05: Grafo troppo ampio  \n Ridurre la soglia o cambiare i mezzi di trasporto",
+      "graph_empty": "Warning N.06 Graph vuoto \n Ridurre la soglia o cambiare i mezzi di trasporto"
     },
     "table":{
       "title": "Metriche"

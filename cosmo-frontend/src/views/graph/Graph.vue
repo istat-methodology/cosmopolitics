@@ -2,21 +2,28 @@
   <div>
     <div class="row">
       <div class="col-9">
-        <cosmo-graph
-          :nodes="nodes"
-          :edges="edges"
-          :metrics="metrics"
-          :spinner="spinner"
-          :displayTransport="!isIntra"
-          :transports="selectedTransports"
-          @showinfo="showMainModal"
-        >
-          <cosmo-slider
-            :interval="timePeriod"
-            :currentTime="selectedPeriod"
-            @change="handlePeriodChange"
-          />
-        </cosmo-graph>
+        <CTabs variant="tabs" :active-tab="0">
+          <CTab :title="$t('graph.card.title')">
+            <cosmo-graph
+              :nodes="nodes"
+              :edges="edges"
+              :metrics="metrics"
+              :spinner="spinner"
+              :displayTransport="!isIntra"
+              :transports="selectedTransports"
+              @showinfo="showMainModal"
+            >
+              <cosmo-slider
+                :interval="timePeriod"
+                :currentTime="selectedPeriod"
+                @change="handlePeriodChange"
+              />
+            </cosmo-graph>
+          </CTab>
+          <CTab :title="$t('graph.table.title')">
+            <cosmo-table :data="metricsTable" :fields="metricsFields" />
+          </CTab>
+        </CTabs>
       </div>
       <div class="col-3">
         <cosmo-form
@@ -32,11 +39,6 @@
           @updateRadio="handleRadioChange"
           @showinfo="showInfoModal"
         />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-9">
-        <cosmo-table :data="metricsTable" :fields="metricsFields" />
       </div>
     </div>
     <CModal
@@ -127,7 +129,7 @@ export default {
       return this.selectedRadio == "Monthly" ? false : true;
     },
     timePeriod() {
-      return this.isTrimester ? this.graphPeriod : this.graphTrimesterPeriod;
+      return this.isTrimester ? this.graphTrimesterPeriod : this.graphPeriod;
     },
     products() {
       return this.isIntra ? this.productsIntra : this.productsExtra;
