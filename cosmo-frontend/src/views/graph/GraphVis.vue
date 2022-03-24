@@ -64,6 +64,7 @@
       :showModal="scenarioModal"
       :data="selectedNodesTable"
       :fields="scenarioFields"
+      :sorterValue="sorterValue"
       :displayTransport="displayTransport"
       :selectedTransports="localTransports"
       :selectedScenarioTransports="scenarioTransports"
@@ -100,7 +101,8 @@ export default {
       { key: "source", _style: "width:35%" },
       { key: "destination", _style: "width:35%" },
       { key: "percentage", _style: "width:30%" }
-    ]
+    ],
+    sorterValue: { column: "percentage", asc: false }
   }),
   props: {
     nodes: {
@@ -231,11 +233,11 @@ export default {
 <style scoped>
 .network {
   text-align: center;
-  height: 650px;
+  height: 580px;
   margin: 0 0;
 }
 .graph-info {
-  margin-top: 1em;
+  margin-top: 0.4em;
   font-size: small;
 }
 .circle-spin {

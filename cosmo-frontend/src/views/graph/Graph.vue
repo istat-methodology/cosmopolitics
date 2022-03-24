@@ -21,11 +21,15 @@
             </cosmo-graph>
           </CTab>
           <CTab :title="$t('graph.table.title')">
-            <cosmo-table :data="metricsTable" :fields="metricsFields" />
+            <cosmo-table
+              :data="metricsTable"
+              :fields="metricsFields"
+              :sorterValue="sorterValue"
+            />
           </CTab>
         </CTabs>
       </div>
-      <div class="col-3">
+      <div class="col-3 padding-tab">
         <cosmo-form
           :graphPeriod="timePeriod"
           :currentTime="selectedPeriod"
@@ -110,6 +114,7 @@ export default {
       { key: "hubness", _style: "width:20%" },
       { key: "vulnerability", _style: "width:20%" }
     ],
+    sorterValue: { column: "vulnerability", asc: false },
     //Spinner
     spinner: false,
     //Modal
@@ -223,5 +228,8 @@ export default {
 .card-header span {
   font-size: 0.875rem;
   font-weight: 500;
+}
+.padding-tab {
+  padding-top: 45px;
 }
 </style>

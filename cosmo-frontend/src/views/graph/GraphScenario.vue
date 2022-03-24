@@ -11,6 +11,7 @@
       :fields="fields"
       column-filter
       :items-per-page="5"
+      :sorterValue="sorterValue"
       sorter
       hover
       pagination
@@ -99,6 +100,10 @@ export default {
     fields: {
       type: Array,
       default: () => []
+    },
+    sorterValue: {
+      type: Object,
+      default: () => ({ column: null, asc: true })
     },
     selectedTransports: {
       type: Array,
@@ -196,7 +201,7 @@ export default {
   border-radius: 0.2rem;
   background-color: #ebedef;
   border: 1px solid #9da5b1;
-  color: #9da5b1;
+  color: #4f5d73;
   padding: 2px 10px;
   margin-bottom: 4px;
   cursor: grab;

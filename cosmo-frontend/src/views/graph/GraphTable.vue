@@ -5,9 +5,11 @@
         v-if="data"
         :items="data"
         :fields="fields"
+        :sorterValue="sorterValue"
+        table-filter
         column-filter
         items-per-page-select
-        :items-per-page="5"
+        :items-per-page="10"
         sorter
         hover
         pagination
@@ -26,6 +28,10 @@ export default {
     fields: {
       type: Array,
       default: () => []
+    },
+    sorterValue: {
+      type: Object,
+      default: () => ({ column: null, asc: true })
     }
   }
 };
