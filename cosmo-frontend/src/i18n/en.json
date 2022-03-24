@@ -183,6 +183,8 @@
         "varType_placeholder": "Select a series type",
         "country": "Country",
         "country_placeholder": "Select a country",
+        "products": "Product",
+        "products_placeholder": "Select a product",
         "flow": "Flow",
         "flow_placeholder": "Select a flow"
       }

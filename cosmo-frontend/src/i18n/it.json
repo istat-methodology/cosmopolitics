@@ -179,9 +179,10 @@
         "varType_placeholder": "Seleziona la variazione",
         "country": "Paese",
         "country_placeholder": "Seleziona un paese",
+        "products": "Prodotto",
+        "products_placeholder": "Seleziona un prodotto",
         "flow": "Flusso",
-        "flow_placeholder": "Seleziona il flusso"
-        
+        "flow_placeholder": "Seleziona il flusso"        
       }
     },
     "modal": {
