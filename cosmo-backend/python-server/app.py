@@ -46,7 +46,7 @@ def load_NSTR_trim():
     def funcTrim(x):
         return np.int32(x.replace("T","0"))
    
-    logging.info("### load_NSTR_trim START...") 
+    logging.info("### load_NSTR_trim START..") 
     df=pd.read_csv(NSTR_TRIM_FILE,low_memory=False,converters={'TRIMESTRE': funcTrim},dtype={"PRODUCT_NSTR": object,"FLOW":np.int8} )
     print("************",df.columns)
     
