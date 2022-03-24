@@ -600,7 +600,7 @@ def refreshdata():
         
         return str(' data refreshed')
     except BaseException as e:
-        repo="ERROR load file  " + str(e):
+        repo="ERROR load file  " + str(e)
         #print("#############   FILE NON TROVATI")
         logging.info(repo)  
         return str(repo)
