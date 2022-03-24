@@ -19,6 +19,7 @@ NODIMAX=70
 INTRA_FILE="data/cpa_intra.csv"
 EXTRA_FILE="data/tr_extra_ue.csv"
 CPA_TRIM_FILE="data/cpa_trim.csv"
+NSTR_TRIM_FILE="data/tr_extra_ue_trim.csv"
 
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
@@ -43,9 +44,11 @@ def load_NSTR_trim():
     def funcTrim(x):
         return np.int32(x.replace("T","0"))
 
-    df=pd.read_csv("tr_extra_ue_trim.csv",low_memory=False,converters={'TRIMESTRE': funcTrim},dtype={"PRODUCT_NSTR": object,"FLOW":np.int8} )
-    df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT_NSTR","TRIMESTRE","VALUE_IN_EUROS"]]
-    df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","PERIOD","VALUE_IN_EUROS"]
+    df=pd.read_csv(NSTR_TRIM_FILE,low_memory=False,converters={'TRIMESTRE': funcTrim},dtype={"PRODUCT_NSTR": object,"FLOW":np.int8} )
+    print("************",df.columns)
+    
+    df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT_NSTR","TRANSPORT_MODE","TRIMESTRE","VALUE_IN_EUROS"]]
+    df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","TRANSPORT_MODE","PERIOD","VALUE_IN_EUROS"]
     df=df[df.PRODUCT.apply(lambda x : len(x.strip())==PROD_DIGITS)]
     return df
 
@@ -116,6 +119,7 @@ def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,
     #df_transport_estrazione=df_transport
     df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["FLOW"]==flow]
     print("###",df_transport_estrazione.shape)
+    print(df_transport_estrazione.head(5))
     if tg_period is not None:
         #tg_period=datetime.datetime.strptime(str(tg_period), '%Y%m')
         tg_period=np.int32(tg_period)
@@ -584,6 +588,9 @@ def refreshdata():
         global df_trimcpa 
         df_trimcpa = load_cpa_trim()
 
+        global df_trimNSTR
+        df_trimNSTR = load_NSTR_trim()
+        
         return str(' data refreshed')
     except:
         #print("#############   FILE NON TROVATI")
