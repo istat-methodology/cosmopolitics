@@ -2,6 +2,8 @@
   "common": {
     "submit": "Go!",
     "exporter": "export",
+    "apply":"Update graph!",
+    "close": "Close",
     "mandatory": "Mandatory fields",
     "update": "Data updated on ",
     "footer": {
@@ -99,6 +101,15 @@
         "flow_placeholder": "Select a flow",
         "weight": "Weight",
         "weight_placeholder": "Select weights"
+      },
+      "scenario":{
+        "title": "Scenario analysis",
+        "selected_transports":"Selected transports",
+        "scenario_transports":"Transports to be removed"
+      },
+      "message":{
+        "graph_wide": "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport",
+        "graph_empty": "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
       }
     },
     "table":{

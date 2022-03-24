@@ -2,6 +2,8 @@
   "common": {
     "submit": "Esegui!",
     "exporter": "Esporta",
+    "apply":"Aggiorna il grafo",
+    "close": "Chiudi",
     "mandatory": "Campi obbligatori",
     "update": "Dati aggiornati il ",
     "footer": {
@@ -98,6 +100,15 @@
         "flow_placeholder": "Seleziona un flusso",
         "weight": "Pesi",
         "weight_placeholder": "Seleziona i pesi"
+      },
+      "scenario":{
+        "title": "Analisi di scenario",
+        "transports_selected":"Trasporti selezionati",
+        "transports_scenario":"Trasporti da rimuovere"
+      },
+      "message":{
+        "graph_wide": "Warning N.05: Grafo troppo ampio  \n Ridurre la soglia o cambiare i mezzi di trasporto",
+        "graph_empty": "Warning N.06 Graph vuoto \n Ridurre la soglia o cambiare i mezzi di trasporto"
       }
     },
     "table":{

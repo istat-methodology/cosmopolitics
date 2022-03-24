@@ -91,7 +91,6 @@ export default {
     selectedEdges: [],
     selectedNodes: [],
     selectedNodesTable: [],
-    edgeFromTo: null,
     //Make a local copy of transports for cosmo-scenario
     localTransports: [],
     scenarioTransports: [],
@@ -166,11 +165,7 @@ export default {
         const selectedEdge = this.getEdge(this.edges, edgeId);
         const sourceNode = this.getNode(this.nodes, selectedEdge.from);
         const destinationNode = this.getNode(this.nodes, selectedEdge.to);
-        if (selectedGraph.edges.length > 1) {
-          this.edgeFromTo = this.edgeFromTo + "-" + destinationNode.label;
-        } else {
-          this.edgeFromTo = sourceNode.label + "-" + destinationNode.label;
-        }
+
         this.selectedEdges.push(selectedEdge);
         this.selectedNodes.push({
           source: sourceNode,

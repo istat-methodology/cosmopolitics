@@ -1,6 +1,6 @@
 <template>
   <CModal
-    title="Change graph constraints?"
+    title="$t('graph.scenario.title')"
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
@@ -18,13 +18,13 @@
     <!-- Drag'n drop -->
     <div class="row constraint-container">
       <div class="col-left constraint-left">
-        Selected transports
+        {{ $t("graph.scenario.transports_selected") }}
       </div>
       <div class="col-center">
         <!-- nothing -->
       </div>
       <div class="col-right constraint-right">
-        Transports to be removed
+        {{ $t("graph.scenario.transports_scenario") }}
       </div>
     </div>
     <div class="row drag-container" v-if="displayTransport">
@@ -70,11 +70,11 @@
         shape="square"
         size="sm"
         @click="applyConstraints"
-        >Yes</CButton
+        >{{ $t("common.apply") }}</CButton
       >
-      <CButton color="primary" shape="square" size="sm" @click="closeModal"
-        >No</CButton
-      >
+      <CButton color="primary" shape="square" size="sm" @click="closeModal">
+        {{ $t("common.close") }}
+      </CButton>
     </template>
   </CModal>
 </template>
@@ -129,10 +129,10 @@ export default {
     startDrag(event, item) {
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.setData("itemID", item.id);
+      event.dataTransfer.setData("itemId", item.id);
     },
     onDropTransports(event) {
-      const itemId = event.dataTransfer.getData("ItemID");
+      const itemId = event.dataTransfer.getData("ItemId");
       const transport = this.scenarioTransports.find(tr => tr.id == itemId);
       this.scenarioTransports = this.scenarioTransports.filter(
         tr => tr.id != itemId
@@ -140,7 +140,7 @@ export default {
       this.transports.push(transport);
     },
     onDropScenario(event) {
-      const itemId = event.dataTransfer.getData("ItemID");
+      const itemId = event.dataTransfer.getData("ItemId");
       const transport = this.transports.find(tr => tr.id == itemId);
       this.transports = this.transports.filter(tr => tr.id != itemId);
       this.scenarioTransports.push(transport);

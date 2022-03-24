@@ -61,11 +61,11 @@
       ></p>
       <template #footer>
         <CButton
-          color="outline-primary"
-          square
+          color="primary"
+          shape="square"
           size="sm"
           @click="isHelpModal = false"
-          >Close</CButton
+          >{{ $t("common.close") }}</CButton
         >
       </template>
     </CModal>
@@ -123,10 +123,11 @@ export default {
       "productsExtra",
       "flows"
     ]),
+    isTrimester() {
+      return this.selectedRadio == "Monthly" ? false : true;
+    },
     timePeriod() {
-      return this.selectedRadio == "Monthly"
-        ? this.graphPeriod
-        : this.graphTrimesterPeriod;
+      return this.isTrimester ? this.graphPeriod : this.graphTrimesterPeriod;
     },
     products() {
       return this.isIntra ? this.productsIntra : this.productsExtra;
@@ -135,10 +136,9 @@ export default {
   methods: {
     handleRadioChange(radioValue) {
       this.selectedRadio = radioValue;
-      this.selectedPeriod =
-        radioValue == "Monthly"
-          ? { id: "202003", selectName: "Mar 20" }
-          : { id: "202001", selectName: "1Q 20" };
+      this.selectedPeriod = this.isTrimester
+        ? { id: "202001", selectName: "1Q 20" }
+        : { id: "202003", selectName: "Mar 20" };
     },
     handlePeriodChange(period) {
       this.selectedPeriod = period;
@@ -170,19 +170,19 @@ export default {
           this.isIntra ? "graph/postGraphIntra" : "graph/postGraphExtra",
           {
             form: this.graphForm,
-            trimester: this.selectedRadio == "Monthly" ? false : true
+            trimester: this.isTrimester
           }
         )
         .then(status => {
           if (status == Status.wide) {
             this.$store.dispatch(
               "message/error",
-              "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport"
+              this.$t("graph.message.graph_wide")
             );
           } else if (status == Status.empty) {
             this.$store.dispatch(
               "message/error",
-              "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
+              this.$t("graph.message.graph_empty")
             );
           }
           this.spinnerStart(false);
