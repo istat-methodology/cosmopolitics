@@ -44,7 +44,7 @@
         </div>
       </CCardHeader>
       <CCardBody class="card-no-border">
-        <tile v-if="this.spinner" color="#321fdb"></tile>
+        <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
         <network
           id="graph"
           class="network"
@@ -83,12 +83,14 @@ import {
   getCentrality,
   getTransportIds
 } from "@/common";
+import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
 import GraphScenario from "@/views/graph/GraphScenario";
 
 export default {
   name: "GraphVis",
   components: { Network, exporter, "cosmo-scenario": GraphScenario },
+  mixins: [spinnerMixin],
   data: () => ({
     options: { ...options },
     nodeMetric: null,
