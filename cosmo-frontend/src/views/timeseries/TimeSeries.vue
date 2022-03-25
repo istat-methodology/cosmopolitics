@@ -54,19 +54,14 @@
             :options="options"
             id="timeseries"
           />
-        </CCardBody>
-        <CCardFooter>
-          <div class="row">
-            <div class="col-12">
-              <div class="col-4">
-                <label>Variance: </label><span><label>{{this.variance}}</label></span>
-              </div>
-              <div class="col-4">
-                <label>Mean: </label><span><label>{{this.mean}}</label></span>
-              </div>
-            </div>
+          <div class="timeseries-info">
+            <span v-if="this.std">
+              
+              <span class="text-primary"> Mean: </span>{{ this.mean }},
+              <span class="text-primary">Standard deviation: </span>{{ this.std }}
+            </span>
           </div>
-        </CCardFooter>
+        </CCardBody>
       </CCard>
       <CCard v-if="chartDataDiagNorm">
         <CCardHeader>
@@ -302,9 +297,8 @@ export default {
     isDiagNorm: true,
     isDiagACF: true,
     isModalHelp: false,
-    mean:0,
-    variance:0,
-
+    mean: null,
+    std: null,
   }),
   computed: {
     ...mapGetters("classification", [
@@ -445,6 +439,11 @@ export default {
 .card-header span {
   font-size: 0.875rem;
   font-weight: 500;
+}
+.timeseries-info {
+  margin-left: 2.5em;
+  margin-top: 0.4em;
+  font-size: small;
 }
 .circle-spin {
   position: absolute;

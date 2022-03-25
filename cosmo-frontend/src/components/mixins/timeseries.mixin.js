@@ -11,7 +11,7 @@ export default {
           dataType
         );
         this.mean = this.getTimeseriesMean(data["diagMain"]);
-        this.variance = this.getTimeseriesVariance(data["diagMain"]);
+        this.std = this.getTimeseriesSTD(data["diagMain"]);
       } else {
         this.chartDataDiagMain = null;
       }
@@ -60,10 +60,14 @@ export default {
       return chartData;
     },
     getTimeseriesMean(data) {
-      return d3.mean(data["series"]);
+      var m = 0;      
+      m = d3.mean(data["series"]);
+      return m.toFixed(2);
     },
-    getTimeseriesVariance(data) {      
-      return d3.variance(data["series"]);
+    getTimeseriesSTD(data) {
+      var v = 0;
+      v = d3.deviation(data["series"]);
+      return v.toFixed(2);
     },
     getDate(data) {
       var arr = [];
