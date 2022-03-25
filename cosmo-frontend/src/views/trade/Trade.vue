@@ -127,19 +127,19 @@ export default {
     productSelected: { id: 9999, dataname: "All categories" },
     varTypeSelected: {
       id: 1,
-      descr: "in treated value",
+      descr: "in treated value"
     },
     countrySelected: {
       country: "IT",
-      name: "Italy",
+      name: "Italy"
     },
     flowSelected: {
       id: 1,
-      descr: "Import",
+      descr: "Import"
     },
     spinner: false,
     labelPeriod: [],
-    isModalHelp: false,
+    isModalHelp: false
   }),
   computed: {
     ...mapGetters("classification", ["varType", "countries", "flows"]),
@@ -152,51 +152,51 @@ export default {
           this.charts.data.forEach((element, index) => {
             products.push({
               id: index,
-              dataname: element.dataname,
+              dataname: element.dataname
             });
           });
           products.push({ id: 9999, dataname: "All products" });
         }
       }
       return products;
-    },
+    }
   },
   methods: {
     helpOn(showModal) {
       this.isModalHelp = showModal;
     },
     handleSubmit() {
-
-      
-
       if (this.varTypeSelected && this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
           type: this.varTypeSelected.id,
           country: this.countrySelected.country,
-          flow: this.flowSelected.id,
+          flow: this.flowSelected.id
         });
         this.getDataStore();
       }
-      
+
       this.chartData = {};
       this.chartData.datasets = [];
       this.chartData.labels = this.labelPeriod;
-      
+
       if (this.productSelected.id == 9999) {
         this.getDataStore();
       } else {
-        this.productSelected.forEach((product) => {
+        this.productSelected.forEach(product => {
           if (product.id == 9999) {
             this.getDataStore();
           } else {
-            this.buildChartObject( this.charts.data[product.id].dataname, this.charts.data[product.id].value );
+            this.buildChartObject(
+              this.charts.data[product.id].dataname,
+              this.charts.data[product.id].value
+            );
           }
         });
       }
       this.clearColor();
     },
     getDataStore() {
-      this.charts.data.forEach((element) => {
+      this.charts.data.forEach(element => {
         this.buildChartObject(element.dataname, element.value);
       });
     },
@@ -209,7 +209,7 @@ export default {
         borderColor: color.border,
         data: value,
         showLine: true,
-        pointRadius: 2,
+        pointRadius: 2
       });
     },
     setProducts() {
@@ -223,7 +223,7 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
     for (const period of this.tradePeriod) {
@@ -234,7 +234,7 @@ export default {
       .dispatch("trade/findByName", {
         type: this.varTypeSelected.id,
         country: this.countrySelected.country,
-        flow: this.flowSelected.id,
+        flow: this.flowSelected.id
       })
       .then(() => {
         this.chartData = {};
@@ -242,7 +242,7 @@ export default {
         this.chartData.labels = this.labelPeriod;
         this.getDataStore();
       });
-  },
+  }
 };
 </script>
 <style>

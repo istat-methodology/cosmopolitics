@@ -38,7 +38,7 @@ export default {
         chartData.datasets.push({
           label: dataType,
           fill: false,
-          backgroundColor: function (context) {
+          backgroundColor: function(context) {
             var index = context.dataIndex;
             var value = context.dataset.data[index];
             if (value) {
@@ -60,7 +60,7 @@ export default {
       return chartData;
     },
     getTimeseriesMean(data) {
-      var m = 0;      
+      var m = 0;
       m = d3.mean(data["series"]);
       return m.toFixed(2);
     },
@@ -71,7 +71,7 @@ export default {
     },
     getDate(data) {
       var arr = [];
-      data.forEach((element) => {
+      data.forEach(element => {
         var dt = new Date(element);
         var longYear = dt.toLocaleDateString("en", {
           year: "numeric"
@@ -118,12 +118,14 @@ export default {
     emptyChart() {
       var chartData = {};
       chartData.labels = "";
-      chartData.datasets = [{
-        label: "",
-        backgroundColor: "",
-        borderColor: "",
-        data: []
-      }];
+      chartData.datasets = [
+        {
+          label: "",
+          backgroundColor: "",
+          borderColor: "",
+          data: []
+        }
+      ];
       chartData.options = {
         legend: {
           display: false
@@ -147,7 +149,8 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [{
+                data: [
+                  {
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -169,7 +172,8 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [{
+                data: [
+                  {
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -191,7 +195,8 @@ export default {
                   fill: false,
                   backgroundColor: "blue",
                   borderColor: "blue",
-                  data: [{
+                  data: [
+                    {
                       x: index,
                       y: 0
                     },
