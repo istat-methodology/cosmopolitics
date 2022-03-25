@@ -124,22 +124,22 @@ export default {
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
   data: () => ({
     chartData: null,
-    productSelected: { id: 999, dataname: "All categories" },
+    productSelected: { id: 9999, dataname: "All categories" },
     varTypeSelected: {
       id: 1,
-      descr: "in treated value"
+      descr: "in treated value",
     },
     countrySelected: {
       country: "IT",
-      name: "Italy"
+      name: "Italy",
     },
     flowSelected: {
       id: 1,
-      descr: "Import"
+      descr: "Import",
     },
     spinner: false,
     labelPeriod: [],
-    isModalHelp: false
+    isModalHelp: false,
   }),
   computed: {
     ...mapGetters("classification", ["varType", "countries", "flows"]),
@@ -152,44 +152,53 @@ export default {
           this.charts.data.forEach((element, index) => {
             products.push({
               id: index,
-              dataname: element.dataname
+              dataname: element.dataname,
             });
           });
-          products.push({ id: 99999, dataname: "All products" });
+          products.push({ id: 9999, dataname: "All products" });
         }
       }
       return products;
-    }
+    },
   },
   methods: {
     helpOn(showModal) {
       this.isModalHelp = showModal;
     },
     handleSubmit() {
-      if (this.countrySelected && this.flowSelected) {
+
+      
+
+      if (this.varTypeSelected && this.countrySelected && this.flowSelected) {
         this.$store.dispatch("trade/findByName", {
           type: this.varTypeSelected.id,
           country: this.countrySelected.country,
-          flow: this.flowSelected.id
+          flow: this.flowSelected.id,
         });
+        this.getDataStore();
       }
+      
       this.chartData = {};
       this.chartData.datasets = [];
       this.chartData.labels = this.labelPeriod;
-
-      this.productSelected.forEach(element => {
-        if (element.id == 99999) {
-          this.charts.data.forEach(element => {
-            this.buildChartObject(element.dataname, element.value);
-          });
-        } else {
-          this.buildChartObject(
-            this.charts.data[element.id].dataname,
-            this.charts.data[element.id].value
-          );
-        }
-      });
+      
+      if (this.productSelected.id == 9999) {
+        this.getDataStore();
+      } else {
+        this.productSelected.forEach((product) => {
+          if (product.id == 9999) {
+            this.getDataStore();
+          } else {
+            this.buildChartObject( this.charts.data[product.id].dataname, this.charts.data[product.id].value );
+          }
+        });
+      }
       this.clearColor();
+    },
+    getDataStore() {
+      this.charts.data.forEach((element) => {
+        this.buildChartObject(element.dataname, element.value);
+      });
     },
     buildChartObject(description, value) {
       const color = this.getColor();
@@ -200,11 +209,11 @@ export default {
         borderColor: color.border,
         data: value,
         showLine: true,
-        pointRadius: 2
+        pointRadius: 2,
       });
     },
     setProducts() {
-      this.$emit(this.$refs.prod, { id: 999, dataname: "All categories" });
+      this.$emit(this.$refs.prod, { id: 9999, dataname: "All categories" });
     },
     getData(data, id) {
       if (data != null) {
@@ -214,7 +223,7 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    }
+    },
   },
   created() {
     for (const period of this.tradePeriod) {
@@ -225,17 +234,15 @@ export default {
       .dispatch("trade/findByName", {
         type: this.varTypeSelected.id,
         country: this.countrySelected.country,
-        flow: this.flowSelected.id
+        flow: this.flowSelected.id,
       })
       .then(() => {
         this.chartData = {};
         this.chartData.datasets = [];
         this.chartData.labels = this.labelPeriod;
-        this.charts.data.forEach(element => {
-          this.buildChartObject(element.dataname, element.value);
-        });
+        this.getDataStore();
       });
-  }
+  },
 };
 </script>
 <style>
