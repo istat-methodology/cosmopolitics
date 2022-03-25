@@ -71,7 +71,7 @@ export default {
     },
     getDate(data) {
       var arr = [];
-      data.forEach((element, index) => {
+      data.forEach((element) => {
         var dt = new Date(element);
         var longYear = dt.toLocaleDateString("en", {
           year: "numeric"
@@ -79,7 +79,6 @@ export default {
         var shortMonth = dt.toLocaleString("en-US", {
           month: "short"
         });
-        console.log(index);
         arr.push(shortMonth + "-" + longYear);
       });
       return arr;
