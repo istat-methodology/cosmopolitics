@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 export default {
   data: () => ({
     diagNormMag: ""
@@ -9,6 +10,8 @@ export default {
           data["diagMain"],
           dataType
         );
+        this.mean = this.getTimeseriesMean(data["diagMain"]);
+        this.variance = this.getTimeseriesVariance(data["diagMain"]);
       } else {
         this.chartDataDiagMain = null;
       }
@@ -35,7 +38,7 @@ export default {
         chartData.datasets.push({
           label: dataType,
           fill: false,
-          backgroundColor: function(context) {
+          backgroundColor: function (context) {
             var index = context.dataIndex;
             var value = context.dataset.data[index];
             if (value) {
@@ -55,6 +58,12 @@ export default {
         });
       }
       return chartData;
+    },
+    getTimeseriesMean(data) {
+      return d3.mean(data["series"]);
+    },
+    getTimeseriesVariance(data) {      
+      return d3.variance(data["series"]);
     },
     getDate(data) {
       var arr = [];
@@ -106,14 +115,12 @@ export default {
     emptyChart() {
       var chartData = {};
       chartData.labels = "";
-      chartData.datasets = [
-        {
-          label: "",
-          backgroundColor: "",
-          borderColor: "",
-          data: []
-        }
-      ];
+      chartData.datasets = [{
+        label: "",
+        backgroundColor: "",
+        borderColor: "",
+        data: []
+      }];
       chartData.options = {
         legend: {
           display: false
@@ -137,8 +144,7 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [
-                  {
+                data: [{
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -160,8 +166,7 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [
-                  {
+                data: [{
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -183,8 +188,7 @@ export default {
                   fill: false,
                   backgroundColor: "blue",
                   borderColor: "blue",
-                  data: [
-                    {
+                  data: [{
                       x: index,
                       y: 0
                     },

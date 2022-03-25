@@ -23,8 +23,11 @@ NSTR_TRIM_FILE="data/tr_extra_ue_trim.csv"
 
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
-logging.config.fileConfig('./logging.conf')
-logger = logging.getLogger('graphLog')
+#logging.config.fileConfig('./logging.conf')
+#logger = logging.getLogger('graphLog')
+logging.basicConfig(level=logging.INFO,
+    format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S')
 
 
 
@@ -33,23 +36,27 @@ def load_cpa_trim():
     def funcTrim(x):
         return np.int32(x.replace("T","0"))
 
+    logging.info("### load_CPA_trim START")
     df=pd.read_csv(CPA_TRIM_FILE,low_memory=False,converters={'trimestre': funcTrim},dtype={"cpa": object,"FLOW":np.int8} )
     df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","cpa","trimestre","val_cpa"]]
     df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","PERIOD","VALUE_IN_EUROS"]
     df=df[df.PRODUCT.apply(lambda x : len(x.strip())==PROD_DIGITS)]
+    logging.info("### load_CPA_trim END")
     return df
 
 
 def load_NSTR_trim():
     def funcTrim(x):
         return np.int32(x.replace("T","0"))
-
+   
+    logging.info("### load_NSTR_trim START..") 
     df=pd.read_csv(NSTR_TRIM_FILE,low_memory=False,converters={'TRIMESTRE': funcTrim},dtype={"PRODUCT_NSTR": object,"FLOW":np.int8} )
     print("************",df.columns)
     
     df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT_NSTR","TRANSPORT_MODE","TRIMESTRE","VALUE_IN_EUROS"]]
     df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","TRANSPORT_MODE","PERIOD","VALUE_IN_EUROS"]
     df=df[df.PRODUCT.apply(lambda x : len(x.strip())==PROD_DIGITS)]
+    logging.info("### load_NSTR_trim END") 
     return df
 
 
@@ -64,6 +71,7 @@ def load_files_available():
     #print(list(df["PERIOD"].unique()))
     #print (df.shape)
     #print(df.info())
+    logging.info("### load_files_available EXTRA_FILE END") 
     return df
 
     # legge i file disponibili nella cartella data_avilable
@@ -92,6 +100,7 @@ def load_files_available():
     
 
 def load_file_intraEU(): 
+    logging.info("###  load_file_intraEU START...")
     #df_transportIntra=pd.read_csv(INTRA_FILE,low_memory=False,dtype={"PRODUCT": object, "DECLARANT_ISO": object, "PARTNER_ISO": object,"FLOW":np.int8,"PERIOD":np.int16,"VALUE_IN_EUROS":np.int64} )
     df_transportIntra=pd.read_csv(INTRA_FILE,low_memory=False,dtype={"PRODUCT": object,"FLOW":np.int8,"PERIOD":np.int32,"TRANSPORT_MODE":np.int8} )
     '''
@@ -108,6 +117,7 @@ def load_file_intraEU():
     #print(list(df_transportIntra["PERIOD"].unique()))
     #print (df_transportIntra.shape)
     #print(df_transportIntra.info())
+    logging.info("###  load_file_intraEU END")
     return df_transportIntra
 
 def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport_estrazione):
@@ -592,10 +602,11 @@ def refreshdata():
         df_trimNSTR = load_NSTR_trim()
         
         return str(' data refreshed')
-    except:
+    except BaseException as e:
+        repo="ERROR load file  " + str(e)
         #print("#############   FILE NON TROVATI")
-        logging.info("### Files non trovati ")  
-        return str('### Files non trovati')
+        logging.info(repo)  
+        return str(repo)
 
 
 @app.route('/hello')
