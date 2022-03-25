@@ -64,7 +64,6 @@
       :showModal="scenarioModal"
       :data="selectedNodesTable"
       :fields="scenarioFields"
-      :sorterValue="sorterValue"
       :displayTransport="displayTransport"
       :selectedTransports="localTransports"
       :selectedScenarioTransports="scenarioTransports"
@@ -77,6 +76,7 @@
 </template>
 <script>
 import { Network } from "vue-visjs";
+import { getTransportIds } from "@/common";
 import visMixin from "@/components/mixins/graph.mixin";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
@@ -102,7 +102,7 @@ export default {
       { key: "destination", _style: "width:35%" },
       { key: "percentage", _style: "width:30%" }
     ],
-    sorterValue: { column: "percentage", asc: false }
+    sorterValue: { column: "percentage", asc: false },
   }),
   props: {
     nodes: {
@@ -192,16 +192,16 @@ export default {
       const nodeId = event.node;
       this.nodeMetric = this.getCentrality(this.nodes, nodeId, this.metrics);
     },
-    applyConstraints(transportConstraint) {
+    applyConstraints() {
       const constraints = [];
       this.selectedEdges.forEach(edge => {
         constraints.push({
           from: this.getNode(this.nodes, edge.from).label,
           to: this.getNode(this.nodes, edge.to).label,
-          exclude: this.getIds(transportConstraint)
+          exclude: getTransportIds(this.localTransports)
         });
       });
-      this.$emit("constraints", {
+      this.$emit("applyConstraints", {
         pos: { nodes: this.nodes },
         selezioneMezziEdges: constraints
       });

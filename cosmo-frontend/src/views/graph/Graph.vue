@@ -11,6 +11,7 @@
               :spinner="spinner"
               :displayTransport="!isIntra"
               :transports="selectedTransports"
+              @applyConstraints="handleApplyConstraints"
               @showinfo="showMainModal"
             >
               <cosmo-slider
@@ -146,6 +147,14 @@ export default {
       this.selectedPeriod = this.isTrimester
         ? { id: "202001", selectName: "1Q 20" }
         : { id: "202003", selectName: "Mar 20" };
+    },
+    handleApplyConstraints(constraints) {
+      //console.log(constraints);
+      if (this.graphForm) {
+        this.graphForm.pos = { nodes: this.nodes };
+        this.graphForm.selezioneMezziEdges = constraints;
+        this.requestToServer();
+      }
     },
     handlePeriodChange(period) {
       this.selectedPeriod = period;

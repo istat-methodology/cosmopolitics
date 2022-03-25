@@ -156,7 +156,7 @@ export default {
       this.$emit("closeModal");
     },
     applyConstraints() {
-      this.$emit("applyConstraints", {});
+      this.$emit("applyConstraints");
     }
   }
 };
