@@ -89,6 +89,6 @@ export function getCleanTransports(selectedTransports, transports) {
 
 export function getTransportIds(transports) {
   var ids = [];
-  transports.forEach(tr => ids.push(tr.id));
+  if (transports) transports.forEach(tr => ids.push(tr.id));
   return ids;
 }

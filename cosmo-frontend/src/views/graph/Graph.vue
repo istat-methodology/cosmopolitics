@@ -81,7 +81,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { Context, Status } from "@/common";
+import { Context, Status, getScenarioNodes } from "@/common";
 import Slider from "@/components/Slider";
 import GraphVis from "@/views/graph/GraphVis";
 import GraphForm from "@/views/graph/GraphForm";
@@ -151,7 +151,7 @@ export default {
     handleApplyConstraints(constraints) {
       //console.log(constraints);
       if (this.graphForm) {
-        this.graphForm.pos = { nodes: this.nodes };
+        this.graphForm.pos = { nodes: getScenarioNodes(this.nodes) };
         this.graphForm.selezioneMezziEdges = constraints;
         this.requestToServer();
       }

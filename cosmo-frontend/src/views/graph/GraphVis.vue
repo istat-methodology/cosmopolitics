@@ -44,7 +44,7 @@
         </div>
       </CCardHeader>
       <CCardBody class="card-no-border">
-        <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
+        <tile v-if="this.spinner" color="#321fdb"></tile>
         <network
           id="graph"
           class="network"
@@ -68,28 +68,31 @@
       :selectedTransports="localTransports"
       :selectedScenarioTransports="scenarioTransports"
       @closeModal="closeModal"
-      @updateTransports="manageUpdateTransports"
-      @updateScenarioTransports="manageScenarioTransports"
+      @updateTransports="handleUpdateTransports"
+      @updateScenarioTransports="handleScenarioTransports"
       @applyConstraints="applyConstraints"
     />
   </div>
 </template>
 <script>
 import { Network } from "vue-visjs";
-import { getTransportIds } from "@/common";
-import visMixin from "@/components/mixins/graph.mixin";
-import spinnerMixin from "@/components/mixins/spinner.mixin";
+import {
+  options,
+  getNode,
+  getEdge,
+  getCentrality,
+  getTransportIds
+} from "@/common";
 import exporter from "@/components/Exporter";
 import GraphScenario from "@/views/graph/GraphScenario";
 
 export default {
   name: "GraphVis",
   components: { Network, exporter, "cosmo-scenario": GraphScenario },
-  mixins: [visMixin, spinnerMixin],
   data: () => ({
+    options: { ...options },
     nodeMetric: null,
     selectedEdges: [],
-    selectedNodes: [],
     selectedNodesTable: [],
     //Make a local copy of transports for cosmo-scenario
     localTransports: [],
@@ -102,7 +105,7 @@ export default {
       { key: "destination", _style: "width:35%" },
       { key: "percentage", _style: "width:30%" }
     ],
-    sorterValue: { column: "percentage", asc: false },
+    sorterValue: { column: "percentage", asc: false }
   }),
   props: {
     nodes: {
@@ -136,42 +139,29 @@ export default {
     }
   },
   methods: {
-    showInfo() {
-      this.$emit("showinfo");
-    },
-    closeModal() {
-      //Clear selected scenarios
-      this.scenarioTransports = [];
-      this.scenarioModal = false;
-    },
-    manageUpdateTransports(trs) {
+    handleUpdateTransports(trs) {
       this.localTransports = trs;
     },
-    manageScenarioTransports(trs) {
+    handleScenarioTransports(trs) {
       this.scenarioTransports = trs;
     },
     handleSelectEdge(selectedGraph) {
       this.selectedEdges = [];
-      this.selectedNodes = [];
       this.selectedNodesTable = [];
 
       //Compute total weight
       var sumOfSelectedEdge = 0;
       selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = this.getEdge(this.edges, edgeId);
+        const selectedEdge = getEdge(this.edges, edgeId);
         sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
       });
 
       selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = this.getEdge(this.edges, edgeId);
-        const sourceNode = this.getNode(this.nodes, selectedEdge.from);
-        const destinationNode = this.getNode(this.nodes, selectedEdge.to);
+        const selectedEdge = getEdge(this.edges, edgeId);
+        const sourceNode = getNode(this.nodes, selectedEdge.from);
+        const destinationNode = getNode(this.nodes, selectedEdge.to);
 
         this.selectedEdges.push(selectedEdge);
-        this.selectedNodes.push({
-          source: sourceNode,
-          destination: destinationNode
-        });
 
         var percentageFormatted =
           (selectedEdge.weight / sumOfSelectedEdge) * 100;
@@ -190,22 +180,27 @@ export default {
     },
     handleOverNode(event) {
       const nodeId = event.node;
-      this.nodeMetric = this.getCentrality(this.nodes, nodeId, this.metrics);
+      this.nodeMetric = getCentrality(this.nodes, nodeId, this.metrics);
     },
     applyConstraints() {
       const constraints = [];
       this.selectedEdges.forEach(edge => {
         constraints.push({
-          from: this.getNode(this.nodes, edge.from).label,
-          to: this.getNode(this.nodes, edge.to).label,
+          from: getNode(this.nodes, edge.from).label,
+          to: getNode(this.nodes, edge.to).label,
           exclude: getTransportIds(this.localTransports)
         });
       });
-      this.$emit("applyConstraints", {
-        pos: { nodes: this.nodes },
-        selezioneMezziEdges: constraints
-      });
+      this.$emit("applyConstraints", constraints);
       this.closeModal();
+    },
+    showInfo() {
+      this.$emit("showinfo");
+    },
+    closeModal() {
+      //Clear selected scenario transports
+      this.scenarioTransports = [];
+      this.scenarioModal = false;
     },
     getData(id) {
       var nodes = [];
