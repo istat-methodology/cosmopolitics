@@ -170,8 +170,8 @@ export default {
         var weightFormatted = selectedEdge.weight;
 
         this.selectedNodesTable.push({
-          source: sourceNode.label,
-          destination: destinationNode.label,
+          source: sourceNode.name,
+          destination: destinationNode.name,
           total: weightFormatted.toLocaleString("en-US"),
           percentage: percentageFormatted.toFixed(2) + "%"
         });

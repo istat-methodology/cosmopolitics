@@ -1,6 +1,6 @@
 <template>
   <CModal
-    :title="$t('graph.scenario.title')"
+    :title="$t('graph.scenario.main')"
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
@@ -16,8 +16,21 @@
       hover
       pagination
     />
+    <div class="scenario-analysis">
+      {{ $t("graph.scenario.title") }}
+      <span class="float-right">
+        <CSwitch
+          color="primary"
+          size="sm"
+          labelOn="✓"
+          labelOff="X"
+          :checked="showScenario"
+          @update:checked="toggleScenario"
+        />
+      </span>
+    </div>
     <!-- Drag'n drop -->
-    <div v-if="displayTransport">
+    <div v-if="showScenario && displayTransport">
       <div class="row constraint-container">
         <div class="col-left constraint-left">
           {{ $t("graph.scenario.transports_selected") }}
@@ -69,7 +82,8 @@
     </div>
     <template #footer>
       <CButton
-        color="primary"
+        v-if="showScenario"
+        color="danger"
         shape="square"
         size="sm"
         @click="applyConstraints"
@@ -84,6 +98,9 @@
 <script>
 export default {
   name: "GraphScenario",
+  data: () => ({
+    showScenario: false
+  }),
   props: {
     showModal: {
       type: Boolean,
@@ -133,6 +150,9 @@ export default {
     }
   },
   methods: {
+    toggleScenario() {
+      this.showScenario = !this.showScenario;
+    },
     startDrag(event, item) {
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
@@ -156,22 +176,27 @@ export default {
       this.$emit("closeModal");
     },
     applyConstraints() {
+      this.showScenario = false;
       this.$emit("applyConstraints");
     }
   }
 };
 </script>
 <style scoped>
-.constraint-container {
+.scenario-analysis {
+  font-weight: 500;
+  font-size: 16px;
+  padding: 1rem 0.4rem 0rem 0.4rem;
+  color: #321fdb;
   border-top: 1px solid #d8dbe0;
 }
 .constraint-left {
-  padding: 0.6rem 1.6rem;
+  padding: 0.8rem 0rem 0.4rem 0.2rem;
   font-weight: 500;
   margin-top: 0.6rem;
 }
 .constraint-right {
-  padding: 0.6rem 0.2rem;
+  padding: 0.8rem 0rem 0.4rem 1.4rem;
   font-weight: 500;
   margin-top: 0.6rem;
 }

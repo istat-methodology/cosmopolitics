@@ -104,12 +104,14 @@
       }
     },
     "scenario":{
-      "title": "Scenario analysis",
-      "transports_selected":"Selected transports",
-      "transports_scenario":"Transports to be removed",
+      "main": "Trade relazions",
+      "title": "Would you like to perform scenario analysis?",
+      "transports_selected":"Transports included",
+      "transports_scenario":"Transports to be ignored",
       "success": "The graph has been modified according to the new constraints"
     },
     "message":{
+      "scenario": "Scenario analysis successfully performed!",
       "graph_wide": "Warning N.05: Graph is too wide  \n Decrease the treshold or change means of transport",
       "graph_empty": "Warning N.06 Graph empty \n Increase the treshold or change means of transport"
     },

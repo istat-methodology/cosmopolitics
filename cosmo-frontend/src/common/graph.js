@@ -274,13 +274,14 @@ export function getEdge(edges, edgeId) {
   return selectedEdge ? selectedEdge : null;
 }
 
-export function getUInodes(nodes) {
+export function getUInodes(nodes, countries) {
   var uiNodes = [];
   if (nodes)
     nodes.forEach(node => {
       uiNodes.push({
         id: node.id,
         label: node.label,
+        name: getCountryName(countries, node.label),
         x: node.x * 314,
         y: node.y * 314,
         shape: "image",
@@ -337,4 +338,9 @@ export function buildMetrics(data) {
       });
     });
   return metrics;
+}
+
+export function getCountryName(countries, id) {
+  var cntr = countries.find(country => country.id == id);
+  return cntr ? cntr.descr : "";
 }

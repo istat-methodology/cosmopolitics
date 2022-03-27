@@ -188,7 +188,6 @@ const getters = {
   productPlus: state => {
     return state.productPlus;
   },
-
   productsCPA: state => {
     return state.productsCPA;
   },
@@ -196,7 +195,6 @@ const getters = {
   productsIntra: state => {
     return state.productsIntra;
   },
-
   //graph extra
   productsExtra: state => {
     return state.productsExtra;
@@ -215,7 +213,6 @@ const getters = {
   varType: state => {
     return state.varType;
   },
-
   weights: state => {
     return state.weights;
   },
@@ -228,12 +225,6 @@ const getters = {
   timeNext: state => {
     return state.timeNext;
   }
-  /*,
-
-  timeTrade: state => {
-    return state.timeTrade;
-  }
-  */
 };
 export const classification = {
   namespaced: true,

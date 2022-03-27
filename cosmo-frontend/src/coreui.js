@@ -37,7 +37,8 @@ import {
   CTabs,
   CInputCheckbox,
   CListGroup,
-  CListGroupItem
+  CListGroupItem,
+  CSwitch
 } from "@coreui/vue";
 
 Vue.component("CContainer", CContainer);
@@ -77,3 +78,4 @@ Vue.component("CTabs", CTabs);
 Vue.component("CInputCheckbox", CInputCheckbox);
 Vue.component("CListGroup", CListGroup);
 Vue.component("CListGroupItem", CListGroupItem);
+Vue.component("CSwitch", CSwitch);

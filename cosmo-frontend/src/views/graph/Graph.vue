@@ -150,6 +150,7 @@ export default {
     },
     handleApplyConstraints(constraints) {
       //console.log(constraints);
+      this.$store.dispatch("message/info", this.$t("graph.message.scenario"));
       if (this.graphForm) {
         this.graphForm.pos = { nodes: getScenarioNodes(this.nodes) };
         this.graphForm.selezioneMezziEdges = constraints;

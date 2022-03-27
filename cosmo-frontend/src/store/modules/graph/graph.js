@@ -48,9 +48,9 @@ const actions = {
         console.log(err);
       });
   },
-  store({ commit }, data) {
+  store({ commit, rootGetters }, data) {
     if (data["STATUS"] == undefined) {
-      commit("SET_NODES", getUInodes(data.nodes));
+      commit("SET_NODES", getUInodes(data.nodes, rootGetters["classification/partners"]));
       commit("SET_EDGES", data.edges);
       commit("SET_METRICS", data.metriche);
       commit("SET_METRICS_TABLE", buildMetrics(data));

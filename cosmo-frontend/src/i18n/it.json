@@ -103,12 +103,14 @@
       }
     },
     "scenario":{
-      "title": "Analisi di scenario",
-      "transports_selected":"Trasporti selezionati",
-      "transports_scenario":"Trasporti da rimuovere",
+      "main": "Informazioni di dettaglio",
+      "title": "Vuoi effettuare l'analisi di scenario?",
+      "transports_selected":"Trasporti da includere",
+      "transports_scenario":"Trasporti da ignorare",
       "success": "Il grafo è stato modificato coerentemente con i vincoli"
     },
     "message":{
+      "scenario": "Analisi di scenario effettuata con successo!",
       "graph_wide": "Warning N.05: Grafo troppo ampio  \n Ridurre la soglia o cambiare i mezzi di trasporto",
       "graph_empty": "Warning N.06 Graph vuoto \n Ridurre la soglia o cambiare i mezzi di trasporto"
     },
