@@ -50,10 +50,16 @@ const actions = {
   },
   store({ commit, rootGetters }, data) {
     if (data["STATUS"] == undefined) {
-      commit("SET_NODES", getUInodes(data.nodes, rootGetters["classification/partners"]));
+      commit(
+        "SET_NODES",
+        getUInodes(data.nodes, rootGetters["classification/partners"])
+      );
       commit("SET_EDGES", data.edges);
       commit("SET_METRICS", data.metriche);
-      commit("SET_METRICS_TABLE", buildMetrics(data));
+      commit(
+        "SET_METRICS_TABLE",
+        buildMetrics(data, rootGetters["classification/partners"])
+      );
     }
     return data["STATUS"] == undefined ? "00" : data["STATUS"];
   }

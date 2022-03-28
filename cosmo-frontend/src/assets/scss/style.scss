@@ -53,6 +53,9 @@ button:focus {
   border-top: none;
   border-bottom: none;
 }
+.table-hover tbody tr:hover {
+  background-color: #f6f6f6;
+}
 
 .section-link {
   margin-top: 15px;

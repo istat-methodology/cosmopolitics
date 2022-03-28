@@ -323,12 +323,13 @@ export function getCentrality(nodes, nodeId, metrics) {
   return nodeMetric;
 }
 
-export function buildMetrics(data) {
+export function buildMetrics(data, countries) {
   var metrics = [];
   if (data && data.nodes)
     data.nodes.forEach(node => {
       metrics.push({
         label: node.label,
+        name: getCountryName(countries, node.label),
         centrality: data.metriche.degree_centrality[node.label].toPrecision(2),
         vulnerability: data.metriche.vulnerability[node.label].toPrecision(2),
         hubness: data.metriche.hubness[node.label].toPrecision(2),

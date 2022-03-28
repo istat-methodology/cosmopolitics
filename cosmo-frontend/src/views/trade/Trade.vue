@@ -75,7 +75,6 @@
           <label v-if="products" class="card-label mt-3">
             {{ $t("trade.form.fields.products") }}
           </label>
-
           <v-select
             v-if="products"
             label="dataname"
@@ -123,7 +122,7 @@ export default {
   components: { LineChart, exporter },
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
   data: () => ({
-    chartData: null,
+    //Form (default values)
     productSelected: { id: 9999, dataname: "All categories" },
     varTypeSelected: {
       id: 1,
@@ -137,8 +136,11 @@ export default {
       id: 1,
       descr: "Import"
     },
-    spinner: false,
+    //Chart
+    chartData: null,
     labelPeriod: [],
+    //Spinner
+    spinner: false,
     isModalHelp: false
   }),
   computed: {
@@ -147,16 +149,14 @@ export default {
     ...mapGetters("metadata", ["tradePeriod"]),
     products() {
       var products = [];
-      if (this.tradePeriod) {
-        if (this.charts) {
-          this.charts.data.forEach((element, index) => {
-            products.push({
-              id: index,
-              dataname: element.dataname
-            });
+      if (this.tradePeriod && this.charts) {
+        this.charts.data.forEach((element, index) => {
+          products.push({
+            id: index,
+            dataname: element.dataname
           });
-          products.push({ id: 9999, dataname: "All products" });
-        }
+        });
+        products.push({ id: 9999, dataname: "All products" });
       }
       return products;
     }

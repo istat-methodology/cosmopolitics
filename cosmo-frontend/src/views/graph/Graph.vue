@@ -46,36 +46,13 @@
         />
       </div>
     </div>
-    <CModal
-      :title="
-        isMainModal
-          ? $t('graph.modal.main.title')
-          : $t('graph.modal.filter.title')
-      "
-      :show.sync="isHelpModal"
-      size="lg"
-    >
-      <p
-        v-html="
-          isMainModal
-            ? $t('graph.modal.main.subtitle') +
-              $t('graph.modal.main.body') +
-              $t('graph.modal.metrics.subtitle') +
-              $t('graph.modal.metrics.body') +
-              $t('graph.modal.metrics.keywords')
-            : $t('graph.modal.filter.body') + $t('graph.modal.filter.keywords')
-        "
-      ></p>
-      <template #footer>
-        <CButton
-          color="primary"
-          shape="square"
-          size="sm"
-          @click="isHelpModal = false"
-          >{{ $t("common.close") }}</CButton
-        >
-      </template>
-    </CModal>
+    <cosmo-info-modal
+      :isHelp="isHelpModal"
+      :isMain="isMainModal"
+      @showInfo="showInfoModal"
+      @showMain="showMainModal"
+      @closeModal="closeModal"
+    />
   </div>
 </template>
 
@@ -86,14 +63,16 @@ import Slider from "@/components/Slider";
 import GraphVis from "@/views/graph/GraphVis";
 import GraphForm from "@/views/graph/GraphForm";
 import GraphTable from "@/views/graph/GraphTable";
+import GraphInfoModal from "@/views/graph/GraphInfoModal";
 
 export default {
-  name: "GraphExtraUe",
+  name: "Graph",
   components: {
     "cosmo-slider": Slider,
     "cosmo-graph": GraphVis,
     "cosmo-form": GraphForm,
-    "cosmo-table": GraphTable
+    "cosmo-table": GraphTable,
+    "cosmo-info-modal": GraphInfoModal
   },
   props: {
     isIntra: {
@@ -109,7 +88,7 @@ export default {
     graphForm: null,
     //Metrics table
     metricsFields: [
-      { key: "label", _style: "width:20%" },
+      { key: "name", _style: "width:20%" },
       { key: "exportStrenght", _style: "width:20%" },
       { key: "centrality", _style: "width:20%" },
       { key: "hubness", _style: "width:20%" },
@@ -148,19 +127,19 @@ export default {
         ? { id: "202001", selectName: "1Q 20" }
         : { id: "202003", selectName: "Mar 20" };
     },
+    handlePeriodChange(period) {
+      this.selectedPeriod = period;
+      if (this.graphForm) {
+        this.graphForm.tg_period = this.selectedPeriod.id;
+        this.requestToServer();
+      }
+    },
     handleApplyConstraints(constraints) {
       //console.log(constraints);
       this.$store.dispatch("message/info", this.$t("graph.message.scenario"));
       if (this.graphForm) {
         this.graphForm.pos = { nodes: getScenarioNodes(this.nodes) };
         this.graphForm.selezioneMezziEdges = constraints;
-        this.requestToServer();
-      }
-    },
-    handlePeriodChange(period) {
-      this.selectedPeriod = period;
-      if (this.graphForm) {
-        this.graphForm.tg_period = this.selectedPeriod.id;
         this.requestToServer();
       }
     },
@@ -212,6 +191,10 @@ export default {
     showInfoModal() {
       this.isMainModal = false;
       this.isHelpModal = true;
+    },
+    closeModal() {
+      this.isMainModal = false;
+      this.isHelpModal = false;
     },
     spinnerStart(bool) {
       this.spinner = bool;

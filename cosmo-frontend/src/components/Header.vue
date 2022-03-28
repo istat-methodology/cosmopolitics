@@ -87,9 +87,6 @@ export default {
   },
   computed: {
     ...mapGetters("auth", ["isAuthenticated"]),
-    /*
-    "lastLoadedData": "09-02-2022, 13:52:50",  
-    */
     ...mapGetters("metadata", ["lastLoadedData"])
   },
   methods: {
