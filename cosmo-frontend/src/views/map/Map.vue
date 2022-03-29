@@ -17,7 +17,7 @@
             <l-tile-layer :url="url" :attribution="attribution" />
             <l-geo-json
               v-if="geoJson"
-              :visible="isFeature"
+              :visible="!isFeature"
               :geojson="geoJson"
               :options="options"
               :options-style="styleFunction"
@@ -31,7 +31,7 @@
                 marker.coordinates.latitude,
                 marker.coordinates.longitude
               ]"
-              :visible="!isMarker"
+              :visible="isMarker"
               :fillOpacity="0.65"
               :radius="getRadius(marker.series)"
               :color="getColor(marker.series, markerMin, markerMax)"
@@ -208,7 +208,7 @@ export default {
         }
       }
     },
-    btnFeatureMarker: "F",
+    btnFeatureMarker: "M",
 
     isMarker: false,
     isFeature: false,
