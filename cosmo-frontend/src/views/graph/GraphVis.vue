@@ -81,7 +81,7 @@ import {
   getNode,
   getEdge,
   getCentrality,
-  getTransportIds
+  getTransportDifference
 } from "@/common";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
@@ -190,7 +190,9 @@ export default {
         constraints.push({
           from: getNode(this.nodes, edge.from).label,
           to: getNode(this.nodes, edge.to).label,
-          exclude: getTransportIds(this.localTransports)
+          exclude: this.displayTransport
+            ? getTransportDifference(this.transports, this.scenarioTransports)
+            : "-99"
         });
       });
       this.$emit("applyConstraints", constraints);

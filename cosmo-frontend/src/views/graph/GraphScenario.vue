@@ -160,17 +160,15 @@ export default {
     },
     onDropTransports(event) {
       const itemId = event.dataTransfer.getData("ItemId");
-      const transport = this.scenarioTransports.find(tr => tr.id == itemId);
       this.scenarioTransports = this.scenarioTransports.filter(
         tr => tr.id != itemId
       );
-      this.transports.push(transport);
     },
     onDropScenario(event) {
       const itemId = event.dataTransfer.getData("ItemId");
       const transport = this.transports.find(tr => tr.id == itemId);
-      this.transports = this.transports.filter(tr => tr.id != itemId);
-      this.scenarioTransports.push(transport);
+      if (!this.scenarioTransports.find(tr => tr.id == transport.id))
+        this.scenarioTransports.push(transport);
     },
     closeModal() {
       this.$emit("closeModal");

@@ -86,9 +86,3 @@ export function getCleanTransports(selectedTransports, transports) {
     ? transports.filter(tr => tr.id != 99) //remove all from the list of transports
     : selectedTransports;
 }
-
-export function getTransportIds(transports) {
-  var ids = [];
-  if (transports) transports.forEach(tr => ids.push(tr.id));
-  return ids;
-}

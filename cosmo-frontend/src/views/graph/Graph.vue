@@ -131,6 +131,7 @@ export default {
       this.selectedPeriod = period;
       if (this.graphForm) {
         this.graphForm.tg_period = this.selectedPeriod.id;
+        this.graphForm.pos = { nodes: this.nodes };
         this.requestToServer();
       }
     },

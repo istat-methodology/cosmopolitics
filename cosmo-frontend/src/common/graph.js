@@ -345,3 +345,15 @@ export function getCountryName(countries, id) {
   var cntr = countries.find(country => country.id == id);
   return cntr ? cntr.descr : "";
 }
+
+export function getTransportIds(transports) {
+  var ids = [];
+  if (transports) transports.forEach(tr => ids.push(tr.id));
+  return ids;
+}
+
+export function getTransportDifference(transports, scenarioTransports) {
+  return getTransportIds(
+    transports.filter(tr => !scenarioTransports.find(str => str.id == tr.id))
+  );
+}

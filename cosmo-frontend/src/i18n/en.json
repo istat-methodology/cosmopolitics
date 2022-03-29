@@ -106,8 +106,8 @@
     "scenario":{
       "main": "Trade relazions",
       "title": "Would you like to perform scenario analysis?",
-      "transports_selected":"Transports included",
-      "transports_scenario":"Transports to be ignored",
+      "transports_selected":"Current graph",
+      "transports_scenario":"New scenario",
       "success": "The graph has been modified according to the new constraints"
     },
     "message":{

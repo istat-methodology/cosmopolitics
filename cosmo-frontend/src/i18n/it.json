@@ -105,8 +105,8 @@
     "scenario":{
       "main": "Informazioni di dettaglio",
       "title": "Vuoi effettuare l'analisi di scenario?",
-      "transports_selected":"Trasporti da includere",
-      "transports_scenario":"Trasporti da ignorare",
+      "transports_selected":"Grafo corrente",
+      "transports_scenario":"Nuovo scenario",
       "success": "Il grafo è stato modificato coerentemente con i vincoli"
     },
     "message":{
