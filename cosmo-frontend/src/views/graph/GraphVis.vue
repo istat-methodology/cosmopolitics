@@ -75,13 +75,16 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import { Network } from "vue-visjs";
 import {
   options,
   getNode,
   getEdge,
   getCentrality,
-  getTransportDifference
+  getTransportDifference,
+  scenarioFieldsIt,
+  scenarioFieldsEn
 } from "@/common";
 import spinnerMixin from "@/components/mixins/spinner.mixin";
 import exporter from "@/components/Exporter";
@@ -100,15 +103,21 @@ export default {
     localTransports: [],
     scenarioTransports: [],
     //Scenario modal
+    scenarioFieldsIt: [...scenarioFieldsIt],
+    scenarioFieldsEn: [...scenarioFieldsEn],
     scenarioModal: false,
     //Metrics table
-    scenarioFields: [
-      { key: "source", _style: "width:35%" },
-      { key: "destination", _style: "width:35%" },
-      { key: "percentage", _style: "width:30%" }
-    ],
     sorterValue: { column: "percentage", asc: false }
   }),
+  computed: {
+    ...mapGetters("coreui", ["isItalian"]),
+    scenarioFields() {
+      return this.isItalian ? this.scenarioFieldsIt : this.scenarioFieldsEn;
+    },
+    graphDensity() {
+      return this.metrics ? this.metrics.density.toPrecision(4) : 0;
+    }
+  },
   props: {
     nodes: {
       type: Array,
@@ -133,11 +142,6 @@ export default {
     spinner: {
       type: Boolean,
       default: false
-    }
-  },
-  computed: {
-    graphDensity() {
-      return this.metrics ? this.metrics.density.toPrecision(4) : 0;
     }
   },
   methods: {

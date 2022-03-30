@@ -48,7 +48,6 @@
         $t("graph.form.fields.percentage")
       }}</label>
       <CInput
-        title="this.percentageFilter"
         :placeholder="$t('graph.form.fields.percentage_placeholder')"
         v-model="percentage"
         :class="{

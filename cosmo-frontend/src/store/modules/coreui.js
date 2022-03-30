@@ -12,6 +12,7 @@ const state = {
   isPolicy: false,
   isTrade: false,
   isMobility: false,
+  isItalian: true,
   breadcrumbs: [
     {
       path: "metadata",
@@ -31,6 +32,9 @@ const mutations = {
   },
   SET_LOADING(state, isLoading) {
     state.isLoading = isLoading;
+  },
+  SET_LANGUAGE(state, language) {
+    state.isItalian = language == "it" ? true : false;
   },
   SET_CONTEXT(state, context) {
     state.context = context;
@@ -95,6 +99,9 @@ const actions = {
   clearContext({ commit }) {
     commit("CLEAR_CONTEXT");
   },
+  setLanguage({ commit }, language) {
+    commit("SET_LANGUAGE", language);
+  },
   createBreadcrumbs({ commit }, route) {
     let pathArray = route.path.split("/");
     pathArray.shift();
@@ -134,6 +141,9 @@ const getters = {
   },
   isLoading: state => {
     return state.isLoading;
+  },
+  isItalian: state => {
+    return state.isItalian;
   },
   isHome: state => {
     return state.isHome;

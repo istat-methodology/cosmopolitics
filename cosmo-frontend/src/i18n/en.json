@@ -5,7 +5,7 @@
     "apply":"Update graph!",
     "close": "Close",
     "mandatory": "Mandatory fields",
-    "update": "Data updated on ",
+    "update": "COMEXT data updated on ",
     "footer": {
       "experimental": "Experimental Statistics 2022",
       "coreui": "Powered by"
@@ -124,18 +124,18 @@
     "modal": {
       "main": {
         "title": "International Trade Relations",
-        "subtitle": "<br><b>Graph analysis</b><br>",
+        "subtitle": "<b>Graph analysis</b><br>",
         "body": "The <b>“International Trade Relations”</b> Panel shows the graph analysis of the international trades between countries.<br> Data are relative to all trades between countries present in the <b>COMEXT dataset</b>. The requested data can be selected  through filters. Countries are identified by their flags and their relative positions in the graph are given by the <b>“Spring layout algorithm”</b> implemented in the Network library.",
         "keywords": ""
       },
       "metrics": {
-        "subtitle": "<br><br><b>Metrics</b>",
+        "subtitle": "<br><b>Metrics</b>",
         "body": "<br>The following metrics derive from standard centrality measures of Graph Analysis.<br><ul><li><b>Product spread:</b> Graph density. Represents how much the product is spread through the graph.</li><b>Exportation strength:</b> it is the outdegree centrality for each country.</li><li><b>Vulnerability:</b> it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <li><li><b> Hubness:</b> it is the betweenness centrality of the countries.</li></ul>",
         "keywords": ""
       },
       "filter": {
         "title": "Search filters description",
-        "body": "<br><b>Period:</b> select the required time period for data underlying the graph (specific month or year)<br><b>Percentage:</b> select the percentage of data shown in the graph (integer value from 0 to 100). Once the percentage value is selected the data are filtered according to the following procedure: all the amounts (values in Euro) traded between countries (all edges) are listed in a descending order, then the cumulative sum is calculated along the list, from the top. All the trades associated to a cumulative sum above the percentage value, taken as threshold, are filtered out. This means that small trading amounts are considered in the graph only when “percentage” takes an high value.<br><b>Transport: </b> select data according to the means of transport used in the trades. The listed means of transport are: <br><b>  “unknown”, “sea”, “rail”, “road”, ”air”, “post”, “fixed mechanism”, “inland waterway”, “self-propulsion”.</b><br><b>Product:</b> select data according to the product exchanged in the trades. The user can select either a single product or all of them together.<br><b>Flow:</b> select either “Export” data or “Import” data, coming from two separate datasets.<br><b>Weight:</b> select the type of graph analysis. <b>“True”</b> select the weighted type of graph, <b>“False”</b> select the unweighted type of graph. Values for the links weights are the amounts (values in Euro) exchanged in the trades.",
+        "body": "<b>Period:</b> select the required time period for data underlying the graph (specific month or year)<br><b>Percentage:</b> select the percentage of data shown in the graph (integer value from 0 to 100). Once the percentage value is selected the data are filtered according to the following procedure: all the amounts (values in Euro) traded between countries (all edges) are listed in a descending order, then the cumulative sum is calculated along the list, from the top. All the trades associated to a cumulative sum above the percentage value, taken as threshold, are filtered out. This means that small trading amounts are considered in the graph only when “percentage” takes an high value.<br><b>Transport: </b> select data according to the means of transport used in the trades. The listed means of transport are: <br><b>  “unknown”, “sea”, “rail”, “road”, ”air”, “post”, “fixed mechanism”, “inland waterway”, “self-propulsion”.</b><br><b>Product:</b> select data according to the product exchanged in the trades. The user can select either a single product or all of them together.<br><b>Flow:</b> select either “Export” data or “Import” data, coming from two separate datasets.<br><b>Weight:</b> select the type of graph analysis. <b>“True”</b> select the weighted type of graph, <b>“False”</b> select the unweighted type of graph. Values for the links weights are the amounts (values in Euro) exchanged in the trades.",
         "keywords": ""
       }
     }

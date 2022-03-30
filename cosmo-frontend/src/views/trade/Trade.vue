@@ -101,7 +101,7 @@
       size="lg"
       ><p v-html="$t('trade.modal.main.body')"></p>
       <template #footer>
-        <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
+        <CButton color="primary" shape="square" size="sm" @click="helpOn(false)"
           >Close</CButton
         >
       </template>

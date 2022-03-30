@@ -252,7 +252,7 @@
     >
       <p v-html="$t('timeseries.modal.main.body')"></p>
       <template #footer>
-        <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
+        <CButton color="primary" shape="square" size="sm" @click="helpOn(false)"
           >Close</CButton
         >
       </template>

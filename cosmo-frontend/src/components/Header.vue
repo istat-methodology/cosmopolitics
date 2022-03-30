@@ -15,17 +15,10 @@
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
-        <!-- MANAGE DATE DYNAMICALLY-->
         <span class="px-3"
           ><CIcon name="cil-tags" /> {{ $t("common.update") }}
           {{ lastLoadedData }}</span
         >
-        <!--  cilAsterisk,  cilBell,   cilStar  -->
-        <!--span class="px-3"
-          ><CIcon name="cilBell" /><a href="#" @click="newsOn(true)"
-            >News</a
-          ></span
-        -->
       </CHeaderNavItem>
     </CHeaderNav>
     <CHeaderNav class="mr-lang">
@@ -56,19 +49,6 @@
           >EN</CButton
         >
       </CButtonGroup>
-      <CModal title="News" :show.sync="isModalNews" size="lg"
-        ><p>News</p>
-
-        <template #footer>
-          <CButton
-            color="outline-primary"
-            square
-            size="sm"
-            @click="isModalNews = false"
-            >Close</CButton
-          >
-        </template>
-      </CModal>
     </CHeaderNav>
   </CHeader>
 </template>
@@ -81,8 +61,7 @@ export default {
     return {
       langs: ["it", "en"],
       selectedIt: true,
-      selectedEn: false,
-      isModalNews: false
+      selectedEn: false
     };
   },
   computed: {
@@ -94,9 +73,7 @@ export default {
       this.$i18n.locale = lan;
       this.selectedIt = lan == "it" ? true : false;
       this.selectedEn = lan == "en" ? true : false;
-    },
-    newsOn(showModal) {
-      this.isModalNews = showModal;
+      this.$store.dispatch("coreui/setLanguage", lan);
     }
   }
 };

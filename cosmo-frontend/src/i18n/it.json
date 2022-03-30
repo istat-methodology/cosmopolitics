@@ -5,7 +5,7 @@
     "apply":"Aggiorna il grafo",
     "close": "Chiudi",
     "mandatory": "Campi obbligatori",
-    "update": "Dati aggiornati il ",
+    "update": "Dati COMEXT aggiornati al ",
     "footer": {
       "experimental": "Statistiche sperimentali 2022",
       "coreui": "Con il supporto di"
@@ -123,7 +123,7 @@
     "modal": {
       "main": {
         "title": "Relazioni nel commercio internazionale",
-        "subtitle": "<br><b>Graph analysis</b>",
+        "subtitle": "<b>Graph analysis</b>",
         "body": "<br>Il pannello <b> “Relazioni nel commercio internazionale ” </b> mostra la graph analysis degli scambi commerciali fra paesi.<br> I dati sono relativi a tutti gli scambi commerciali presenti nel dataset <b>COMEXT</b>. I dati da visualizzare posso essere selezionati attraverso i filtri presenti nella schermata. I paesi sono identificati dalle icone delle bandiere e le loro posizioni relative all’interno del grafo sono definite attraverso l’algoritmo <b> “Spring layout” </b>, implementato nella libreria python Network.",
         "keywords": ""
       },
@@ -134,7 +134,7 @@
       },
       "filter": {
         "title": "Descrizione dei Filtri di ricerca",
-        "body": "<br><b>Periodo:</b>  seleziona il periodo di tempo a cui si riferiscono i dati rappresentati dal grafo (uno specifico mese o anno) <br><b>Percentuale:</b> seleziona la percentuale di dati mostrati nel grafo rispetto al totale (un valore intero tra 0 e 100). Una volta selezionato il valore, i dati vengono filtrati nel modo seguente: tutte le quantità (in Euro) scambiate tra i paesi (tutti i vertici) sono ordinati in modo decrescente e la cumulata viene calcolata lungo la lista, a partire dall’alto. Tutti gli scambi il cui valore della cumulata è superiore al valore di percentuale, preso come soglia, vengono eliminati. Questo significa che gli scambi associati a piccole quantità vengono inseriti nel grafo solo quando il valore selezionato per il parametro “percentuale” è alto.<br><b>Trasporto:</b> seleziona i dati rispetto al mezzo di trasporto usato nello scambio. I possibili mezzi di trasporto sono: <b>“sconosciuto”, “marittimo”, “ferroviario”, “stradala”, ”aria”, “spedizioni postali”, “installazioni fisse di trasporto”, “trasporto per vie d'acqua”, “propulsione propria”</b>.<br><b>Prodotto:</b> seleziona i dati rispetto al prodotto scambiato. L’utente può selezionare un singolo prodotto o tutti i prodotti considerati insieme.<br><b>Flusso:</b> seleziona i dati relativi alle “Esportazioni” o alle “Importazioni”, provenienti da due distinti dataset.<br><b>Pesi:</b> seleziona il tipo di graph analysis da visualizzare. <b>“Vero”</b> permette di visualizzare un grafo pesato mentre <b>“Falso”</b> permette di visualizzare un grafo non pesato. I valori dei pesi sono costituiti dalle quantità in Euro di prodotto scambiato nei commerci.",
+        "body": "<b>Periodo:</b>  seleziona il periodo di tempo a cui si riferiscono i dati rappresentati dal grafo (uno specifico mese o anno) <br><b>Percentuale:</b> seleziona la percentuale di dati mostrati nel grafo rispetto al totale (un valore intero tra 0 e 100). Una volta selezionato il valore, i dati vengono filtrati nel modo seguente: tutte le quantità (in Euro) scambiate tra i paesi (tutti i vertici) sono ordinati in modo decrescente e la cumulata viene calcolata lungo la lista, a partire dall’alto. Tutti gli scambi il cui valore della cumulata è superiore al valore di percentuale, preso come soglia, vengono eliminati. Questo significa che gli scambi associati a piccole quantità vengono inseriti nel grafo solo quando il valore selezionato per il parametro “percentuale” è alto.<br><b>Trasporto:</b> seleziona i dati rispetto al mezzo di trasporto usato nello scambio. I possibili mezzi di trasporto sono: <b>“sconosciuto”, “marittimo”, “ferroviario”, “stradala”, ”aria”, “spedizioni postali”, “installazioni fisse di trasporto”, “trasporto per vie d'acqua”, “propulsione propria”</b>.<br><b>Prodotto:</b> seleziona i dati rispetto al prodotto scambiato. L’utente può selezionare un singolo prodotto o tutti i prodotti considerati insieme.<br><b>Flusso:</b> seleziona i dati relativi alle “Esportazioni” o alle “Importazioni”, provenienti da due distinti dataset.<br><b>Pesi:</b> seleziona il tipo di graph analysis da visualizzare. <b>“Vero”</b> permette di visualizzare un grafo pesato mentre <b>“Falso”</b> permette di visualizzare un grafo non pesato. I valori dei pesi sono costituiti dalle quantità in Euro di prodotto scambiato nei commerci.",
         "keywords": ""
       }
     }

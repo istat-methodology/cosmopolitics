@@ -58,7 +58,13 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { Context, Status, getScenarioNodes } from "@/common";
+import {
+  Context,
+  Status,
+  getScenarioNodes,
+  metricsFieldsIt,
+  metricsFieldsEn
+} from "@/common";
 import Slider from "@/components/Slider";
 import GraphVis from "@/views/graph/GraphVis";
 import GraphForm from "@/views/graph/GraphForm";
@@ -87,13 +93,8 @@ export default {
     selectedTransports: [],
     graphForm: null,
     //Metrics table
-    metricsFields: [
-      { key: "name", _style: "width:20%" },
-      { key: "exportStrenght", _style: "width:20%" },
-      { key: "centrality", _style: "width:20%" },
-      { key: "hubness", _style: "width:20%" },
-      { key: "vulnerability", _style: "width:20%" }
-    ],
+    metricsFieldsIt: [...metricsFieldsIt],
+    metricsFieldsEn: [...metricsFieldsEn],
     sorterValue: { column: "vulnerability", asc: false },
     //Spinner
     spinner: false,
@@ -103,6 +104,7 @@ export default {
   }),
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
+    ...mapGetters("coreui", ["isItalian"]),
     ...mapGetters("graph", ["nodes", "edges", "metrics", "metricsTable"]),
     ...mapGetters("classification", [
       "transports",
@@ -118,6 +120,9 @@ export default {
     },
     products() {
       return this.isIntra ? this.productsIntra : this.productsExtra;
+    },
+    metricsFields() {
+      return this.isItalian ? this.metricsFieldsIt : this.metricsFieldsEn;
     }
   },
   methods: {

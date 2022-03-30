@@ -264,6 +264,40 @@ export const options = {
   }
 };
 
+export const metricsFieldsIt = [
+  { key: "label", label: "Codice", _style: "width:10%" },
+  { key: "name", label: "Nome", _style: "width:30%" },
+  {
+    key: "exportStrenght",
+    label: "Forza di esportazione",
+    _style: "width:15%"
+  },
+  { key: "centrality", label: "Centralità", _style: "width:15%" },
+  { key: "hubness", label: "Hubness", _style: "width:15%" },
+  { key: "vulnerability", label: "Vulnerabilità", _style: "width:15%" }
+];
+
+export const metricsFieldsEn = [
+  { key: "label", _style: "width:15%" },
+  { key: "name", _style: "width:25%" },
+  { key: "exportStrenght", _style: "width:15%" },
+  { key: "centrality", _style: "width:15%" },
+  { key: "hubness", _style: "width:15%" },
+  { key: "vulnerability", _style: "width:15%" }
+];
+
+export const scenarioFieldsIt = [
+  { key: "source", label: "Sorgente", _style: "width:35%" },
+  { key: "destination", label: "Destinazione", _style: "width:35%" },
+  { key: "percentage", label: "Percentuale", _style: "width:30%" }
+];
+
+export const scenarioFieldsEn = [
+  { key: "source", _style: "width:35%" },
+  { key: "destination", _style: "width:35%" },
+  { key: "percentage", _style: "width:30%" }
+];
+
 export function getNode(nodes, nodeId) {
   const selectedNode = nodes.find(node => node.id == nodeId);
   return selectedNode ? selectedNode : null;
