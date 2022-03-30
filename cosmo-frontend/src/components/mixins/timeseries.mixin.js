@@ -6,6 +6,7 @@ export default {
   methods: {
     buildTimeseriesCharts(data, dataType, statusMain, statusNorm, statusACF) {
       if (statusMain != "00") {
+        
         this.chartDataDiagMain = this.getTimeseriesChart(
           data["diagMain"],
           dataType
@@ -14,6 +15,9 @@ export default {
         this.std = this.getTimeseriesSTD(data["diagMain"]);
       } else {
         this.chartDataDiagMain = null;
+        this.mean = null;
+        this.std = null;
+
       }
       this.diagNormTitle = "NQQ-Norm Plot";
       if (statusNorm != "00") {
@@ -28,17 +32,19 @@ export default {
         this.chartDataDiagACF = null;
       }
     },
+
+
     getTimeseriesChart(data, dataType) {
       var chartData = {};
       chartData.datasets = [];
-      var dateLabels = this.getDate(data["date"]);
-      if (data) {
+      if (this.isArrayNull(data["series"]) == false) {
+        var dateLabels = this.getDate(data["date"]);
         this.labels = dateLabels;
         chartData.labels = dateLabels;
         chartData.datasets.push({
           label: dataType,
           fill: false,
-          backgroundColor: function(context) {
+          backgroundColor: function (context) {
             var index = context.dataIndex;
             var value = context.dataset.data[index];
             if (value) {
@@ -60,14 +66,29 @@ export default {
       return chartData;
     },
     getTimeseriesMean(data) {
-      var m = 0;
-      m = d3.mean(data["series"]);
-      return m.toFixed(2);
+      var m = null;
+      if (this.isArrayNull(data["series"]) == false) {
+        let tmp = 0;
+        tmp = d3.mean(data["series"]);
+        if (tmp != undefined) {
+          m = tmp.toFixed(2);
+        }
+      }
+      return m;
     },
     getTimeseriesSTD(data) {
-      var v = 0;
-      v = d3.deviation(data["series"]);
-      return v.toFixed(2);
+      var v = null;
+      if (this.isArrayNull(data["series"]) == false) {
+        let tmp = 0;
+        tmp = d3.deviation(data["series"]);
+        if (tmp != undefined) {
+          v = tmp.toFixed(2);
+        }
+      }
+      return v;
+    },
+    isArrayNull(arr) {
+      return arr.every(element => element === null);
     },
     getDate(data) {
       var arr = [];
@@ -118,14 +139,12 @@ export default {
     emptyChart() {
       var chartData = {};
       chartData.labels = "";
-      chartData.datasets = [
-        {
-          label: "",
-          backgroundColor: "",
-          borderColor: "",
-          data: []
-        }
-      ];
+      chartData.datasets = [{
+        label: "",
+        backgroundColor: "",
+        borderColor: "",
+        data: []
+      }];
       chartData.options = {
         legend: {
           display: false
@@ -149,8 +168,7 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [
-                  {
+                data: [{
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -172,8 +190,7 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [
-                  {
+                data: [{
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -195,8 +212,7 @@ export default {
                   fill: false,
                   backgroundColor: "blue",
                   borderColor: "blue",
-                  data: [
-                    {
+                  data: [{
                       x: index,
                       y: 0
                     },

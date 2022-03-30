@@ -16,7 +16,7 @@
               </label>
             </span>
             <span class="padding-right">
-              <span v-if="this.countrySelected && this.partnerSelected"
+              <span v-if="countrySelected && partnerSelected"
                 >{{ $t("timeseries.card.title") }}:
                 {{ this.countrySelected.name }} -
                 {{ this.partnerSelected.descr }}</span
@@ -48,17 +48,16 @@
           </span>
         </CCardHeader>
         <CCardBody v-if="isMainChart">
-          <circle-spin v-if="this.spinner" class="circle-spin"></circle-spin>
+          <circle-spin v-if="spinner" class="circle-spin"></circle-spin>
           <line-chart
             :chartData="chartDataDiagMain"
             :options="options"
             id="timeseries"
           />
-          <div class="timeseries-info">
-            <span v-if="this.std">
-              <span class="text-primary"> Mean: </span>{{ this.mean }},
-              <span class="text-primary">Standard deviation: </span
-              >{{ this.std }}
+          <div class="timeseries-info" >
+            <span >
+              <span class="text-primary" v-if="mean"> Mean: </span>{{ this.mean }},
+              <span class="text-primary" v-if="std">Standard deviation: </span>{{ this.std }}
             </span>
           </div>
         </CCardBody>
@@ -390,6 +389,8 @@ export default {
               "QQ-Norm Plot (in " + this.diagNormMag + ")";
           } else {
             this.chartDataDiagMain = this.emptyChart();
+            this.mean = null;
+            this.std = null;
             this.chartDataDiagNorm = null;
             this.chartDataDiagACF = null;
             this.$store.dispatch(
