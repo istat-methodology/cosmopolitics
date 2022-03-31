@@ -254,9 +254,11 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
             logging.info("-- POSIZIONE DEI NODI PRECEDENTE ACQUISITA --")
 
     try:
+        
         #logging.info(str(pos_ini))
+        
         coord = nx.spring_layout(G,k=k_layout/math.sqrt(G.order()),pos=pos_ini)
-        #coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=coord) # stable solution
+        coord = nx.spring_layout(G,k=k_layout/math.sqrt(G.order()),pos=coord) # stable solution
         #coord = nx.spring_layout(G,k=5/math.sqrt(G.order()),pos=coord) # stable solution
     except:
         return None,None,None
