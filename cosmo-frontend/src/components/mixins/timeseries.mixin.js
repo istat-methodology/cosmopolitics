@@ -37,7 +37,7 @@ export default {
     getTimeseriesChart(data, dataType) {
       var chartData = {};
       chartData.datasets = [];
-      if (this.isArrayNull(data["series"]) == false) {
+      if (data) {
         var dateLabels = this.getDate(data["date"]);
         this.labels = dateLabels;
         chartData.labels = dateLabels;
@@ -70,7 +70,7 @@ export default {
       if (this.isArrayNull(data["series"]) == false) {
         let tmp = 0;
         tmp = d3.mean(data["series"]);
-        if (tmp != undefined) {
+        if (d3.mean(data["series"]) != undefined) {
           m = tmp.toFixed(2);
         }
       }
