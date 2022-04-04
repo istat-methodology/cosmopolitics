@@ -50,7 +50,6 @@
             :options="varType"
             :placeholder="$t('trade.form.fields.varType_placeholder')"
             v-model="varTypeSelected"
-            @change="setProducts()"
           />
           <label class="card-label mt-3">{{
             $t("trade.form.fields.country")
@@ -60,7 +59,6 @@
             :options="countries"
             :placeholder="$t('trade.form.fields.country_placeholder')"
             v-model="countrySelected"
-            @change="setProducts()"
           />
           <label class="card-label mt-3">{{
             $t("trade.form.fields.flow")
@@ -70,7 +68,6 @@
             :options="flows"
             :placeholder="$t('trade.form.fields.flow_placeholder')"
             v-model="flowSelected"
-            @change="setProducts()"
           />
           <label v-if="products" class="card-label mt-3">
             {{ $t("trade.form.fields.products") }}
@@ -123,43 +120,31 @@ export default {
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
   data: () => ({
     //Form (default values)
-    productSelected: { id: 9999, dataname: "All categories" },
+    idAllProducts: "999",
+    productSelected: { id: "999", dataname: "All products" },
     varTypeSelected: {
       id: 1,
-      descr: "in treated value"
+      descr: "in treated value",
     },
     countrySelected: {
       country: "IT",
-      name: "Italy"
+      name: "Italy",
     },
     flowSelected: {
       id: 1,
-      descr: "Import"
+      descr: "Import",
     },
     //Chart
     chartData: null,
     labelPeriod: [],
     //Spinner
     spinner: false,
-    isModalHelp: false
+    isModalHelp: false,
   }),
   computed: {
     ...mapGetters("classification", ["varType", "countries", "flows"]),
-    ...mapGetters("trade", ["charts"]),
+    ...mapGetters("trade", ["charts", "products"]),
     ...mapGetters("metadata", ["tradePeriod"]),
-    products() {
-      var products = [];
-      if (this.tradePeriod && this.charts) {
-        this.charts.data.forEach((element, index) => {
-          products.push({
-            id: index,
-            dataname: element.dataname
-          });
-        });
-        products.push({ id: 9999, dataname: "All products" });
-      }
-      return products;
-    }
   },
   methods: {
     helpOn(showModal) {
@@ -167,38 +152,32 @@ export default {
     },
     handleSubmit() {
       if (this.varTypeSelected && this.countrySelected && this.flowSelected) {
-        this.$store.dispatch("trade/findByName", {
-          type: this.varTypeSelected.id,
-          country: this.countrySelected.country,
-          flow: this.flowSelected.id
-        });
-        this.getDataStore();
+        this.spinnerStart(true);
+        this.$store
+          .dispatch("trade/findByName", {
+            type: this.varTypeSelected.id,
+            country: this.countrySelected.country,
+            flow: this.flowSelected.id,
+          }).then(() => {
+            this.chartData = {};
+            this.chartData.datasets = [];
+            this.chartData.labels = this.labelPeriod;
+            this.productSelected.forEach((product) => {
+              if (product.id === "999") {
+                this.charts.data.forEach((element) => {
+                  this.buildChartObject(element.dataname, element.value);
+                });
+              } else {
+                this.buildChartObject(
+                  this.charts.data[product.id].dataname,
+                  this.charts.data[product.id].value
+                );
+              }
+            });
+          });
+        this.clearColor();
+        this.spinnerStart(true);
       }
-
-      this.chartData = {};
-      this.chartData.datasets = [];
-      this.chartData.labels = this.labelPeriod;
-
-      if (this.productSelected.id == 9999) {
-        this.getDataStore();
-      } else {
-        this.productSelected.forEach(product => {
-          if (product.id == 9999) {
-            this.getDataStore();
-          } else {
-            this.buildChartObject(
-              this.charts.data[product.id].dataname,
-              this.charts.data[product.id].value
-            );
-          }
-        });
-      }
-      this.clearColor();
-    },
-    getDataStore() {
-      this.charts.data.forEach(element => {
-        this.buildChartObject(element.dataname, element.value);
-      });
     },
     buildChartObject(description, value) {
       const color = this.getColor();
@@ -209,11 +188,8 @@ export default {
         borderColor: color.border,
         data: value,
         showLine: true,
-        pointRadius: 2
+        pointRadius: 2,
       });
-    },
-    setProducts() {
-      this.$emit(this.$refs.prod, { id: 9999, dataname: "All categories" });
     },
     getData(data, id) {
       if (data != null) {
@@ -223,26 +199,33 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    }
+    },
   },
   created() {
-    for (const period of this.tradePeriod) {
-      this.labelPeriod.push(period.name);
+    this.spinnerStart(true);
+    if (this.tradePeriod !== null) {
+      for (const period of this.tradePeriod) {
+        this.labelPeriod.push(period.name);
+      }
     }
     this.$store.dispatch("coreui/setContext", Context.Trade);
     this.$store
       .dispatch("trade/findByName", {
         type: this.varTypeSelected.id,
         country: this.countrySelected.country,
-        flow: this.flowSelected.id
+        flow: this.flowSelected.id,
       })
       .then(() => {
         this.chartData = {};
         this.chartData.datasets = [];
         this.chartData.labels = this.labelPeriod;
-        this.getDataStore();
+        this.charts.data.forEach((element) => {
+          this.buildChartObject(element.dataname, element.value);
+        });
       });
-  }
+
+    this.spinnerStart(false);
+  },
 };
 </script>
 <style>
