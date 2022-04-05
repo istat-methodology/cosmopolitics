@@ -196,8 +196,8 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
             "vulnerability":vulner,
             #"degree_centrality":nx.out_degree_centrality(Grafo),
             "exportation strenght":nx.out_degree_centrality(Grafo),
-            "hubness":nx.closeness_centrality(Grafo.to_undirected())
-            #"hubness":nx.betweenness_centrality(Grafo, weight="weight")
+            #"hubness":nx.closeness_centrality(Grafo.to_undirected())
+            "hubness":nx.betweenness_centrality(Grafo) #, weight="weight")
             }
         logging.info("### metrics... ")     
         return Metrics 
