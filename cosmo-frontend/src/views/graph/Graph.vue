@@ -129,8 +129,8 @@ export default {
     handleRadioChange(radioValue) {
       this.selectedRadio = radioValue;
       this.selectedPeriod = this.isTrimester
-        ? { id: "202001", selectName: "1Q 20" }
-        : { id: "202003", selectName: "Mar 20" };
+        ? { id: "202001", selectName: "T1 2020" }
+        : { id: "202003", selectName: "Mar 2020" };
     },
     handlePeriodChange(period) {
       this.selectedPeriod = period;

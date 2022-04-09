@@ -272,7 +272,6 @@ export const metricsFieldsIt = [
     label: "Forza di esportazione",
     _style: "width:15%"
   },
-  { key: "centrality", label: "Centralità", _style: "width:15%" },
   { key: "hubness", label: "Hubness", _style: "width:15%" },
   { key: "vulnerability", label: "Vulnerabilità", _style: "width:15%" }
 ];
@@ -281,21 +280,22 @@ export const metricsFieldsEn = [
   { key: "label", _style: "width:15%" },
   { key: "name", _style: "width:25%" },
   { key: "exportStrenght", _style: "width:15%" },
-  { key: "centrality", _style: "width:15%" },
   { key: "hubness", _style: "width:15%" },
   { key: "vulnerability", _style: "width:15%" }
 ];
 
 export const scenarioFieldsIt = [
-  { key: "source", label: "Sorgente", _style: "width:35%" },
-  { key: "destination", label: "Destinazione", _style: "width:35%" },
-  { key: "percentage", label: "Percentuale", _style: "width:30%" }
+  { key: "source", label: "Origine", _style: "width:25%" },
+  { key: "destination", label: "Destinazione", _style: "width:25%" },
+  { key: "percentage", label: "Percentuale", _style: "width:25%" },
+  { key: "flow", label: "Flussi", _style: "width:25%" }
 ];
 
 export const scenarioFieldsEn = [
-  { key: "source", _style: "width:35%" },
-  { key: "destination", _style: "width:35%" },
-  { key: "percentage", _style: "width:30%" }
+  { key: "source", _style: "width:25%" },
+  { key: "destination", _style: "width:25%" },
+  { key: "percentage", _style: "width:25%" },
+  { key: "flow", _style: "width:25%" }
 ];
 
 export function getNode(nodes, nodeId) {
@@ -390,4 +390,19 @@ export function getTransportDifference(transports, scenarioTransports) {
   return getTransportIds(
     transports.filter(tr => !scenarioTransports.find(str => str.id == tr.id))
   );
+}
+
+export function replaceAllProdId(products) {
+  var prods = [];
+  if (products) {
+    prods = products.filter(pr => pr.id != "TOT");
+    prods.unshift({ id: "000", descr: "All Products" });
+  }
+  return prods;
+}
+
+export function restoreAllProdId(product) {
+  var id = "";
+  if (product) id = product.id == "000" ? "TOT" : product.id;
+  return id;
 }

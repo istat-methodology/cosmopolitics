@@ -1,6 +1,6 @@
 <template>
   <CModal
-    :title="$t('graph.scenario.main')"
+    :title="modalTitle"
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
@@ -10,6 +10,7 @@
       :items="data"
       :fields="fields"
       column-filter
+      :column-filter-value.sync="columnFilterValue"
       :items-per-page="5"
       :sorterValue="sorterValue"
       sorter
@@ -17,7 +18,7 @@
       pagination
     />
     <div class="scenario-analysis">
-      {{ $t("graph.scenario.title") }}
+      {{ scenarioTitle }}
       <span class="float-right">
         <CSwitch
           color="primary"
@@ -99,7 +100,8 @@
 export default {
   name: "GraphScenario",
   data: () => ({
-    showScenario: false
+    showScenario: false,
+    columnFilterValue: {}
   }),
   props: {
     showModal: {
@@ -121,6 +123,10 @@ export default {
     sorterValue: {
       type: Object,
       default: () => ({ column: null, asc: true })
+    },
+    selectedNode: {
+      type: Object,
+      default: () => ({ id: -1, name: "" })
     },
     selectedTransports: {
       type: Array,
@@ -147,6 +153,20 @@ export default {
       set(value) {
         this.$emit("updateScenarioTransports", value);
       }
+    },
+    modalTitle() {
+      return this.selectedNode.id > 0
+        ? this.$t("graph.scenario.main", { country: this.selectedNode.name })
+        : this.$t("graph.scenario.mainEdge");
+    },
+    scenarioTitle() {
+      return this.selectedNode.id > 0
+        ? this.displayTransport
+          ? this.$t("graph.scenario.title_extra_node")
+          : this.$t("graph.scenario.title_world_node")
+        : this.displayTransport
+        ? this.$t("graph.scenario.title_extra_edge")
+        : this.$t("graph.scenario.title_world_edge");
     }
   },
   methods: {
@@ -172,6 +192,7 @@ export default {
     },
     closeModal() {
       this.$emit("closeModal");
+      this.columnFilterValue = {};
     },
     applyConstraints() {
       this.showScenario = false;

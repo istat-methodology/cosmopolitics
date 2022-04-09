@@ -6,7 +6,6 @@ export default {
   methods: {
     buildTimeseriesCharts(data, dataType, statusMain, statusNorm, statusACF) {
       if (statusMain != "00") {
-        
         this.chartDataDiagMain = this.getTimeseriesChart(
           data["diagMain"],
           dataType
@@ -17,7 +16,6 @@ export default {
         this.chartDataDiagMain = null;
         this.mean = null;
         this.std = null;
-
       }
       this.diagNormTitle = "NQQ-Norm Plot";
       if (statusNorm != "00") {
@@ -33,7 +31,6 @@ export default {
       }
     },
 
-
     getTimeseriesChart(data, dataType) {
       var chartData = {};
       chartData.datasets = [];
@@ -44,7 +41,7 @@ export default {
         chartData.datasets.push({
           label: dataType,
           fill: false,
-          backgroundColor: function (context) {
+          backgroundColor: function(context) {
             var index = context.dataIndex;
             var value = context.dataset.data[index];
             if (value) {
@@ -139,12 +136,14 @@ export default {
     emptyChart() {
       var chartData = {};
       chartData.labels = "";
-      chartData.datasets = [{
-        label: "",
-        backgroundColor: "",
-        borderColor: "",
-        data: []
-      }];
+      chartData.datasets = [
+        {
+          label: "",
+          backgroundColor: "",
+          borderColor: "",
+          data: []
+        }
+      ];
       chartData.options = {
         legend: {
           display: false
@@ -168,7 +167,8 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [{
+                data: [
+                  {
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -190,7 +190,8 @@ export default {
                 fill: false,
                 backgroundColor: "red",
                 borderColor: "red",
-                data: [{
+                data: [
+                  {
                     x: 0,
                     y: diag[chartType][0]
                   },
@@ -212,7 +213,8 @@ export default {
                   fill: false,
                   backgroundColor: "blue",
                   borderColor: "blue",
-                  data: [{
+                  data: [
+                    {
                       x: index,
                       y: 0
                     },

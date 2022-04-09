@@ -52,7 +52,7 @@
           :nodes="nodes"
           :edges="edges"
           :options="options"
-          @select-edge="handleSelectEdge"
+          @select-edge="handleGraphSelect"
           @hover-node="handleOverNode"
         />
       </CCardBody>
@@ -65,6 +65,7 @@
       :data="selectedNodesTable"
       :fields="scenarioFields"
       :displayTransport="displayTransport"
+      :selectedNode="selectedNode"
       :selectedTransports="localTransports"
       :selectedScenarioTransports="scenarioTransports"
       @closeModal="closeModal"
@@ -97,6 +98,7 @@ export default {
   data: () => ({
     options: { ...options },
     nodeMetric: null,
+    selectedNode: {},
     selectedEdges: [],
     selectedNodesTable: [],
     //Make a local copy of transports for cosmo-scenario
@@ -151,10 +153,67 @@ export default {
     handleScenarioTransports(trs) {
       this.scenarioTransports = trs;
     },
-    handleSelectEdge(selectedGraph) {
+    handleGraphSelect(selectedGraph) {
+      if (selectedGraph.nodes.length > 0) {
+        //user clicked a node
+        this.handleNodeSelect(selectedGraph);
+      } else {
+        //user clicked an edge
+        this.handleEdgeSelect(selectedGraph);
+      }
+    },
+    handleNodeSelect(selectedGraph) {
       this.selectedEdges = [];
       this.selectedNodesTable = [];
+      this.selectedNode = getNode(this.nodes, selectedGraph.nodes[0]);
 
+      //Compute total weight
+      var totalImport = 0;
+      var totalExport = 0;
+      selectedGraph.edges.forEach(edgeId => {
+        const selectedEdge = getEdge(this.edges, edgeId);
+        if (selectedEdge.from == this.selectedNode.id) {
+          //export
+          totalExport += selectedEdge.weight;
+        } else {
+          //import
+          totalImport += selectedEdge.weight;
+        }
+      });
+
+      var percentage = 0;
+      selectedGraph.edges.forEach(edgeId => {
+        const selectedEdge = getEdge(this.edges, edgeId);
+        const sourceNode = getNode(this.nodes, selectedEdge.from);
+        const destinationNode = getNode(this.nodes, selectedEdge.to);
+
+        this.selectedEdges.push(selectedEdge);
+        if (sourceNode.id == this.selectedNode.id) {
+          //export
+          percentage = (selectedEdge.weight / totalExport) * 100;
+        } else {
+          //import
+          percentage = (selectedEdge.weight / totalImport) * 100;
+        }
+
+        var weightFormatted = selectedEdge.weight;
+
+        this.selectedNodesTable.push({
+          source: sourceNode.name,
+          destination: destinationNode.name,
+          total: weightFormatted.toLocaleString("en-US"),
+          percentage: Math.round((percentage + Number.EPSILON) * 100) / 100,
+          flow: this.selectedNode.id == sourceNode.id ? "Export" : "Import"
+        });
+      });
+      //Local copy of selected transports
+      this.localTransports = [...this.transports];
+      this.scenarioModal = true;
+    },
+    handleEdgeSelect(selectedGraph) {
+      this.selectedEdges = [];
+      this.selectedNodesTable = [];
+      this.selectedNode = { id: -1, name: "" };
       //Compute total weight
       var sumOfSelectedEdge = 0;
       selectedGraph.edges.forEach(edgeId => {
@@ -169,15 +228,15 @@ export default {
 
         this.selectedEdges.push(selectedEdge);
 
-        var percentageFormatted =
-          (selectedEdge.weight / sumOfSelectedEdge) * 100;
+        var percentage = (selectedEdge.weight / sumOfSelectedEdge) * 100;
         var weightFormatted = selectedEdge.weight;
 
         this.selectedNodesTable.push({
           source: sourceNode.name,
           destination: destinationNode.name,
           total: weightFormatted.toLocaleString("en-US"),
-          percentage: percentageFormatted.toFixed(2) + "%"
+          percentage: Math.round((percentage + Number.EPSILON) * 100) / 100,
+          flow: ""
         });
       });
       //Local copy of selected transports

@@ -102,7 +102,11 @@
   </CCard>
 </template>
 <script>
-import { getCleanTransports, getTransportIds } from "@/common";
+import {
+  getCleanTransports,
+  getTransportIds,
+  restoreAllProdId
+} from "@/common";
 import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
@@ -133,7 +137,7 @@ export default {
     },
     currentTime: {
       type: Object,
-      default: () => ({ id: "202003", selectName: "Mar 20" })
+      default: () => ({ id: "202003", selectName: "Mar 2020" })
     },
     transports: {
       type: Array,
@@ -210,7 +214,7 @@ export default {
           percentage: this.percentage,
           transportIds: cleanTransportIds,
           transports: cleanTransports,
-          product: this.product.id,
+          product: restoreAllProdId(this.product),
           flow: this.flow.id
         });
       }

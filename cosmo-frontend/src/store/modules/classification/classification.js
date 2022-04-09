@@ -1,4 +1,5 @@
 import { classificationService } from "@/services";
+import { replaceAllProdId } from "@/common";
 
 const state = {
   countries: [],
@@ -125,7 +126,7 @@ const actions = {
     return classificationService
       .findAll("productsIntra")
       .then(data => {
-        commit("SET_PRODUCTS_INTRA", data);
+        commit("SET_PRODUCTS_INTRA", replaceAllProdId(data));
       })
       .catch(err => {
         console.log(err);
@@ -135,7 +136,7 @@ const actions = {
     return classificationService
       .findAll("productsExtra")
       .then(data => {
-        commit("SET_PRODUCTS_EXTRA", data);
+        commit("SET_PRODUCTS_EXTRA", replaceAllProdId(data));
       })
       .catch(err => {
         console.log(err);

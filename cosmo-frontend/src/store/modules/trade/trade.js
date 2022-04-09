@@ -1,6 +1,4 @@
-import {
-  tradeService
-} from "@/services";
+import { tradeService } from "@/services";
 
 const state = {
   charts: null,
@@ -15,9 +13,7 @@ const mutations = {
   }
 };
 const actions = {
-  findAll({
-    commit
-  }) {
+  findAll({ commit }) {
     return tradeService
       .findAll()
       .then(data => {
@@ -27,13 +23,11 @@ const actions = {
         console.log(err);
       });
   },
-  findByName({
-    commit
-  }, filter) {
+  findByName({ commit }, filter) {
     return tradeService
       .findByName(filter)
       .then(data => {
-        commit("SET_LINE_CHARTS", data);        
+        commit("SET_LINE_CHARTS", data);
       })
       .catch(err => {
         console.log(err);
@@ -54,7 +48,7 @@ const getters = {
       state.charts.data.forEach((element, index) => {
         products.push({
           id: index.toString(),
-          dataname: element.dataname,
+          dataname: element.dataname
         });
       });
       products.push({
@@ -63,8 +57,7 @@ const getters = {
       });
     }
     return products ? products : null;
-  },
-
+  }
 };
 export const trade = {
   namespaced: true,

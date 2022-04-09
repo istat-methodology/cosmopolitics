@@ -33,12 +33,12 @@
     "graph": {
       "extra-ue": {
         "title": "International Trade Relations UE - Extra UE",
-        "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT transport data</strong>, along with relevant global and local measures detailing the structure of countries relations. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
+        "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT transport data (NSTR classification)</strong>, along with relevant global and local measures detailing the structure of relations between UE and Extra UE countries. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
         "link": "Go to Graph analisys section UE - Extra UE"
       },
       "intra-ue": {
         "title": "International Trade Relations UE - World",
-        "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT transport data</strong>, along with relevant global and local measures detailing the structure of countries relations. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
+        "body": "<p>This section shows the graph plot of international trade based on <strong>COMEXT data, with CPA 2.1 product  classification</strong>, along with relevant global and local measures detailing the structure of relations between UE countries and their economic partners. The panel is interactive, providing the possibility to apply several filters and to see how the graph structure and measures change accordingly.</p><p class='mt-2'> Furthermore an animation is provided showing the <strong>evolution of the international trade graph over time</strong>, spanning the entire time window of trading data.</p>",
         "link": "Go to Graph analisys section UE - World"
       }
     },
@@ -88,7 +88,7 @@
       "title": "Graph filter",
       "fields": {
         "monthly": "Monthly",
-        "trimester": "Quarter",
+        "trimester": "Trimester",
         "period": "Period",
         "period_placeholder": "Select a period",
         "percentage": "Percentage",
@@ -104,8 +104,12 @@
       }
     },
     "scenario":{
-      "main": "Trade relazions",
-      "title": "Would you like to perform scenario analysis?",
+      "main": "Trade relazions for {country}",
+      "mainEdge": "Trade relations",
+      "title_extra_edge": "Do you want to modify the transports for this flow?",
+      "title_extra_node": "Do you want to modify the transports in the flows of the selected country?",
+      "title_world_edge": "Do you want to delete this flow?",
+      "title_world_node": "Do you want to delete all the flow of the selected country?",
       "transports_selected":"Current graph",
       "transports_scenario":"New scenario",
       "success": "The graph has been modified according to the new constraints"

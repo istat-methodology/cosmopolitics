@@ -54,10 +54,12 @@
             :options="options"
             id="timeseries"
           />
-          <div class="timeseries-info" >
-            <span >
-              <span class="text-primary" v-if="mean"> Mean: </span>{{ this.mean }},
-              <span class="text-primary" v-if="std">Standard deviation: </span>{{ this.std }}
+          <div class="timeseries-info">
+            <span>
+              <span class="text-primary" v-if="mean"> Mean: </span
+              >{{ this.mean }},
+              <span class="text-primary" v-if="std">Standard deviation: </span
+              >{{ this.std }}
             </span>
           </div>
         </CCardBody>

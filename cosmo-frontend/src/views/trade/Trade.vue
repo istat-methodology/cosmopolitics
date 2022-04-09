@@ -124,27 +124,27 @@ export default {
     productSelected: { id: "999", dataname: "All products" },
     varTypeSelected: {
       id: 1,
-      descr: "in treated value",
+      descr: "in treated value"
     },
     countrySelected: {
       country: "IT",
-      name: "Italy",
+      name: "Italy"
     },
     flowSelected: {
       id: 1,
-      descr: "Import",
+      descr: "Import"
     },
     //Chart
     chartData: null,
     labelPeriod: [],
     //Spinner
     spinner: false,
-    isModalHelp: false,
+    isModalHelp: false
   }),
   computed: {
     ...mapGetters("classification", ["varType", "countries", "flows"]),
     ...mapGetters("trade", ["charts", "products"]),
-    ...mapGetters("metadata", ["tradePeriod"]),
+    ...mapGetters("metadata", ["tradePeriod"])
   },
   methods: {
     helpOn(showModal) {
@@ -157,14 +157,15 @@ export default {
           .dispatch("trade/findByName", {
             type: this.varTypeSelected.id,
             country: this.countrySelected.country,
-            flow: this.flowSelected.id,
-          }).then(() => {
+            flow: this.flowSelected.id
+          })
+          .then(() => {
             this.chartData = {};
             this.chartData.datasets = [];
             this.chartData.labels = this.labelPeriod;
-            this.productSelected.forEach((product) => {
+            this.productSelected.forEach(product => {
               if (product.id === "999") {
-                this.charts.data.forEach((element) => {
+                this.charts.data.forEach(element => {
                   this.buildChartObject(element.dataname, element.value);
                 });
               } else {
@@ -188,7 +189,7 @@ export default {
         borderColor: color.border,
         data: value,
         showLine: true,
-        pointRadius: 2,
+        pointRadius: 2
       });
     },
     getData(data, id) {
@@ -199,7 +200,7 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
-    },
+    }
   },
   created() {
     this.spinnerStart(true);
@@ -213,19 +214,19 @@ export default {
       .dispatch("trade/findByName", {
         type: this.varTypeSelected.id,
         country: this.countrySelected.country,
-        flow: this.flowSelected.id,
+        flow: this.flowSelected.id
       })
       .then(() => {
         this.chartData = {};
         this.chartData.datasets = [];
         this.chartData.labels = this.labelPeriod;
-        this.charts.data.forEach((element) => {
+        this.charts.data.forEach(element => {
           this.buildChartObject(element.dataname, element.value);
         });
       });
 
     this.spinnerStart(false);
-  },
+  }
 };
 </script>
 <style>

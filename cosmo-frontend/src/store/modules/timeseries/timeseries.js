@@ -1,9 +1,5 @@
-import {
-  timeseriesService
-} from "@/services";
-import {
-  isArrayNull
-} from "@/common";
+import { timeseriesService } from "@/services";
+import { isArrayNull } from "@/common";
 const state = {
   timeseriesChart: null,
   timeseriesCharts: null,
@@ -29,15 +25,16 @@ const mutations = {
   }
 };
 const actions = {
-  findByFilters({
-    commit
-  }, form) {
+  findByFilters({ commit }, form) {
     return timeseriesService
       .findByFilters(form)
       .then(data => {
         commit("SET_TIMESERIES_STATUS_ACF", data["statusACF"]);
         commit("SET_TIMESERIES_STATUS_NORM", data["statusNorm"]);
-        var statusMain = isArrayNull(data["diagMain"]["series"]) == false ? data["statusMain"] : "00";
+        var statusMain =
+          isArrayNull(data["diagMain"]["series"]) == false
+            ? data["statusMain"]
+            : "00";
         commit("SET_TIMESERIES_STATUS_MAIN", statusMain);
         if (statusMain == "01") {
           commit("SET_TIMESERIES_CHARTS", data);

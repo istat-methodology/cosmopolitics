@@ -47,7 +47,7 @@ export function getEdgeColor(value, data) {
 
 function getMin(data) {
   var min;
-  min = d3.min(data, function (d) {
+  min = d3.min(data, function(d) {
     return d.weight;
   });
   return min;
@@ -55,28 +55,21 @@ function getMin(data) {
 
 function getMax(data) {
   var max;
-  max = d3.max(data, function (d) {
+  max = d3.max(data, function(d) {
     return d.weight;
   });
   return max;
 }
 
 function calculatePoint(i, intervalSize, colorRangeInfo) {
-  var {
-    colorStart,
-    colorEnd,
-    useEndAsStart
-  } = colorRangeInfo;
-  return useEndAsStart ?
-    colorEnd - i * intervalSize :
-    colorStart + i * intervalSize;
+  var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+  return useEndAsStart
+    ? colorEnd - i * intervalSize
+    : colorStart + i * intervalSize;
 }
 /* Must use an interpolated color scale, which has a range of [0, 1] */
 function interpolateColors(dataLength, colorScale, colorRangeInfo) {
-  var {
-    colorStart,
-    colorEnd
-  } = colorRangeInfo;
+  var { colorStart, colorEnd } = colorRangeInfo;
   var colorRange = colorEnd - colorStart;
   var intervalSize = colorRange / dataLength;
   var i, colorPoint;
@@ -90,10 +83,8 @@ function interpolateColors(dataLength, colorScale, colorRangeInfo) {
 //Manage "all" from in the transport list
 export function getCleanTransports(selectedTransports, transports) {
   return selectedTransports.find(tr => tr.id == 99) //if selected array contains all
-    ?
-    transports.filter(tr => tr.id != 99) //remove all from the list of transports
-    :
-    selectedTransports;
+    ? transports.filter(tr => tr.id != 99) //remove all from the list of transports
+    : selectedTransports;
 }
 export function isArrayNull(arr) {
   return arr.every(element => element === null);

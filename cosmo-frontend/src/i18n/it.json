@@ -32,12 +32,12 @@
     "graph": {
       "extra-ue": {
         "title": "Relazioni nel commercio internazionale UE - Extra UE",
-        "body": "Questa sezione visualizza grafi che rappresentano il <b>commercio internazionale per prodotto e modalità di trasporto da fonte COMEXT</b>, insieme alle <b>misure globali e locali pertinenti</b> che descrivono in dettaglio la struttura delle relazioni commerciali dei paesi. Il pannello è interattivo e offre la possibilità di applicare diversi filtri e di vedere come la struttura del grafico e le misure cambiano di conseguenza.<br>Inoltre viene fornita un'animazione che mostra l'<b>evoluzione del grafico del commercio internazionale nel tempo</b>.",
+        "body": "Questa sezione visualizza grafi che rappresentano il <b>commercio internazionale per prodotto (classificazione NSTR) e modalità di trasporto da fonte COMEXT</b>, insieme alle <b>misure globali e locali pertinenti</b> che descrivono in dettaglio la struttura delle relazioni commerciali tra i paesi UE quelli dell’area Extra-UE. Il pannello è interattivo e offre la possibilità di applicare diversi filtri e di vedere come la struttura del grafico e le misure cambiano di conseguenza.<br>Inoltre viene fornita un'animazione che mostra l'<b>evoluzione del grafico del commercio internazionale nel tempo</b>.",
         "link": "Vai alla sezione Graph analysis UE - Extra UE"
       },
       "intra-ue": {
         "title": "Relazioni nel commercio internazionale UE - Mondo",
-        "body": "Questa sezione visualizza grafi che rappresentano il <b>commercio internazionale per prodotto e modalità di trasporto da fonte COMEXT</b>, insieme alle <b>misure globali e locali pertinenti</b> che descrivono in dettaglio la struttura delle relazioni commerciali dei paesi. Il pannello è interattivo e offre la possibilità di applicare diversi filtri e di vedere come la struttura del grafico e le misure cambiano di conseguenza.<br>Inoltre viene fornita un'animazione che mostra l'<b>evoluzione del grafico del commercio internazionale nel tempo</b>.",
+        "body": "Questa sezione visualizza grafi che rappresentano il <b>commercio internazionale per prodotto (classificazione CPA 2.1) da fonte COMEXT</b>, insieme alle <b>misure globali e locali pertinenti</b> che descrivono in dettaglio la struttura delle relazioni commerciali dai paesi UE verso/da ogni paese partner commerciale. Il pannello è interattivo e offre la possibilità di applicare diversi filtri e di vedere come la struttura del grafico e le misure cambiano di conseguenza.<br>Inoltre viene fornita un'animazione che mostra l'<b>evoluzione del grafico del commercio internazionale nel tempo</b>.",
         "link": "Vai alla sezione Graph analysis UE - Mondo"
       }
     },
@@ -103,8 +103,12 @@
       }
     },
     "scenario":{
-      "main": "Informazioni di dettaglio",
-      "title": "Vuoi effettuare l'analisi di scenario?",
+      "main": "Informazioni di dettaglio per {country}",
+      "mainEdge": "Relazioni commerciali",
+      "title_extra_edge": "Vuoi modificare i mezzi di trasporto in questo scambio?",
+      "title_extra_node": "Vuoi modificare i mezzi di trasporto negli scambi di questo paese?",
+      "title_world_edge": "Vuoi eliminare questo scambio?",
+      "title_world_node": "Vuoi eliminare tutti gli scambi di questo paese?",
       "transports_selected":"Grafo corrente",
       "transports_scenario":"Nuovo scenario",
       "success": "Il grafo è stato modificato coerentemente con i vincoli"

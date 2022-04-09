@@ -12,7 +12,7 @@ export function getPeriod(start, end) {
     var shortMonth = dt.toLocaleString("en-US", { month: "short" });
     var longYear = dt.toLocaleDateString("en", { year: "numeric" });
     var idString = String(longYear) + String(monthIndex);
-    var selectString = shortMonth + " " + shortYear;
+    var selectString = shortMonth + " " + longYear;
     var sliderString = counter % 3 == 0 ? shortMonth + " " + shortYear : "";
     var item = {
       id: idString,
@@ -41,10 +41,6 @@ export function getTrimesterPeriod(start, end) {
     var shortYear = dt.toLocaleDateString("en", {
       year: "2-digit"
     });
-    /*var shortMonth = dt.toLocaleString("en-US", {
-      month: "short"
-    });
-    console.log(shortMonth);*/
     var longYear = dt.toLocaleDateString("en", {
       year: "numeric"
     });
@@ -52,11 +48,12 @@ export function getTrimesterPeriod(start, end) {
     if (trimester != trimesterOfyear(new Date(dt))) {
       trimester = trimesterOfyear(new Date(dt));
       var idString = String(longYear) + String("0") + String(trimester);
-      var nameString = trimester + "Q " + shortYear;
+      var sliderString = "T" + trimester + " " + shortYear;
+      var selectString = "T" + trimester + " " + longYear;
       var item = {
         id: idString,
-        name: nameString,
-        selectName: nameString,
+        name: sliderString,
+        selectName: selectString,
         trimester: trimester
       };
       trim.push(item);
