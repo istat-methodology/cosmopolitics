@@ -30,7 +30,3 @@ If you are curious about our work and want to play with Cosmopolitcs, clone the 
 then open the browser at the following url
 `http://localhost:8070`
 Now you can have great fun!
-
-## Disclaimer
-Please keep in mind that Cosmopolitics is at an early development stage, there are still a lot of bugs and some of the functionalities are 'hard-coded'. We plan to continue working on Cosmopolitics in the next few months.
-
