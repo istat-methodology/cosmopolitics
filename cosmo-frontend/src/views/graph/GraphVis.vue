@@ -62,13 +62,14 @@
     </CCard>
     <cosmo-scenario
       :showModal="scenarioModal"
-      :data="selectedNodesTable"
+      :selectedNodesTable="selectedNodesTable"
       :fields="scenarioFields"
       :displayTransport="displayTransport"
       :selectedNode="selectedNode"
       :selectedTransports="localTransports"
       :selectedScenarioTransports="scenarioTransports"
       @closeModal="closeModal"
+      @updateNodesTable="handleNodesTable"
       @updateTransports="handleUpdateTransports"
       @updateScenarioTransports="handleScenarioTransports"
       @applyConstraints="applyConstraints"
@@ -153,6 +154,9 @@ export default {
     handleScenarioTransports(trs) {
       this.scenarioTransports = trs;
     },
+    handleNodesTable(table) {
+      this.selectedNodesTable = table;
+    },
     handleGraphSelect(selectedGraph) {
       if (selectedGraph.nodes.length > 0) {
         //user clicked a node
@@ -200,7 +204,9 @@ export default {
 
         this.selectedNodesTable.push({
           source: sourceNode.name,
+          from: selectedEdge.from,
           destination: destinationNode.name,
+          to: selectedEdge.to,
           total: weightFormatted.toLocaleString("en-US"),
           percentage: Math.round((percentage + Number.EPSILON) * 100) / 100,
           flow: this.selectedNode.id == sourceNode.id ? "Export" : "Import"
@@ -233,7 +239,9 @@ export default {
 
         this.selectedNodesTable.push({
           source: sourceNode.name,
+          from: selectedEdge.from,
           destination: destinationNode.name,
+          to: selectedEdge.to,
           total: weightFormatted.toLocaleString("en-US"),
           percentage: Math.round((percentage + Number.EPSILON) * 100) / 100,
           flow: ""
@@ -249,7 +257,7 @@ export default {
     },
     applyConstraints() {
       const constraints = [];
-      this.selectedEdges.forEach(edge => {
+      this.selectedNodesTable.forEach(edge => {
         constraints.push({
           from: getNode(this.nodes, edge.from).label,
           to: getNode(this.nodes, edge.to).label,

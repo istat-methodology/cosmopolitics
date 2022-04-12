@@ -288,14 +288,29 @@ export const scenarioFieldsIt = [
   { key: "source", label: "Origine", _style: "width:25%" },
   { key: "destination", label: "Destinazione", _style: "width:25%" },
   { key: "percentage", label: "Percentuale", _style: "width:25%" },
-  { key: "flow", label: "Flussi", _style: "width:25%" }
+  { key: "flow", label: "Flussi", _style: "width:24%" },
+  {
+    key: "show_delete",
+    label: "",
+    sorter: false,
+    filter: false,
+    _style: "width:1%"
+  }
 ];
 
 export const scenarioFieldsEn = [
   { key: "source", _style: "width:25%" },
   { key: "destination", _style: "width:25%" },
   { key: "percentage", _style: "width:25%" },
-  { key: "flow", _style: "width:25%" }
+  { key: "flow", _style: "width:25%" },
+  { key: "show_delete", label: "", _style: "width:1%" },
+  {
+    key: "show_delete",
+    label: "",
+    sorter: false,
+    filter: false,
+    _style: "width:1%"
+  }
 ];
 
 export function getNode(nodes, nodeId) {

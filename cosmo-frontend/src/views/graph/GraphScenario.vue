@@ -6,8 +6,8 @@
     @update:show="closeModal"
   >
     <CDataTable
-      v-if="data"
-      :items="data"
+      v-if="nodesTable"
+      :items="nodesTable"
       :fields="fields"
       column-filter
       :column-filter-value.sync="columnFilterValue"
@@ -16,7 +16,15 @@
       sorter
       hover
       pagination
-    />
+    >
+      <template #show_delete="{item}">
+        <td>
+          <span class="icon-link" @click="deleteRow(item)">
+            <delete-icon />
+          </span>
+        </td>
+      </template>
+    </CDataTable>
     <div class="scenario-analysis">
       {{ scenarioTitle }}
       <span class="float-right">
@@ -112,7 +120,7 @@ export default {
       type: Boolean,
       default: false
     },
-    data: {
+    selectedNodesTable: {
       type: Array,
       default: () => null
     },
@@ -138,6 +146,14 @@ export default {
     }
   },
   computed: {
+    nodesTable: {
+      get() {
+        return this.selectedNodesTable;
+      },
+      set(value) {
+        this.$emit("updateNodesTable", value);
+      }
+    },
     transports: {
       get() {
         return this.selectedTransports;
@@ -189,6 +205,11 @@ export default {
       const transport = this.transports.find(tr => tr.id == itemId);
       if (!this.scenarioTransports.find(tr => tr.id == transport.id))
         this.scenarioTransports.push(transport);
+    },
+    deleteRow(row) {
+      var updatedTable = this.nodesTable.filter(rw => rw != row);
+      console.log(updatedTable.length);
+      this.$emit("updateNodesTable", updatedTable);
     },
     closeModal() {
       this.$emit("closeModal");
