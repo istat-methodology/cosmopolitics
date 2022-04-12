@@ -241,7 +241,8 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     Links=GG["links"] 
 
 
-    if pos_ini is None:
+    #if pos_ini is None: # keep ini_pos
+    if True:
         k_layout=5
         pos_ini={}
         random.seed(8)
