@@ -1,0 +1,4 @@
+azure-storage-file
+pandas
+datetime
+py7zr

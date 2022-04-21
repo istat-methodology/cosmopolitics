@@ -1,10 +1,5 @@
-cosmo-backend/R-server/data/DB_GoogleMobility.csv
 cosmo-backend/json-server/node_modules/
-cosmo-frontend/android/
-.Rproj.user
-cosmopolitics.Rproj
-.Rhistory
-cosmo-backend/R-server/data/COMEXT_EXP.csv
-cosmo-backend/R-server/data/COMEXT_IMP.csv
-cosmo-backend/python-server/data/dataAvailable/
-cosmo-backend/python-server/data/stima_comext_ITGS_201901_202012..csv
+cosmo-backend/R-server/data/
+cosmo-backend/python-server/data/
+cosmo-update-batch/cosmoDataUpdate-*.zip
+cosmo-backend/R-server/.Rhistory

@@ -1,8 +1,0 @@
-flask[async]
-flask_restful
-flask_cors
-pandas
-py7zr
-azure-functions
-azure-storage-file
-datetime
