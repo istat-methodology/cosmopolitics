@@ -29,3 +29,7 @@ chmod 777 $MOUNT_DIR
 echo "Mounting filesystem..."
 mount $DEV_PART $MOUNT_DIR
 echo "Mount complete."
+echo "Mount summary:"
+mount
+echo "Disk Free:"
+df -h
