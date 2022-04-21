@@ -77,7 +77,8 @@ logging.basicConfig(level=logging.INFO,
 logging.info('Environment: ' + str(os.environ))
 
 job_id=os.getenv('AZ_BATCH_JOB_ID','').replace(':','_')
-DATA_FOLDER=WORKING_FOLDER+os.sep+"data"+os.sep+str(this_year)+str(this_month)+(('__' + job_id) if (job_id != '') else '')+os.sep
+DATA_FOLDER_PARENT=WORKING_FOLDER+os.sep+"data"+(('__' + job_id) if (job_id != '') else '')
+DATA_FOLDER=DATA_FOLDER_PARENT+os.sep+str(this_year)+str(this_month)+os.sep
 SQLITE_TMPDIR = DATA_FOLDER+os.sep+"tmpdb"
 os.environ['SQLITE_TMPDIR'] = SQLITE_TMPDIR
 
@@ -409,8 +410,10 @@ def annualProcessing():
     return 'Annual processing ok: file created '+ieinfo_filename
 
 
-def createGenearlInfoOutput():
+def createGeneralInfoOutput():
     createFolder(DATA_FOLDER)
+    if os.getenv('AZ_BATCH_TASK_WORKING_DIR','') != '':
+        os.symlink(DATA_FOLDER_PARENT, environ['AZ_BATCH_TASK_WORKING_DIR']+os.sep+'data')
 
     info_processing={}
     info_processing["processingDay"]=processing_day.strftime("%d-%m-%Y, %H:%M:%S")
@@ -1018,7 +1021,7 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        repo+=createGenearlInfoOutput()
+        repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         
         repo+=downloadAndExtractComextAnnualDATA()  
