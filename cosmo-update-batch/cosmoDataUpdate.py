@@ -74,7 +74,10 @@ logging.basicConfig(level=logging.INFO,
     format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S')
 
-DATA_FOLDER=WORKING_FOLDER+os.sep+"data"+os.sep+str(this_year)+str(this_month)+os.sep
+logging.info('Environment: ' + str(os.environ))
+
+job_id=os.getenv('AZ_BATCH_JOB_ID','').replace(':','_')
+DATA_FOLDER=WORKING_FOLDER+os.sep+"data"+os.sep+str(this_year)+str(this_month)+(('__' + job_id) if (job_id != '') else '')+os.sep
 SQLITE_TMPDIR = DATA_FOLDER+os.sep+"tmpdb"
 os.environ['SQLITE_TMPDIR'] = SQLITE_TMPDIR
 
@@ -514,8 +517,6 @@ def createMonthlyFULLtable():
 def monthlyProcessing():
     conn = sqlite3.connect(SQLLITE_DB)
 
-    #SQLITE_TMPDIR
-    logging.info('Environment: ' + str(os.environ))
     cur = conn.cursor()
 
     # Create table Series
