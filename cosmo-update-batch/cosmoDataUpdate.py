@@ -778,7 +778,7 @@ def createOutputVariazioniQuoteCPA():
 
 
 def createOutputGraphCPAIntraUE():
-    logging.info('createOutputGraphExtraUE START')
+    logging.info('createOutputGraphCPAIntraUE START')
     DATA_FOLDER_WORKING=DATA_FOLDER_MONTHLY+os.sep+"output"
     createFolder(DATA_FOLDER_WORKING)
 
@@ -791,9 +791,8 @@ def createOutputGraphCPAIntraUE():
     filter_yyymm=str(start_data_PAGE_GRAPH_INTRA_UE.year-1)+str('%02d' %start_data_PAGE_GRAPH_INTRA_UE.month)
     logging.info('last_months: '+filter_yyymm)
     conn = sqlite3.connect(SQLLITE_DB)
-    pd.read_sql_query("SELECT DECLARANT_ISO, PARTNER_ISO, FLOW, cpa as PRODUCT, PERIOD, val_cpa as VALUE_IN_EUROS  FROM base_grafi_cpa WHERE PERIOD>"+filter_yyymm+" and length(trim(cpa))==3  order by PERIOD ASC;", conn).to_csv(CPA_INTRA_CSV,sep=",",index=False)
-    pd.read_sql_query("SELECT distinct cpa as PRODUCT  FROM base_grafi_cpa WHERE PERIOD>"+filter_yyymm+" and length(trim(cpa))==3;", conn).to_csv(CPA3_PRODUCT_CODE_CSV,sep=",",index=False)
-    
+    pd.read_sql_query("SELECT DECLARANT_ISO, PARTNER_ISO, FLOW, PRODUCT, PERIOD, VALUE_IN_EUROS  FROM (SELECT DECLARANT_ISO, PARTNER_ISO, FLOW, cpa as PRODUCT, PERIOD, val_cpa as VALUE_IN_EUROS  FROM base_grafi_cpa WHERE PERIOD>"+filter_yyymm+" and length(trim(cpa))==3 union SELECT DECLARANT_ISO, PARTNER_ISO, FLOW, 'TOT' as PRODUCT, PERIOD, val_cpa as VALUE_IN_EUROS  FROM base_grafi_cpa WHERE PERIOD>"+filter_yyymm+" and  trim(cpa)=='00')   order by PERIOD ASC;", conn).to_csv(CPA_INTRA_CSV,sep=",",index=False)
+    pd.read_sql_query("SELECT distinct cpa as PRODUCT  FROM base_grafi_cpa WHERE PERIOD>"+filter_yyymm+" and length(trim(cpa))==3;", conn).to_csv(CPA3_PRODUCT_CODE_CSV,sep=",",index=False)       
     if conn:
         conn.close()
     
@@ -811,8 +810,8 @@ def createOutputGraphicTrimestre():
     logging.info('import export variazioni quote CPA INTRA TRim')
 
     conn = sqlite3.connect(SQLLITE_DB)
-    pd.read_sql_query("SELECT *  FROM base_grafi_cpa_trim order by trimestre ASC;", conn).to_csv(CPA_TRIM_CSV,sep=",",index=False)
-
+    pd.read_sql_query("SELECT declarant_iso, partner_iso, flow,  cpa, trimestre,   val_cpa,   q_kg  FROM base_grafi_cpa_trim WHERE length(trim(cpa))==3 union SELECT declarant_iso, partner_iso, flow,  'TOT' as cpa, trimestre,   val_cpa,   q_kg  FROM base_grafi_cpa_trim WHERE trim(cpa)=='00' order by trimestre ASC;", conn).to_csv(CPA_TRIM_CSV,sep=",",index=False)
+            
     if conn:
         conn.close()
     
