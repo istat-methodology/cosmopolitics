@@ -8,6 +8,7 @@ env:
   BATCH_APP_PACKAGE_NAME_PREPARE_NODE: preparenode
   BATCH_APP_PACKAGE_NAME_PREPARE_NODE_SET_DEFAULT: 1
   PUBLISH_PREPARE_NODE: 0
+  USE_RUN_NUMBER_AS_VERSION: 1
 
 on:
   push:
@@ -39,11 +40,15 @@ jobs:
         run: |
           pushd cosmo-update-batch
           
-          Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version ([0-9]+)\.([0-9]+)\.[0-9\.]*$' }
-          $Version = "$($matches[1]).$($matches[2]).${{ github.run_number }}"
+          Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version ([0-9]+)\.([0-9]+)\.([0-9\.]*)$' }
+          if ($Env:USE_RUN_NUMBER_AS_VERSION -eq "1") {
+             $Version = "$($matches[1]).$($matches[2]).${{ github.run_number }}"
+          } else {
+             $Version = "$($matches[1]).$($matches[2]).$($matches[3])"
+          }
           $Pkg = "cosmoDataUpdate_$Version.zip"
           Compress-Archive -Update -Path cosmoDataUpdate.py, run.sh, requirements.txt -DestinationPath $Pkg
-          dir $Pkg
+          dir $Pkg | ft Name,Length,LastWriteTime
          
           az batch application package create `
             --name $Env:BATCH_ACCOUNT_NAME `
@@ -68,10 +73,15 @@ jobs:
         run: |
           pushd cosmo-update-batch
           
-          $Version = ((Get-Content prepare-node.sh | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
+          Get-Content prepare-node.sh | ?{ $_ -match '^# Version ([0-9]+)\.([0-9]+)\.([0-9\.]*)$' }
+          if ($Env:USE_RUN_NUMBER_AS_VERSION -eq "1") {
+             $Version = "$($matches[1]).$($matches[2]).${{ github.run_number }}"
+          } else {
+             $Version = "$($matches[1]).$($matches[2]).$($matches[3])"
+          }
           $Pkg = "prepare-node_$Version.zip"
           Compress-Archive -Update -Path prepare-node.sh -DestinationPath $Pkg
-          dir $Pkg
+          dir $Pkg | ft Name,Length,LastWriteTime
          
           az batch application package create `
             --name $Env:BATCH_ACCOUNT_NAME `
