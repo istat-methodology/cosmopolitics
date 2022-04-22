@@ -42,6 +42,7 @@ jobs:
           $Version = ((Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
           $Pkg = "cosmoDataUpdate_$Version.zip"
           Compress-Archive -Update -Path cosmoDataUpdate.py, .\run.sh, requirements.txt -DestinationPath $Pkg
+          ls $Pkg
          
           az batch application package create `
             --name $Env:BATCH_ACCOUNT_NAME `
@@ -61,7 +62,7 @@ jobs:
           popd
       
       - name: Publish 'Prepare Node' application
-        if: ${{ env.PUBLISH_PREPARE_NODE }}
+        if: ${{ env.PUBLISH_PREPARE_NODE == '1' }}
         shell: pwsh
         run: |
           pushd cosmo-update-batch
@@ -69,6 +70,7 @@ jobs:
           $Version = ((Get-Content prepare-node.sh | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
           $Pkg = "prepare-node_$Version.zip"
           Compress-Archive -Update -Path prepare-node.sh -DestinationPath $Pkg
+          ls $Pkg
          
           az batch application package create `
             --name $Env:BATCH_ACCOUNT_NAME `
