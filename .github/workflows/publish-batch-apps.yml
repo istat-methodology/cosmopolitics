@@ -1,0 +1,103 @@
+name: Cosmo Data Update Batch CI/CD
+
+env:
+  BATCH_ACCOUNT_RG: RG-Cosmo
+  BATCH_ACCOUNT_NAME: istatcosmobatches
+  BATCH_APP_PACKAGE_NAME_DATA_UPDATE: cosmoDataUpdate
+  BATCH_APP_PACKAGE_NAME_DATA_UPDATE_SET_DEFAULT: 0
+  BATCH_APP_PACKAGE_NAME_PREPARE_NODE: preparenode
+  BATCH_APP_PACKAGE_NAME_PREPARE_NODE_SET_DEFAULT: 1
+  PUBLISH_PREPARE_NODE: 0
+  USE_RUN_NUMBER_AS_VERSION: 1
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+    - cosmo-update-batch/**
+  pull_request:
+    branches: [ main ]
+    paths: 
+    - cosmo-update-batch/**
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: Azure/login@v1.4.3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Publish 'Data Update' application
+        shell: pwsh
+        run: |
+          pushd cosmo-update-batch
+          
+          Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version ([0-9]+)\.([0-9]+)\.([0-9\.]*)$' }
+          if ($Env:USE_RUN_NUMBER_AS_VERSION -eq "1") {
+             $Version = "$($matches[1]).$($matches[2]).${{ github.run_number }}"
+          } else {
+             $Version = "$($matches[1]).$($matches[2]).$($matches[3])"
+          }
+          $Pkg = "cosmoDataUpdate_$Version.zip"
+          Compress-Archive -Update -Path cosmoDataUpdate.py, run.sh, requirements.txt -DestinationPath $Pkg
+          dir $Pkg | ft Name,Length,LastWriteTime
+         
+          az batch application package create `
+            --name $Env:BATCH_ACCOUNT_NAME `
+            --resource-group $Env:BATCH_ACCOUNT_RG `
+            --application-name $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE `
+            --version-name $Version `
+            --package-file $Pkg
+          
+          if ($Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE_SET_DEFAULT -eq 1) {
+              az batch application set `
+                --name $Env:BATCH_ACCOUNT_NAME `
+                --resource-group $Env:BATCH_ACCOUNT_RG `
+                --application-name $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE `
+                --default-version $Version
+              echo "** Version $Version set as DEFAULT VERSION for package $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE **"
+          }
+          
+          popd
+      
+      - name: Publish 'Prepare Node' application
+        if: ${{ env.PUBLISH_PREPARE_NODE == '1' }}
+        shell: pwsh
+        run: |
+          pushd cosmo-update-batch
+          
+          Get-Content prepare-node.sh | ?{ $_ -match '^# Version ([0-9]+)\.([0-9]+)\.([0-9\.]*)$' }
+          if ($Env:USE_RUN_NUMBER_AS_VERSION -eq "1") {
+             $Version = "$($matches[1]).$($matches[2]).${{ github.run_number }}"
+          } else {
+             $Version = "$($matches[1]).$($matches[2]).$($matches[3])"
+          }
+          $Pkg = "prepare-node_$Version.zip"
+          Compress-Archive -Update -Path prepare-node.sh -DestinationPath $Pkg
+          dir $Pkg | ft Name,Length,LastWriteTime
+         
+          az batch application package create `
+            --name $Env:BATCH_ACCOUNT_NAME `
+            --resource-group $Env:BATCH_ACCOUNT_RG `
+            --application-name $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE `
+            --version-name $Version `
+            --package-file $Pkg
+          
+          if ($Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE_SET_DEFAULT -eq 1) {
+              az batch application set `
+                --name $Env:BATCH_ACCOUNT_NAME `
+                --resource-group $Env:BATCH_ACCOUNT_RG `
+                --application-name $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE `
+                --default-version $Version
+              echo "** Version $Version set as DEFAULT VERSION for package $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE **"
+          }
+          
+          popd
