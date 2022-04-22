@@ -1,3 +1,5 @@
+azure-identity
+azure-keyvault-secrets
 azure-storage-file
 pandas
 datetime

@@ -19,7 +19,11 @@ from pathlib import Path
 from re import S
 from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta
+
 from azure.storage.file import FileService
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
+
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -39,6 +43,9 @@ PREFIX_FULL="full"
 PREFIX_TRANSPORT="tr"
 FLOW_IMPORT=1
 FLOW_EXPORT=2
+
+KEY_VAULT_NAME="statlab-key-vault"
+SECRETNAME_ACCOUNTKEY="cosmostoragekey"
 
 processing_day = datetime.datetime.today()
 
@@ -914,7 +921,13 @@ def createClsNOTEmptyProducts(digit,cls,filename,filterValue,fileExistingProduct
 
 def copyFileToAzure(storage,folder,path_file_source):
     logging.info('copyFileToAzure START:'+ os.path.basename(path_file_source))
-    fileService=FileService(account_name=os.environ['STORAGE_ACCOUNT_NAME'],account_key=os.environ['STORAGE_ACCOUNT_KEY'])
+
+    storage_account_key = os.getenv('STORAGE_ACCOUNT_KEY', '')
+    if storage_account_key == '':
+        kvclient = SecretClient(vault_url=f"https://{KEY_VAULT_NAME}.vault.azure.net", credential=DefaultAzureCredential())
+        storage_account_key = kvclient.get_secret(SECRETNAME_ACCOUNTKEY).value
+        
+    fileService=FileService(account_name=os.environ['STORAGE_ACCOUNT_NAME'],account_key=storage_account_key)
     fileService.create_file_from_path(storage,folder,os.path.basename(path_file_source),path_file_source)
     logging.info('copyFileToAzure END: '+os.path.basename(path_file_source))
     return 'copyFileToAzure END: '+os.path.basename(path_file_source)
@@ -925,29 +938,29 @@ def exportOutputs():
 
     #JSON-SERVER
     OUTPUT_FOLDER=DATA_FOLDER+os.sep
-    copyFileToAzure("istat-cosmo-data-json","general", GENERAL_INFO_FILE)
-    copyFileToAzure("istat-cosmo-data-json","map", ieinfo_filename)
-    copyFileToAzure("istat-cosmo-data-json","map", IMPORT_SERIES_JSON)
-    copyFileToAzure("istat-cosmo-data-json","map", EXPORT_SERIES_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "general", GENERAL_INFO_FILE)
+    copyFileToAzure("istat-cosmo-data-json", "map", ieinfo_filename)
+    copyFileToAzure("istat-cosmo-data-json", "map", IMPORT_SERIES_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "map", EXPORT_SERIES_JSON)
 
-    copyFileToAzure("istat-cosmo-data-json","trade",IMPORT_QUANTITY_JSON)
-    copyFileToAzure("istat-cosmo-data-json","trade", EXPORT_QUANTITY_JSON)
-    copyFileToAzure("istat-cosmo-data-json","trade",IMPORT_VALUE_JSON)
-    copyFileToAzure("istat-cosmo-data-json","trade", EXPORT_VALUE_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", IMPORT_QUANTITY_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", EXPORT_QUANTITY_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", IMPORT_VALUE_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", EXPORT_VALUE_JSON)
 
-    copyFileToAzure("istat-cosmo-data-json","classification",DATA_FOLDER+"clsProductsCPA.json")
-    copyFileToAzure("istat-cosmo-data-json","classification", DATA_FOLDER+"clsProductsGraphExtraNSTR.json")
-    copyFileToAzure("istat-cosmo-data-json","classification", DATA_FOLDER+"clsProductsGraphIntra.json")
+    copyFileToAzure("istat-cosmo-data-json", "classification", DATA_FOLDER+"clsProductsCPA.json")
+    copyFileToAzure("istat-cosmo-data-json", "classification", DATA_FOLDER+"clsProductsGraphExtraNSTR.json")
+    copyFileToAzure("istat-cosmo-data-json", "classification", DATA_FOLDER+"clsProductsGraphIntra.json")
 
     #R-SERVER
-    copyFileToAzure("istat-cosmo-data-r",None,COMEXT_IMP_CSV)
-    copyFileToAzure("istat-cosmo-data-r",None, COMEXT_EXP_CSV)
+    copyFileToAzure("istat-cosmo-data-r", None, COMEXT_IMP_CSV)
+    copyFileToAzure("istat-cosmo-data-r", None, COMEXT_EXP_CSV)
 
     #Python-SERVER
-    copyFileToAzure("istat-cosmo-data-python",None,CPA_INTRA_CSV)
-    copyFileToAzure("istat-cosmo-data-python",None, CPA_TRIM_CSV)
-    copyFileToAzure("istat-cosmo-data-python",None,TR_EXTRA_UE_CSV)
-    copyFileToAzure("istat-cosmo-data-python",None,TR_EXTRA_UE_TRIMESTRALI_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, CPA_INTRA_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, CPA_TRIM_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, TR_EXTRA_UE_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, TR_EXTRA_UE_TRIMESTRALI_CSV)
 
     logging.info('exportOutputs END')
     return 'exportOutputs END'
