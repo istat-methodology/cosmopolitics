@@ -1,4 +1,4 @@
-name: cosmo-update-batch-application-deploy
+name: Cosmo Data Update Batch CI
 
 env:
   BATCH_ACCOUNT_RG: RG-Cosmo
