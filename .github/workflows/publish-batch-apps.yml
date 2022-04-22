@@ -63,6 +63,7 @@ jobs:
                 --resource-group $Env:BATCH_ACCOUNT_RG `
                 --application-name $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE `
                 --default-version $Version
+              echo "** Version $Version set as DEFAULT VERSION for package $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE **"
           }
           
           popd
@@ -96,6 +97,7 @@ jobs:
                 --resource-group $Env:BATCH_ACCOUNT_RG `
                 --application-name $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE `
                 --default-version $Version
+              echo "** Version $Version set as DEFAULT VERSION for package $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE **"
           }
           
           popd
