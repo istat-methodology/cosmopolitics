@@ -1,4 +1,4 @@
-name: Cosmo Data Update Batch CI
+name: Cosmo Data Update Batch CI/CD
 
 env:
   BATCH_ACCOUNT_RG: RG-Cosmo
