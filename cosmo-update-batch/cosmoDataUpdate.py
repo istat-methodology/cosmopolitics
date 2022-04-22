@@ -1,4 +1,4 @@
-# version 0.2.0
+# Version 0.3.0
 
 import os
 import sys
@@ -19,7 +19,11 @@ from pathlib import Path
 from re import S
 from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta
+
 from azure.storage.file import FileService
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
+
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -39,6 +43,9 @@ PREFIX_FULL="full"
 PREFIX_TRANSPORT="tr"
 FLOW_IMPORT=1
 FLOW_EXPORT=2
+
+KEY_VAULT_NAME="statlab-key-vault"
+SECRETNAME_ACCOUNTKEY="cosmostoragekey"
 
 processing_day = datetime.datetime.today()
 
@@ -74,7 +81,11 @@ logging.basicConfig(level=logging.INFO,
     format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S')
 
-DATA_FOLDER=WORKING_FOLDER+os.sep+"data"+os.sep+str(this_year)+str(this_month)+os.sep
+logging.info('Environment: ' + str(os.environ))
+
+job_id=os.getenv('AZ_BATCH_JOB_ID','').replace(':','_')
+DATA_FOLDER_PARENT=WORKING_FOLDER+os.sep+"data"+(('__' + job_id) if (job_id != '') else '')
+DATA_FOLDER=DATA_FOLDER_PARENT+os.sep+str(this_year)+str(this_month)+os.sep
 SQLITE_TMPDIR = DATA_FOLDER+os.sep+"tmpdb"
 os.environ['SQLITE_TMPDIR'] = SQLITE_TMPDIR
 
@@ -406,8 +417,10 @@ def annualProcessing():
     return 'Annual processing ok: file created '+ieinfo_filename
 
 
-def createGenearlInfoOutput():
+def createGeneralInfoOutput():
     createFolder(DATA_FOLDER)
+    if os.getenv('AZ_BATCH_TASK_WORKING_DIR','') != '':
+        os.symlink(DATA_FOLDER_PARENT, environ['AZ_BATCH_TASK_WORKING_DIR']+os.sep+'data')
 
     info_processing={}
     info_processing["processingDay"]=processing_day.strftime("%d-%m-%Y, %H:%M:%S")
@@ -514,8 +527,6 @@ def createMonthlyFULLtable():
 def monthlyProcessing():
     conn = sqlite3.connect(SQLLITE_DB)
 
-    #SQLITE_TMPDIR
-    logging.info('Environment: ' + str(os.environ))
     cur = conn.cursor()
 
     # Create table Series
@@ -909,7 +920,13 @@ def createClsNOTEmptyProducts(digit,cls,filename,filterValue,fileExistingProduct
 
 def copyFileToAzure(storage,folder,path_file_source):
     logging.info('copyFileToAzure START:'+ os.path.basename(path_file_source))
-    fileService=FileService(account_name=os.environ['STORAGE_ACCOUNT_NAME'],account_key=os.environ['STORAGE_ACCOUNT_KEY'])
+
+    storage_account_key = os.getenv('STORAGE_ACCOUNT_KEY', '')
+    if storage_account_key == '':
+        kvclient = SecretClient(vault_url=f"https://{KEY_VAULT_NAME}.vault.azure.net", credential=DefaultAzureCredential())
+        storage_account_key = kvclient.get_secret(SECRETNAME_ACCOUNTKEY).value
+        
+    fileService=FileService(account_name=os.environ['STORAGE_ACCOUNT_NAME'],account_key=storage_account_key)
     fileService.create_file_from_path(storage,folder,os.path.basename(path_file_source),path_file_source)
     logging.info('copyFileToAzure END: '+os.path.basename(path_file_source))
     return 'copyFileToAzure END: '+os.path.basename(path_file_source)
@@ -920,29 +937,29 @@ def exportOutputs():
 
     #JSON-SERVER
     OUTPUT_FOLDER=DATA_FOLDER+os.sep
-    copyFileToAzure("istat-cosmo-data-json","general", GENERAL_INFO_FILE)
-    copyFileToAzure("istat-cosmo-data-json","map", ieinfo_filename)
-    copyFileToAzure("istat-cosmo-data-json","map", IMPORT_SERIES_JSON)
-    copyFileToAzure("istat-cosmo-data-json","map", EXPORT_SERIES_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "general", GENERAL_INFO_FILE)
+    copyFileToAzure("istat-cosmo-data-json", "map", ieinfo_filename)
+    copyFileToAzure("istat-cosmo-data-json", "map", IMPORT_SERIES_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "map", EXPORT_SERIES_JSON)
 
-    copyFileToAzure("istat-cosmo-data-json","trade",IMPORT_QUANTITY_JSON)
-    copyFileToAzure("istat-cosmo-data-json","trade", EXPORT_QUANTITY_JSON)
-    copyFileToAzure("istat-cosmo-data-json","trade",IMPORT_VALUE_JSON)
-    copyFileToAzure("istat-cosmo-data-json","trade", EXPORT_VALUE_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", IMPORT_QUANTITY_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", EXPORT_QUANTITY_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", IMPORT_VALUE_JSON)
+    copyFileToAzure("istat-cosmo-data-json", "trade", EXPORT_VALUE_JSON)
 
-    copyFileToAzure("istat-cosmo-data-json","classification",DATA_FOLDER+"clsProductsCPA.json")
-    copyFileToAzure("istat-cosmo-data-json","classification", DATA_FOLDER+"clsProductsGraphExtraNSTR.json")
-    copyFileToAzure("istat-cosmo-data-json","classification", DATA_FOLDER+"clsProductsGraphIntra.json")
+    copyFileToAzure("istat-cosmo-data-json", "classification", DATA_FOLDER+"clsProductsCPA.json")
+    copyFileToAzure("istat-cosmo-data-json", "classification", DATA_FOLDER+"clsProductsGraphExtraNSTR.json")
+    copyFileToAzure("istat-cosmo-data-json", "classification", DATA_FOLDER+"clsProductsGraphIntra.json")
 
     #R-SERVER
-    copyFileToAzure("istat-cosmo-data-r",None,COMEXT_IMP_CSV)
-    copyFileToAzure("istat-cosmo-data-r",None, COMEXT_EXP_CSV)
+    copyFileToAzure("istat-cosmo-data-r", None, COMEXT_IMP_CSV)
+    copyFileToAzure("istat-cosmo-data-r", None, COMEXT_EXP_CSV)
 
     #Python-SERVER
-    copyFileToAzure("istat-cosmo-data-python",None,CPA_INTRA_CSV)
-    copyFileToAzure("istat-cosmo-data-python",None, CPA_TRIM_CSV)
-    copyFileToAzure("istat-cosmo-data-python",None,TR_EXTRA_UE_CSV)
-    copyFileToAzure("istat-cosmo-data-python",None,TR_EXTRA_UE_TRIMESTRALI_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, CPA_INTRA_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, CPA_TRIM_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, TR_EXTRA_UE_CSV)
+    copyFileToAzure("istat-cosmo-data-python", None, TR_EXTRA_UE_TRIMESTRALI_CSV)
 
     logging.info('exportOutputs END')
     return 'exportOutputs END'
@@ -1016,7 +1033,7 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        repo+=createGenearlInfoOutput()
+        repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         
         repo+=downloadAndExtractComextAnnualDATA()  
