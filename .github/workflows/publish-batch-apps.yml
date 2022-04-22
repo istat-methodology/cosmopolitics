@@ -39,10 +39,11 @@ jobs:
         run: |
           pushd cosmo-update-batch
           
-          $Version = ((Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
+          Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version ([0-9]+)\.([0-9]+)\.[0-9\.]*$' }
+          $Version = "$($matches[1]).$($matches[2]).${{ github.run_number }}"
           $Pkg = "cosmoDataUpdate_$Version.zip"
-          Compress-Archive -Update -Path cosmoDataUpdate.py, .\run.sh, requirements.txt -DestinationPath $Pkg
-          ls $Pkg
+          Compress-Archive -Update -Path cosmoDataUpdate.py, run.sh, requirements.txt -DestinationPath $Pkg
+          dir $Pkg
          
           az batch application package create `
             --name $Env:BATCH_ACCOUNT_NAME `
@@ -70,7 +71,7 @@ jobs:
           $Version = ((Get-Content prepare-node.sh | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
           $Pkg = "prepare-node_$Version.zip"
           Compress-Archive -Update -Path prepare-node.sh -DestinationPath $Pkg
-          ls $Pkg
+          dir $Pkg
          
           az batch application package create `
             --name $Env:BATCH_ACCOUNT_NAME `
