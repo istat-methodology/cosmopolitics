@@ -7,6 +7,7 @@ env:
   BATCH_APP_PACKAGE_NAME_DATA_UPDATE_SET_DEFAULT: 0
   BATCH_APP_PACKAGE_NAME_PREPARE_NODE: preparenode
   BATCH_APP_PACKAGE_NAME_PREPARE_NODE_SET_DEFAULT: 1
+  PUBLISH_PREPARE_NODE: 0
 
 on:
   push:
@@ -36,6 +37,8 @@ jobs:
       - name: Publish 'Data Update' application
         shell: pwsh
         run: |
+          pushd cosmo-update-batch
+          
           $Version = ((Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
           $Pkg = "cosmoDataUpdate_$Version.zip"
           Compress-Archive -Update -Path cosmoDataUpdate.py, .\run.sh, requirements.txt -DestinationPath $Pkg
@@ -54,10 +57,15 @@ jobs:
                 --application-name $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE `
                 --default-version $Version
           }
+          
+          popd
       
       - name: Publish 'Prepare Node' application
+        if: ${{ env.PUBLISH_PREPARE_NODE }}
         shell: pwsh
         run: |
+          pushd cosmo-update-batch
+          
           $Version = ((Get-Content prepare-node.sh | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
           $Pkg = "prepare-node_$Version.zip"
           Compress-Archive -Update -Path prepare-node.sh -DestinationPath $Pkg
@@ -76,3 +84,5 @@ jobs:
                 --application-name $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE `
                 --default-version $Version
           }
+          
+          popd
