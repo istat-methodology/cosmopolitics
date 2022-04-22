@@ -420,7 +420,7 @@ def annualProcessing():
 def createGeneralInfoOutput():
     createFolder(DATA_FOLDER)
     if os.getenv('AZ_BATCH_TASK_WORKING_DIR','') != '':
-        os.symlink(DATA_FOLDER_PARENT, environ['AZ_BATCH_TASK_WORKING_DIR']+os.sep+'data')
+        os.symlink(DATA_FOLDER_PARENT, os.environ['AZ_BATCH_TASK_WORKING_DIR']+os.sep+'data')
 
     info_processing={}
     info_processing["processingDay"]=processing_day.strftime("%d-%m-%Y, %H:%M:%S")
@@ -1024,6 +1024,9 @@ def deleteFolder(folder):
     shutil.rmtree(folder, ignore_errors=True)
     return "Folder removed: "+folder+"<br/>\n"
 
+def getPassedTime(initial_time):
+    return str(datetime.datetime.now()-initial_time)
+
 
 def executeUpdate():
     error=False
@@ -1033,18 +1036,26 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
+        
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
         repo+=downloadAndExtractComextAnnualDATA()  
         repo+='<!-- 2 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
         repo+=downloadAndExtractComextMonthlyDATA(URL_COMEXT_PRODUCTS, PREFIX_FULL,start_data_PAGE_TIME_SERIES,end_data_load)
         repo+='<!-- 3 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
+
         repo+=downloadAndExtractComextMonthlyDATA(URL_COMEXT_TR, PREFIX_TRANSPORT,start_data_PAGE_GRAPH_EXTRA_UE,end_data_load)
         repo+='<!-- 4 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
+         
         repo+=downloadfile(URL_COMEXT_CLS_PRODUCTS,CLS_PRODUCTS_FILE)
         repo+='<!-- 5 --><br/>\n'
+         
         repo+=downloadfile(URL_CLS_CPA,CLS_PRODUCTS_CPA_FILE)
         repo+='<!-- 6 --><br/>\n'
         repo+=downloadfile(URL_CLS_NSTR,CLS_NSTR_FILE)
@@ -1052,12 +1063,14 @@ def executeUpdate():
     
         repo+=annualProcessing()
         repo+='<!-- 8 --><br/>\n'
-
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         repo+=createMonthlyFULLtable()
         repo+='<!-- 9 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
 
         repo+=monthlyProcessing()
         repo+='<!-- 10 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         repo+=createMonthlyOutputTimeSeries()
         repo+='<!-- 11 --><br/>\n'
         repo+=createMonthlyOutputVQSTrade()
@@ -1077,6 +1090,7 @@ def executeUpdate():
 
         repo += createOutputVariazioniQuoteCPA()
         repo+='<!-- 18 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
 
         repo+=createClsNOTEmptyProducts(2,CLS_PRODUCTS_CPA_FILE,"CPA",37,CPA2_PRODUCT_CODE_CSV)
         repo+='<!-- 19 --><br/>\n'
@@ -1086,14 +1100,17 @@ def executeUpdate():
         repo+='<!-- 21 --><br/>\n'
         repo+=exportOutputs()
         repo+='<!-- 22 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         repo+=deleteFolder(DATA_FOLDER)
         repo+='<!-- 23 --><br/>\n'
-
+        
         repo+=refreshMicroservicesDATA()
         repo+='<!-- 24 --><br/>\n'
-
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
+        
         repo+=checkUPMicroservices()
         repo+='<!-- 25 --><br/>\n'
+        repo+='time: '+getPassedTime(start_time)+'<br/>\n'
 
     except BaseException as e:
         repo+="ERROR UPDATE  " + str(e)
