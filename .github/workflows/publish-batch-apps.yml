@@ -1,0 +1,78 @@
+name: cosmo-update-batch-application-deploy
+
+env:
+  BATCH_ACCOUNT_RG: RG-Cosmo
+  BATCH_ACCOUNT_NAME: istatcosmobatches
+  BATCH_APP_PACKAGE_NAME_DATA_UPDATE: cosmoDataUpdate
+  BATCH_APP_PACKAGE_NAME_DATA_UPDATE_SET_DEFAULT: 0
+  BATCH_APP_PACKAGE_NAME_PREPARE_NODE: preparenode
+  BATCH_APP_PACKAGE_NAME_PREPARE_NODE_SET_DEFAULT: 1
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+    - cosmo-update-batch/**
+  pull_request:
+    branches: [ main ]
+    paths: 
+    - cosmo-update-batch/**
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: Azure/login@v1.4.3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Publish 'Data Update' application
+        shell: pwsh
+        run: |
+          $Version = ((Get-Content cosmoDataUpdate.py | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
+          $Pkg = "cosmoDataUpdate_$Version.zip"
+          Compress-Archive -Update -Path cosmoDataUpdate.py, .\run.sh, requirements.txt -DestinationPath $Pkg
+         
+          az batch application package create `
+            --name $Env:BATCH_ACCOUNT_NAME `
+            --resource-group $Env:BATCH_ACCOUNT_RG `
+            --application-name $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE `
+            --version-name $Version `
+            --package-file $Pkg
+          
+          if ($Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE_SET_DEFAULT -eq 1) {
+              az batch application set `
+                --name $Env:BATCH_ACCOUNT_NAME `
+                --resource-group $Env:BATCH_ACCOUNT_RG `
+                --application-name $Env:BATCH_APP_PACKAGE_NAME_DATA_UPDATE `
+                --default-version $Version
+          }
+      
+      - name: Publish 'Prepare Node' application
+        shell: pwsh
+        run: |
+          $Version = ((Get-Content prepare-node.sh | ?{ $_ -match '^# Version [0-9\.]+$' }) -split ' ')[2]
+          $Pkg = "prepare-node_$Version.zip"
+          Compress-Archive -Update -Path prepare-node.sh -DestinationPath $Pkg
+         
+          az batch application package create `
+            --name $Env:BATCH_ACCOUNT_NAME `
+            --resource-group $Env:BATCH_ACCOUNT_RG `
+            --application-name $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE `
+            --version-name $Version `
+            --package-file $Pkg
+          
+          if ($Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE_SET_DEFAULT -eq 1) {
+              az batch application set `
+                --name $Env:BATCH_ACCOUNT_NAME `
+                --resource-group $Env:BATCH_ACCOUNT_RG `
+                --application-name $Env:BATCH_APP_PACKAGE_NAME_PREPARE_NODE `
+                --default-version $Version
+          }
