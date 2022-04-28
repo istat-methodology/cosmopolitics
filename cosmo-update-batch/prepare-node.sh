@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version 0.1.0
+# Version 0.2.0
 
 echo "** NODE PREPARATION STARTED **"
 
@@ -14,7 +14,7 @@ then
 fi
 
 # Assume the biggest disk is the data disk
-DEV_DISK=$(lsblk -d -b | gawk 'BEGIN { M=0; D=""; } { if (strtonum($4) > M) { M = strtonum($4); D=$1; } } END { print D }')
+DEV_DISK=/dev/$(lsblk -d -b | gawk 'BEGIN { M=0; D=""; } { if (strtonum($4) > M) { M = strtonum($4); D=$1; } } END { print D }')
 DEV_DISK_SIZE=$(lsblk -d -b | gawk 'BEGIN { M=0; D=""; } { if (strtonum($4) > M) { M = strtonum($4); D=$1; } } END { print M / 1024 / 1024 / 1024 }')G
 PART_NO=1
 DEV_PART=${DEV_DISK}${PART_NO}
