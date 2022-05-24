@@ -315,8 +315,8 @@ def annualProcessing():
         summary_population={}
         summary_population["Year"]= "Population"
 
-        summary_population[str(annual_previous_year)]=getValueFromList(annual_population[(annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_previous_year) ],np.int64(0),6).astype(np.int64)
-        summary_population[str(annual_current_year)]=getValueFromList(annual_population[(annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_current_year) ],np.int64(0),6).astype(np.int64)
+        summary_population[str(annual_previous_year)]=getValueFromList(annual_population[(annual_population["indic_de"]=="JAN") & (annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_previous_year) ],np.int64(0),6).astype(np.int64)
+        summary_population[str(annual_current_year)]=getValueFromList(annual_population[(annual_population["indic_de"]=="JAN") & (annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_current_year) ],np.int64(0),6).astype(np.int64)
         minfo.append(summary_population)
 
         summary_industrial_production={}
