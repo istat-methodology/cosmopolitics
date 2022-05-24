@@ -41,6 +41,7 @@ fi
 chmod 777 $MOUNT_DIR
 echo "Mounting $DEV_PART on $MOUNT_DIR..."
 mount $DEV_PART $MOUNT_DIR
+chmod 777 $MOUNT_DIR
 echo "Mount complete."
 echo "Mount summary:"
 mount
