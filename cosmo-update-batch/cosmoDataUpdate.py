@@ -126,7 +126,7 @@ ANNUAL_POPULATION_URL="https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/
 ANNUAL_POPULATION_CSV=DATA_FOLDER+os.sep+"DEMO_GIND.csv"
 
 ANNUAL_INDUSTRIAL_PRODUCTION_URL="https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/STS_INPR_A/?format=SDMX-CSV&i"
-ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV=DATA_FOLDER+os.sep+"UNE_RT_A.csv"
+ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV=DATA_FOLDER+os.sep+"STS_INPR_A.csv"
 
 ANNUAL_UNEMPLOYEMENT_URL="https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/UNE_RT_A/?format=SDMX-CSV&i"
 ANNUAL_UNEMPLOYEMENT_FILE_CSV=DATA_FOLDER+os.sep+"UNE_RT_A.csv"
@@ -141,13 +141,13 @@ URL_COMEXT_PRODUCTS="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/Bu
 
 URL_COMEXT_TR="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_DATA%2FTRANSPORT_NSTR%2F"
 
-URL_COMEXT_CLS_PRODUCTS="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FENGLISH%2FCN.txt"
+URL_COMEXT_CLS_PRODUCTS="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FCN.txt"
 CLS_PRODUCTS_FILE=DATA_FOLDER+os.sep+"cls_products.dat"
 
-URL_CLS_NSTR="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FENGLISH%2FNSTR.txt"
+URL_CLS_NSTR="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FNSTR.txt"
 CLS_NSTR_FILE=DATA_FOLDER+os.sep+"NSTR.txt"
 
-URL_CLS_CPA="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FENGLISH%2FCPA21.txt"
+URL_CLS_CPA="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FCPA21.txt"
 CLS_PRODUCTS_CPA_FILE=DATA_FOLDER+os.sep+"cls_products_CPA21.txt"
 
 
@@ -278,17 +278,17 @@ def annualProcessing():
     logging.info('loading.. '+CLS_PRODUCTS_FILE)
     cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''])
 
-    logging.info('loading.. '+ANNUAL_POPULATION_URL)
+    logging.info('loading.. '+ANNUAL_POPULATION_CSV)
     #ANNUAL_POPULATION_CSV
-    annual_population=pd.read_csv(ANNUAL_POPULATION_URL,sep=",",keep_default_na=False, na_values=[''])
+    annual_population=pd.read_csv(ANNUAL_POPULATION_CSV,sep=",",keep_default_na=False, na_values=[''])
 
-    logging.info('loading.. '+ANNUAL_INDUSTRIAL_PRODUCTION_URL)
+    logging.info('loading.. '+ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV)
     #ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV
-    annual_industrial_production=pd.read_csv(ANNUAL_INDUSTRIAL_PRODUCTION_URL,sep=",",keep_default_na=False, na_values=[''])
+    annual_industrial_production=pd.read_csv(ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV,sep=",",keep_default_na=False, na_values=[''])
 
-    logging.info('loading.. '+ANNUAL_UNEMPLOYEMENT_URL)
+    logging.info('loading.. '+ANNUAL_UNEMPLOYEMENT_FILE_CSV)
     #ANNUAL_UNEMPLOYEMENT_FILE_CSV
-    annual_unemployement=pd.read_csv(ANNUAL_UNEMPLOYEMENT_URL,sep=",",keep_default_na=False, na_values=[''])
+    annual_unemployement=pd.read_csv(ANNUAL_UNEMPLOYEMENT_FILE_CSV,sep=",",keep_default_na=False, na_values=[''])
 
     logging.info('loading.. '+previous_filename)
     data_annual_previous_year =pd.read_csv(previous_filename,sep=",",low_memory=True,keep_default_na=False, na_values=[''])
@@ -350,7 +350,7 @@ def annualProcessing():
         logging.info('# Main Import partner')
         mips_previous= data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_IMPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PARTNER_ISO"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index()
         mips_current= data_annual_current_year[(data_annual_current_year["DECLARANT_ISO"]==country) & (data_annual_current_year["FLOW"]==FLOW_IMPORT) & (data_annual_current_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PARTNER_ISO"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index()
-
+     
         for index  in range(n_rows):
             mip_j={}
             mip_j["Main partner "+str(annual_previous_year)]= mips_previous.loc[index,"PARTNER_ISO"]
@@ -364,7 +364,7 @@ def annualProcessing():
         meps_j=[]
         meps_previous= data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_EXPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PARTNER_ISO"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index()
         meps_current= data_annual_current_year[(data_annual_current_year["DECLARANT_ISO"]==country) & (data_annual_current_year["FLOW"]==FLOW_EXPORT) & (data_annual_current_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PARTNER_ISO"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index()
-
+        logging.info(' Main Export Partners ...')
         for index2 in range(n_rows):
             mep_j={}
             mep_j["Main partner "+str(annual_previous_year)]= meps_previous.loc[index2,"PARTNER_ISO"]
@@ -374,7 +374,7 @@ def annualProcessing():
             meps_j.append(mep_j)
 
         ieinfo_country["Main Export Partners"]=meps_j
-
+        logging.info('"Main Import Goods ...')
         # Main Import good
         migs_j=[]
         migs_previous= data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_IMPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PRODUCT_NC"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index()
@@ -391,7 +391,7 @@ def annualProcessing():
             migs_j.append(mig_j)
 
         ieinfo_country["Main Import Goods"]=migs_j
-
+        logging.info('Main Export Goods ...')    
         # Main Export partner
         megs_j=[]
         megs_previous= data_annual_previous_year[(data_annual_previous_year["DECLARANT_ISO"]==country) & (data_annual_previous_year["FLOW"]==FLOW_EXPORT) & (data_annual_previous_year["PRODUCT_NC"].str.strip().str.len() == 8)].groupby([ "PRODUCT_NC"])["VALUE_IN_EUROS"].sum().nlargest(3).reset_index()
@@ -408,7 +408,7 @@ def annualProcessing():
             megs_j.append(meg_j)
 
         ieinfo_country["Main Export Goods"]=megs_j
-
+        logging.info('annual file ...')    
         ieinfo.append(ieinfo_country)
 
     with open(ieinfo_filename, 'w') as f:
@@ -1060,7 +1060,14 @@ def executeUpdate():
         repo+='<!-- 6 --><br/>\n'
         repo+=downloadfile(URL_CLS_NSTR,CLS_NSTR_FILE)
         repo+='<!-- 7 --><br/>\n'
-    
+        
+        repo+=downloadfile(ANNUAL_POPULATION_URL,ANNUAL_POPULATION_CSV)
+        repo+='<!-- 7.1 --><br/>\n'
+        repo+=downloadfile(ANNUAL_INDUSTRIAL_PRODUCTION_URL,ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV)
+        repo+='<!-- 7.2 --><br/>\n'
+        repo+=downloadfile(ANNUAL_UNEMPLOYEMENT_URL,ANNUAL_UNEMPLOYEMENT_FILE_CSV)
+        repo+='<!-- 7.3 --><br/>\n'
+       
         repo+=annualProcessing()
         repo+='<!-- 8 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'

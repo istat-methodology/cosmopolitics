@@ -134,7 +134,7 @@
       },
       "metrics": {
         "subtitle": "<br><b>Metrics</b>",
-        "body": "<br>The following metrics derive from standard centrality measures of Graph Analysis.<br><ul><li><b>Product spread:</b> Graph density. Represents how much the product is spread through the graph.</li><b>Exportation strength:</b> it is the outdegree centrality for each country.</li><li><b>Vulnerability:</b> it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <li><li><b> Hubness:</b> it is the betweenness centrality of the countries.</li></ul>",
+        "body": "<br>The following metrics derive from standard centrality measures of Graph Analysis.<br><ul><li><b>Product spread:</b> Graph density. Represents how much the product is spread through the graph.</li><b>Exportation strength:</b> it is the outdegree centrality for each country.</li><li><b>Vulnerability:</b> it is calculated as 1 - the indegree centrality for each country. The vulnerability conveys the message that a country receiving a product from several countries is less dependent on singles countries for the product supply. <li><li><b> Hubness:</b> it is the closeness centrality of the countries.</li></ul>",
         "keywords": ""
       },
       "filter": {
