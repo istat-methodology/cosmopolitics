@@ -28,5 +28,5 @@ server.get('/stop',(req,res)=>{
 server.use(router);
 
 server.listen(5300, function () {
-  console.log("JSON Server is running");
+  console.log("JSON Server is running - CLOUD_ROLE=" + process.env.CLOUD_ROLE);
 });

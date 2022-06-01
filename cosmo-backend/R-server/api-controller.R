@@ -3,12 +3,10 @@
  library(data.table)
  library(stringr)
  library(stringi)
- library(dplyr)
- 
+ library(dplyr) 
  
 # basedir = ("C:\\git\\cosmopolitics\\cosmo-backend\\R-server\\rscript")
 # basedirData=("C:\\git\\cosmopolitics\\cosmo-backend\\R-server\\data")
-
 
 basedir = ("./rscript")
 basedirData=("./data")
@@ -17,9 +15,7 @@ source(paste(basedir,"api_loadcomext_function.r",sep="/"))
 source(paste(basedir,"api_data_function.R",sep="/"))
 source(paste(basedir,"api_itsa.R",sep="/"))
 
-
-##
-app = Application$new()
+app = Application$new(middleware = list(CORSMiddleware$new()))
 
 COMEXT_IMP<-load_comext("1")
 COMEXT_EXP<-load_comext("2")
@@ -36,13 +32,8 @@ COMEXT_EXP<-load_comext("2")
 app$add_get(
   path = "/hello", 
   FUN = function(.req, .res) {
-     
     .res$set_body(paste("version ",Sys.getenv("APP_VERSION")))
     .res$set_content_type("text/plain")
-    .res$set_header("Access-Control-Allow-Origin", "*")
-    .res$set_header("Access-Control-Allow-Methods","*")
-    .res$set_header("Access-Control-Allow-Headers", "*")
-    
   })
 
 ### CARICAMENTO DATI COMMERCIO ESTERO 
@@ -54,10 +45,6 @@ app$add_get(
     COMEXT_EXP <<- load_comext("2")
     
     .res$set_body("Load data ok")
-    .res$set_header("Access-Control-Allow-Origin", "*")
-    .res$set_header("Access-Control-Allow-Methods","*")
-    .res$set_header("Access-Control-Allow-Headers", "*")
-    
     .res$set_content_type("application/json")
   })
 
@@ -72,11 +59,6 @@ app$add_get(
                  .req$get_param_query("country"),.req$get_param_query("partner"),
                  .req$get_param_query("dataType"),.req$get_param_query("tipovar"))
     .res$set_body(resp)
-  
-    .res$set_header("Access-Control-Allow-Origin", "*")
-    .res$set_header("Access-Control-Allow-Methods","*")
-    .res$set_header("Access-Control-Allow-Headers", "*")
-
     .res$set_content_type("application/json")
   })
 
