@@ -25,24 +25,24 @@ NSTR_TRIM_FILE="data/tr_extra_ue_trim.csv"
 
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
-logger.addHandler(AzureLogHandler())
-
 logging.basicConfig(level=logging.INFO,
     format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S')
 
+logger = logging.getLogger(__name__)
+logger.addHandler(AzureLogHandler())
 
- 
+
 def load_cpa_trim():
     def funcTrim(x):
         return np.int32(x.replace("T","0"))
 
-    logging.info("### load_CPA_trim START")
+    logger.info("### load_CPA_trim START")
     df=pd.read_csv(CPA_TRIM_FILE,low_memory=False,converters={'trimestre': funcTrim},dtype={"cpa": object,"FLOW":np.int8} )
     df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","cpa","trimestre","val_cpa"]]
     df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","PERIOD","VALUE_IN_EUROS"]
     df=df[df.PRODUCT.apply(lambda x : len(x.strip())==PROD_DIGITS)]
-    logging.info("### load_CPA_trim END")
+    logger.info("### load_CPA_trim END")
     return df
 
 
@@ -50,20 +50,20 @@ def load_NSTR_trim():
     def funcTrim(x):
         return np.int32(x.replace("T","0"))
    
-    logging.info("### load_NSTR_trim START..") 
+    logger.info("### load_NSTR_trim START..") 
     df=pd.read_csv(NSTR_TRIM_FILE,low_memory=False,converters={'TRIMESTRE': funcTrim},dtype={"PRODUCT_NSTR": object,"FLOW":np.int8} )
     print("************",df.columns)
     
     df=df[["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT_NSTR","TRANSPORT_MODE","TRIMESTRE","VALUE_IN_EUROS"]]
     df.columns=["DECLARANT_ISO","PARTNER_ISO","FLOW","PRODUCT","TRANSPORT_MODE","PERIOD","VALUE_IN_EUROS"]
     df=df[df.PRODUCT.apply(lambda x : len(x.strip())==PROD_DIGITS)]
-    logging.info("### load_NSTR_trim END") 
+    logger.info("### load_NSTR_trim END") 
     return df
 
 
 def load_files_available(): 
     #EXTRA_FILE
-    logging.info("### load_files_available EXTRA_FILE...") 
+    logger.info("### load_files_available EXTRA_FILE...") 
     df=pd.read_csv(EXTRA_FILE,sep=SEP,dtype={"PRODUCT_NSTR": object,"FLOW":np.int8,"PERIOD":np.int32,"TRANSPORT_MODE":np.int8} )
     df.columns=["PRODUCT","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']
     
@@ -72,7 +72,7 @@ def load_files_available():
     #print(list(df["PERIOD"].unique()))
     #print (df.shape)
     #print(df.info())
-    logging.info("### load_files_available EXTRA_FILE END") 
+    logger.info("### load_files_available EXTRA_FILE END") 
     return df
 
     # legge i file disponibili nella cartella data_avilable
@@ -87,7 +87,7 @@ def load_files_available():
         if f.endswith(DATA_EXTENTION):
             appo=pd.read_csv(DATA_AVAILABLE+os.sep+f,sep=SEP)
             listDataframes.append(appo)
-            logging.info("shape: "+str(appo.shape))  
+            logger.info("shape: "+str(appo.shape))  
             
     df=pd.concat(listDataframes,axis=0)        
     df=df[df["PRODUCT_NSTR"]!="TOT"]
@@ -95,13 +95,13 @@ def load_files_available():
     df=df[df["PARTNER_ISO"]!="EU"]     
     df=df[["PRODUCT_NSTR","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']]                  
     df.columns=["PRODUCT","DECLARANT_ISO","PARTNER_ISO","PERIOD","TRANSPORT_MODE","FLOW",'VALUE_IN_EUROS', 'QUANTITY_IN_KG']
-    logging.info("### load_files_available exit") 
+    logger.info("### load_files_available exit") 
     return df
     '''
     
 
 def load_file_intraEU(): 
-    logging.info("###  load_file_intraEU START...")
+    logger.info("###  load_file_intraEU START...")
     #df_transportIntra=pd.read_csv(INTRA_FILE,low_memory=False,dtype={"PRODUCT": object, "DECLARANT_ISO": object, "PARTNER_ISO": object,"FLOW":np.int8,"PERIOD":np.int16,"VALUE_IN_EUROS":np.int64} )
     df_transportIntra=pd.read_csv(INTRA_FILE,low_memory=False,dtype={"PRODUCT": object,"FLOW":np.int8,"PERIOD":np.int32,"TRANSPORT_MODE":np.int8} )
     '''
@@ -118,14 +118,14 @@ def load_file_intraEU():
     #print(list(df_transportIntra["PERIOD"].unique()))
     #print (df_transportIntra.shape)
     #print(df_transportIntra.info())
-    logging.info("###  load_file_intraEU END")
+    logger.info("###  load_file_intraEU END")
     return df_transportIntra
 
 def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport_estrazione):
     print(df_transport_estrazione.info())
     #estraggo dalla tabella solo le informazioni richieste nei filtri richiesti al runtime
-    logging.info("### estrai_tabella_per_grafo...") 
-    logging.info("ESTRAGGO TABELLA COMEX") 
+    logger.info("### estrai_tabella_per_grafo...") 
+    logger.info("ESTRAGGO TABELLA COMEX") 
     
     #df_transport_estrazione=df_transport
     df_transport_estrazione=df_transport_estrazione[df_transport_estrazione["FLOW"]==flow]
@@ -164,7 +164,7 @@ def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,
     
     if (selezioneMezziEdges is not None):
         Query=build_query_mezzi(selezioneMezziEdges)
-        logging.info("QUERY selezione MezziEdge:")
+        logger.info("QUERY selezione MezziEdge:")
         df_transport_estrazione=df_transport_estrazione.query(Query)
 
     #aggrega indimendentemente dai mezzi o produtti ed ordina secondo il criterio scelto VALUE o QUANTITY 
@@ -174,15 +174,15 @@ def estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,
     if tg_perc is not None:
         SUM = df_transport_estrazione[criterio].sum()     
         df_transport_estrazione = df_transport_estrazione[df_transport_estrazione[criterio].cumsum(skipna=False)/SUM*100<tg_perc] 
-        logging.info("### estrai_tabella_per_grafo exit")     
+        logger.info("### estrai_tabella_per_grafo exit")     
     return df_transport_estrazione
 def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag): 
     # costruisce sulla base della tabella filtrata
     # il grafo con le relative metriche
-    logging.info("### makeGraph... ")     
+    logger.info("### makeGraph... ")     
 
     def calc_metrics(Grafo,FlagWeight):
-        logging.info("### metrics... ")     
+        logger.info("### metrics... ")     
         in_deg = nx.in_degree_centrality(Grafo)
         Metrics ={}
         vulner={}
@@ -200,7 +200,7 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
             "hubness":nx.closeness_centrality(Grafo.to_undirected())
             #"hubness":nx.betweenness_centrality(Grafo) #, weight="weight")
             }
-        logging.info("### metrics... ")     
+        logger.info("### metrics... ")     
         return Metrics 
 
 
@@ -210,12 +210,12 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
 
     # assegno i ruoli da e a
     if flow==1:
-        logging.info("FLOW: import")
+        logger.info("FLOW: import")
         country_from="PARTNER_ISO"
         country_to="DECLARANT_ISO"
         
     if flow==2:
-        logging.info("FLOW: export")    
+        logger.info("FLOW: export")    
         country_from="DECLARANT_ISO"
         country_to="PARTNER_ISO"
 
@@ -253,11 +253,11 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
             pos_ini[node['id']]=np.array([x,y])
     else:
             k_layout=200
-            logging.info("-- POSIZIONE DEI NODI PRECEDENTE ACQUISITA --")
+            logger.info("-- POSIZIONE DEI NODI PRECEDENTE ACQUISITA --")
 
     try:
         
-        #logging.info(str(pos_ini))
+        #logger.info(str(pos_ini))
         
         coord = nx.spring_layout(G,k=k_layout/math.sqrt(G.order()),pos=pos_ini)
         coord = nx.spring_layout(G,k=k_layout/math.sqrt(G.order()),pos=coord) # stable solution
@@ -287,16 +287,16 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
     new_dict = { "nodes": list(dict_nodes), "edges": list(dict_edges),"metriche":MetricG}
 
     JSON=json.dumps(new_dict) 
-    logging.info("### makeGraph exit")     
+    logger.info("### makeGraph exit")     
     return coord,JSON,G
 
 def jsonpos2coord(jsonpos):
-    logging.info("### jsonpos2coord... ")     
+    logger.info("### jsonpos2coord... ")     
     coord={}
     for id,x,y in pd.DataFrame.from_dict(jsonpos["nodes"]) [["label","x","y"]].values:
 
         coord[id]=np.array([x,y])
-    logging.info("### jsonpos2coord exit ")     
+    logger.info("### jsonpos2coord exit ")     
     return coord    
 try:
     df_transport = load_files_available()  
@@ -305,7 +305,7 @@ try:
     df_trimNSTR = load_NSTR_trim()
 except:
     #print("#############   FILE NON TROVATI")
-    logging.info("### Files non trovati ")     
+    logger.info("### Files non trovati ")     
 
 #prod_NTSR_dict=build_NTSR_dict()
 
@@ -331,21 +331,21 @@ middleware = FlaskMiddleware(
 #@app.route('/wordtradegraphextra', methods=['POST','GET'])        
 @app.route('/graphExtraMonth', methods=['POST','GET'])
 def graphExtraMonth():
-    logging.info("### graphExtraMonth...")
+    logger.info("### graphExtraMonth...")
     if request.method == 'POST':        
-        logging.info("Word Trade Graph method get EXTRA....")
+        logger.info("Word Trade Graph method get EXTRA....")
         
-        logging.info("criterio per costruire il grafo: "+criterio )
+        logger.info("criterio per costruire il grafo: "+criterio )
         jReq=dict(request.json)
-        logging.info("------ jReq",jReq)
+        logger.info("------ jReq",jReq)
         tg_perc=int(jReq['tg_perc'])
         tg_period=int(jReq['tg_period'])
         pos=jReq['pos']
         if pos=="None":
             pos=None
         else:
-            logging.info("Gestisci posizione dei nodi precedenti -----",pos)
-            logging.info("pos-----",type(pos))            
+            logger.info("Gestisci posizione dei nodi precedenti -----",pos)
+            logger.info("pos-----",type(pos))            
             pos=jsonpos2coord(pos)
 
         #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
@@ -359,12 +359,12 @@ def graphExtraMonth():
             selezioneMezziEdges=None
         else:
             pass
-            logging.info(selezioneMezziEdges)
-            logging.info(type(selezioneMezziEdges))
+            logger.info(selezioneMezziEdges)
+            logger.info(type(selezioneMezziEdges))
         #--------------------
                 
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_transport)
-        logging.info("tab4graph.shape: "+str(tab4graph.shape))
+        logger.info("tab4graph.shape: "+str(tab4graph.shape))
 
         #controllo se la dimensione del grafo è troppo grande
         #conto il numerp dei nodi
@@ -389,11 +389,11 @@ def graphExtraMonth():
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
-        logging.info("### wordtradegraph exit")
+        logger.info("### wordtradegraph exit")
         return resp
 
     else:
-        logging.info("### wordtradegraph exit")
+        logger.info("### wordtradegraph exit")
         return str("only post")
 
 
@@ -402,20 +402,20 @@ def graphExtraMonth():
 def graphIntraMonth():
     if request.method == 'POST':
         
-        logging.info("Word Trade INTRA_EU Graph method get ....")
+        logger.info("Word Trade INTRA_EU Graph method get ....")
 
         
-        logging.info("criterio per costruire il grafo:"+criterio )
+        logger.info("criterio per costruire il grafo:"+criterio )
         jReq=dict(request.json)
-        logging.info("------ jReq",jReq)
+        logger.info("------ jReq",jReq)
         tg_perc=int(jReq['tg_perc'])
         tg_period=int(jReq['tg_period'])
         pos=jReq['pos']
         if pos=="None":
             pos=None
         else:
-            logging.info("Gestisci posizione dei nodi precedenti -----")
-            logging.info("pos-----",type(pos))            
+            logger.info("Gestisci posizione dei nodi precedenti -----")
+            logger.info("pos-----",type(pos))            
             pos=jsonpos2coord(pos)
 
         #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
@@ -431,12 +431,12 @@ def graphIntraMonth():
             selezioneMezziEdges=None
         else:
             pass
-            logging.info(selezioneMezziEdges)
-            logging.info(type(selezioneMezziEdges))
+            logger.info(selezioneMezziEdges)
+            logger.info(type(selezioneMezziEdges))
         #--------------------
 
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,selezioneMezziEdges,df_transportIntra)
-        logging.info("tab4graph.shape"+str(tab4graph.shape))
+        logger.info("tab4graph.shape"+str(tab4graph.shape))
         #AnalisiFlag=selezioneMezziEdges ########################################
 
         #controllo se la dimensione del grafo è troppo grande
@@ -460,28 +460,28 @@ def graphIntraMonth():
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
-        logging.info("### graphIntraMonth intra EU exit")
+        logger.info("### graphIntraMonth intra EU exit")
         return resp
 
     else:
-        logging.info("### graphIntraMonth intra EU exit")
+        logger.info("### graphIntraMonth intra EU exit")
         return str("only post")
 
 @app.route('/graphIntraTrim', methods=['POST','GET'])
 def graphIntraTrim():
     if request.method == 'POST':       
-        logging.info("TRIMESTRAL Word Trade INTRA_EU Graph method get ....")
-        logging.info("criterio per costruire il grafo:"+criterio )
+        logger.info("TRIMESTRAL Word Trade INTRA_EU Graph method get ....")
+        logger.info("criterio per costruire il grafo:"+criterio )
         jReq=dict(request.json)
-        logging.info("------ jReq",jReq)
+        logger.info("------ jReq",jReq)
         tg_perc=int(jReq['tg_perc'])
         tg_period=int(jReq['tg_period'])
         pos=jReq['pos']
         if pos=="None":
             pos=None
         else:
-            logging.info("Gestisci posizione dei nodi precedenti -----")
-            logging.info("pos-----",type(pos))            
+            logger.info("Gestisci posizione dei nodi precedenti -----")
+            logger.info("pos-----",type(pos))            
             pos=jsonpos2coord(pos)
 
         flow=int(jReq['flow'])        
@@ -495,13 +495,13 @@ def graphIntraTrim():
             selezioneMezziEdges=None
         else:
             pass
-            logging.info(selezioneMezziEdges)
-            logging.info(type(selezioneMezziEdges))
+            logger.info(selezioneMezziEdges)
+            logger.info(type(selezioneMezziEdges))
         #--------------------
 
 
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,None,flow,product,criterio,selezioneMezziEdges,df_trimcpa)
-        logging.info("tab4graph.shape"+str(tab4graph.shape))
+        logger.info("tab4graph.shape"+str(tab4graph.shape))
         NUM_NODI=len(set(tab4graph["DECLARANT_ISO"]).union(set(tab4graph["PARTNER_ISO"])))
         if NUM_NODI > NODIMAX:
             return json.dumps({"STATUS":"05"})                 
@@ -516,11 +516,11 @@ def graphIntraTrim():
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
-        logging.info("### TRIMESTRAL CPA intra EU exit")
+        logger.info("### TRIMESTRAL CPA intra EU exit")
         return resp
 
     else:
-        logging.info("### TRIMESTRAL CPA intra EU exit")
+        logger.info("### TRIMESTRAL CPA intra EU exit")
         return str("only post")
 
 ################################################
@@ -531,18 +531,18 @@ def graphIntraTrim():
 @app.route('/graphExtraTrim', methods=['POST','GET'])
 def graphExtraTrim():
     if request.method == 'POST':       
-        logging.info("TRIMESTRAL Word Trade EXTRA_EU Graph method get ....")
-        logging.info("criterio per costruire il grafo:"+criterio )
+        logger.info("TRIMESTRAL Word Trade EXTRA_EU Graph method get ....")
+        logger.info("criterio per costruire il grafo:"+criterio )
         jReq=dict(request.json)
-        logging.info("------ jReq",jReq)
+        logger.info("------ jReq",jReq)
         tg_perc=int(jReq['tg_perc'])
         tg_period=int(jReq['tg_period'])
         pos=jReq['pos']
         if pos=="None":
             pos=None
         else:
-            logging.info("Gestisci posizione dei nodi precedenti -----")
-            logging.info("pos-----",type(pos))            
+            logger.info("Gestisci posizione dei nodi precedenti -----")
+            logger.info("pos-----",type(pos))            
             pos=jsonpos2coord(pos)
             
         #0:Unknown 1:Sea 2:Rail 3:Road 4Air 5:Post 7:Fixed Mechanism 8:Inland Waterway 9:Self Propulsion
@@ -557,14 +557,14 @@ def graphExtraTrim():
             selezioneMezziEdges=None
         else:
             pass
-            logging.info(selezioneMezziEdges)
-            logging.info(type(selezioneMezziEdges))
+            logger.info(selezioneMezziEdges)
+            logger.info(type(selezioneMezziEdges))
         #--------------------
 
 
                 
         tab4graph=estrai_tabella_per_grafo(tg_period,tg_perc,listaMezzi,flow,product,criterio,selezioneMezziEdges,df_trimNSTR)
-        logging.info("tab4graph.shape: "+str(tab4graph.shape))
+        logger.info("tab4graph.shape: "+str(tab4graph.shape))
 
         #controllo se la dimensione del grafo è troppo grande
         #conto il numerp dei nodi
@@ -586,11 +586,11 @@ def graphExtraTrim():
         resp = Response(response=JSON,
                     status=200,
                     mimetype="application/json")
-        logging.info("### graphExtraTrim exit")
+        logger.info("### graphExtraTrim exit")
         return resp
 
     else:
-        logging.info("### graphExtraTrim exit")
+        logger.info("### graphExtraTrim exit")
         return str("only post")
 
 
@@ -619,7 +619,7 @@ def refreshdata():
     except BaseException as e:
         repo="ERROR load file  " + str(e)
         #print("#############   FILE NON TROVATI")
-        logging.info(repo)  
+        logger.info(repo)  
         return str(repo)
 
 
