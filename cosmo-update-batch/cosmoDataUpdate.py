@@ -315,22 +315,22 @@ def annualProcessing():
         summary_population={}
         summary_population["Year"]= "Population"
 
-        summary_population[str(annual_previous_year)]=getValueFromList(annual_population[(annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_previous_year) ],np.int64(0),6).astype(np.int64)
-        summary_population[str(annual_current_year)]=getValueFromList(annual_population[(annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_current_year) ],np.int64(0),6).astype(np.int64)
+        summary_population[str(annual_previous_year)]=getValueFromList(annual_population[(annual_population["indic_de"]=="JAN") & (annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_previous_year) ],np.int64(0),6).astype(np.int64)
+        summary_population[str(annual_current_year)]=getValueFromList(annual_population[(annual_population["indic_de"]=="JAN") & (annual_population["geo"]==country) & (annual_population["TIME_PERIOD"]==annual_current_year) ],np.int64(0),6).astype(np.int64)
         minfo.append(summary_population)
 
         summary_industrial_production={}
         summary_industrial_production["Year"]= "Industrial Production"
 
-        summary_industrial_production[str(annual_previous_year)]=getValueFromList(annual_industrial_production[(annual_industrial_production["geo"]==country) & (annual_industrial_production["TIME_PERIOD"]==annual_previous_year) ],"",9)
-        summary_industrial_production[str(annual_current_year)]=getValueFromList(annual_industrial_production[(annual_industrial_production["geo"]==country) & (annual_industrial_production["TIME_PERIOD"]==annual_current_year) ],"",9)
+        summary_industrial_production[str(annual_previous_year)]=getValueFromList(annual_industrial_production[(annual_industrial_production["nace_r2"]=="B-D") & (annual_industrial_production["s_adj"]=="CA") & (annual_industrial_production["unit"]=="I15") & (annual_industrial_production["geo"]==country) & (annual_industrial_production["TIME_PERIOD"]==annual_previous_year) ],"",9)
+        summary_industrial_production[str(annual_current_year)]=getValueFromList(annual_industrial_production[(annual_industrial_production["nace_r2"]=="B-D") & (annual_industrial_production["s_adj"]=="CA") & (annual_industrial_production["unit"]=="I15") & (annual_industrial_production["geo"]==country) & (annual_industrial_production["TIME_PERIOD"]==annual_current_year) ],"",9)
         minfo.append(summary_industrial_production)
 
         summary_unemployement={}
         summary_unemployement["Year"]= "Unemployment"
 
-        summary_unemployement[str(annual_previous_year)]=getValueFromList(annual_unemployement[(annual_unemployement["geo"]==country) & (annual_unemployement["TIME_PERIOD"]==annual_previous_year) ],"",8)
-        summary_unemployement[str(annual_current_year)]=getValueFromList(annual_unemployement[(annual_unemployement["geo"]==country) & (annual_unemployement["TIME_PERIOD"]==annual_current_year) ],"",8)
+        summary_unemployement[str(annual_previous_year)]=getValueFromList(annual_unemployement[(annual_unemployement["age"]=="Y15-74") & (annual_unemployement["geo"]==country) & (annual_unemployement["TIME_PERIOD"]==annual_previous_year) ],"",8)
+        summary_unemployement[str(annual_current_year)]=getValueFromList(annual_unemployement[(annual_unemployement["age"]=="Y15-74") & (annual_unemployement["geo"]==country) & (annual_unemployement["TIME_PERIOD"]==annual_current_year) ],"",8)
         minfo.append(summary_unemployement)
 
         minfo_imp={}
