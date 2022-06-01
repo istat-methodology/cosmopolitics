@@ -1,1 +1,0 @@
-docker run -p 8070:8070 mecdcme/cosmo-front-end

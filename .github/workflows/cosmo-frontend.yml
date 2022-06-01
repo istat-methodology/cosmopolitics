@@ -11,6 +11,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Insert FDID in staticwebapp.config.json
+        shell: pwsh
+        env:
+           FDID: ${{ secrets.FRONTDOORID }}
+        run: |
+           $config = Get-Content cosmo-frontend/staticwebapp.config.json | ConvertFrom-Json
+           $config.forwardingGateway.requiredHeaders.'X-Azure-FDID' = $Env:FDID
+           $config | ConvertTo-Json -Depth 4 | Out-File cosmo-frontend/staticwebapp.config.json
+           Get-Content cosmo-frontend/staticwebapp.config.json
+      - name: Insert version (run)
+        run: echo $GITHUB_RUN_NUMBER > cosmo-frontend/public/version.txt
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1

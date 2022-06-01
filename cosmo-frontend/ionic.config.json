@@ -1,7 +1,0 @@
-{
-  "name": "cosmopolitcs",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "vue"
-}
