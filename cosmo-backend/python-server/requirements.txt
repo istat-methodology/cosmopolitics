@@ -5,4 +5,4 @@ networkx
 pandas
 matplotlib
 openpyxl
-
+opencensus-ext-azure

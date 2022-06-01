@@ -7,7 +7,9 @@ from networkx.readwrite import json_graph
 import json
 import networkx as nx
 import pickle
+import logging
 import logging.config
+from opencensus.ext.azure.log_exporter import AzureLogHandler
 import datetime
 
 DATA_AVAILABLE="data"+os.sep+"dataAvailable"
@@ -23,12 +25,11 @@ NSTR_TRIM_FILE="data/tr_extra_ue_trim.csv"
 
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
-#logging.config.fileConfig('./logging.conf')
-#logger = logging.getLogger('graphLog')
+logger.addHandler(AzureLogHandler())
+
 logging.basicConfig(level=logging.INFO,
     format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S')
-
 
 
  
@@ -310,9 +311,17 @@ except:
 
 from flask import Flask,request,Response
 from flask_cors import CORS
+from opencensus.ext.azure.trace_exporter import AzureExporter
+from opencensus.ext.flask.flask_middleware import FlaskMiddleware
+from opencensus.trace.samplers import ProbabilitySampler
+
 app = Flask(__name__)
 CORS(app, resources=r'/*')
-
+middleware = FlaskMiddleware(
+    app,
+    exporter=AzureExporter(),
+    sampler=ProbabilitySampler(rate=1.0),
+)
 
 
 
