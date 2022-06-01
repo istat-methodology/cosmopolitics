@@ -25,13 +25,19 @@ NSTR_TRIM_FILE="data/tr_extra_ue_trim.csv"
 
 criterio="VALUE_IN_EUROS" #VALUE_IN_EUROS 	QUANTITY_IN_KG
 
+def is_application_insight_configured():
+    return os.getenv('APPINSIGHTS_INSTRUMENTATIONKEY')!=None or os.getenv('APPLICATIONINSIGHTS_CONNECTION_STRING')!=None
+
 logging.basicConfig(level=logging.INFO,
     format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S')
 
 logger = logging.getLogger(__name__)
-logger.addHandler(AzureLogHandler())
 
+if is_application_insight_configured():
+    logger.addHandler(AzureLogHandler())
+else:
+    logger.warning('Application insights is not configured.')
 
 def load_cpa_trim():
     def funcTrim(x):
@@ -317,12 +323,13 @@ from opencensus.trace.samplers import ProbabilitySampler
 
 app = Flask(__name__)
 CORS(app, resources=r'/*')
-middleware = FlaskMiddleware(
-    app,
-    exporter=AzureExporter(),
-    sampler=ProbabilitySampler(rate=1.0),
-)
 
+if is_application_insight_configured():
+    middleware = FlaskMiddleware(
+        app,
+        exporter=AzureExporter(),
+        sampler=ProbabilitySampler(rate=1.0),
+    )
 
 
 ###########GRAPH METHOD#######################################################
@@ -625,7 +632,7 @@ def refreshdata():
 
 @app.route('/hello')
 def hello():
-    return str('Version '+str(os.environ['APP_VERSION']))
+    return str('Version '+str(os.getenv('APP_VERSION')))
         
 if __name__ == '__main__':
     IP='0.0.0.0'

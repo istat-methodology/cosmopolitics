@@ -6,3 +6,4 @@ pandas
 matplotlib
 openpyxl
 opencensus-ext-azure
+opencensus-ext-flask
