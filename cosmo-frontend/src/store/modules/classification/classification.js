@@ -92,26 +92,6 @@ const actions = {
         console.log(err);
       });
   },
-  getProducts({ commit }) {
-    return classificationService
-      .findAll("product3s")
-      .then(data => {
-        commit("SET_PRODUCTS", data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
-  getProductPlus({ commit }) {
-    return classificationService
-      .findAll("productplus")
-      .then(data => {
-        commit("SET_PRODUCT_PLUS", data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
   getProductsCPA({ commit }) {
     return classificationService
       .findAll("productsCPA")
