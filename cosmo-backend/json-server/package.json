@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {},
   "dependencies": {
+    "applicationinsights": "^2.3.3",
     "json-server": "^0.16.3"
   }
 }

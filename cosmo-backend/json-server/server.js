@@ -1,7 +1,11 @@
-var jsonServer = require("json-server");
-var server = jsonServer.create();
-var router = jsonServer.router(require("./db.js")());
-var middlewares = jsonServer.defaults();
+let appInsights = require('applicationinsights');
+appInsights.setup().start();
+let client = appInsights.defaultClient;
+
+let jsonServer = require("json-server");
+let server = jsonServer.create();
+let router = jsonServer.router(require("./db.js")());
+let middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 server.get('/hello',(req,res)=>{
