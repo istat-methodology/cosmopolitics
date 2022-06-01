@@ -1,4 +1,6 @@
 import Vue from "vue";
+import VueAppInsights from "vue-application-insights";
+import AppInsightsInstrumentationKey from "./appinsights-config.js"
 //Vue core
 import App from "./App.vue";
 import router from "@/router";
@@ -20,6 +22,15 @@ import { languages, defaultLocale } from "@/i18n/index.js";
 const messages = Object.assign(languages);
 
 Vue.use(VueI18n);
+Vue.use(VueAppInsights, {
+  id: AppInsightsInstrumentationKey,
+  router,
+  appInsightsConfig: {
+    enableCorsCorrelation: true,
+    enableRequestHeaderTracking: true,
+    enableResponseHeaderTracking: true
+  }
+});
 
 const i18n = new VueI18n({
   locale: defaultLocale,
