@@ -3,3 +3,6 @@ cosmo-backend/R-server/data/
 cosmo-backend/python-server/data/
 cosmo-update-batch/cosmoDataUpdate-*.zip
 cosmo-backend/R-server/.Rhistory
+.config
+.vscode
+**/obj
