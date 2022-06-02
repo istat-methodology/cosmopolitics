@@ -14,4 +14,6 @@ RUN Rscript libraries.R && rm libraries-bin.txt libraries.R
 COPY . /app
 WORKDIR /app
 
+EXPOSE 5000
+
 CMD ["Rscript", "api-controller.R"]

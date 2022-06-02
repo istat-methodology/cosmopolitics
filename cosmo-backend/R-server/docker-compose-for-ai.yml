@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+   yarpproxy:
+     image: istatrregistry.azurecr.io/rproxy
+     ports:
+       - "80:80"
+     environment:
+       - ReverseProxy__Clusters__localservice__Destinations__localservice__Address=http://rserver:5000/
+     restart: always
+
+   rserver:
+     image: istatrregistry.azurecr.io/rserver
+     restart: always
