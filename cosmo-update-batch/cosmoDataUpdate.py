@@ -25,6 +25,7 @@ from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
+
 def is_application_insight_configured():
     return os.getenv('APPINSIGHTS_INSTRUMENTATIONKEY')!=None or os.getenv('APPLICATIONINSIGHTS_CONNECTION_STRING')!=None
 
