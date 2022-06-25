@@ -24,11 +24,11 @@ const state = {
   varType: [
     {
       id: 1,
-      descr: "in treated value"
+      descr: "Euro"
     },
     {
       id: 2,
-      descr: "in treated quantity"
+      descr: "Kilograms"
     }
   ],
   flows: [

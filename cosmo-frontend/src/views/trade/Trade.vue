@@ -19,7 +19,8 @@
           <span class="float-right">
             <exporter
               filename="cosmopolitics_trade"
-              :data="getData(this.chartData, 'trade')"
+              :data="getTabularData(this.chartData, 'trade')"
+              source="table"
             >
             </exporter>
           </span>
@@ -195,6 +196,38 @@ export default {
     getData(data, id) {
       if (data != null) {
         return [data, id];
+      }
+      return null;
+    },
+    getTabularData(data, id) {
+      if (data != null) {
+        const table = [];
+        const timePoints = this.tradePeriod;
+        const datasets = data.datasets;
+        if (timePoints)
+          datasets.forEach(ds => {
+            timePoints.forEach((tp, index) => {
+              const dt = new Date(tp.isoDate);
+              const year = dt.getFullYear();
+              const month = dt.getMonth() + 1;
+              table.push({
+                time: year + "-" + month,
+                product: ds.label.replaceAll(";", ","), //replace ; with , in product label
+                value: ds.data[index]
+              });
+              console.log(
+                year +
+                  "-" +
+                  month +
+                  ";" +
+                  ds.label.replaceAll(";", ",") +
+                  ";" +
+                  ds.data[index]
+              );
+            });
+          });
+
+        return [table, id];
       }
       return null;
     },

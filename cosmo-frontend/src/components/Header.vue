@@ -24,9 +24,13 @@
     <CHeaderNav class="mr-lang">
       <ul class="ul-lang d-none d-md-flex">
         <li class="nav-item">
-          <a class="nav-link" href="#" target="_blank">{{
-            $t("header.userguide")
-          }}</a>
+          <a
+            class="nav-link"
+            target="_blank"
+            href="https://istatcosmostorage.blob.core.windows.net/public/Cosmopolitics_Manuale.pdf"
+          >
+            {{ $t("header.userguide") }}
+          </a>
         </li>
       </ul>
       <CButtonGroup role="group">

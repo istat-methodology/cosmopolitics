@@ -40,8 +40,10 @@
             </span>
             <span class="float-right">
               <exporter
+                v-if="timeseriesCharts"
                 filename="cosmopolitics_timeseries"
-                :data="getData(chartDataDiagMain, 'timeseries')"
+                :data="getTabularData(timeseriesCharts.diagMain, 'timeseries')"
+                source="table"
               >
               </exporter>
             </span>
@@ -414,6 +416,26 @@ export default {
     getData(data, id) {
       if (data != null) {
         return [data, id];
+      }
+      return null;
+    },
+    getTabularData(data, id) {
+      if (data != null) {
+        const table = [];
+        const timePoints = data.date;
+        const values = data.series;
+        if (timePoints)
+          timePoints.forEach((tp, index) => {
+            const dt = new Date(tp);
+            const year = dt.getFullYear();
+            const month = dt.getMonth() + 1;
+            table.push({
+              time: year + "-" + month,
+              value: values[index]
+            });
+            //console.log(year + "-" + month + "," + values[index]);
+          });
+        return [table, id];
       }
       return null;
     },

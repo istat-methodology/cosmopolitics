@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueAppInsights from "vue-application-insights";
-import AppInsightsInstrumentationKey from "./appinsights-config.js"
+import AppInsightsInstrumentationKey from "./appinsights-config.js";
 //Vue core
 import App from "./App.vue";
 import router from "@/router";
