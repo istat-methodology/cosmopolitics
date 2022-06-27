@@ -18,11 +18,19 @@
           </span>
           <span class="float-right">
             <exporter
+              v-if="this.charts && this.tradePeriod"
+              filename="cosmopolitics_trade"
+              :data="getData(this.charts.data, 'trade')"
+              source="matrix"
+              :timePeriod="this.tradePeriod"
+            >
+            </exporter>
+            <!--exporter
               filename="cosmopolitics_trade"
               :data="getTabularData(this.chartData, 'trade')"
               source="table"
             >
-            </exporter>
+            </exporter-->
           </span>
         </CCardHeader>
         <CCardBody>
@@ -41,6 +49,15 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("trade.form.title") }} </span>
+          <span class="float-right">
+            <exporter
+              filename="cosmopolitics_basket_filter"
+              :data="getSearchFilter()"
+              :options="['csv']"
+              source="filter"
+            >
+            </exporter>
+          </span>
         </CCardHeader>
         <CCardBody>
           <label class="card-label">{{
@@ -122,10 +139,10 @@ export default {
   data: () => ({
     //Form (default values)
     idAllProducts: "999",
-    productSelected: { id: "999", dataname: "All products" },
+    productSelected: [{ id: "999", dataname: "All products" }],
     varTypeSelected: {
       id: 1,
-      descr: "in treated value"
+      descr: "Euro"
     },
     countrySelected: {
       country: "IT",
@@ -195,41 +212,47 @@ export default {
     },
     getData(data, id) {
       if (data != null) {
-        return [data, id];
+        let selectedAll = false;
+        const selectedProds = this.productSelected.map(prod => {
+          if (prod.id == "999") selectedAll = true;
+          return prod.dataname;
+        });
+        //filter on selected products
+        if (selectedAll) return [data, id];
+        else {
+          const selectedData = data.filter(series => {
+            if (selectedProds.includes(series.dataname)) return series;
+          });
+          return [selectedData, id];
+        }
       }
       return null;
     },
-    getTabularData(data, id) {
-      if (data != null) {
-        const table = [];
-        const timePoints = this.tradePeriod;
-        const datasets = data.datasets;
-        if (timePoints)
-          datasets.forEach(ds => {
-            timePoints.forEach((tp, index) => {
-              const dt = new Date(tp.isoDate);
-              const year = dt.getFullYear();
-              const month = dt.getMonth() + 1;
-              table.push({
-                time: year + "-" + month,
-                product: ds.label.replaceAll(";", ","), //replace ; with , in product label
-                value: ds.data[index]
-              });
-              console.log(
-                year +
-                  "-" +
-                  month +
-                  ";" +
-                  ds.label.replaceAll(";", ",") +
-                  ";" +
-                  ds.data[index]
-              );
-            });
-          });
-
-        return [table, id];
-      }
-      return null;
+    getSearchFilter() {
+      let data = [];
+      data.push({
+        field: this.$t("trade.form.fields.varType"),
+        value: this.varTypeSelected ? this.varTypeSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("trade.form.fields.country"),
+        value: this.countrySelected ? this.countrySelected.name : ""
+      });
+      data.push({
+        field: this.$t("trade.form.fields.flow"),
+        value: this.flowSelected ? this.flowSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.productsCPA"),
+        value: this.productSelected
+          ? this.productSelected
+              .map(prod => {
+                return prod.dataname;
+              })
+              .join("#")
+          : ""
+      });
+      return [data, "cosmopolitics_trade_filters"];
     },
     spinnerStart(bool) {
       this.spinner = bool;

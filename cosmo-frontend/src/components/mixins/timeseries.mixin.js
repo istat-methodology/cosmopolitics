@@ -6,12 +6,13 @@ export default {
   methods: {
     buildTimeseriesCharts(data, dataType, statusMain, statusNorm, statusACF) {
       if (statusMain != "00") {
-        this.chartDataDiagMain = this.getTimeseriesChart(
-          data["diagMain"],
-          dataType
-        );
         this.mean = this.getTimeseriesMean(data["diagMain"]);
         this.std = this.getTimeseriesSTD(data["diagMain"]);
+        this.chartDataDiagMain = this.getTimeseriesChart(
+          data["diagMain"],
+          dataType,
+          this.mean
+        );
       } else {
         this.chartDataDiagMain = null;
         this.mean = null;
@@ -31,7 +32,7 @@ export default {
       }
     },
 
-    getTimeseriesChart(data, dataType) {
+    getTimeseriesChart(data, dataType, mean) {
       var chartData = {};
       chartData.datasets = [];
       if (data) {
@@ -59,7 +60,19 @@ export default {
           pointRadius: 2,
           borderDash: [0, 0]
         });
+        //Mean line
+        chartData.datasets.push({
+          label: "Mean",
+          fill: false,
+          borderColor: "rgba(249, 177, 21,0.4)",
+          data: Array(data["series"].length).fill(mean),
+          showLine: true,
+          lineTension: 0.1,
+          pointRadius: 0,
+          borderDash: [0, 0]
+        });
       }
+
       return chartData;
     },
     getTimeseriesMean(data) {

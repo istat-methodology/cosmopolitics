@@ -181,7 +181,7 @@
       "title": "Basket of traded products:"
     },
     "form": {
-      "title": "Trade filter",
+      "title": "Search filters",
       "fields": {
         "varType": "Series type",
         "varType_placeholder": "Select a series type",

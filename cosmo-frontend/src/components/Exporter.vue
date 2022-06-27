@@ -39,6 +39,10 @@ export default {
     source: {
       Type: String,
       default: () => ""
+    },
+    timePeriod: {
+      Type: Array,
+      default: () => null
     }
   },
   methods: {
@@ -103,6 +107,38 @@ export default {
             row = "";
             cols.forEach(col => {
               row += obj[col];
+              row += columnDelimiter;
+            });
+            result += row.slice(0, -1); //remove last column delimiter
+            result += rowDelimiter;
+          });
+        } else if (this.source == "matrix") {
+          const obj = {};
+          if (this.timePeriod)
+            obj["time"] = this.timePeriod.map(t => {
+              return t.isoDate;
+            });
+          data.forEach(col => {
+            obj[col.dataname.replaceAll(";", ",")] = col.value; //replace ; with , in product label
+          });
+          const cols = Object.keys(obj);
+          result += cols.join(columnDelimiter);
+          result += rowDelimiter;
+          for (var idx = 0; idx < obj[Object.keys(obj)[0]].length; idx++) {
+            row = "";
+            cols.forEach(col => {
+              row += obj[col][idx];
+              row += columnDelimiter;
+            });
+            result += row.slice(0, -1).replaceAll(".", ","); //remove last column delimiter and change decimal separator
+            result += rowDelimiter;
+          }
+        } else if (this.source == "filter") {
+          const cols = Object.keys(data[0]);
+          data.forEach(obj => {
+            row = "";
+            cols.forEach(key => {
+              row += obj[key];
               row += columnDelimiter;
             });
             result += row.slice(0, -1); //remove last column delimiter

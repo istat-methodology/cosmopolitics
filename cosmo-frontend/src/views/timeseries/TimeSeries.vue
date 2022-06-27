@@ -163,6 +163,15 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("timeseries.form.title") }}</span>
+          <span class="float-right">
+            <exporter
+              filename="cosmopolitics_timeseries_filter"
+              :data="getSearchFilter()"
+              :options="['csv']"
+              source="filter"
+            >
+            </exporter>
+          </span>
         </CCardHeader>
         <CCardBody>
           <label class="card-label">{{
@@ -378,8 +387,8 @@ export default {
         };
         this.spinnerStart(true);
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
-          console.log("const: " + Status.success);
-          console.log("data: " + this.statusMain);
+          //console.log("const: " + Status.success);
+          //console.log("data: " + this.statusMain);
 
           if (this.statusMain == Status.success) {
             this.buildTimeseriesCharts(
@@ -418,6 +427,35 @@ export default {
         return [data, id];
       }
       return null;
+    },
+    getSearchFilter() {
+      let data = [];
+      data.push({
+        field: this.$t("timeseries.form.fields.dataType"),
+        value: this.dataTypeSelected ? this.dataTypeSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.varType"),
+        value: this.varTypeSelected ? this.varTypeSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.flow"),
+        value: this.flowSelected ? this.flowSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.country"),
+        value: this.countrySelected ? this.countrySelected.name : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.partner"),
+        value: this.partnerSelected ? this.partnerSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.productsCPA"),
+        value: this.productsCPASelected ? this.productsCPASelected.descr : ""
+      });
+
+      return [data, "cosmopolitics_timeseries_filters"];
     },
     getTabularData(data, id) {
       if (data != null) {
