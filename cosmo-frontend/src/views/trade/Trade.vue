@@ -19,7 +19,7 @@
           <span class="float-right">
             <exporter
               v-if="this.charts && this.tradePeriod"
-              filename="cosmopolitics_trade"
+              filename="cosmopolitics_basket"
               :data="getData(this.charts.data, 'trade')"
               source="matrix"
               :timePeriod="this.tradePeriod"
@@ -231,6 +231,10 @@ export default {
     getSearchFilter() {
       let data = [];
       data.push({
+        field: this.$t("trade.download.title"),
+        value: ""
+      });
+      data.push({
         field: this.$t("trade.form.fields.varType"),
         value: this.varTypeSelected ? this.varTypeSelected.descr : ""
       });
@@ -252,7 +256,17 @@ export default {
               .join("#")
           : ""
       });
-      return [data, "cosmopolitics_trade_filters"];
+      data.push({
+        field: this.$t("common.start_date"),
+        value: this.tradePeriod ? this.tradePeriod[0].isoDate : ""
+      });
+      data.push({
+        field: this.$t("common.end_date"),
+        value: this.tradePeriod
+          ? this.tradePeriod[this.tradePeriod.length - 1].isoDate
+          : ""
+      });
+      return [data, "cosmopolitics_basket_filter"];
     },
     spinnerStart(bool) {
       this.spinner = bool;

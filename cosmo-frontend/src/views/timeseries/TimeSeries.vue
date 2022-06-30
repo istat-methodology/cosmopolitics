@@ -431,6 +431,10 @@ export default {
     getSearchFilter() {
       let data = [];
       data.push({
+        field: this.$t("timeseries.download.title"),
+        value: ""
+      });
+      data.push({
         field: this.$t("timeseries.form.fields.dataType"),
         value: this.dataTypeSelected ? this.dataTypeSelected.descr : ""
       });
@@ -454,8 +458,21 @@ export default {
         field: this.$t("timeseries.form.fields.productsCPA"),
         value: this.productsCPASelected ? this.productsCPASelected.descr : ""
       });
-
-      return [data, "cosmopolitics_timeseries_filters"];
+      data.push({
+        field: this.$t("common.start_date"),
+        value: this.timeseriesCharts
+          ? this.timeseriesCharts.diagMain.date[0]
+          : ""
+      });
+      data.push({
+        field: this.$t("common.end_date"),
+        value: this.timeseriesCharts
+          ? this.timeseriesCharts.diagMain.date[
+              this.timeseriesCharts.diagMain.date.length - 1
+            ]
+          : ""
+      });
+      return [data, "cosmopolitics_timeseries_filter"];
     },
     getTabularData(data, id) {
       if (data != null) {
