@@ -72,7 +72,7 @@ start_data_load_12= datetime.datetime.strptime(str(this_year)+"-"+str(this_month
 
 end_data_load=datetime.datetime.strptime(str(this_year)+"-"+str(this_month), "%Y-%m")- relativedelta(months=offset_month_to_extract)
 
-##### SET DATES FOR PAGES#####
+##### SET DATES FOR PAGES #####
 start_data_PAGE_MAP=start_data_load_36
 start_data_PAGE_TIME_SERIES=start_data_load_120
 start_data_PAGE_GRAPH_EXTRA_UE=start_data_load_36
