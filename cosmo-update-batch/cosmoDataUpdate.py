@@ -944,6 +944,20 @@ def copyFileToAzure(storage,folder,path_file_source):
     logger.info('copyFileToAzure END: '+os.path.basename(path_file_source))
     return 'copyFileToAzure END: '+os.path.basename(path_file_source)
 
+def createFileToAzure(storage,folder ):
+    logger.info('createFileToAzure START:' )
+
+    storage_account_key = os.getenv('STORAGE_ACCOUNT_KEY', '')
+    if storage_account_key == '':
+        kvclient = SecretClient(vault_url=f"https://{KEY_VAULT_NAME}.vault.azure.net", credential=DefaultAzureCredential())
+        storage_account_key = kvclient.get_secret(SECRETNAME_ACCOUNTKEY).value
+        
+    fileService=FileService(account_name=os.environ['STORAGE_ACCOUNT_NAME'],account_key=storage_account_key)
+    #fileService.create_file_from_path(storage,folder,os.path.basename(path_file_source),path_file_source)
+    fileService.service.create_file_from_text(storage, folder, 'fileProva.txt', b'hello world')
+
+    logger.info('createFileToAzure END: ' )
+    return 'createFileToAzure END: '
 
 def exportOutputs():
     logger.info('exportOutputs START')
@@ -1019,7 +1033,7 @@ def checkUPMicroservices():
 def sendEmailRepo(report_text):
     logger.info('sendEmailRepo START')
     url_Email_service="https://prod-190.westeurope.logic.azure.com:443/workflows/52cafc0d0f2d4dd08ee290a5d367f109/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PFatjXjc32cpXZqX-KFBkn0a7ZKgT1q5iR2hI07NR4w"
-    body_msg={"to":"framato@istat.it,mbruno@istat.it","subject":"Repo from cosmo update","body":report_text}
+    body_msg={"to":"framato@istat.it","subject":"Repo from cosmo update","body":report_text}
 
     req = urllib.request.Request(url_Email_service, method="POST")
     req.add_header('Content-Type', 'application/json')
@@ -1049,7 +1063,9 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        
+        createFileToAzure("istat-cosmo-data-json", "prova")
+        """
+        copyFileToAzure("istat-cosmo-data-json", "general", GENERAL_INFO_FILE)
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
@@ -1131,7 +1147,7 @@ def executeUpdate():
         repo+=checkUPMicroservices()
         repo+='<!-- 25 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-
+        """
     except BaseException as e:
         repo+="ERROR UPDATE  " + str(e)
         error=True
