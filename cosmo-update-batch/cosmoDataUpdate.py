@@ -944,23 +944,6 @@ def copyFileToAzure(storage,folder,path_file_source):
     logger.info('copyFileToAzure END: '+os.path.basename(path_file_source))
     return 'copyFileToAzure END: '+os.path.basename(path_file_source)
 
-def createFileToAzure(storage,folder):
-    logger.info('createFileToAzure START:' )
-    logger.error('createFileToAzure START')
-    print('2aaaaaa')
-    
-    storage_account_key = os.getenv('STORAGE_ACCOUNT_KEY', '')
-    if storage_account_key == '':
-        kvclient = SecretClient(vault_url=f"https://{KEY_VAULT_NAME}.vault.azure.net", credential=DefaultAzureCredential())
-        storage_account_key = kvclient.get_secret(SECRETNAME_ACCOUNTKEY).value
-        
-    fileService=FileService(account_name=os.environ['STORAGE_ACCOUNT_NAME'],account_key=storage_account_key)
-    #fileService.create_file_from_path(storage,folder,os.path.basename(path_file_source),path_file_source)
-    fileService.service.create_file_from_text(storage, folder, 'fileProva.txt', b'hello world')
-
-    logger.info('createFileToAzure END: ' )
-    return 'createFileToAzure END: '
-
 def exportOutputs():
     logger.info('exportOutputs START')
 
@@ -1065,10 +1048,7 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        print('1aaaaaa')
-        createFileToAzure("istat-cosmo-data-json", "test21")
-        """
-        copyFileToAzure("istat-cosmo-data-json", "general", GENERAL_INFO_FILE)
+        
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
@@ -1150,7 +1130,7 @@ def executeUpdate():
         repo+=checkUPMicroservices()
         repo+='<!-- 25 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-        """
+        
     except BaseException as e:
         repo+="ERROR UPDATE  " + str(e)
         error=True
