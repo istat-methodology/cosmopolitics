@@ -1063,7 +1063,7 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        createFileToAzure("istat-cosmo-data-json", "prova")
+        createFileToAzure("istat-cosmo-data-json", "test")
         """
         copyFileToAzure("istat-cosmo-data-json", "general", GENERAL_INFO_FILE)
         repo+=createGeneralInfoOutput()
