@@ -944,9 +944,10 @@ def copyFileToAzure(storage,folder,path_file_source):
     logger.info('copyFileToAzure END: '+os.path.basename(path_file_source))
     return 'copyFileToAzure END: '+os.path.basename(path_file_source)
 
-def createFileToAzure(storage,folder ):
+def createFileToAzure(storage,folder):
     logger.info('createFileToAzure START:' )
     logger.error('createFileToAzure START')
+    print('2aaaaaa')
     
     storage_account_key = os.getenv('STORAGE_ACCOUNT_KEY', '')
     if storage_account_key == '':
@@ -1064,6 +1065,7 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
+        print('1aaaaaa')
         createFileToAzure("istat-cosmo-data-json", "test21")
         """
         copyFileToAzure("istat-cosmo-data-json", "general", GENERAL_INFO_FILE)
