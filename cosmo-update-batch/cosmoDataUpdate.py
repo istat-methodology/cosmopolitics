@@ -946,7 +946,8 @@ def copyFileToAzure(storage,folder,path_file_source):
 
 def createFileToAzure(storage,folder ):
     logger.info('createFileToAzure START:' )
-
+    logger.error('createFileToAzure START')
+    
     storage_account_key = os.getenv('STORAGE_ACCOUNT_KEY', '')
     if storage_account_key == '':
         kvclient = SecretClient(vault_url=f"https://{KEY_VAULT_NAME}.vault.azure.net", credential=DefaultAzureCredential())
