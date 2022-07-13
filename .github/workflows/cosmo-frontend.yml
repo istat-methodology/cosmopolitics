@@ -30,6 +30,7 @@ jobs:
           action: "upload"
           app_location: "/cosmo-frontend"
           api_location: ""
+          app_build_command: "npm run build -- --mode development"
           output_location: "dist"
           deployment_environment: "development"
 
