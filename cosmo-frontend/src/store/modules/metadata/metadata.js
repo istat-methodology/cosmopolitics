@@ -48,7 +48,9 @@ const getters = {
     return state.metadata ? state.metadata.processingDay : "";
   },
   lastLoadedData: state => {
-    return state.metadata ? state.metadata.lastLoadedData : "";
+    return state.metadata
+      ? state.metadata.lastLoadedData.replace(", ", "-")
+      : "";
   },
   appVersion: state => {
     return state.metadata ? state.metadata.appVersion : "";

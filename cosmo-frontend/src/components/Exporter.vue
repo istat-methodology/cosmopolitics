@@ -37,8 +37,12 @@ export default {
       default: () => ["jpeg", "png", "pdf", "json", "csv"]
     },
     source: {
+      Type: String,
+      default: () => ""
+    },
+    timePeriod: {
       Type: Array,
-      default: () => []
+      default: () => null
     }
   },
   methods: {
@@ -90,42 +94,82 @@ export default {
       saveAs(blob, filename);
     },
     toCSV(data, filename) {
-      var result;
-      if (this.source == "table") {
-        result = data;
-      } else {
-        var ctr, keys, columnDelimiter, lineDelimiter;
-        var dat = [];
-        var lbl = [];
-        result = "";
-        columnDelimiter = ";";
-        lineDelimiter = "\n";
-        for (let i = 0; i < data.datasets.length; i++) {
-          dat = data.datasets[i].data;
-          lbl = data.datasets[i].label;
-          keys = Object.keys(dat[0]);
-          result += lbl;
-          if (keys.length > 0) {
-            result += lineDelimiter;
-            keys = Object.keys(dat[0]);
-            result += keys.join(columnDelimiter);
-            result += lineDelimiter;
-            dat.forEach(function(item) {
-              ctr = 0;
-              keys.forEach(function(key) {
-                if (ctr > 0) result += columnDelimiter;
-                result += item[key];
-                ctr++;
-              });
-              result += lineDelimiter;
+      const columnDelimiter = ";";
+      const rowDelimiter = "\n";
+      let result = "";
+      let row = "";
+      if (data) {
+        if (this.source == "table") {
+          const cols = Object.keys(data[0]); //get keys from first element
+          result += cols.join(columnDelimiter);
+          result += rowDelimiter;
+          data.forEach(obj => {
+            row = "";
+            cols.forEach(col => {
+              row += obj[col];
+              row += columnDelimiter;
             });
-          } else {
-            dat.forEach(function(item) {
-              result += columnDelimiter;
-              result += item;
+            result += row.slice(0, -1); //remove last column delimiter
+            result += rowDelimiter;
+          });
+        } else if (this.source == "matrix") {
+          const obj = {};
+          if (this.timePeriod)
+            obj["time"] = this.timePeriod.map(t => {
+              return t.isoDate;
             });
-            result += lineDelimiter;
+          data.forEach(col => {
+            obj[col.dataname.replaceAll(";", ",")] = col.value; //replace ; with , in product label
+          });
+          const cols = Object.keys(obj);
+          result += cols.join(columnDelimiter);
+          result += rowDelimiter;
+          for (var idx = 0; idx < obj[Object.keys(obj)[0]].length; idx++) {
+            row = "";
+            cols.forEach(col => {
+              row += obj[col][idx];
+              row += columnDelimiter;
+            });
+            result += row.slice(0, -1).replaceAll(".", ","); //remove last column delimiter and change decimal separator
+            result += rowDelimiter;
           }
+        } else if (this.source == "filter") {
+          const cols = Object.keys(data[0]);
+          data.forEach(obj => {
+            row = "";
+            cols.forEach(key => {
+              row += obj[key];
+              row += columnDelimiter;
+            });
+            result += row.slice(0, -1); //remove last column delimiter
+            result += rowDelimiter;
+          });
+        } else {
+          data.datasets.forEach(dataset => {
+            const rows = dataset.data;
+            const cols = Object.keys(rows[0]);
+            result += dataset.label.replaceAll(";", ","); //replace ; with , in product label
+            if (cols.length > 0) {
+              result += rowDelimiter;
+              result += cols.join(columnDelimiter);
+              result += rowDelimiter;
+              rows.forEach(obj => {
+                row = "";
+                cols.forEach(key => {
+                  row += obj[key];
+                  row += columnDelimiter;
+                });
+                result += row.slice(0, -1); //remove last column delimiter
+                result += rowDelimiter;
+              });
+            } else {
+              rows.forEach(el => {
+                result += columnDelimiter;
+                result += el;
+              });
+              result += rowDelimiter;
+            }
+          });
         }
       }
       const blob = new Blob([result], { type: "text/plain" });

@@ -18,7 +18,7 @@
               filename="cosmopolitics_graph_analysis"
               :data="getData('graph', this.$refs.graph)"
               :options="['jpeg', 'png', 'pdf', 'json']"
-              :source="['graph']"
+              source="graph"
             >
             </exporter>
           </span>

@@ -25,6 +25,7 @@ from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
+
 def is_application_insight_configured():
     return os.getenv('APPINSIGHTS_INSTRUMENTATIONKEY')!=None or os.getenv('APPLICATIONINSIGHTS_CONNECTION_STRING')!=None
 
@@ -71,7 +72,7 @@ start_data_load_12= datetime.datetime.strptime(str(this_year)+"-"+str(this_month
 
 end_data_load=datetime.datetime.strptime(str(this_year)+"-"+str(this_month), "%Y-%m")- relativedelta(months=offset_month_to_extract)
 
-##### SET DATES FOR PAGES#####
+##### SET DATES FOR PAGES #####
 start_data_PAGE_MAP=start_data_load_36
 start_data_PAGE_TIME_SERIES=start_data_load_120
 start_data_PAGE_GRAPH_EXTRA_UE=start_data_load_36
@@ -149,17 +150,17 @@ SQLLITE_DB=DATA_FOLDER_MONTHLY+os.sep+PREFIX_FULL+os.sep+"commext.db"
 
 ## ogni 20 del mese scaricare il file annuale fullAAAAMM.7z con 52 al posto del mese (esempio file full201952.7z)
 ## data URL_COMEXT
-URL_COMEXT_PRODUCTS="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_DATA%2FPRODUCTS%2F"
+URL_COMEXT_PRODUCTS="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2Fbulk_download%2FCOMEXT_DATA%2FPRODUCTS%2F"
 
-URL_COMEXT_TR="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_DATA%2FTRANSPORT_NSTR%2F"
+URL_COMEXT_TR="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2Fbulk_download%2FCOMEXT_DATA%2FTRANSPORT_NSTR%2F"
 
-URL_COMEXT_CLS_PRODUCTS="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FCN.txt"
+URL_COMEXT_CLS_PRODUCTS="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2Fbulk_download%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FCN.txt"
 CLS_PRODUCTS_FILE=DATA_FOLDER+os.sep+"cls_products.dat"
 
-URL_CLS_NSTR="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FNSTR.txt"
+URL_CLS_NSTR="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2Fbulk_download%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FNSTR.txt"
 CLS_NSTR_FILE=DATA_FOLDER+os.sep+"NSTR.txt"
 
-URL_CLS_CPA="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FCPA21.txt"
+URL_CLS_CPA="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=comext%2Fbulk_download%2FCOMEXT_METADATA%2FCLASSIFICATIONS_AND_RELATIONS%2FCLASSIFICATIONS%2FENGLISH%2FCPA21.txt"
 CLS_PRODUCTS_CPA_FILE=DATA_FOLDER+os.sep+"cls_products_CPA21.txt"
 
 
@@ -943,7 +944,6 @@ def copyFileToAzure(storage,folder,path_file_source):
     logger.info('copyFileToAzure END: '+os.path.basename(path_file_source))
     return 'copyFileToAzure END: '+os.path.basename(path_file_source)
 
-
 def exportOutputs():
     logger.info('exportOutputs START')
 
@@ -1018,7 +1018,7 @@ def checkUPMicroservices():
 def sendEmailRepo(report_text):
     logger.info('sendEmailRepo START')
     url_Email_service="https://prod-190.westeurope.logic.azure.com:443/workflows/52cafc0d0f2d4dd08ee290a5d367f109/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PFatjXjc32cpXZqX-KFBkn0a7ZKgT1q5iR2hI07NR4w"
-    body_msg={"to":"framato@istat.it,mbruno@istat.it","subject":"Repo from cosmo update","body":report_text}
+    body_msg={"to":"framato@istat.it","subject":"Repo from cosmo update","body":report_text}
 
     req = urllib.request.Request(url_Email_service, method="POST")
     req.add_header('Content-Type', 'application/json')
@@ -1133,7 +1133,7 @@ def executeUpdate():
         repo+=checkUPMicroservices()
         repo+='<!-- 25 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-
+        
     except BaseException as e:
         repo+="ERROR UPDATE  " + str(e)
         error=True

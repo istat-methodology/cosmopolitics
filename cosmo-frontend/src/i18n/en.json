@@ -6,6 +6,8 @@
     "close": "Close",
     "mandatory": "Mandatory fields",
     "update": "COMEXT data updated on ",
+    "start_date": "Series start date",
+    "end_date": "Series end date",
     "footer": {
       "experimental": "Experimental Statistics 2022",
       "coreui": "Powered by"
@@ -174,6 +176,9 @@
     },
     "message":{
       "empty": "No time series is available for the selected filters!"
+    },
+    "download":{
+      "title": "Cosmopolitics - Timeseries"
     }
   },
   "trade": {
@@ -181,7 +186,7 @@
       "title": "Basket of traded products:"
     },
     "form": {
-      "title": "Trade filter",
+      "title": "Search filters",
       "fields": {
         "varType": "Series type",
         "varType_placeholder": "Select a series type",
@@ -198,6 +203,9 @@
         "title": "Changes in basket composition of traded products (CPA - classification of products by activity) by Member State",
         "body": "This section provides, for each Member State, the <b>monthly time series of year-over-year changes</b> in the basket composition of exported and imported goods, classified according to <b>CPA-2 digits.</b>"
       }
+    },
+    "download":{
+      "title": "Cosmopolitics - Basket of Traded Products Filter"
     }
   }
 }

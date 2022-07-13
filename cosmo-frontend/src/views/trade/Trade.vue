@@ -18,10 +18,19 @@
           </span>
           <span class="float-right">
             <exporter
-              filename="cosmopolitics_trade"
-              :data="getData(this.chartData, 'trade')"
+              v-if="this.charts && this.tradePeriod"
+              filename="cosmopolitics_basket"
+              :data="getData(this.charts.data, 'trade')"
+              source="matrix"
+              :timePeriod="this.tradePeriod"
             >
             </exporter>
+            <!--exporter
+              filename="cosmopolitics_trade"
+              :data="getTabularData(this.chartData, 'trade')"
+              source="table"
+            >
+            </exporter-->
           </span>
         </CCardHeader>
         <CCardBody>
@@ -40,6 +49,15 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("trade.form.title") }} </span>
+          <span class="float-right">
+            <exporter
+              filename="cosmopolitics_basket_filter"
+              :data="getSearchFilter()"
+              :options="['csv']"
+              source="filter"
+            >
+            </exporter>
+          </span>
         </CCardHeader>
         <CCardBody>
           <label class="card-label">{{
@@ -121,10 +139,10 @@ export default {
   data: () => ({
     //Form (default values)
     idAllProducts: "999",
-    productSelected: { id: "999", dataname: "All products" },
+    productSelected: [{ id: "999", dataname: "All products" }],
     varTypeSelected: {
       id: 1,
-      descr: "in treated value"
+      descr: "Euro"
     },
     countrySelected: {
       country: "IT",
@@ -194,9 +212,61 @@ export default {
     },
     getData(data, id) {
       if (data != null) {
-        return [data, id];
+        let selectedAll = false;
+        const selectedProds = this.productSelected.map(prod => {
+          if (prod.id == "999") selectedAll = true;
+          return prod.dataname;
+        });
+        //filter on selected products
+        if (selectedAll) return [data, id];
+        else {
+          const selectedData = data.filter(series => {
+            if (selectedProds.includes(series.dataname)) return series;
+          });
+          return [selectedData, id];
+        }
       }
       return null;
+    },
+    getSearchFilter() {
+      let data = [];
+      data.push({
+        field: this.$t("trade.download.title"),
+        value: ""
+      });
+      data.push({
+        field: this.$t("trade.form.fields.varType"),
+        value: this.varTypeSelected ? this.varTypeSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("trade.form.fields.country"),
+        value: this.countrySelected ? this.countrySelected.name : ""
+      });
+      data.push({
+        field: this.$t("trade.form.fields.flow"),
+        value: this.flowSelected ? this.flowSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.productsCPA"),
+        value: this.productSelected
+          ? this.productSelected
+              .map(prod => {
+                return prod.dataname;
+              })
+              .join("#")
+          : ""
+      });
+      data.push({
+        field: this.$t("common.start_date"),
+        value: this.tradePeriod ? this.tradePeriod[0].isoDate : ""
+      });
+      data.push({
+        field: this.$t("common.end_date"),
+        value: this.tradePeriod
+          ? this.tradePeriod[this.tradePeriod.length - 1].isoDate
+          : ""
+      });
+      return [data, "cosmopolitics_basket_filter"];
     },
     spinnerStart(bool) {
       this.spinner = bool;

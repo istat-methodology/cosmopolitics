@@ -40,8 +40,10 @@
             </span>
             <span class="float-right">
               <exporter
+                v-if="timeseriesCharts"
                 filename="cosmopolitics_timeseries"
-                :data="getData(chartDataDiagMain, 'timeseries')"
+                :data="getTabularData(timeseriesCharts.diagMain, 'timeseries')"
+                source="table"
               >
               </exporter>
             </span>
@@ -161,6 +163,15 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("timeseries.form.title") }}</span>
+          <span class="float-right">
+            <exporter
+              filename="cosmopolitics_timeseries_filter"
+              :data="getSearchFilter()"
+              :options="['csv']"
+              source="filter"
+            >
+            </exporter>
+          </span>
         </CCardHeader>
         <CCardBody>
           <label class="card-label">{{
@@ -376,8 +387,8 @@ export default {
         };
         this.spinnerStart(true);
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
-          console.log("const: " + Status.success);
-          console.log("data: " + this.statusMain);
+          //console.log("const: " + Status.success);
+          //console.log("data: " + this.statusMain);
 
           if (this.statusMain == Status.success) {
             this.buildTimeseriesCharts(
@@ -414,6 +425,72 @@ export default {
     getData(data, id) {
       if (data != null) {
         return [data, id];
+      }
+      return null;
+    },
+    getSearchFilter() {
+      let data = [];
+      data.push({
+        field: this.$t("timeseries.download.title"),
+        value: ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.dataType"),
+        value: this.dataTypeSelected ? this.dataTypeSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.varType"),
+        value: this.varTypeSelected ? this.varTypeSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.flow"),
+        value: this.flowSelected ? this.flowSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.country"),
+        value: this.countrySelected ? this.countrySelected.name : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.partner"),
+        value: this.partnerSelected ? this.partnerSelected.descr : ""
+      });
+      data.push({
+        field: this.$t("timeseries.form.fields.productsCPA"),
+        value: this.productsCPASelected ? this.productsCPASelected.descr : ""
+      });
+      data.push({
+        field: this.$t("common.start_date"),
+        value: this.timeseriesCharts
+          ? this.timeseriesCharts.diagMain.date[0]
+          : ""
+      });
+      data.push({
+        field: this.$t("common.end_date"),
+        value: this.timeseriesCharts
+          ? this.timeseriesCharts.diagMain.date[
+              this.timeseriesCharts.diagMain.date.length - 1
+            ]
+          : ""
+      });
+      return [data, "cosmopolitics_timeseries_filter"];
+    },
+    getTabularData(data, id) {
+      if (data != null) {
+        const table = [];
+        const timePoints = data.date;
+        const values = data.series;
+        if (timePoints)
+          timePoints.forEach((tp, index) => {
+            const dt = new Date(tp);
+            const year = dt.getFullYear();
+            const month = dt.getMonth() + 1;
+            table.push({
+              time: year + "-" + month,
+              value: values[index]
+            });
+            //console.log(year + "-" + month + "," + values[index]);
+          });
+        return [table, id];
       }
       return null;
     },

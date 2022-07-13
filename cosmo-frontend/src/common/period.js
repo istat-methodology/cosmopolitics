@@ -12,10 +12,12 @@ export function getPeriod(start, end) {
     var shortMonth = dt.toLocaleString("en-US", { month: "short" });
     var longYear = dt.toLocaleDateString("en", { year: "numeric" });
     var idString = String(longYear) + String(monthIndex);
+    var isoDate = String(longYear) + "-" + String(monthIndex) + "-01";
     var selectString = shortMonth + " " + longYear;
     var sliderString = counter % 3 == 0 ? shortMonth + " " + shortYear : "";
     var item = {
       id: idString,
+      isoDate,
       name: sliderString,
       selectName: selectString
     };
