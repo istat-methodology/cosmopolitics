@@ -1048,7 +1048,11 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        
+        logger.info("copyFileToAzure: start")
+        copyFileToAzure("istat-cosmo-data-json", "test", "cosmoDataUpdate.py")
+        logger.info("copyFileToAzure: end")
+
+
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
