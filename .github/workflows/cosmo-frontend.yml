@@ -7,7 +7,9 @@ jobs:
   build_and_deploy_job_development:
     runs-on: ubuntu-latest
     name: Build and Deploy Job - Development
-    environment: development
+    environment: 
+      name: development
+      url: ${{ steps.builddeploy.outputs.static_web_app_url }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -38,7 +40,9 @@ jobs:
   build_and_deploy_job_production:
     runs-on: ubuntu-latest
     name: Build and Deploy Job - Production
-    environment: production
+    environment: 
+      name: production
+      url: ${{ steps.builddeploy.outputs.static_web_app_url }}
     steps:
       - uses: actions/checkout@v2
         with:
