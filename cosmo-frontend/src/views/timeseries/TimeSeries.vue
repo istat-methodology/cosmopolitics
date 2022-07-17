@@ -476,7 +476,14 @@ export default {
     },
     getTabularData(data, id) {
       if (data != null) {
-        const table = [];
+        //append search filters to output
+        const table = this.getSearchFilter()[0];
+        //append empty row
+        table.push({
+          field: "",
+          value: ""
+        });
+        //append timeseries data
         const timePoints = data.date;
         const values = data.series;
         if (timePoints)
@@ -485,7 +492,7 @@ export default {
             const year = dt.getFullYear();
             const month = dt.getMonth() + 1;
             table.push({
-              time: year + "-" + month,
+              field: year + "-" + month,
               value: values[index]
             });
             //console.log(year + "-" + month + "," + values[index]);

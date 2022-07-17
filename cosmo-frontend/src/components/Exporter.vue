@@ -32,6 +32,10 @@ export default {
       Type: Array,
       default: () => []
     },
+    header: {
+      Type: Array,
+      default: () => null
+    },
     options: {
       Type: Array,
       default: () => ["jpeg", "png", "pdf", "json", "csv"]
@@ -101,8 +105,8 @@ export default {
       if (data) {
         if (this.source == "table") {
           const cols = Object.keys(data[0]); //get keys from first element
-          result += cols.join(columnDelimiter);
-          result += rowDelimiter;
+          //result += cols.join(columnDelimiter);
+          //result += rowDelimiter;
           data.forEach(obj => {
             row = "";
             cols.forEach(col => {
@@ -114,6 +118,28 @@ export default {
           });
         } else if (this.source == "matrix") {
           const obj = {};
+          //Add header
+          if (this.header) {
+            this.header.forEach(row => {
+              let ln = "";
+              for (const col in row) {
+                ln += row[col];
+                ln += columnDelimiter;
+              }
+              result += ln.slice(0, -1); //remove last column delimiter
+              //add column delimiters
+              result += Array(data.length)
+                .fill("")
+                .join(columnDelimiter);
+              result += rowDelimiter;
+            });
+          }
+          //Add empty row
+          result += Array(data.length + 1)
+            .fill("")
+            .join(columnDelimiter);
+          result += rowDelimiter;
+
           if (this.timePeriod)
             obj["time"] = this.timePeriod.map(t => {
               return t.isoDate;
