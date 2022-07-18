@@ -50,7 +50,7 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("trade.form.title") }} </span>
-          <span class="float-right">
+          <!--span class="float-right">
             <exporter
               filename="cosmopolitics_basket_filter"
               :data="getSearchFilter()"
@@ -58,7 +58,7 @@
               source="filter"
             >
             </exporter>
-          </span>
+          </span-->
         </CCardHeader>
         <CCardBody>
           <label class="card-label">{{
@@ -140,7 +140,7 @@ export default {
   data: () => ({
     //Form (default values)
     idAllProducts: "999",
-    productSelected: [{ id: "999", dataname: "All products" }],
+    productSelected: [{ id: "999", dataname: "99 - All products" }],
     varTypeSelected: {
       id: 1,
       descr: "Euro"

@@ -96,7 +96,15 @@ const actions = {
     return classificationService
       .findAll("productsCPA")
       .then(data => {
-        commit("SET_PRODUCTS_CPA", data);
+        commit(
+          "SET_PRODUCTS_CPA",
+          data.map(prod => {
+            return {
+              id: prod.id,
+              descr: prod.id + " - " + prod.descr
+            };
+          })
+        );
       })
       .catch(err => {
         console.log(err);
@@ -106,7 +114,16 @@ const actions = {
     return classificationService
       .findAll("productsIntra")
       .then(data => {
-        commit("SET_PRODUCTS_INTRA", replaceAllProdId(data));
+        const prods = replaceAllProdId(data);
+        commit(
+          "SET_PRODUCTS_INTRA",
+          prods.map(prod => {
+            return {
+              id: prod.id,
+              descr: prod.id + " - " + prod.descr
+            };
+          })
+        );
       })
       .catch(err => {
         console.log(err);
@@ -116,13 +133,21 @@ const actions = {
     return classificationService
       .findAll("productsExtra")
       .then(data => {
-        commit("SET_PRODUCTS_EXTRA", replaceAllProdId(data));
+        const prods = replaceAllProdId(data);
+        commit(
+          "SET_PRODUCTS_EXTRA",
+          prods.map(prod => {
+            return {
+              id: prod.id,
+              descr: prod.id + " - " + prod.descr
+            };
+          })
+        );
       })
       .catch(err => {
         console.log(err);
       });
   },
-
   getTransports({ commit }) {
     return classificationService
       .findAll("transports")

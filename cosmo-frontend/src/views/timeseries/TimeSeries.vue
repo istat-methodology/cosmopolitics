@@ -163,7 +163,7 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("timeseries.form.title") }}</span>
-          <span class="float-right">
+          <!--span class="float-right">
             <exporter
               filename="cosmopolitics_timeseries_filter"
               :data="getSearchFilter()"
@@ -171,7 +171,7 @@
               source="filter"
             >
             </exporter>
-          </span>
+          </span-->
         </CCardHeader>
         <CCardBody>
           <label class="card-label">{{
@@ -295,7 +295,7 @@ export default {
     spinner: false,
     //Form fields
     dataTypeSelected: null,
-    varTypeSelected: null,   
+    varTypeSelected: null,
     flowSelected: null,
     countrySelected: null,
     partnerSelected: null,
@@ -310,8 +310,7 @@ export default {
     isDiagACF: true,
     isModalHelp: false,
     mean: null,
-    std: null,
-    options:null
+    std: null
   }),
   computed: {
     ...mapGetters("classification", [
@@ -327,13 +326,10 @@ export default {
       "statusMain",
       "statusACF",
       "statusNorm"
-    ])
-    /*,    
+    ]),
     options() {
-      return this.getOptions(this.statusMain != "00" ? true : false, this.varTypeSelected ? this.varTypeSelected.id: 0);
+      return this.getOptions(this.statusMain != "00" ? true : false);
     }
-    */
-    
   },
   validations: {
     dataTypeSelected: {
@@ -391,11 +387,6 @@ export default {
         };
         this.spinnerStart(true);
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
-          //console.log("const: " + Status.success);
-          //console.log("data: " + this.statusMain);
-          this.options = this.getOptions(this.statusMain != "00" ? true : false, this.varTypeSelected ? this.varTypeSelected.id: 0);
-      
-
           if (this.statusMain == Status.success) {
             this.buildTimeseriesCharts(
               this.timeseriesCharts,
@@ -516,8 +507,6 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
-    this.options = this.getOptions(this.statusMain != "00" ? true : false, this.varTypeSelected != null ? this.varTypeSelected.id: 0);
-
   }
 };
 </script>
