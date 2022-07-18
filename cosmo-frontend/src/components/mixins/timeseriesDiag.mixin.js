@@ -98,7 +98,7 @@ export default {
     }
   }),
   methods: {
-    getOptions(isLegend) {
+    getOptions(isLegend,vt) {
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -123,6 +123,16 @@ export default {
               scaleLabel: {
                 display: true,
                 labelString: ""
+              },
+           
+              ticks: {
+                // For a category axis, the val is the index so the lookup via getLabelForValue is needed
+                callback: function(val) {
+
+                  console.log(vt);
+                  return val.toLocaleString('it-IT');
+                  
+                }
               }
             }
           ],

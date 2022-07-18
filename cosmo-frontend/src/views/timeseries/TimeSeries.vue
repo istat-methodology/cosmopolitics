@@ -295,7 +295,7 @@ export default {
     spinner: false,
     //Form fields
     dataTypeSelected: null,
-    varTypeSelected: null,
+    varTypeSelected: null,   
     flowSelected: null,
     countrySelected: null,
     partnerSelected: null,
@@ -310,7 +310,8 @@ export default {
     isDiagACF: true,
     isModalHelp: false,
     mean: null,
-    std: null
+    std: null,
+    options:null
   }),
   computed: {
     ...mapGetters("classification", [
@@ -326,10 +327,13 @@ export default {
       "statusMain",
       "statusACF",
       "statusNorm"
-    ]),
+    ])
+    /*,    
     options() {
-      return this.getOptions(this.statusMain != "00" ? true : false);
+      return this.getOptions(this.statusMain != "00" ? true : false, this.varTypeSelected ? this.varTypeSelected.id: 0);
     }
+    */
+    
   },
   validations: {
     dataTypeSelected: {
@@ -389,6 +393,8 @@ export default {
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
           //console.log("const: " + Status.success);
           //console.log("data: " + this.statusMain);
+          this.options = this.getOptions(this.statusMain != "00" ? true : false, this.varTypeSelected ? this.varTypeSelected.id: 0);
+      
 
           if (this.statusMain == Status.success) {
             this.buildTimeseriesCharts(
@@ -510,6 +516,8 @@ export default {
   },
   created() {
     this.$store.dispatch("coreui/setContext", Context.Policy);
+    this.options = this.getOptions(this.statusMain != "00" ? true : false, this.varTypeSelected != null ? this.varTypeSelected.id: 0);
+
   }
 };
 </script>
