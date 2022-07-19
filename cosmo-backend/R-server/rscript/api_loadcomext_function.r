@@ -1,5 +1,5 @@
 load_comext <- function(flow){
-  db<-NULL
+   
   if (flow==1) {
       db <- fread(paste(basedirData,"comext_imp.csv",sep="/"), 
                   colClasses=c("cpa"="character"))
