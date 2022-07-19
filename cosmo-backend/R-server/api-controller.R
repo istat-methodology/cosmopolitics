@@ -57,6 +57,8 @@ add_get_cors(
 add_get_cors(
   path = "/load-comext", 
   fun = function(.req, .res) {
+    rm(COMEXT_IMP)
+    rm(COMEXT_EXP)
     COMEXT_IMP <<- load_comext("1")
     COMEXT_EXP <<- load_comext("2")
     
