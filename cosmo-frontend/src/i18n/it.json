@@ -96,7 +96,8 @@
         "percentage_placeholder": "Seleziona una percentuale",
         "transport": "Mezzi di trasporto",
         "transport_placeholder": "Seleziona mezzi di trasporto",
-        "product": "Prodotti",
+        "product_nstr": "Prodotti NSTR",
+        "product_cpa3": "Prodotti CPA3",
         "product_placeholder": "Seleziona un prodotto",
         "flow": "Flussi",
         "flow_placeholder": "Seleziona un flusso",
@@ -159,7 +160,7 @@
         "country_placeholder": "Seleziona un paese",
         "partner": "Partner",
         "partner_placeholder": "Seleziona un partner",
-        "productsCPA": "Prodotti",
+        "productsCPA": "Prodotti CPA2",
         "productsCPA_placeholder": "Seleziona un prodotto"
       }
     },
@@ -191,7 +192,7 @@
         "varType_placeholder": "Seleziona la variazione",
         "country": "Paese",
         "country_placeholder": "Seleziona un paese",
-        "products": "Prodotto",
+        "products": "Prodotti CPA2",
         "products_placeholder": "Seleziona un prodotto",
         "flow": "Flusso",
         "flow_placeholder": "Seleziona il flusso"        

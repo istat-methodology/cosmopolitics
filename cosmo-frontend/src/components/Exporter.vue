@@ -32,7 +32,7 @@ export default {
       Type: Array,
       default: () => []
     },
-    fields:{
+    fields: {
       Type: Array,
       default: () => []
     },
@@ -107,17 +107,14 @@ export default {
       let row = "";
       if (data) {
         if (this.source == "table") {
-
           if (this.header) {
-            
             row = "";
             this.header.forEach(obj => {
-                row += obj;
-                row += columnDelimiter;              
-              });
+              row += obj;
+              row += columnDelimiter;
+            });
             result += row.slice(0, -1); //remove last column delimiter
-            result += rowDelimiter;          
-            
+            result += rowDelimiter;
 
             /*
             let ln = "";
@@ -132,7 +129,6 @@ export default {
               .join(columnDelimiter);
             result += rowDelimiter;
             */
-
           }
 
           const cols = Object.keys(data[0]); //get keys from first element
@@ -141,7 +137,7 @@ export default {
           data.forEach(obj => {
             row = "";
             cols.forEach(col => {
-              if (this.fields != col){
+              if (this.fields != col) {
                 row += obj[col];
                 row += columnDelimiter;
               }

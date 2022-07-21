@@ -68,8 +68,11 @@
           'is-invalid': $v.transport.$error
         }"
       />
-      <label class="card-label mt-3">{{
-        $t("graph.form.fields.product")
+      <label class="card-label mt-3" v-if="displayTransport">{{
+        $t("graph.form.fields.product_nstr")
+      }}</label>
+      <label class="card-label mt-3" v-else>{{
+        $t("graph.form.fields.product_cpa3")
       }}</label>
       <v-select
         label="descr"

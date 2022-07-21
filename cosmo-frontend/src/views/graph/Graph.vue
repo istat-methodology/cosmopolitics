@@ -23,33 +23,27 @@
           </CTab>
           <CTab :title="$t('graph.table.title')">
             <CCard>
-                <CCardHeader>
-                  <span class="float-right">
+              <CCardHeader>
+                <span class="float-right">
                   <exporter
                     filename="cosmopolitics_metrics"
                     :data="getData(metricsTable, 'table')"
                     fields="centrality"
                     :options="['csv']"
-                    source = "table"
-                    :header = "['Codice','Nome','Vulnerabilità','Hubness','Forza di esportazione']"
+                    source="table"
+                    :header="metricsHeader"
                   >
                   </exporter>
-
-                  <!-- 
-                    metricsfields
-                    "['Codice','Nome','Vulnerabilità','Hubness','Forza di esportazione']"                    
-                  -->
                 </span>
-                
-                </CCardHeader>
-                <CCardBody>     
-                  <cosmo-table
-                    :data="metricsTable"
-                    :fields="metricsFields"
-                    :sorterValue="sorterValue"
-                  />
-                </CCardBody>
-             </CCard>
+              </CCardHeader>
+              <CCardBody>
+                <cosmo-table
+                  :data="metricsTable"
+                  :fields="metricsFields"
+                  :sorterValue="sorterValue"
+                />
+              </CCardBody>
+            </CCard>
           </CTab>
         </CTabs>
       </div>
@@ -148,6 +142,9 @@ export default {
     },
     metricsFields() {
       return this.isItalian ? this.metricsFieldsIt : this.metricsFieldsEn;
+    },
+    metricsHeader(){ 
+      return this.metricsFields.map(field => field.label);
     }
   },
   methods: {
@@ -235,7 +232,7 @@ export default {
         return [data, id];
       }
       return null;
-    },
+    }
   },
   created() {
     this.$store.dispatch(
