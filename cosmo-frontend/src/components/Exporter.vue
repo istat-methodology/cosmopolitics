@@ -32,6 +32,10 @@ export default {
       Type: Array,
       default: () => []
     },
+    fields:{
+      Type: Array,
+      default: () => []
+    },
     header: {
       Type: Array,
       default: () => null
@@ -93,7 +97,6 @@ export default {
         }
         jsonData = JSON.stringify(dat);
       }
-
       const blob = new Blob([jsonData], { type: "text/plain" });
       saveAs(blob, filename);
     },
@@ -104,14 +107,44 @@ export default {
       let row = "";
       if (data) {
         if (this.source == "table") {
+
+          if (this.header) {
+            
+            row = "";
+            this.header.forEach(obj => {
+                row += obj;
+                row += columnDelimiter;              
+              });
+            result += row.slice(0, -1); //remove last column delimiter
+            result += rowDelimiter;          
+            
+
+            /*
+            let ln = "";
+            this.header.forEach(row => {
+              ln += row.label;
+              ln += columnDelimiter;
+            })  
+            result += ln.slice(0, -1); //remove last column delimiter
+            //add column delimiters
+            result += Array(data.length)
+              .fill("")
+              .join(columnDelimiter);
+            result += rowDelimiter;
+            */
+
+          }
+
           const cols = Object.keys(data[0]); //get keys from first element
           //result += cols.join(columnDelimiter);
           //result += rowDelimiter;
           data.forEach(obj => {
             row = "";
             cols.forEach(col => {
-              row += obj[col];
-              row += columnDelimiter;
+              if (this.fields != col){
+                row += obj[col];
+                row += columnDelimiter;
+              }
             });
             result += row.slice(0, -1); //remove last column delimiter
             result += rowDelimiter;
