@@ -143,7 +143,7 @@ export default {
     metricsFields() {
       return this.isItalian ? this.metricsFieldsIt : this.metricsFieldsEn;
     },
-    metricsHeader(){ 
+    metricsHeader() {
       return this.metricsFields.map(field => field.label);
     }
   },
