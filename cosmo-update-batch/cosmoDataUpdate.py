@@ -294,15 +294,21 @@ def annualProcessing():
     logger.info('loading.. '+ANNUAL_POPULATION_CSV)
     #ANNUAL_POPULATION_CSV
     annual_population=pd.read_csv(ANNUAL_POPULATION_CSV,sep=",",keep_default_na=False, na_values=[''])
-
+    # FIX Greece code EL in GR
+    annual_population["geo"]=annual_population["geo"].replace(['EL'],'GR')
+    
     logger.info('loading.. '+ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV)
     #ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV
     annual_industrial_production=pd.read_csv(ANNUAL_INDUSTRIAL_PRODUCTION_FILE_CSV,sep=",",keep_default_na=False, na_values=[''])
+    # FIX Greece code EL in GR
+    annual_industrial_production["geo"]=annual_industrial_production["geo"].replace(['EL'],'GR')
 
     logger.info('loading.. '+ANNUAL_UNEMPLOYEMENT_FILE_CSV)
     #ANNUAL_UNEMPLOYEMENT_FILE_CSV
     annual_unemployement=pd.read_csv(ANNUAL_UNEMPLOYEMENT_FILE_CSV,sep=",",keep_default_na=False, na_values=[''])
-
+    # FIX Greece code EL in GR
+    annual_unemployement["geo"]=annual_unemployement["geo"].replace(['EL'],'GR')
+    
     logger.info('loading.. '+previous_filename)
     data_annual_previous_year =pd.read_csv(previous_filename,sep=",",low_memory=True,keep_default_na=False, na_values=[''])
     logger.info('loading.. '+current_filename)
@@ -559,6 +565,7 @@ def monthlyProcessing():
     logger.info('Creating aggr_cpa table ')
     cur.execute('DROP TABLE IF EXISTS aggr_cpa;')
     cur.execute("create table aggr_cpa as select declarant_iso, flow, cpa2, period, sum(value_in_euros) as val_cpa, sum(quantity_in_kg) as q_cpa  from comext_full  WHERE IS_PRODUCT==1 and period>="+filter_yyymm+" group by declarant_iso, flow, cpa2, period order by declarant_iso, flow, cpa2, period;")
+    
     conn.commit()
     
     #/* calcolo il valore totale */
@@ -694,6 +701,7 @@ def createMonthlyOutputVQSTrade():
                 logger.debug('product: '+product)
                 dataVQS={}
 
+                dataVQS["productID"]=product
                 dataVQS["dataname"]=getClsProductByCode(cls_products_cpa, product,1)
                 valuesVQS=[]
                 vqs=vqs_country[vqs_country["PRODUCT"]==product].fillna('NA')
@@ -750,6 +758,7 @@ def createMonthlyOutputVQSTradeQuantity():
                 logger.debug('product: '+product)
                 dataVQS={}
 
+                dataVQS["productID"]=product
                 dataVQS["dataname"]=getClsProductByCode(cls_products_cpa, product,1)
                 valuesVQS=[]
                 vqs=vqs_country[vqs_country["PRODUCT"]==product].fillna('NA')
