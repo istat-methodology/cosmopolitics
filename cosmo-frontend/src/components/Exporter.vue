@@ -40,6 +40,10 @@ export default {
       Type: Array,
       default: () => null
     },
+    filter: {
+      Type: Array,
+      default: () => null
+    },
     options: {
       Type: Array,
       default: () => ["jpeg", "png", "pdf", "json", "csv"]
@@ -147,9 +151,9 @@ export default {
           });
         } else if (this.source == "matrix") {
           const obj = {};
-          //Add header
-          if (this.header) {
-            this.header.forEach(row => {
+          //Add filters
+          if (this.filter) {
+            this.filter.forEach(row => {
               let ln = "";
               for (const col in row) {
                 ln += row[col];
