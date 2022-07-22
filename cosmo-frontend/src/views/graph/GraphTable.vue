@@ -1,21 +1,17 @@
 <template>
-  <CCard>
-    <CCardBody>
-      <CDataTable
-        v-if="data"
-        :items="data"
-        :fields="fields"
-        :sorterValue="sorterValue"
-        table-filter
-        column-filter
-        items-per-page-select
-        :items-per-page="10"
-        sorter
-        hover
-        pagination
-      />
-    </CCardBody>
-  </CCard>
+  <CDataTable
+    v-if="data"
+    :items="data"
+    :fields="fields"
+    :sorterValue="sorterValue"
+    table-filter
+    column-filter
+    items-per-page-select
+    :items-per-page="10"
+    sorter
+    hover
+    pagination
+  />
 </template>
 <script>
 export default {

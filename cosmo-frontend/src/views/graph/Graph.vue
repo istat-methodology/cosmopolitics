@@ -22,11 +22,28 @@
             </cosmo-graph>
           </CTab>
           <CTab :title="$t('graph.table.title')">
-            <cosmo-table
-              :data="metricsTable"
-              :fields="metricsFields"
-              :sorterValue="sorterValue"
-            />
+            <CCard>
+              <CCardHeader>
+                <span class="float-right">
+                  <exporter
+                    filename="cosmopolitics_metrics"
+                    :data="getData(metricsTable, 'table')"
+                    fields="centrality"
+                    :options="['csv']"
+                    source="table"
+                    :header="metricsHeader"
+                  >
+                  </exporter>
+                </span>
+              </CCardHeader>
+              <CCardBody>
+                <cosmo-table
+                  :data="metricsTable"
+                  :fields="metricsFields"
+                  :sorterValue="sorterValue"
+                />
+              </CCardBody>
+            </CCard>
           </CTab>
         </CTabs>
       </div>
@@ -70,6 +87,7 @@ import GraphVis from "@/views/graph/GraphVis";
 import GraphForm from "@/views/graph/GraphForm";
 import GraphTable from "@/views/graph/GraphTable";
 import GraphInfoModal from "@/views/graph/GraphInfoModal";
+import exporter from "@/components/Exporter";
 
 export default {
   name: "Graph",
@@ -78,7 +96,8 @@ export default {
     "cosmo-graph": GraphVis,
     "cosmo-form": GraphForm,
     "cosmo-table": GraphTable,
-    "cosmo-info-modal": GraphInfoModal
+    "cosmo-info-modal": GraphInfoModal,
+    exporter
   },
   props: {
     isIntra: {
@@ -123,6 +142,9 @@ export default {
     },
     metricsFields() {
       return this.isItalian ? this.metricsFieldsIt : this.metricsFieldsEn;
+    },
+    metricsHeader() {
+      return this.metricsFields.map(field => field.label);
     }
   },
   methods: {
@@ -204,6 +226,12 @@ export default {
     },
     spinnerStart(bool) {
       this.spinner = bool;
+    },
+    getData(data, id) {
+      if (data != null) {
+        return [data, id];
+      }
+      return null;
     }
   },
   created() {

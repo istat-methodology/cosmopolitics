@@ -267,21 +267,21 @@ export const options = {
 export const metricsFieldsIt = [
   { key: "label", label: "Codice", _style: "width:10%" },
   { key: "name", label: "Nome", _style: "width:30%" },
+  { key: "vulnerability", label: "Vulnerabilità", _style: "width:15%" },
+  { key: "hubness", label: "Hubness", _style: "width:15%" },
   {
     key: "exportStrenght",
     label: "Forza di esportazione",
     _style: "width:15%"
-  },
-  { key: "hubness", label: "Hubness", _style: "width:15%" },
-  { key: "vulnerability", label: "Vulnerabilità", _style: "width:15%" }
+  }
 ];
 
 export const metricsFieldsEn = [
-  { key: "label", _style: "width:15%" },
-  { key: "name", _style: "width:25%" },
-  { key: "exportStrenght", _style: "width:15%" },
-  { key: "hubness", _style: "width:15%" },
-  { key: "vulnerability", _style: "width:15%" }
+  { key: "label", label: "Code", _style: "width:15%" },
+  { key: "name", label: "Name", _style: "width:25%" },
+  { key: "vulnerability", label: "Vulnerability", _style: "width:15%" },
+  { key: "hubness", label: "Hubness", _style: "width:15%" },
+  { key: "exportStrenght", label: "Export Strenght", _style: "width:15%" }
 ];
 
 export const scenarioFieldsIt = [
@@ -299,11 +299,10 @@ export const scenarioFieldsIt = [
 ];
 
 export const scenarioFieldsEn = [
-  { key: "source", _style: "width:25%" },
-  { key: "destination", _style: "width:25%" },
-  { key: "percentage", _style: "width:25%" },
-  { key: "flow", _style: "width:25%" },
-  { key: "show_delete", label: "", _style: "width:1%" },
+  { key: "source", label: "Source", _style: "width:25%" },
+  { key: "destination", label: "Destination", _style: "width:25%" },
+  { key: "percentage", label: "Percentage", _style: "width:25%" },
+  { key: "flow", label: "Flow", _style: "width:25%" },
   {
     key: "show_delete",
     label: "",

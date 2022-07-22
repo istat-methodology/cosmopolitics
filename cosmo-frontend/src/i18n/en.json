@@ -97,7 +97,8 @@
         "percentage_placeholder": "Set a percentage",
         "transport": "Transport",
         "transport_placeholder": "Select transport",
-        "product": "Product",
+        "product_nstr": "Products NSTR",
+        "product_cpa3": "Products CPA3",
         "product_placeholder": "Select a product",
         "flow": "Flow",
         "flow_placeholder": "Select a flow",
@@ -160,7 +161,7 @@
         "country_placeholder": "Select a country",
         "partner": "Partner",
         "partner_placeholder": "Select a partner",
-        "productsCPA": "Products",
+        "productsCPA": "Products CPA2",
         "productsCPA_placeholder": "Select a product"
       }
     },
@@ -192,7 +193,7 @@
         "varType_placeholder": "Select a series type",
         "country": "Country",
         "country_placeholder": "Select a country",
-        "products": "Product",
+        "products": "Products CPA2",
         "products_placeholder": "Select a product",
         "flow": "Flow",
         "flow_placeholder": "Select a flow"

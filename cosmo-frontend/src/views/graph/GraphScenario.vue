@@ -1,10 +1,24 @@
 <template>
+
+
   <CModal
     :title="modalTitle"
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
   >
+    <div>             
+      <span class="float-right">
+        <exporter
+          filename="cosmopolitics_scenario"
+          :data="getData(nodesTable, 'table')"          
+          :options="['csv']"
+          source="table"
+          :header="fields"
+        >
+        </exporter>
+      </span>
+    </div>
     <CDataTable
       v-if="nodesTable"
       :items="nodesTable"
@@ -105,8 +119,12 @@
   </CModal>
 </template>
 <script>
+import exporter from "@/components/Exporter";
 export default {
   name: "GraphScenario",
+    components: {
+    exporter
+  },
   data: () => ({
     showScenario: false,
     columnFilterValue: {}
@@ -218,7 +236,14 @@ export default {
     applyConstraints() {
       this.showScenario = false;
       this.$emit("applyConstraints");
+    },
+    getData(data, id) {
+      if (data != null) {
+        return [data, id];
+      }
+      return null;
     }
+
   }
 };
 </script>
