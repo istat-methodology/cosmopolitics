@@ -27,11 +27,10 @@
                 <span class="float-right">
                   <exporter
                     filename="cosmopolitics_metrics"
-                    :data="getData(metricsTable, 'table')"
-                    fields="centrality"
+                    :data="getData(csvFields, 'table')"                    
                     :options="['csv']"
                     source="table"
-                    :header="metricsHeader"
+                    :header="csvHeader"
                   >
                   </exporter>
                 </span>
@@ -143,7 +142,21 @@ export default {
     metricsFields() {
       return this.isItalian ? this.metricsFieldsIt : this.metricsFieldsEn;
     },
-    metricsHeader() {
+    csvFields() {      
+       
+          return this.metricsTable.map(field => { 
+            return {
+              "label": field.label,
+              "name": field.name,
+              "vulnerability": field.vulnerability,
+              "hubness": field.hubness,
+              "exportStrenght": field.exportStrenght
+            }
+          });        
+      
+      
+    },
+    csvHeader() {
       return this.metricsFields.map(field => field.label);
     }
   },

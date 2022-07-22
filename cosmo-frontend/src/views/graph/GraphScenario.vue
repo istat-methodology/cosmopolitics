@@ -11,10 +11,10 @@
       <span class="float-right">
         <exporter
           filename="cosmopolitics_scenario"
-          :data="getData(nodesTable, 'table')"          
+          :data="getData(csvTable, 'table')"          
           :options="['csv']"
           source="table"
-          :header="fields"
+          :header="csvHeader"
         >
         </exporter>
       </span>
@@ -172,6 +172,30 @@ export default {
         this.$emit("updateNodesTable", value);
       }
     },
+   
+    csvTable: {
+      get() {
+        return this.selectedNodesTable.map(field =>{
+          return {
+            "source":  field.source,
+            "destination": field.destination,
+            "percentage":  field.percentage,
+            "flow": field.flow
+          }
+        });        
+      },
+      set(value) {
+        this.$emit("updateNodesTable", value);
+      }
+    },
+    csvHeader: {
+      get() {
+        return this.fields.map(field => field.label);
+      },
+      set(value) {
+        this.$emit("fields", value);
+      }
+    },
     transports: {
       get() {
         return this.selectedTransports;
@@ -186,7 +210,7 @@ export default {
       },
       set(value) {
         this.$emit("updateScenarioTransports", value);
-      }
+      }   
     },
     modalTitle() {
       return this.selectedNode.id > 0
