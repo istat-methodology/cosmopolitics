@@ -797,10 +797,10 @@ def createOutputVariazioniQuoteCPA():
     conn = sqlite3.connect(SQLLITE_DB)
 
     for flow in [FLOW_IMPORT,FLOW_EXPORT]:
-        variazioni = pd.read_sql_query("SELECT DECLARANT_ISO, PARTNER_ISO, FLOW, trim(cpa) as cpa, PERIOD, val_cpa, q_kg  FROM variazioni_cpa WHERE FLOW="+str(flow)+" and length(trim(cpa))==2 order by PERIOD ASC;", conn)
+        variazioni = pd.read_sql_query("SELECT DECLARANT_ISO, PARTNER_ISO, FLOW, trim(cpa) as cpa, PERIOD, val_cpa, q_kg  FROM variazioni_cpa WHERE FLOW="+str(flow)+" and (length(trim(cpa))==2 or length(trim(cpa)) in ('061','062') ) order by PERIOD ASC;", conn)
         variazioni.to_csv(iesVQSFiles[flow],sep=",",index=False)
 
-    pd.read_sql_query("SELECT distinct trim(cpa) as PRODUCT FROM variazioni_cpa WHERE length(trim(cpa))==2;", conn).to_csv(CPA2_PRODUCT_CODE_CSV,sep=",",index=False)
+    pd.read_sql_query("SELECT distinct trim(cpa) as PRODUCT FROM variazioni_cpa WHERE (length(trim(cpa))==2 or length(trim(cpa)) in ('061','062') );", conn).to_csv(CPA2_PRODUCT_CODE_CSV,sep=",",index=False)
 
     if conn:
         conn.close()
