@@ -1027,7 +1027,7 @@ def checkUPMicroservices():
 def sendEmailRepo(report_text):
     logger.info('sendEmailRepo START')
     url_Email_service="https://prod-190.westeurope.logic.azure.com:443/workflows/52cafc0d0f2d4dd08ee290a5d367f109/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PFatjXjc32cpXZqX-KFBkn0a7ZKgT1q5iR2hI07NR4w"
-    body_msg={"to":"framato@istat.it","subject":"Repo from cosmo update","body":report_text}
+    body_msg={"to":"framato@istat.it,mbruno@istat.it","subject":"Repo from cosmo update","body":report_text}
 
     req = urllib.request.Request(url_Email_service, method="POST")
     req.add_header('Content-Type', 'application/json')
