@@ -220,8 +220,54 @@ export default {
           product: restoreAllProdId(this.product),
           flow: this.flow.id
         });
+
+        this.getSearchFilter();
+
       }
-    }
+    },
+    getSearchFilter() {
+      let data = [];
+      data.push({
+        field: this.$t("graph.form.fields.period"),
+        value: this.selectedPeriod.selectName ? this.selectedPeriod.selectName : ""
+      });
+      data.push({
+        field: this.$t("graph.form.fields.percentage"),
+        value: this.percentage ? this.percentage : ""
+      });
+
+      if (this.displayTransport){
+        
+        data.push({
+          field: this.$t("graph.form.fields.transport"),
+          value: this.transport
+              ? this.transport
+                .map(transp => {
+                  return transp.descr;
+                })
+                .join("#")
+              : ""
+        });          
+        data.push({
+          field: this.$t("graph.form.fields.product_nstr"),
+          value: this.product.descr
+        });      
+      }else{    
+      
+        data.push({
+          field: this.$t("graph.form.fields.product_cpa3"),
+          value: this.product.descr
+        });
+      }
+      data.push({
+        field: this.$t("graph.form.fields.flow"),
+        value: this.flow.descr ? this.flow.descr : ""
+      });
+
+
+
+      return [data, "graph_filter"];
+    },   
   }
 };
 </script>
