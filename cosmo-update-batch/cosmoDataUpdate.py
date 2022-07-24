@@ -928,6 +928,10 @@ def createClsNOTEmptyProducts(digit,cls,filename,filterValue,fileExistingProduct
     if (digit==2):
         #cls_products_cpa.insert(0,{"id":"00","descr":"All Products" })
         cls_products_cpa=pd.concat([pd.DataFrame({"id":"00","descr":"All Products" },index=[0]),cls_products_cpa]).reset_index(drop = True)
+        cls_products_cpa=pd.concat([pd.DataFrame({"id":"061","descr":"Crude petroleum" },index=[0]),cls_products_cpa]).reset_index(drop = True)
+        cls_products_cpa=pd.concat([pd.DataFrame({"id":"062","descr":"Natural gas, liquefied or in gaseous state" },index=[0]),cls_products_cpa]).reset_index(drop = True)
+        cls_products_cpa = cls_products_cpa.sort_values('id')
+        cls_products_cpa = cls_products_cpa.reset_index(drop=True)
     
     if (digit==3):
         #cls_products_cpa.append({"id":"TOT","descr":"All Products" })
