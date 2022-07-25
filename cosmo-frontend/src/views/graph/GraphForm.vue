@@ -171,7 +171,7 @@ export default {
       set(value) {
         this.$emit("updateRadio", value);
       }
-    },
+    }
   },
   validations: {
     selectedPeriod: {
@@ -219,40 +219,38 @@ export default {
           transports: cleanTransports,
           product: restoreAllProdId(this.product),
           flow: this.flow.id
-        });  
+        });
         this.$emit("updateFilter", this.getSearchFilter());
-
-      }     
-
+      }
     },
     getSearchFilter() {
       let data = [];
       data.push({
         field: this.$t("graph.form.fields.period"),
-        value: this.selectedPeriod.selectName ? this.selectedPeriod.selectName : ""
+        value: this.selectedPeriod.selectName
+          ? this.selectedPeriod.selectName
+          : ""
       });
       data.push({
         field: this.$t("graph.form.fields.percentage"),
         value: this.percentage ? this.percentage : ""
       });
-      if (this.displayTransport){
-        
+      if (this.displayTransport) {
         data.push({
           field: this.$t("graph.form.fields.transport"),
           value: this.transport
-              ? this.transport
+            ? this.transport
                 .map(transp => {
                   return transp.descr;
                 })
                 .join("#")
-              : ""
-        });          
+            : ""
+        });
         data.push({
           field: this.$t("graph.form.fields.product_nstr"),
           value: this.product.descr
-        });      
-      }else{    
-      
+        });
+      } else {
         data.push({
           field: this.$t("graph.form.fields.product_cpa3"),
           value: this.product.descr
@@ -263,9 +261,8 @@ export default {
         value: this.flow.descr ? this.flow.descr : ""
       });
       return data;
-    } 
-  }   
-  
+    }
+  }
 };
 </script>
 

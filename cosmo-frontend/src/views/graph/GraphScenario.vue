@@ -1,17 +1,15 @@
 <template>
-
-
   <CModal
     :title="modalTitle"
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
   >
-    <div>             
+    <div>
       <span class="float-right">
         <exporter
           filename="cosmopolitics_scenario"
-          :data="getData(csvTable, 'table')"          
+          :data="getData(csvTable, 'table')"
           :options="['csv']"
           source="table"
           :header="csvHeader"
@@ -122,7 +120,7 @@
 import exporter from "@/components/Exporter";
 export default {
   name: "GraphScenario",
-    components: {
+  components: {
     exporter
   },
   data: () => ({
@@ -172,17 +170,17 @@ export default {
         this.$emit("updateNodesTable", value);
       }
     },
-   
+
     csvTable: {
       get() {
-        return this.selectedNodesTable.map(field =>{
+        return this.selectedNodesTable.map(field => {
           return {
-            "source":  field.source,
-            "destination": field.destination,
-            "percentage":  field.percentage,
-            "flow": field.flow
-          }
-        });        
+            source: field.source,
+            destination: field.destination,
+            percentage: field.percentage,
+            flow: field.flow
+          };
+        });
       },
       set(value) {
         this.$emit("updateNodesTable", value);
@@ -210,7 +208,7 @@ export default {
       },
       set(value) {
         this.$emit("updateScenarioTransports", value);
-      }   
+      }
     },
     modalTitle() {
       return this.selectedNode.id > 0
@@ -267,7 +265,6 @@ export default {
       }
       return null;
     }
-
   }
 };
 </script>

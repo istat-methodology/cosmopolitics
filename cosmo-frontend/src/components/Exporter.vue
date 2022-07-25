@@ -106,16 +106,14 @@ export default {
     },
 
     toCSV(data, filename) {
-
-
       const columnDelimiter = ";";
       const rowDelimiter = "\n";
       let result = "";
       let row = "";
-      
+
       if (data) {
         if (this.source == "table") {
-           if (this.filter) {
+          if (this.filter) {
             this.filter.forEach(row => {
               let ln = "";
               for (const col in row) {
@@ -161,16 +159,14 @@ export default {
             row = "";
             cols.forEach(col => {
               //if (this.fields != col) {
-                row += obj[col];
-                row += columnDelimiter;
+              row += obj[col];
+              row += columnDelimiter;
               //}
             });
             result += row.slice(0, -1); //remove last column delimiter
             result += rowDelimiter;
           });
-
         } else if (this.source == "matrix") {
-          
           const obj = {};
           //Add filters
           if (this.filter) {
@@ -213,9 +209,7 @@ export default {
             result += row.slice(0, -1).replaceAll(".", ","); //remove last column delimiter and change decimal separator
             result += rowDelimiter;
           }
-
         } else {
-
           data.datasets.forEach(dataset => {
             const rows = dataset.data;
             const cols = Object.keys(rows[0]);
