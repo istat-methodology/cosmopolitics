@@ -115,7 +115,21 @@ export default {
       
       if (data) {
         if (this.source == "table") {
-          
+           if (this.filter) {
+            this.filter.forEach(row => {
+              let ln = "";
+              for (const col in row) {
+                ln += row[col];
+                ln += columnDelimiter;
+              }
+              result += ln.slice(0, -1); //remove last column delimiter
+              //add column delimiters
+              result += Array(data.length)
+                .fill("")
+                .join(columnDelimiter);
+              result += rowDelimiter;
+            });
+          }
           if (this.header) {
             row = "";
             this.header.forEach(obj => {

@@ -43,6 +43,7 @@
                 v-if="timeseriesCharts"
                 filename="cosmopolitics_timeseries"
                 :data="getTabularData(timeseriesCharts.diagMain, 'timeseries')"
+                :filter="getSearchFilter()"
                 source="table"
               >
               </exporter>
@@ -397,6 +398,7 @@ export default {
             );
             this.optionsNorm.title.text =
               "QQ-Norm Plot (in " + this.diagNormMag + ")";
+
           } else {
             this.chartDataDiagMain = this.emptyChart();
             this.mean = null;
@@ -411,6 +413,7 @@ export default {
           this.spinnerStart(false);
         });
       }
+      
     },
     removeData(chart) {
       chart.data.labels.pop();
@@ -469,18 +472,21 @@ export default {
             ]
           : ""
       });
-      return [data, "cosmopolitics_timeseries_filter"];
+      return data;
     },
     getTabularData(data, id) {
       if (data != null) {
+
         //append search filters to output
-        const table = this.getSearchFilter()[0];
+        /*const table = this.getSearchFilter();
         //append empty row
         table.push({
           field: "",
           value: ""
         });
+        */
         //append timeseries data
+        const table=[];
         const timePoints = data.date;
         const values = data.series;
         if (timePoints)

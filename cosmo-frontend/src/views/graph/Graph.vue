@@ -29,6 +29,7 @@
                     filename="cosmopolitics_metrics"
                     :data="getData(csvFields, 'table')"                    
                     :options="['csv']"
+                    :filter="graphFilter"
                     source="table"
                     :header="csvHeader"
                   >
@@ -55,6 +56,7 @@
           :products="products"
           :flows="flows"
           :displayTransport="!isIntra"
+          @updateFilter="handleUpdateFilter"     
           @submit="handleSubmit"
           @updatePeriod="handlePeriodChange"
           @updateRadio="handleRadioChange"
@@ -110,6 +112,7 @@ export default {
     selectedRadio: "Monthly",
     selectedTransports: [],
     graphForm: null,
+    graphFilter:null,
     //Metrics table
     metricsFieldsIt: [...metricsFieldsIt],
     metricsFieldsEn: [...metricsFieldsEn],
@@ -119,6 +122,7 @@ export default {
     //Modal
     isHelpModal: false,
     isMainModal: false
+     
   }),
   computed: {
     ...mapGetters("metadata", ["graphPeriod", "graphTrimesterPeriod"]),
@@ -161,6 +165,9 @@ export default {
     }
   },
   methods: {
+    handleUpdateFilter(filter){
+      this.graphFilter=filter;
+    },
     handleRadioChange(radioValue) {
       this.selectedRadio = radioValue;
       this.selectedPeriod = this.isTrimester
@@ -245,7 +252,8 @@ export default {
         return [data, id];
       }
       return null;
-    }
+    },
+    
   },
   created() {
     this.$store.dispatch(

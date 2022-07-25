@@ -21,7 +21,7 @@
               v-if="this.charts && this.tradePeriod"
               filename="cosmopolitics_basket"
               :data="getData(this.charts.data, 'trade')"
-              :filter="getSearchFilter()[0]"
+              :filter="getSearchFilter()"
               source="matrix"
               :timePeriod="this.tradePeriod"
             >
@@ -267,7 +267,7 @@ export default {
           ? this.tradePeriod[this.tradePeriod.length - 1].isoDate
           : ""
       });
-      return [data, "cosmopolitics_basket_filter"];
+      return data;
     },
     spinnerStart(bool) {
       this.spinner = bool;

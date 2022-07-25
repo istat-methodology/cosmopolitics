@@ -171,7 +171,7 @@ export default {
       set(value) {
         this.$emit("updateRadio", value);
       }
-    }
+    },
   },
   validations: {
     selectedPeriod: {
@@ -219,11 +219,11 @@ export default {
           transports: cleanTransports,
           product: restoreAllProdId(this.product),
           flow: this.flow.id
-        });
+        });  
+        this.$emit("updateFilter", this.getSearchFilter());
 
-        this.getSearchFilter();
+      }     
 
-      }
     },
     getSearchFilter() {
       let data = [];
@@ -235,7 +235,6 @@ export default {
         field: this.$t("graph.form.fields.percentage"),
         value: this.percentage ? this.percentage : ""
       });
-
       if (this.displayTransport){
         
         data.push({
@@ -263,12 +262,10 @@ export default {
         field: this.$t("graph.form.fields.flow"),
         value: this.flow.descr ? this.flow.descr : ""
       });
-
-
-
-      return [data, "graph_filter"];
-    },   
-  }
+      return data;
+    } 
+  }   
+  
 };
 </script>
 
