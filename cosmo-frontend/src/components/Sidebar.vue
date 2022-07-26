@@ -9,7 +9,7 @@
   >
     <CSidebarBrand class="d-md-down-none" to="/">
       <CIcon name="cil-terminal" size="lg"></CIcon>
-      <span class="brand c-sidebar-brand-full">Cosmopolitics</span>
+      <span class="brand c-sidebar-brand-full">{{ title }}</span>
     </CSidebarBrand>
 
     <ul class="c-sidebar-nav h-100 ps" style="position: relative">
@@ -98,6 +98,11 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      title: process.env.VUE_APP_TITLE
+    };
+  },
   computed: {
     ...mapGetters("coreui", {
       show: "sidebarShow",
@@ -110,9 +115,6 @@ export default {
       isTrade: "isTrade",
       isMobility: "isMobility"
     }),
-    /*
-      "appVersion":"0.1",
-    */
     ...mapGetters("metadata", ["appVersion"])
   }
 };

@@ -1,11 +1,12 @@
 <template>
   <CModal
-    :title="modalTitle"
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
+    size="lg"
   >
-    <div>
+    <template #header>
+      <span class="float-left">{{ modalTitle }}</span>
       <span class="float-right">
         <exporter
           filename="cosmopolitics_scenario"
@@ -16,7 +17,7 @@
         >
         </exporter>
       </span>
-    </div>
+    </template>
     <CDataTable
       v-if="nodesTable"
       :items="nodesTable"

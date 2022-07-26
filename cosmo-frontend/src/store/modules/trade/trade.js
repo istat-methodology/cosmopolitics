@@ -48,12 +48,14 @@ const getters = {
       state.charts.data.forEach((element, index) => {
         products.push({
           id: index.toString(),
-          dataname: index.toString() + " - " + element.dataname
+          dataname: element.dataname,
+          displayName: element.productID + " - " + element.dataname
         });
       });
       products.push({
-        id: "999",
-        dataname: "99 - All products"
+        id: "00",
+        dataname: "All products",
+        displayName: "00 - All products"
       });
     }
     return products ? products : null;

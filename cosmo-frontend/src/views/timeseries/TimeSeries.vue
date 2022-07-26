@@ -474,15 +474,6 @@ export default {
     },
     getTabularData(data, id) {
       if (data != null) {
-        //append search filters to output
-        /*const table = this.getSearchFilter();
-        //append empty row
-        table.push({
-          field: "",
-          value: ""
-        });
-        */
-        //append timeseries data
         const table = [];
         const timePoints = data.date;
         const values = data.series;

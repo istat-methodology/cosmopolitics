@@ -110,7 +110,6 @@ export default {
       const rowDelimiter = "\n";
       let result = "";
       let row = "";
-
       if (data) {
         if (this.source == "table") {
           if (this.filter) {
@@ -122,11 +121,17 @@ export default {
               }
               result += ln.slice(0, -1); //remove last column delimiter
               //add column delimiters
-              result += Array(data.length)
-                .fill("")
-                .join(columnDelimiter);
+              if (Object.keys(data[0]).length > 1)
+                result += Array(Object.keys(data[0]).length - 1)
+                  .fill("")
+                  .join(columnDelimiter);
               result += rowDelimiter;
             });
+            //add empty row
+            result += Array(Object.keys(data[0]).length)
+              .fill("")
+              .join(columnDelimiter);
+            result += rowDelimiter;
           }
           if (this.header) {
             row = "";
@@ -136,25 +141,9 @@ export default {
             });
             result += row.slice(0, -1); //remove last column delimiter
             result += rowDelimiter;
-
-            /*
-            let ln = "";
-            this.header.forEach(row => {
-              ln += row.label;
-              ln += columnDelimiter;
-            })  
-            result += ln.slice(0, -1); //remove last column delimiter
-            //add column delimiters
-            result += Array(data.length)
-              .fill("")
-              .join(columnDelimiter);
-            result += rowDelimiter;
-            */
           }
 
           const cols = Object.keys(data[0]); //get keys from first element
-          //result += cols.join(columnDelimiter);
-          //result += rowDelimiter;
           data.forEach(obj => {
             row = "";
             cols.forEach(col => {

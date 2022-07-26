@@ -2,11 +2,11 @@ import axios from "axios";
 import store from "@/store";
 
 const axiosAuth = axios.create({
-  baseURL: process.env.VUE_APP_DEV_SERVER + "/security"
+  baseURL: process.env.VUE_APP_CLS_SERVER + "/security"
 });
 
 const axiosHack = axios.create({
-  baseURL: process.env.VUE_APP_DEV_SERVER
+  baseURL: process.env.VUE_APP_CLS_SERVER
 });
 
 const axiosR = axios.create({

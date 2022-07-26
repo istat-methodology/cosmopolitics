@@ -26,12 +26,6 @@
               :timePeriod="this.tradePeriod"
             >
             </exporter>
-            <!--exporter
-              filename="cosmopolitics_trade"
-              :data="getTabularData(this.chartData, 'trade')"
-              source="table"
-            >
-            </exporter-->
           </span>
         </CCardHeader>
         <CCardBody>
@@ -50,15 +44,6 @@
       <CCard>
         <CCardHeader>
           <span class="float-left">{{ $t("trade.form.title") }} </span>
-          <!--span class="float-right">
-            <exporter
-              filename="cosmopolitics_basket_filter"
-              :data="getSearchFilter()"
-              :options="['csv']"
-              source="filter"
-            >
-            </exporter>
-          </span-->
         </CCardHeader>
         <CCardBody>
           <label class="card-label">{{
@@ -93,7 +78,7 @@
           </label>
           <v-select
             v-if="products"
-            label="dataname"
+            label="displayName"
             :options="products"
             :placeholder="$t('trade.form.fields.products_placeholder')"
             multiple
@@ -139,8 +124,10 @@ export default {
   mixins: [tradeMixin, paletteMixin, spinnerMixin],
   data: () => ({
     //Form (default values)
-    idAllProducts: "999",
-    productSelected: [{ id: "999", dataname: "99 - All products" }],
+    idAllProducts: "00",
+    productSelected: [
+      { id: "00", dataname: "All products", displayName: "00 - All products" }
+    ],
     varTypeSelected: {
       id: 1,
       descr: "Euro"
@@ -183,7 +170,7 @@ export default {
             this.chartData.datasets = [];
             this.chartData.labels = this.labelPeriod;
             this.productSelected.forEach(product => {
-              if (product.id === "999") {
+              if (product.id === "00") {
                 this.charts.data.forEach(element => {
                   this.buildChartObject(element.dataname, element.value);
                 });
@@ -215,7 +202,7 @@ export default {
       if (data != null) {
         let selectedAll = false;
         const selectedProds = this.productSelected.map(prod => {
-          if (prod.id == "999") selectedAll = true;
+          if (prod.id == "00") selectedAll = true;
           return prod.dataname;
         });
         //filter on selected products
