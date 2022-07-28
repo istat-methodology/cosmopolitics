@@ -5,4 +5,3 @@ cosmo-update-batch/cosmoDataUpdate-*.zip
 cosmo-backend/R-server/.Rhistory
 .config
 .vscode
-**/obj
