@@ -23,14 +23,33 @@ jobs:
         username: ${{ secrets.AzureAppService_ContainerUsername }}
         password: ${{ secrets.AzureAppService_ContainerPassword }}
 
-    - name: Build and push container image to registry
+    - name: Build and push container image for R-Service to registry
       uses: docker/build-push-action@v2
       with:
         push: true
         tags: istatcosmo.azurecr.io/cosmo-r-service:run-${{ github.run_number }},istatcosmo.azurecr.io/cosmo-r-service:latest
         context: ./cosmo-backend/R-server/
         build-args: "DOCKER_TAG=run-${{ github.run_number }}"
-      
+
+    - name: Set AppInsightsReverseProxy FileVersion
+      shell: pwsh
+      run: |
+        pushd cosmo-backend/appinsights-reverseproxy/
+        $f = dir AppInsightsReverseProxy.csproj
+        [xml] $x = Get-Content $f
+        $x.PropertyGroup[0].FileVersion = (($x.PropertyGroup[0].FileVersion -split '\.')[0..2] -join '.') + ".${{ github.run_number }}"
+        $x.Save($f.Path)
+        Get-Content $f
+        popd
+
+    - name: Build and push container image for AppInsightsReverseProxy to registry
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: istatcosmo.azurecr.io/rproxy:run-${{ github.run_number }},istatcosmo.azurecr.io/rproxy:latest
+        context: ./cosmo-backend/appinsights-reverseproxy/
+        file: ./cosmo-backend/appinsights-reverseproxy/AppInsightReverseProxy/Dockerfile
+        build-args: "DOCKER_TAG=run-${{ github.run_number }}"
 
   deploy:
     runs-on: ubuntu-latest
@@ -40,11 +59,36 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
+    #- name: Deploy to Azure Web App
+    #  id: deploy-to-webapp
+    #  uses: azure/webapps-deploy@v2
+    #  with:
+    #    app-name: 'istat-cosmo-r'
+    #    slot-name: 'production'
+    #    publish-profile: ${{ secrets.AzureAppService_PublishProfile_RSERVICE }}
+    #    images: 'istatcosmo.azurecr.io/cosmo-r-service:run-${{ github.run_number }}'
+
+    - name: Azure Login
+      uses: Azure/login@v1.4.3
       with:
-        app-name: 'istat-cosmo-r'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_RSERVICE }}
-        images: 'istatcosmo.azurecr.io/cosmo-r-service:run-${{ github.run_number }}'
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Prepare docker-compose.yml
+      shell: pwsh
+      run: |
+        pushd cosmo cosmo-backend/R-server/
+        $d = Get-Content docker-compose-for-ai.yml | ConvertFrom-Yaml
+        $d.services.rserver = "istatcosmo.azurecr.io/cosmo-r-service:run-${{ github.run_number }}"
+        $d.services.rserver.image = "istatcosmo.azurecr.io/cosmo-r-service:run-${{ github.run_number }}"
+        $d.services.yarpproxy.image = "istatcosmo.azurecr.io/rproxy:run-${{ github.run_number }}"
+        $d | ConvertTo-Yaml | Out-File docker-compose-for-ai.yml
+        Get-Content docker-compose-for-ai.yml
+        popd
+
+    - name: Deploy webapp
+      shell: pwsh
+      run: |
+        pushd cosmo cosmo-backend/R-server/
+        az webapp config container set --multicontainer-config-type COMPOSE --multicontainer-config-file docker-compose-for-ai.yml --name istat-cosmo-r --resource-group rg-cosmo --slot production
+        popd
+

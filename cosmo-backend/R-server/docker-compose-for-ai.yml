@@ -1,14 +1,19 @@
 version: '3.3'
 
 services:
-   yarpproxy:
-     image: istatrregistry.azurecr.io/rproxy
-     ports:
-       - "80:80"
-     environment:
-       - ReverseProxy__Clusters__localservice__Destinations__localservice__Address=http://rserver:5000/
-     restart: always
+  yarpproxy:
+    image: istatcosmo.azurecr.io/rproxy
+    ports:
+      - "80:80"
+    environment:
+      - ReverseProxy__Clusters__localservice__Destinations__localservice__Address=http://rserver:5000/
+    restart: always
 
-   rserver:
-     image: istatrregistry.azurecr.io/rserver
-     restart: always
+  rserver:
+    image: istatcosmo.azurecr.io/cosmo-r-service
+    volumes:
+      - data:/app/data
+    restart: always
+
+volumes:
+  data:
