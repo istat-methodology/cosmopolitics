@@ -11,8 +11,7 @@
             <button
               class="btn mr-2 float-right btn-sm btn-square"
               role="button"
-              @click="helpOn(true)"
-            >
+              @click="helpOn(true)">
               i
             </button>
           </span>
@@ -23,8 +22,7 @@
               :data="getData(this.charts.data, 'trade')"
               :filter="getSearchFilter()"
               source="matrix"
-              :timePeriod="this.tradePeriod"
-            >
+              :timePeriod="this.tradePeriod">
             </exporter>
           </span>
         </CCardHeader>
@@ -35,8 +33,7 @@
             :options="optionsTrade"
             :height="600"
             id="trade"
-            ref="trade"
-          />
+            ref="trade" />
         </CCardBody>
       </CCard>
     </div>
@@ -53,8 +50,7 @@
             label="descr"
             :options="varType"
             :placeholder="$t('trade.form.fields.varType_placeholder')"
-            v-model="varTypeSelected"
-          />
+            v-model="varTypeSelected" />
           <label class="card-label mt-3">{{
             $t("trade.form.fields.country")
           }}</label>
@@ -62,8 +58,7 @@
             label="name"
             :options="countries"
             :placeholder="$t('trade.form.fields.country_placeholder')"
-            v-model="countrySelected"
-          />
+            v-model="countrySelected" />
           <label class="card-label mt-3">{{
             $t("trade.form.fields.flow")
           }}</label>
@@ -71,8 +66,7 @@
             label="descr"
             :options="flows"
             :placeholder="$t('trade.form.fields.flow_placeholder')"
-            v-model="flowSelected"
-          />
+            v-model="flowSelected" />
           <label v-if="products" class="card-label mt-3">
             {{ $t("trade.form.fields.products") }}
           </label>
@@ -83,8 +77,7 @@
             :placeholder="$t('trade.form.fields.products_placeholder')"
             multiple
             v-model="productSelected"
-            ref="prod"
-          />
+            ref="prod" />
           <CButton
             color="primary"
             shape="square"
@@ -110,13 +103,13 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { Context } from "@/common";
-import paletteMixin from "@/components/mixins/palette.mixin";
-import tradeMixin from "@/components/mixins/tradeDiag.mixin";
-import LineChart from "@/components/charts/LineChart";
-import spinnerMixin from "@/components/mixins/spinner.mixin";
-import exporter from "@/components/Exporter";
+import { mapGetters } from "vuex"
+import { Context } from "@/common"
+import paletteMixin from "@/components/mixins/palette.mixin"
+import tradeMixin from "@/components/mixins/tradeDiag.mixin"
+import LineChart from "@/components/charts/LineChart"
+import spinnerMixin from "@/components/mixins/spinner.mixin"
+import exporter from "@/components/Exporter"
 
 export default {
   name: "Trade",
@@ -154,11 +147,11 @@ export default {
   },
   methods: {
     helpOn(showModal) {
-      this.isModalHelp = showModal;
+      this.isModalHelp = showModal
     },
     handleSubmit() {
       if (this.varTypeSelected && this.countrySelected && this.flowSelected) {
-        this.spinnerStart(true);
+        this.spinnerStart(true)
         this.$store
           .dispatch("trade/findByName", {
             type: this.varTypeSelected.id,
@@ -166,28 +159,28 @@ export default {
             flow: this.flowSelected.id
           })
           .then(() => {
-            this.chartData = {};
-            this.chartData.datasets = [];
-            this.chartData.labels = this.labelPeriod;
-            this.productSelected.forEach(product => {
+            this.chartData = {}
+            this.chartData.datasets = []
+            this.chartData.labels = this.labelPeriod
+            this.productSelected.forEach((product) => {
               if (product.id === "00") {
-                this.charts.data.forEach(element => {
-                  this.buildChartObject(element.dataname, element.value);
-                });
+                this.charts.data.forEach((element) => {
+                  this.buildChartObject(element.dataname, element.value)
+                })
               } else {
                 this.buildChartObject(
                   this.charts.data[product.id].dataname,
                   this.charts.data[product.id].value
-                );
+                )
               }
-            });
-          });
-        this.clearColor();
-        this.spinnerStart(true);
+            })
+          })
+        this.clearColor()
+        this.spinnerStart(true)
       }
     },
     buildChartObject(description, value) {
-      const color = this.getColor();
+      const color = this.getColor()
       this.chartData.datasets.push({
         label: description,
         fill: false,
@@ -196,78 +189,78 @@ export default {
         data: value,
         showLine: true,
         pointRadius: 2
-      });
+      })
     },
     getData(data, id) {
       if (data != null) {
-        let selectedAll = false;
-        const selectedProds = this.productSelected.map(prod => {
-          if (prod.id == "00") selectedAll = true;
-          return prod.dataname;
-        });
+        let selectedAll = false
+        const selectedProds = this.productSelected.map((prod) => {
+          if (prod.id == "00") selectedAll = true
+          return prod.dataname
+        })
         //filter on selected products
-        if (selectedAll) return [data, id];
+        if (selectedAll) return [data, id]
         else {
-          const selectedData = data.filter(series => {
-            if (selectedProds.includes(series.dataname)) return series;
-          });
-          return [selectedData, id];
+          const selectedData = data.filter((series) => {
+            if (selectedProds.includes(series.dataname)) return series
+          })
+          return [selectedData, id]
         }
       }
-      return null;
+      return null
     },
     getSearchFilter() {
-      let data = [];
+      let data = []
       data.push({
         field: this.$t("trade.download.title"),
         value: ""
-      });
+      })
       data.push({
         field: this.$t("trade.form.fields.varType"),
         value: this.varTypeSelected ? this.varTypeSelected.descr : ""
-      });
+      })
       data.push({
         field: this.$t("trade.form.fields.country"),
         value: this.countrySelected ? this.countrySelected.name : ""
-      });
+      })
       data.push({
         field: this.$t("trade.form.fields.flow"),
         value: this.flowSelected ? this.flowSelected.descr : ""
-      });
+      })
       data.push({
         field: this.$t("timeseries.form.fields.productsCPA"),
         value: this.productSelected
           ? this.productSelected
-              .map(prod => {
-                return prod.dataname;
+              .map((prod) => {
+                return prod.dataname
               })
               .join("#")
           : ""
-      });
+      })
       data.push({
         field: this.$t("common.start_date"),
         value: this.tradePeriod ? this.tradePeriod[0].isoDate : ""
-      });
+      })
       data.push({
         field: this.$t("common.end_date"),
         value: this.tradePeriod
           ? this.tradePeriod[this.tradePeriod.length - 1].isoDate
           : ""
-      });
-      return data;
+      })
+      return data
     },
     spinnerStart(bool) {
-      this.spinner = bool;
+      this.spinner = bool
     }
   },
   created() {
-    this.spinnerStart(true);
+    this.spinnerStart(true)
     if (this.tradePeriod !== null) {
       for (const period of this.tradePeriod) {
-        this.labelPeriod.push(period.name);
+        this.labelPeriod.push(period.name)
       }
     }
-    this.$store.dispatch("coreui/setContext", Context.Trade);
+    this.$store.dispatch("coreui/setContext", Context.Trade)
     this.$store
       .dispatch("trade/findByName", {
         type: this.varTypeSelected.id,
@@ -275,17 +268,17 @@ export default {
         flow: this.flowSelected.id
       })
       .then(() => {
-        this.chartData = {};
-        this.chartData.datasets = [];
-        this.chartData.labels = this.labelPeriod;
-        this.charts.data.forEach(element => {
-          this.buildChartObject(element.dataname, element.value);
-        });
-      });
+        this.chartData = {}
+        this.chartData.datasets = []
+        this.chartData.labels = this.labelPeriod
+        this.charts.data.forEach((element) => {
+          this.buildChartObject(element.dataname, element.value)
+        })
+      })
 
-    this.spinnerStart(false);
+    this.spinnerStart(false)
   }
-};
+}
 </script>
 <style>
 .circle-spin {

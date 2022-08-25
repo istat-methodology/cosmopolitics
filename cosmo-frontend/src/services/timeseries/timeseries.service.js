@@ -1,10 +1,10 @@
-import { axiosR } from "@/http";
+import { axiosR } from "@/http"
 export const timeseriesService = {
   findByFilters
-};
+}
 
 function findByFilters(form) {
-  var object = {};
+  var object = {}
   object = {
     //flow=1&var=3&country=IT&partner=US&dataType=1&tipovar=1
     flow: form.flow,
@@ -13,19 +13,19 @@ function findByFilters(form) {
     partner: form.partner,
     dataType: form.dataType,
     tipovar: form.varType
-  };
-  const params = object;
+  }
+  const params = object
 
   return axiosR
     .get("/itsa", {
       params: params
     })
-    .then(res => {
-      var data = res.data ? res.data : {};
+    .then((res) => {
+      var data = res.data ? res.data : {}
       //console.log(data);
-      return data;
+      return data
     })
-    .catch(err => {
-      throw err;
-    });
+    .catch((err) => {
+      throw err
+    })
 }

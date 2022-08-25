@@ -8,8 +8,7 @@
               class="btn mr-2 float-right btn-sm btn-square"
               title="Info"
               role="button"
-              @click="showInfo"
-            >
+              @click="showInfo">
               i
             </button>
           </span>
@@ -18,8 +17,7 @@
               filename="cosmopolitics_graph_analysis"
               :data="getData('graph', this.$refs.graph)"
               :options="['jpeg', 'png', 'pdf', 'json']"
-              source="graph"
-            >
+              source="graph">
             </exporter>
           </span>
         </div>
@@ -53,8 +51,7 @@
           :edges="edges"
           :options="options"
           @select-edge="handleGraphSelect"
-          @hover-node="handleOverNode"
-        />
+          @hover-node="handleOverNode" />
       </CCardBody>
       <slot>
         <!-- Slider -->
@@ -72,13 +69,12 @@
       @updateNodesTable="handleNodesTable"
       @updateTransports="handleUpdateTransports"
       @updateScenarioTransports="handleScenarioTransports"
-      @applyConstraints="applyConstraints"
-    />
+      @applyConstraints="applyConstraints" />
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { Network } from "vue-visjs";
+import { mapGetters } from "vuex"
+import { Network } from "vue-visjs"
 import {
   options,
   getNode,
@@ -87,10 +83,10 @@ import {
   getTransportDifference,
   scenarioFieldsIt,
   scenarioFieldsEn
-} from "@/common";
-import spinnerMixin from "@/components/mixins/spinner.mixin";
-import exporter from "@/components/Exporter";
-import GraphScenario from "@/views/graph/GraphScenario";
+} from "@/common"
+import spinnerMixin from "@/components/mixins/spinner.mixin"
+import exporter from "@/components/Exporter"
+import GraphScenario from "@/views/graph/GraphScenario"
 
 export default {
   name: "GraphVis",
@@ -115,10 +111,10 @@ export default {
   computed: {
     ...mapGetters("coreui", ["isItalian"]),
     scenarioFields() {
-      return this.isItalian ? this.scenarioFieldsIt : this.scenarioFieldsEn;
+      return this.isItalian ? this.scenarioFieldsIt : this.scenarioFieldsEn
     },
     graphDensity() {
-      return this.metrics ? this.metrics.density.toPrecision(4) : 0;
+      return this.metrics ? this.metrics.density.toPrecision(4) : 0
     }
   },
   props: {
@@ -149,58 +145,58 @@ export default {
   },
   methods: {
     handleUpdateTransports(trs) {
-      this.localTransports = trs;
+      this.localTransports = trs
     },
     handleScenarioTransports(trs) {
-      this.scenarioTransports = trs;
+      this.scenarioTransports = trs
     },
     handleNodesTable(table) {
-      this.selectedNodesTable = table;
+      this.selectedNodesTable = table
     },
     handleGraphSelect(selectedGraph) {
       if (selectedGraph.nodes.length > 0) {
         //user clicked a node
-        this.handleNodeSelect(selectedGraph);
+        this.handleNodeSelect(selectedGraph)
       } else {
         //user clicked an edge
-        this.handleEdgeSelect(selectedGraph);
+        this.handleEdgeSelect(selectedGraph)
       }
     },
     handleNodeSelect(selectedGraph) {
-      this.selectedEdges = [];
-      this.selectedNodesTable = [];
-      this.selectedNode = getNode(this.nodes, selectedGraph.nodes[0]);
+      this.selectedEdges = []
+      this.selectedNodesTable = []
+      this.selectedNode = getNode(this.nodes, selectedGraph.nodes[0])
 
       //Compute total weight
-      var totalImport = 0;
-      var totalExport = 0;
-      selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = getEdge(this.edges, edgeId);
+      var totalImport = 0
+      var totalExport = 0
+      selectedGraph.edges.forEach((edgeId) => {
+        const selectedEdge = getEdge(this.edges, edgeId)
         if (selectedEdge.from == this.selectedNode.id) {
           //export
-          totalExport += selectedEdge.weight;
+          totalExport += selectedEdge.weight
         } else {
           //import
-          totalImport += selectedEdge.weight;
+          totalImport += selectedEdge.weight
         }
-      });
+      })
 
-      var percentage = 0;
-      selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = getEdge(this.edges, edgeId);
-        const sourceNode = getNode(this.nodes, selectedEdge.from);
-        const destinationNode = getNode(this.nodes, selectedEdge.to);
+      var percentage = 0
+      selectedGraph.edges.forEach((edgeId) => {
+        const selectedEdge = getEdge(this.edges, edgeId)
+        const sourceNode = getNode(this.nodes, selectedEdge.from)
+        const destinationNode = getNode(this.nodes, selectedEdge.to)
 
-        this.selectedEdges.push(selectedEdge);
+        this.selectedEdges.push(selectedEdge)
         if (sourceNode.id == this.selectedNode.id) {
           //export
-          percentage = (selectedEdge.weight / totalExport) * 100;
+          percentage = (selectedEdge.weight / totalExport) * 100
         } else {
           //import
-          percentage = (selectedEdge.weight / totalImport) * 100;
+          percentage = (selectedEdge.weight / totalImport) * 100
         }
 
-        var weightFormatted = selectedEdge.weight;
+        var weightFormatted = selectedEdge.weight
 
         this.selectedNodesTable.push({
           source: sourceNode.name,
@@ -210,32 +206,32 @@ export default {
           total: weightFormatted.toLocaleString("en-US"),
           percentage: Math.round((percentage + Number.EPSILON) * 100) / 100,
           flow: this.selectedNode.id == sourceNode.id ? "Export" : "Import"
-        });
-      });
+        })
+      })
       //Local copy of selected transports
-      this.localTransports = [...this.transports];
-      this.scenarioModal = true;
+      this.localTransports = [...this.transports]
+      this.scenarioModal = true
     },
     handleEdgeSelect(selectedGraph) {
-      this.selectedEdges = [];
-      this.selectedNodesTable = [];
-      this.selectedNode = { id: -1, name: "" };
+      this.selectedEdges = []
+      this.selectedNodesTable = []
+      this.selectedNode = { id: -1, name: "" }
       //Compute total weight
-      var sumOfSelectedEdge = 0;
-      selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = getEdge(this.edges, edgeId);
-        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight;
-      });
+      var sumOfSelectedEdge = 0
+      selectedGraph.edges.forEach((edgeId) => {
+        const selectedEdge = getEdge(this.edges, edgeId)
+        sumOfSelectedEdge = sumOfSelectedEdge + selectedEdge.weight
+      })
 
-      selectedGraph.edges.forEach(edgeId => {
-        const selectedEdge = getEdge(this.edges, edgeId);
-        const sourceNode = getNode(this.nodes, selectedEdge.from);
-        const destinationNode = getNode(this.nodes, selectedEdge.to);
+      selectedGraph.edges.forEach((edgeId) => {
+        const selectedEdge = getEdge(this.edges, edgeId)
+        const sourceNode = getNode(this.nodes, selectedEdge.from)
+        const destinationNode = getNode(this.nodes, selectedEdge.to)
 
-        this.selectedEdges.push(selectedEdge);
+        this.selectedEdges.push(selectedEdge)
 
-        var percentage = (selectedEdge.weight / sumOfSelectedEdge) * 100;
-        var weightFormatted = selectedEdge.weight;
+        var percentage = (selectedEdge.weight / sumOfSelectedEdge) * 100
+        var weightFormatted = selectedEdge.weight
 
         this.selectedNodesTable.push({
           source: sourceNode.name,
@@ -245,46 +241,46 @@ export default {
           total: weightFormatted.toLocaleString("en-US"),
           percentage: Math.round((percentage + Number.EPSILON) * 100) / 100,
           flow: ""
-        });
-      });
+        })
+      })
       //Local copy of selected transports
-      this.localTransports = [...this.transports];
-      this.scenarioModal = true;
+      this.localTransports = [...this.transports]
+      this.scenarioModal = true
     },
     handleOverNode(event) {
-      const nodeId = event.node;
-      this.nodeMetric = getCentrality(this.nodes, nodeId, this.metrics);
+      const nodeId = event.node
+      this.nodeMetric = getCentrality(this.nodes, nodeId, this.metrics)
     },
     applyConstraints() {
-      const constraints = [];
-      this.selectedNodesTable.forEach(edge => {
+      const constraints = []
+      this.selectedNodesTable.forEach((edge) => {
         constraints.push({
           from: getNode(this.nodes, edge.from).label,
           to: getNode(this.nodes, edge.to).label,
           exclude: this.displayTransport
             ? getTransportDifference(this.transports, this.scenarioTransports)
             : "-99"
-        });
-      });
-      this.$emit("applyConstraints", constraints);
-      this.closeModal();
+        })
+      })
+      this.$emit("applyConstraints", constraints)
+      this.closeModal()
     },
     showInfo() {
-      this.$emit("showinfo");
+      this.$emit("showinfo")
     },
     closeModal() {
       //Clear selected scenario transports
-      this.scenarioTransports = [];
-      this.scenarioModal = false;
+      this.scenarioTransports = []
+      this.scenarioModal = false
     },
     getData(id) {
-      var nodes = [];
-      var edges = [];
+      var nodes = []
+      var edges = []
       for (var edgeId in this.edges) {
         edges.push({
           from: this.edges[edgeId].from,
           to: this.edges[edgeId].to
-        });
+        })
       }
       for (var nodeId in this.nodes) {
         nodes.push({
@@ -292,13 +288,13 @@ export default {
           label: this.nodes[nodeId].label,
           x: this.nodes[nodeId].x,
           y: this.nodes[nodeId].y
-        });
+        })
       }
-      let jsonData = JSON.stringify({ nodes, edges });
-      return [jsonData, id];
+      let jsonData = JSON.stringify({ nodes, edges })
+      return [jsonData, id]
     }
   }
-};
+}
 </script>
 <style scoped>
 .network {

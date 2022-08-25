@@ -30,8 +30,7 @@
             <router-link
               :to="{ name: 'GraphExtraUe' }"
               custom
-              v-slot="{ navigate }"
-            >
+              v-slot="{ navigate }">
               <a @click="navigate" @keypress.enter="navigate" role="link">
                 {{ $t("landing.graph.extra-ue.link") }} <chevron-right-icon />
               </a>
@@ -53,8 +52,7 @@
             <router-link
               :to="{ name: 'GraphIntraUe' }"
               custom
-              v-slot="{ navigate }"
-            >
+              v-slot="{ navigate }">
               <a @click="navigate" @keypress.enter="navigate" role="link">
                 {{ $t("landing.graph.intra-ue.link") }} <chevron-right-icon />
               </a>
@@ -74,8 +72,7 @@
             <router-link
               :to="{ name: 'TimeSeries' }"
               custom
-              v-slot="{ navigate }"
-            >
+              v-slot="{ navigate }">
               <a @click="navigate" @keypress.enter="navigate" role="link">
                 {{ $t("landing.timeseries.link") }}<chevron-right-icon />
               </a>
@@ -105,13 +102,13 @@
 </template>
 
 <script>
-import { Context } from "@/common";
+import { Context } from "@/common"
 export default {
   name: "Home",
   created() {
-    this.$store.dispatch("coreui/setContext", Context.Home);
+    this.$store.dispatch("coreui/setContext", Context.Home)
   }
-};
+}
 </script>
 <style scoped>
 .material-design-icon > .material-design-icon__svg {

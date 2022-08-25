@@ -117,13 +117,13 @@ export default {
       this.currentColor =
         this.currentColor >= this.colorPalette.length - 1
           ? 0
-          : this.currentColor;
-      const color = this.colorPalette[this.currentColor];
-      this.currentColor++;
-      return color;
+          : this.currentColor
+      const color = this.colorPalette[this.currentColor]
+      this.currentColor++
+      return color
     },
     clearColor() {
-      this.currentColor = 0;
+      this.currentColor = 0
     }
   }
-};
+}

@@ -4,9 +4,8 @@
     :minimize="minimize"
     :show="show"
     @update:show="
-      value => $store.commit('coreui/set', ['sidebarShow', 'responsive'])
-    "
-  >
+      (value) => $store.commit('coreui/set', ['sidebarShow', 'responsive'])
+    ">
     <CSidebarBrand class="d-md-down-none" to="/">
       <CIcon name="cil-terminal" size="lg"></CIcon>
       <span class="brand c-sidebar-brand-full">{{ title }}</span>
@@ -18,8 +17,7 @@
           tag="a"
           :to="{ name: 'Home' }"
           class="c-sidebar-nav-link"
-          :class="{ 'c-active': isHome }"
-        >
+          :class="{ 'c-active': isHome }">
           <CIcon name="cil-home" class="c-sidebar-nav-icon" />{{
             $t("sidebar.home")
           }}
@@ -32,8 +30,7 @@
           tag="a"
           :to="{ name: 'Map' }"
           class="c-sidebar-nav-link"
-          :class="{ 'c-active c-active-primary': isMap }"
-        >
+          :class="{ 'c-active c-active-primary': isMap }">
           <CIcon name="cil-location-pin" class="c-sidebar-nav-icon" />
           {{ $t("sidebar.map") }}
         </router-link>
@@ -43,8 +40,7 @@
           tag="a"
           :to="{ name: 'GraphExtraUe' }"
           class="c-sidebar-nav-link"
-          :class="{ 'c-active c-active-success': isGraph }"
-        >
+          :class="{ 'c-active c-active-success': isGraph }">
           <CIcon name="cil-graph" class="c-sidebar-nav-icon" />{{
             $t("sidebar.graphExtra")
           }}
@@ -55,8 +51,7 @@
           tag="a"
           :to="{ name: 'GraphIntraUe' }"
           class="c-sidebar-nav-link"
-          :class="{ 'c-active c-active-success': isGraphIntra }"
-        >
+          :class="{ 'c-active c-active-success': isGraphIntra }">
           <CIcon name="cil-graph" class="c-sidebar-nav-icon" />{{
             $t("sidebar.graphWorld")
           }}
@@ -67,8 +62,7 @@
           tag="a"
           :to="{ name: 'TimeSeries' }"
           class="c-sidebar-nav-link"
-          :class="{ 'c-active c-active-warning': isPolicy }"
-        >
+          :class="{ 'c-active c-active-warning': isPolicy }">
           <CIcon name="cil-chart-line" class="c-sidebar-nav-icon" />
           {{ $t("sidebar.timeseries") }}
         </router-link>
@@ -78,8 +72,7 @@
           tag="a"
           :to="{ name: 'Trade' }"
           class="c-sidebar-nav-link"
-          :class="{ 'c-active c-active-danger': isTrade }"
-        >
+          :class="{ 'c-active c-active-danger': isTrade }">
           <CIcon name="cil-layers" class="c-sidebar-nav-icon" />
           {{ $t("sidebar.trade") }}
         </router-link>
@@ -89,19 +82,18 @@
       class="d-none d-lg-flex"
       @click.native="
         $store.commit('coreui/set', ['sidebarMinimize', !minimize])
-      "
-    />
+      " />
   </CSidebar>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 
 export default {
   data() {
     return {
       title: process.env.VUE_APP_TITLE
-    };
+    }
   },
   computed: {
     ...mapGetters("coreui", {
@@ -117,7 +109,7 @@ export default {
     }),
     ...mapGetters("metadata", ["appVersion"])
   }
-};
+}
 </script>
 <style scoped>
 .brand {

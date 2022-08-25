@@ -3,8 +3,7 @@
     :show="showModal"
     :closeOnBackdrop="false"
     @update:show="closeModal"
-    size="lg"
-  >
+    size="lg">
     <template #header>
       <span class="float-left">{{ modalTitle }}</span>
       <span class="float-right">
@@ -13,8 +12,7 @@
           :data="getData(csvTable, 'table')"
           :options="['csv']"
           source="table"
-          :header="csvHeader"
-        >
+          :header="csvHeader">
         </exporter>
       </span>
     </template>
@@ -28,9 +26,8 @@
       :sorterValue="sorterValue"
       sorter
       hover
-      pagination
-    >
-      <template #show_delete="{item}">
+      pagination>
+      <template #show_delete="{ item }">
         <td>
           <span class="icon-link" @click="deleteRow(item)">
             <delete-icon />
@@ -47,8 +44,7 @@
           labelOn="✓"
           labelOff="X"
           :checked="showScenario"
-          @update:checked="toggleScenario"
-        />
+          @update:checked="toggleScenario" />
       </span>
     </div>
     <!-- Drag'n drop -->
@@ -69,15 +65,13 @@
           class="col-left drop-zone"
           @drop="onDropTransports($event)"
           @dragenter.prevent
-          @dragover.prevent
-        >
+          @dragover.prevent>
           <div
             v-for="transport in transports"
             :key="transport.id"
             class="drag-el"
             draggable="true"
-            @dragstart="startDrag($event, transport)"
-          >
+            @dragstart="startDrag($event, transport)">
             {{ transport.descr }}
           </div>
         </div>
@@ -88,15 +82,13 @@
           class="col-right drop-zone"
           @drop="onDropScenario($event)"
           @dragenter.prevent
-          @dragover.prevent
-        >
+          @dragover.prevent>
           <div
             v-for="scenarioTransport in scenarioTransports"
             :key="scenarioTransport.id"
             class="drag-el"
             draggable="true"
-            @dragstart="startDrag($event, scenarioTransport)"
-          >
+            @dragstart="startDrag($event, scenarioTransport)">
             {{ scenarioTransport.descr }}
           </div>
         </div>
@@ -118,7 +110,7 @@
   </CModal>
 </template>
 <script>
-import exporter from "@/components/Exporter";
+import exporter from "@/components/Exporter"
 export default {
   name: "GraphScenario",
   components: {
@@ -165,56 +157,56 @@ export default {
   computed: {
     nodesTable: {
       get() {
-        return this.selectedNodesTable;
+        return this.selectedNodesTable
       },
       set(value) {
-        this.$emit("updateNodesTable", value);
+        this.$emit("updateNodesTable", value)
       }
     },
 
     csvTable: {
       get() {
-        return this.selectedNodesTable.map(field => {
+        return this.selectedNodesTable.map((field) => {
           return {
             source: field.source,
             destination: field.destination,
             percentage: field.percentage,
             flow: field.flow
-          };
-        });
+          }
+        })
       },
       set(value) {
-        this.$emit("updateNodesTable", value);
+        this.$emit("updateNodesTable", value)
       }
     },
     csvHeader: {
       get() {
-        return this.fields.map(field => field.label);
+        return this.fields.map((field) => field.label)
       },
       set(value) {
-        this.$emit("fields", value);
+        this.$emit("fields", value)
       }
     },
     transports: {
       get() {
-        return this.selectedTransports;
+        return this.selectedTransports
       },
       set(value) {
-        this.$emit("updateTransports", value);
+        this.$emit("updateTransports", value)
       }
     },
     scenarioTransports: {
       get() {
-        return this.selectedScenarioTransports;
+        return this.selectedScenarioTransports
       },
       set(value) {
-        this.$emit("updateScenarioTransports", value);
+        this.$emit("updateScenarioTransports", value)
       }
     },
     modalTitle() {
       return this.selectedNode.id > 0
         ? this.$t("graph.scenario.main", { country: this.selectedNode.name })
-        : this.$t("graph.scenario.mainEdge");
+        : this.$t("graph.scenario.mainEdge")
     },
     scenarioTitle() {
       return this.selectedNode.id > 0
@@ -223,51 +215,51 @@ export default {
           : this.$t("graph.scenario.title_world_node")
         : this.displayTransport
         ? this.$t("graph.scenario.title_extra_edge")
-        : this.$t("graph.scenario.title_world_edge");
+        : this.$t("graph.scenario.title_world_edge")
     }
   },
   methods: {
     toggleScenario() {
-      this.showScenario = !this.showScenario;
+      this.showScenario = !this.showScenario
     },
     startDrag(event, item) {
-      event.dataTransfer.dropEffect = "move";
-      event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.setData("itemId", item.id);
+      event.dataTransfer.dropEffect = "move"
+      event.dataTransfer.effectAllowed = "move"
+      event.dataTransfer.setData("itemId", item.id)
     },
     onDropTransports(event) {
-      const itemId = event.dataTransfer.getData("ItemId");
+      const itemId = event.dataTransfer.getData("ItemId")
       this.scenarioTransports = this.scenarioTransports.filter(
-        tr => tr.id != itemId
-      );
+        (tr) => tr.id != itemId
+      )
     },
     onDropScenario(event) {
-      const itemId = event.dataTransfer.getData("ItemId");
-      const transport = this.transports.find(tr => tr.id == itemId);
-      if (!this.scenarioTransports.find(tr => tr.id == transport.id))
-        this.scenarioTransports.push(transport);
+      const itemId = event.dataTransfer.getData("ItemId")
+      const transport = this.transports.find((tr) => tr.id == itemId)
+      if (!this.scenarioTransports.find((tr) => tr.id == transport.id))
+        this.scenarioTransports.push(transport)
     },
     deleteRow(row) {
-      var updatedTable = this.nodesTable.filter(rw => rw != row);
-      console.log(updatedTable.length);
-      this.$emit("updateNodesTable", updatedTable);
+      var updatedTable = this.nodesTable.filter((rw) => rw != row)
+      console.log(updatedTable.length)
+      this.$emit("updateNodesTable", updatedTable)
     },
     closeModal() {
-      this.$emit("closeModal");
-      this.columnFilterValue = {};
+      this.$emit("closeModal")
+      this.columnFilterValue = {}
     },
     applyConstraints() {
-      this.showScenario = false;
-      this.$emit("applyConstraints");
+      this.showScenario = false
+      this.$emit("applyConstraints")
     },
     getData(data, id) {
       if (data != null) {
-        return [data, id];
+        return [data, id]
       }
-      return null;
+      return null
     }
   }
-};
+}
 </script>
 <style scoped>
 .scenario-analysis {

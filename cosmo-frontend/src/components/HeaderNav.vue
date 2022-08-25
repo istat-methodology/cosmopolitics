@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 
 export default {
   computed: {
@@ -12,9 +12,9 @@ export default {
   watch: {
     $route(to) {
       if (to.path == "/metadata") {
-        this.$store.dispatch("coreui/clearContext");
+        this.$store.dispatch("coreui/clearContext")
       }
     }
   }
-};
+}
 </script>

@@ -1,10 +1,9 @@
-var path = require("path");
+var path = require("path")
 module.exports = {
   devServer: {
     host: "0.0.0.0",
     port: 8070,
-    compress: true,
-    disableHostCheck: true
+    compress: true
   },
   configureWebpack: {
     resolve: {
@@ -14,4 +13,4 @@ module.exports = {
       extensions: [".vue"]
     }
   }
-};
+}

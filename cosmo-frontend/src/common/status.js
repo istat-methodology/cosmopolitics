@@ -3,4 +3,4 @@ export const Status = {
   nomatch: "00",
   wide: "05",
   empty: "06"
-};
+}

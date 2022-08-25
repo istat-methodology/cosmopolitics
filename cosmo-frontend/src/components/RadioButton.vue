@@ -5,8 +5,7 @@
       :dat="dat"
       :value="value"
       :name="name"
-      v-model="radioButtonValue"
-    />
+      v-model="radioButtonValue" />
     <span>{{ label }}</span>
   </label>
 </template>
@@ -16,16 +15,16 @@ export default {
   props: ["name", "label", "value", "dat"],
   computed: {
     radioButtonValue: {
-      get: function() {
-        return this.value;
+      get: function () {
+        return this.value
       },
-      set: function() {
+      set: function () {
         // Communicate the change to parent component so that selectedValue can be updated
-        this.$emit("change", this.dat);
+        this.$emit("change", this.dat)
       }
     }
   }
-};
+}
 </script>
 <style scoped>
 label.radio {
@@ -41,5 +40,6 @@ label.radio {
   margin-top: 15px;
   border-top: 1px solid #ddd;
   padding-top: 15px;
-}</style
->>
+}
+</style>
+>

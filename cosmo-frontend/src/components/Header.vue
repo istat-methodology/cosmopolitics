@@ -3,13 +3,11 @@
     <CToggler
       in-header
       class="ml-3 d-lg-none"
-      @click="$store.dispatch('coreui/toggleSidebarMobile')"
-    />
+      @click="$store.dispatch('coreui/toggleSidebarMobile')" />
     <CToggler
       in-header
       class="ml-3 d-md-down-none"
-      @click="$store.dispatch('coreui/toggleSidebarDesktop')"
-    />
+      @click="$store.dispatch('coreui/toggleSidebarDesktop')" />
     <CHeaderBrand class="mx-auto d-lg-none" to="/">
       <img src="/img/istat-logo.png" height="20" />
     </CHeaderBrand>
@@ -27,8 +25,7 @@
           <a
             class="nav-link"
             target="_blank"
-            href="https://istatcosmostorage.blob.core.windows.net/public/Cosmopolitics_Manuale.pdf"
-          >
+            href="https://istatcosmostorage.blob.core.windows.net/public/Cosmopolitics_Manuale.pdf">
             {{ $t("header.userguide") }}
           </a>
         </li>
@@ -58,7 +55,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 
 export default {
   data() {
@@ -66,7 +63,7 @@ export default {
       langs: ["it", "en"],
       selectedIt: true,
       selectedEn: false
-    };
+    }
   },
   computed: {
     ...mapGetters("auth", ["isAuthenticated"]),
@@ -74,13 +71,13 @@ export default {
   },
   methods: {
     selectLanguage(lan) {
-      this.$i18n.locale = lan;
-      this.selectedIt = lan == "it" ? true : false;
-      this.selectedEn = lan == "en" ? true : false;
-      this.$store.dispatch("coreui/setLanguage", lan);
+      this.$i18n.locale = lan
+      this.selectedIt = lan == "it" ? true : false
+      this.selectedEn = lan == "en" ? true : false
+      this.$store.dispatch("coreui/setLanguage", lan)
     }
   }
-};
+}
 </script>
 
 <style scoped>

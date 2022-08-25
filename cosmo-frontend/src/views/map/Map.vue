@@ -9,11 +9,10 @@
             :center="center"
             style="height: 650px; width: 100%"
             @ready="
-              setShooter();
-              openInfoStart('IT', 'Italy');
+              setShooter()
+              openInfoStart('IT', 'Italy')
             "
-            @click="closeInfo()"
-          >
+            @click="closeInfo()">
             <l-tile-layer :url="url" :attribution="attribution" />
             <l-geo-json
               v-if="geoJson"
@@ -21,8 +20,7 @@
               :geojson="geoJson"
               :options="options"
               :options-style="styleFunction"
-              @click="openInfoOnFeature"
-            ></l-geo-json>
+              @click="openInfoOnFeature"></l-geo-json>
 
             <l-circle-marker
               v-for="(marker, i) in markerPeriodSeries"
@@ -36,8 +34,7 @@
               :radius="getRadius(marker.series)"
               :color="getColor(marker.series, markerMin, markerMax)"
               :fillColor="getColor(marker.series, markerMin, markerMax)"
-              @click="openInfo(marker)"
-            >
+              @click="openInfo(marker)">
               <l-tooltip :options="{ interactive: true, permanent: false }">
                 <span class="tooltip-span"
                   >{{ marker.name }} {{ ie }}
@@ -126,8 +123,7 @@
             :data="mapPeriod"
             :data-value="'id'"
             :data-label="'name'"
-            @change="handleCounterChange"
-          />
+            @change="handleCounterChange" />
         </div>
       </div>
     </div>
@@ -135,8 +131,7 @@
     <CModal
       :title="$t('map.modal.main.title')"
       :show.sync="isModalHelp"
-      size="lg"
-    >
+      size="lg">
       <p v-html="$t('map.modal.main.body')"></p>
       <template #footer>
         <CButton color="outline-primary" square size="sm" @click="helpOn(false)"
@@ -147,8 +142,8 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { Context } from "@/common";
+import { mapGetters } from "vuex"
+import { Context } from "@/common"
 import {
   LMap,
   LGeoJson,
@@ -156,12 +151,12 @@ import {
   LControl,
   LTooltip,
   LCircleMarker
-} from "vue2-leaflet";
-import mapMixin from "@/components/mixins/map.mixin";
-import mapInfoMixin from "@/components/mixins/mapInfo.mixin";
-import sliderMixin from "@/components/mixins/slider.mixin";
-import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter";
-import VueSlider from "vue-slider-component";
+} from "vue2-leaflet"
+import mapMixin from "@/components/mixins/map.mixin"
+import mapInfoMixin from "@/components/mixins/mapInfo.mixin"
+import sliderMixin from "@/components/mixins/slider.mixin"
+import SimpleMapScreenshoter from "leaflet-simple-map-screenshoter"
+import VueSlider from "vue-slider-component"
 //import * as d3 from "d3";
 
 export default {
@@ -234,24 +229,24 @@ export default {
       jsonData: "jsonData"
     }),
     micro() {
-      return this.infoData ? this.infoData[0]["Main information"] : [];
+      return this.infoData ? this.infoData[0]["Main information"] : []
     },
     importDataItems() {
-      return this.infoData ? this.infoData[0]["Main Import Partners"] : [];
+      return this.infoData ? this.infoData[0]["Main Import Partners"] : []
     },
     exportDataItems() {
-      return this.infoData ? this.infoData[0]["Main Export Partners"] : [];
+      return this.infoData ? this.infoData[0]["Main Export Partners"] : []
     },
     importGoods() {
-      return this.infoData ? this.infoData[0]["Main Import Goods"] : [];
+      return this.infoData ? this.infoData[0]["Main Import Goods"] : []
     },
     exportGoods() {
-      return this.infoData ? this.infoData[0]["Main Export Goods"] : [];
+      return this.infoData ? this.infoData[0]["Main Export Goods"] : []
     },
     options() {
       return {
         onEachFeature: this.onEachFeatureFunction
-      };
+      }
     },
     styleFunction() {
       return () => {
@@ -261,22 +256,22 @@ export default {
           color: this.layer.style.default.color,
           dashArray: this.layer.style.default.dashArray,
           fillOpacity: this.layer.style.default.fillOpacity
-        };
-      };
+        }
+      }
     },
     onEachFeatureFunction() {
       return (feature, layer) => {
-        var value = this.jsonData[feature.properties.iso_a2];
-        this.selectedCountry.code = feature.properties.iso_a2;
-        this.selectedCountry.name = feature.properties.admin;
-        layer.options.fillColor = "#00000000";
+        var value = this.jsonData[feature.properties.iso_a2]
+        this.selectedCountry.code = feature.properties.iso_a2
+        this.selectedCountry.name = feature.properties.admin
+        layer.options.fillColor = "#00000000"
         if (value != undefined) {
           layer.options.fillColor = this.getColor(
             value,
             this.markerMin,
             this.markerMax
-          );
-          layer.options.color = "gray";
+          )
+          layer.options.color = "gray"
           layer.bindTooltip(
             "<div>" +
               feature.properties.admin +
@@ -288,33 +283,33 @@ export default {
               "</span>" +
               " </div>",
             { permanent: false, sticky: true }
-          );
+          )
           layer.on({
             mouseover: this.mouseover,
             mouseout: this.mouseout
-          });
+          })
         }
-      };
+      }
     }
   },
   methods: {
     helpOn(showModal) {
-      this.isModalHelp = showModal;
-      this.modalHelpTitle = "About map";
+      this.isModalHelp = showModal
+      this.modalHelpTitle = "About map"
     },
     handleCounterChange(val) {
-      this.seriesPeriod = val;
-      this.buildPeriodSeries();
-      this.buildFeatures();
+      this.seriesPeriod = val
+      this.buildPeriodSeries()
+      this.buildFeatures()
     },
     getPeriodSeries(marker, seriesData, seriesPeriod) {
-      const localSeries = seriesData.find(serie => {
-        return serie.country == marker.country;
-      });
-      return localSeries ? localSeries[seriesPeriod] : 0;
+      const localSeries = seriesData.find((serie) => {
+        return serie.country == marker.country
+      })
+      return localSeries ? localSeries[seriesPeriod] : 0
     },
     buildPeriodSeries() {
-      this.markerPeriodSeries = this.markers.map(marker => {
+      this.markerPeriodSeries = this.markers.map((marker) => {
         return {
           ...marker,
           series: this.getPeriodSeries(
@@ -322,90 +317,90 @@ export default {
             this.seriesData,
             this.seriesPeriod
           )
-        };
-      });
+        }
+      })
 
-      this.dataLegend = this.getDataLegend(this.seriesData, this.seriesPeriod);
-      this.markerMax = this.getMax();
-      this.markerMin = this.getMin();
-      this.setLegend(this.markerMin, this.markerMax, this.dataLegend, this.ie);
+      this.dataLegend = this.getDataLegend(this.seriesData, this.seriesPeriod)
+      this.markerMax = this.getMax()
+      this.markerMin = this.getMin()
+      this.setLegend(this.markerMin, this.markerMax, this.dataLegend, this.ie)
     },
     buildFeatures() {
       this.$store
         .dispatch("countries/getDataSeries", this.seriesName)
-        .then(seriesData => {
+        .then((seriesData) => {
           this.$store.dispatch("countries/getCountriesBorders", {
             seriesData: seriesData,
             seriesPeriod: this.seriesPeriod
-          });
-        });
+          })
+        })
     },
     setShooter() {
       let pluginOptions = {
         hideElementsWithSelectors: []
-      };
+      }
 
-      new SimpleMapScreenshoter(pluginOptions).addTo(this.$refs.map.mapObject);
+      new SimpleMapScreenshoter(pluginOptions).addTo(this.$refs.map.mapObject)
     },
     getDataLegend(seriesData, seriesPeriod) {
-      var data = [];
-      seriesData.forEach(obj => {
+      var data = []
+      seriesData.forEach((obj) => {
         for (const key in obj) {
           if (key == seriesPeriod) {
-            data.push(obj[key]);
+            data.push(obj[key])
           }
         }
-      });
-      return data;
+      })
+      return data
     },
     getMax() {
-      return 60;
+      return 60
     },
     getMin() {
-      return -60;
+      return -60
     },
     setFeatureMarker() {
-      this.btnFeatureMarker = this.btnFeatureMarker == "M" ? "F" : "M";
-      this.isFeature = !this.isFeature;
-      this.isMarker = !this.isMarker;
+      this.btnFeatureMarker = this.btnFeatureMarker == "M" ? "F" : "M"
+      this.isFeature = !this.isFeature
+      this.isMarker = !this.isMarker
     },
     setImportExport() {
-      this.btnImportExport = this.btnImportExport == "IMP" ? "EXP" : "IMP";
+      this.btnImportExport = this.btnImportExport == "IMP" ? "EXP" : "IMP"
       this.seriesName =
-        this.btnImportExport != "IMP" ? "importseries" : "exportseries";
-      this.ie = this.btnImportExport != "IMP" ? "Import" : "Export";
-      this.getDataSeries(this.seriesName);
-      this.isImport = !this.isImport;
-      this.isExport = !this.isExport;
+        this.btnImportExport != "IMP" ? "importseries" : "exportseries"
+      this.ie = this.btnImportExport != "IMP" ? "Import" : "Export"
+      this.getDataSeries(this.seriesName)
+      this.isImport = !this.isImport
+      this.isExport = !this.isExport
     },
     mouseover(e) {
-      var layer = e.target;
+      var layer = e.target
       layer.setStyle({
         color: this.layer.style.over.color,
         dashArray: this.layer.style.over.dashArray
-      });
+      })
     },
     mouseout(e) {
-      var layer = e.target;
+      var layer = e.target
       layer.setStyle({
         color: this.layer.style.default.color,
         dashArray: this.layer.style.default.dashArray
-      });
+      })
     },
     getDataSeries() {
       this.$store.dispatch("geomap/findAll").then(() => {
         this.$store.dispatch("geomap/getSeries", this.seriesName).then(() => {
-          this.buildPeriodSeries();
-          this.buildFeatures();
-        });
-      });
+          this.buildPeriodSeries()
+          this.buildFeatures()
+        })
+      })
     }
   },
   created() {
-    this.$store.dispatch("coreui/setContext", Context.Map);
-    this.getDataSeries("exportseries");
+    this.$store.dispatch("coreui/setContext", Context.Map)
+    this.getDataSeries("exportseries")
   }
-};
+}
 </script>
 <style scoped>
 @import "~leaflet/dist/leaflet.css";

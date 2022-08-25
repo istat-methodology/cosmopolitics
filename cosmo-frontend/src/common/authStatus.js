@@ -4,4 +4,4 @@ export const AuthStatus = {
   UserExists: "USER_EXISTS",
   TokenExpired: "TOKEN_EXPIRED",
   MultipleLogin: "MULTIPLE_LOGIN"
-};
+}

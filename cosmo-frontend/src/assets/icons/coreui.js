@@ -1,4 +1,4 @@
-import { cifUs, cifBr, cifIn, cifFr, cifEs, cifPl } from "@coreui/icons";
+import { cifUs, cifBr, cifIn, cifFr, cifEs, cifPl } from "@coreui/icons"
 import {
   cilAt,
   cilHome,
@@ -15,7 +15,7 @@ import {
   cilAsterisk,
   cilBell,
   cilStar
-} from "@coreui/icons";
+} from "@coreui/icons"
 
 export const iconsSet = Object.assign(
   { cifUs, cifBr, cifIn, cifFr, cifEs, cifPl },
@@ -36,4 +36,4 @@ export const iconsSet = Object.assign(
     cilBell,
     cilStar
   }
-);
+)

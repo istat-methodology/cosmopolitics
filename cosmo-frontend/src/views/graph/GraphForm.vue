@@ -6,8 +6,7 @@
         <button
           class="btn sm-2 btn-sm btn-square"
           role="button"
-          @click="showInfo"
-        >
+          @click="showInfo">
           i
         </button>
       </span>
@@ -20,8 +19,7 @@
             type="radio"
             name="radioPeriod"
             value="Monthly"
-            v-model="radioValue"
-          />
+            v-model="radioValue" />
           <span>{{ $t("graph.form.fields.monthly") }}</span>
         </label>
         <label class="radio">
@@ -29,8 +27,7 @@
             type="radio"
             name="radioPeriod"
             value="Trimester"
-            v-model="radioValue"
-          />
+            v-model="radioValue" />
           <span>{{ $t("graph.form.fields.trimester") }}</span>
         </label>
       </div>
@@ -42,8 +39,7 @@
         v-model="selectedPeriod"
         :class="{
           'is-invalid': $v.selectedPeriod.$error
-        }"
-      />
+        }" />
       <label class="card-label mt-3">{{
         $t("graph.form.fields.percentage")
       }}</label>
@@ -52,8 +48,7 @@
         v-model="percentage"
         :class="{
           'is-invalid': $v.percentage.$error
-        }"
-      />
+        }" />
       <label class="card-label mt-3" v-if="displayTransport">{{
         $t("graph.form.fields.transport")
       }}</label>
@@ -66,8 +61,7 @@
         v-model="transport"
         :class="{
           'is-invalid': $v.transport.$error
-        }"
-      />
+        }" />
       <label class="card-label mt-3" v-if="displayTransport">{{
         $t("graph.form.fields.product_nstr")
       }}</label>
@@ -81,8 +75,7 @@
         v-model="product"
         :class="{
           'is-invalid': $v.product.$error
-        }"
-      />
+        }" />
       <label class="card-label mt-3">{{ $t("graph.form.fields.flow") }}</label>
       <v-select
         label="descr"
@@ -91,8 +84,7 @@
         v-model="flow"
         :class="{
           'is-invalid': $v.flow.$error
-        }"
-      />
+        }" />
       <CButton
         color="primary"
         shape="square"
@@ -105,12 +97,8 @@
   </CCard>
 </template>
 <script>
-import {
-  getCleanTransports,
-  getTransportIds,
-  restoreAllProdId
-} from "@/common";
-import { required, numeric } from "vuelidate/lib/validators";
+import { getCleanTransports, getTransportIds, restoreAllProdId } from "@/common"
+import { required, numeric } from "vuelidate/lib/validators"
 
 export default {
   name: "GraphForm",
@@ -158,18 +146,18 @@ export default {
   computed: {
     selectedPeriod: {
       get() {
-        return this.currentTime;
+        return this.currentTime
       },
       set(value) {
-        this.$emit("updatePeriod", value);
+        this.$emit("updatePeriod", value)
       }
     },
     radioValue: {
       get() {
-        return this.currentRadio;
+        return this.currentRadio
       },
       set(value) {
-        this.$emit("updateRadio", value);
+        this.$emit("updateRadio", value)
       }
     }
   },
@@ -183,7 +171,7 @@ export default {
     },
     transport: {
       validationRule(tr) {
-        return this.displayTransport ? tr !== null : true;
+        return this.displayTransport ? tr !== null : true
       }
     },
     product: {
@@ -195,10 +183,10 @@ export default {
   },
   methods: {
     showInfo() {
-      this.$emit("showinfo");
+      this.$emit("showinfo")
     },
     handleSubmit() {
-      this.$v.$touch(); //validate form data
+      this.$v.$touch() //validate form data
       if (
         !this.$v.percentage.$invalid &&
         !this.$v.transport.$invalid &&
@@ -206,11 +194,11 @@ export default {
         !this.$v.flow.$invalid
       ) {
         //Manage "all" transports in the select (if select is displayed)
-        var cleanTransports = [];
-        var cleanTransportIds = [];
+        var cleanTransports = []
+        var cleanTransportIds = []
         if (this.displayTransport) {
-          cleanTransports = getCleanTransports(this.transport, this.transports);
-          cleanTransportIds = getTransportIds(cleanTransports);
+          cleanTransports = getCleanTransports(this.transport, this.transports)
+          cleanTransportIds = getTransportIds(cleanTransports)
         }
         this.$emit("submit", {
           period: this.selectedPeriod.id,
@@ -219,51 +207,51 @@ export default {
           transports: cleanTransports,
           product: restoreAllProdId(this.product),
           flow: this.flow.id
-        });
-        this.$emit("updateFilter", this.getSearchFilter());
+        })
+        this.$emit("updateFilter", this.getSearchFilter())
       }
     },
     getSearchFilter() {
-      let data = [];
+      let data = []
       data.push({
         field: this.$t("graph.form.fields.period"),
         value: this.selectedPeriod.selectName
           ? this.selectedPeriod.selectName
           : ""
-      });
+      })
       data.push({
         field: this.$t("graph.form.fields.percentage"),
         value: this.percentage ? this.percentage : ""
-      });
+      })
       if (this.displayTransport) {
         data.push({
           field: this.$t("graph.form.fields.transport"),
           value: this.transport
             ? this.transport
-                .map(transp => {
-                  return transp.descr;
+                .map((transp) => {
+                  return transp.descr
                 })
                 .join("#")
             : ""
-        });
+        })
         data.push({
           field: this.$t("graph.form.fields.product_nstr"),
           value: this.product.descr
-        });
+        })
       } else {
         data.push({
           field: this.$t("graph.form.fields.product_cpa3"),
           value: this.product.descr
-        });
+        })
       }
       data.push({
         field: this.$t("graph.form.fields.flow"),
         value: this.flow.descr ? this.flow.descr : ""
-      });
-      return data;
+      })
+      return data
     }
   }
-};
+}
 </script>
 
 <style scoped>

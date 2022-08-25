@@ -1,12 +1,12 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from "vue"
+import VueRouter from "vue-router"
 
-import store from "@/store";
+import store from "@/store"
 
-import Error from "@/views/error/Error";
-import Home from "@/views/Home";
+import Error from "@/views/error/Error"
+import Home from "@/views/Home"
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 //Vue.http.headers.common['Access-Control-Allow-Origin'] ="*";
 
@@ -72,31 +72,31 @@ const routes = [
     path: "*",
     redirect: "/"
   }
-];
+]
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
-});
+})
 
 router.beforeEach((to, from, next) => {
   // redirect to unauthorized page if not logged in and trying to access a restricted page
-  const { authorize } = to.meta;
-  const isAuthenticated = store.getters["auth/isAuthenticated"];
-  const userRole = store.getters["auth/role"];
+  const { authorize } = to.meta
+  const isAuthenticated = store.getters["auth/isAuthenticated"]
+  const userRole = store.getters["auth/role"]
 
   if (authorize.length) {
     if (!isAuthenticated || !authorize.includes(userRole)) {
       const err = {
         code: 401,
         message: "You cannot access this page!"
-      };
-      store.dispatch("error/unauthorized", err);
+      }
+      store.dispatch("error/unauthorized", err)
     }
   }
 
-  next();
-});
+  next()
+})
 
-export default router;
+export default router

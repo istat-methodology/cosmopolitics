@@ -1,4 +1,4 @@
-import { loadImage } from "@/common";
+import { loadImage } from "@/common"
 
 export const options = {
   nodes: {
@@ -63,12 +63,12 @@ export const options = {
         maxVisible: 30,
         drawThreshold: 5
       },
-      customScalingFunction: function(min, max, total, value) {
+      customScalingFunction: function (min, max, total, value) {
         if (max === min) {
-          return 0.5;
+          return 0.5
         } else {
-          let scale = 1 / (max - min);
-          return Math.max(0, (value - min) * scale);
+          let scale = 1 / (max - min)
+          return Math.max(0, (value - min) * scale)
         }
       }
     },
@@ -168,12 +168,12 @@ export const options = {
         maxVisible: 30,
         drawThreshold: 5
       },
-      customScalingFunction: function(min, max, total, value) {
+      customScalingFunction: function (min, max, total, value) {
         if (max === min) {
-          return 0.5;
+          return 0.5
         } else {
-          var scale = 1 / (max - min);
-          return Math.max(0, (value - min) * scale);
+          var scale = 1 / (max - min)
+          return Math.max(0, (value - min) * scale)
         }
       }
     },
@@ -262,7 +262,7 @@ export const options = {
     tooltipDelay: 200,
     zoomSpeed: 1.4
   }
-};
+}
 
 export const metricsFieldsIt = [
   { key: "label", label: "Codice", _style: "width:10%" },
@@ -274,7 +274,7 @@ export const metricsFieldsIt = [
     label: "Forza di esportazione",
     _style: "width:15%"
   }
-];
+]
 
 export const metricsFieldsEn = [
   { key: "label", label: "Code", _style: "width:15%" },
@@ -282,7 +282,7 @@ export const metricsFieldsEn = [
   { key: "vulnerability", label: "Vulnerability", _style: "width:15%" },
   { key: "hubness", label: "Hubness", _style: "width:15%" },
   { key: "exportStrenght", label: "Export Strenght", _style: "width:15%" }
-];
+]
 
 export const scenarioFieldsIt = [
   { key: "source", label: "Origine", _style: "width:25%" },
@@ -296,7 +296,7 @@ export const scenarioFieldsIt = [
     filter: false,
     _style: "width:1%"
   }
-];
+]
 
 export const scenarioFieldsEn = [
   { key: "source", label: "Source", _style: "width:25%" },
@@ -310,22 +310,22 @@ export const scenarioFieldsEn = [
     filter: false,
     _style: "width:1%"
   }
-];
+]
 
 export function getNode(nodes, nodeId) {
-  const selectedNode = nodes.find(node => node.id == nodeId);
-  return selectedNode ? selectedNode : null;
+  const selectedNode = nodes.find((node) => node.id == nodeId)
+  return selectedNode ? selectedNode : null
 }
 
 export function getEdge(edges, edgeId) {
-  const selectedEdge = edges.find(edge => edge.id == edgeId);
-  return selectedEdge ? selectedEdge : null;
+  const selectedEdge = edges.find((edge) => edge.id == edgeId)
+  return selectedEdge ? selectedEdge : null
 }
 
 export function getUInodes(nodes, countries) {
-  var uiNodes = [];
+  var uiNodes = []
   if (nodes)
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       uiNodes.push({
         id: node.id,
         label: node.label,
@@ -335,88 +335,88 @@ export function getUInodes(nodes, countries) {
         shape: "image",
         image: loadImage(node.label),
         size: 15
-      });
-    });
-  return uiNodes;
+      })
+    })
+  return uiNodes
 }
 
 export function getScenarioNodes(nodes) {
-  var lightNodes = [];
+  var lightNodes = []
   if (nodes)
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       lightNodes.push({
         id: node.id,
         label: node.label,
         x: node.x,
         y: node.y
-      });
-    });
-  return lightNodes;
+      })
+    })
+  return lightNodes
 }
 
 export function getCentrality(nodes, nodeId, metrics) {
-  var nodeMetric = null;
-  const selectedNode = getNode(nodes, nodeId);
+  var nodeMetric = null
+  const selectedNode = getNode(nodes, nodeId)
   if (selectedNode) {
     nodeMetric = {
       country: selectedNode.label,
       centrality: metrics.degree_centrality[selectedNode.label].toPrecision(4),
       vulnerability: metrics.vulnerability[selectedNode.label].toPrecision(4),
       hubness: metrics.hubness[selectedNode.label].toPrecision(4),
-      exportationstrength: metrics["exportation strenght"][
-        selectedNode.label
-      ].toPrecision(4)
-    };
+      exportationstrength:
+        metrics["exportation strenght"][selectedNode.label].toPrecision(4)
+    }
   }
-  return nodeMetric;
+  return nodeMetric
 }
 
 export function buildMetrics(data, countries) {
-  var metrics = [];
+  var metrics = []
   if (data && data.nodes)
-    data.nodes.forEach(node => {
+    data.nodes.forEach((node) => {
       metrics.push({
         label: node.label,
         name: getCountryName(countries, node.label),
         centrality: data.metriche.degree_centrality[node.label].toPrecision(2),
         vulnerability: data.metriche.vulnerability[node.label].toPrecision(2),
         hubness: data.metriche.hubness[node.label].toPrecision(2),
-        exportStrenght: data.metriche["exportation strenght"][
-          node.label
-        ].toPrecision(2)
-      });
-    });
-  return metrics;
+        exportStrenght:
+          data.metriche["exportation strenght"][node.label].toPrecision(2)
+      })
+    })
+  return metrics
 }
 
 export function getCountryName(countries, id) {
-  var cntr = countries.find(country => country.id == id);
-  return cntr ? cntr.descr : "";
+  var cntr = countries.find((country) => country.id == id)
+  return cntr ? cntr.descr : ""
 }
 
 export function getTransportIds(transports) {
-  var ids = [];
-  if (transports) transports.forEach(tr => ids.push(tr.id));
-  return ids;
+  var ids = []
+  if (transports) transports.forEach((tr) => ids.push(tr.id))
+  return ids
 }
 
 export function getTransportDifference(transports, scenarioTransports) {
   return getTransportIds(
-    transports.filter(tr => !scenarioTransports.find(str => str.id == tr.id))
-  );
+    transports.filter(
+      (tr) => !scenarioTransports.find((str) => str.id == tr.id)
+    )
+  )
 }
 
 export function replaceAllProdId(products) {
-  var prods = [];
+  var prods = []
   if (products) {
-    prods = products.filter(pr => pr.id != "TOT");
-    prods.unshift({ id: "000", descr: "All Products" });
+    prods = products.filter((pr) => pr.id != "TOT")
+    prods.unshift({ id: "000", descr: "All Products" })
   }
-  return prods;
+  return prods
 }
 
 export function restoreAllProdId(product) {
-  var id = "";
-  if (product) id = product.id == "000" ? "TOT" : product.id;
-  return id;
+  var id = ""
+  if (product) id = product.id == "000" ? "TOT" : product.id
+  return id
 }

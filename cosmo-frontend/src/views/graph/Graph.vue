@@ -12,13 +12,11 @@
               :displayTransport="!isIntra"
               :transports="selectedTransports"
               @applyConstraints="handleApplyConstraints"
-              @showinfo="showMainModal"
-            >
+              @showinfo="showMainModal">
               <cosmo-slider
                 :interval="timePeriod"
                 :currentTime="selectedPeriod"
-                @change="handlePeriodChange"
-              />
+                @change="handlePeriodChange" />
             </cosmo-graph>
           </CTab>
           <CTab :title="$t('graph.table.title')">
@@ -31,8 +29,7 @@
                     :options="['csv']"
                     :filter="graphFilter"
                     source="table"
-                    :header="csvHeader"
-                  >
+                    :header="csvHeader">
                   </exporter>
                 </span>
               </CCardHeader>
@@ -40,8 +37,7 @@
                 <cosmo-table
                   :data="metricsTable"
                   :fields="metricsFields"
-                  :sorterValue="sorterValue"
-                />
+                  :sorterValue="sorterValue" />
               </CCardBody>
             </CCard>
           </CTab>
@@ -60,8 +56,7 @@
           @submit="handleSubmit"
           @updatePeriod="handlePeriodChange"
           @updateRadio="handleRadioChange"
-          @showinfo="showInfoModal"
-        />
+          @showinfo="showInfoModal" />
       </div>
     </div>
     <cosmo-info-modal
@@ -69,26 +64,25 @@
       :isMain="isMainModal"
       @showInfo="showInfoModal"
       @showMain="showMainModal"
-      @closeModal="closeModal"
-    />
+      @closeModal="closeModal" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 import {
   Context,
   Status,
   getScenarioNodes,
   metricsFieldsIt,
   metricsFieldsEn
-} from "@/common";
-import Slider from "@/components/Slider";
-import GraphVis from "@/views/graph/GraphVis";
-import GraphForm from "@/views/graph/GraphForm";
-import GraphTable from "@/views/graph/GraphTable";
-import GraphInfoModal from "@/views/graph/GraphInfoModal";
-import exporter from "@/components/Exporter";
+} from "@/common"
+import Slider from "@/components/Slider"
+import GraphVis from "@/views/graph/GraphVis"
+import GraphForm from "@/views/graph/GraphForm"
+import GraphTable from "@/views/graph/GraphTable"
+import GraphInfoModal from "@/views/graph/GraphInfoModal"
+import exporter from "@/components/Exporter"
 
 export default {
   name: "Graph",
@@ -134,62 +128,62 @@ export default {
       "flows"
     ]),
     isTrimester() {
-      return this.selectedRadio == "Monthly" ? false : true;
+      return this.selectedRadio == "Monthly" ? false : true
     },
     timePeriod() {
-      return this.isTrimester ? this.graphTrimesterPeriod : this.graphPeriod;
+      return this.isTrimester ? this.graphTrimesterPeriod : this.graphPeriod
     },
     products() {
-      return this.isIntra ? this.productsIntra : this.productsExtra;
+      return this.isIntra ? this.productsIntra : this.productsExtra
     },
     metricsFields() {
-      return this.isItalian ? this.metricsFieldsIt : this.metricsFieldsEn;
+      return this.isItalian ? this.metricsFieldsIt : this.metricsFieldsEn
     },
     csvFields() {
-      return this.metricsTable.map(field => {
+      return this.metricsTable.map((field) => {
         return {
           label: field.label,
           name: field.name,
           vulnerability: field.vulnerability,
           hubness: field.hubness,
           exportStrenght: field.exportStrenght
-        };
-      });
+        }
+      })
     },
     csvHeader() {
-      return this.metricsFields.map(field => field.label);
+      return this.metricsFields.map((field) => field.label)
     }
   },
   methods: {
     handleUpdateFilter(filter) {
-      this.graphFilter = filter;
+      this.graphFilter = filter
     },
     handleRadioChange(radioValue) {
-      this.selectedRadio = radioValue;
+      this.selectedRadio = radioValue
       this.selectedPeriod = this.isTrimester
         ? { id: "202001", selectName: "T1 2020" }
-        : { id: "202003", selectName: "Mar 2020" };
+        : { id: "202003", selectName: "Mar 2020" }
     },
     handlePeriodChange(period) {
-      this.selectedPeriod = period;
+      this.selectedPeriod = period
       if (this.graphForm) {
-        this.graphForm.tg_period = this.selectedPeriod.id;
-        this.graphForm.pos = { nodes: this.nodes };
-        this.requestToServer();
+        this.graphForm.tg_period = this.selectedPeriod.id
+        this.graphForm.pos = { nodes: this.nodes }
+        this.requestToServer()
       }
     },
     handleApplyConstraints(constraints) {
       //console.log(constraints);
-      this.$store.dispatch("message/info", this.$t("graph.message.scenario"));
+      this.$store.dispatch("message/info", this.$t("graph.message.scenario"))
       if (this.graphForm) {
-        this.graphForm.pos = { nodes: getScenarioNodes(this.nodes) };
-        this.graphForm.selezioneMezziEdges = constraints;
-        this.requestToServer();
+        this.graphForm.pos = { nodes: getScenarioNodes(this.nodes) }
+        this.graphForm.selezioneMezziEdges = constraints
+        this.requestToServer()
       }
     },
     handleSubmit(form) {
       //Save selected transports for scenario analysis
-      this.selectedTransports = form.transports;
+      this.selectedTransports = form.transports
 
       this.graphForm = {
         tg_period: this.selectedPeriod.id,
@@ -200,11 +194,11 @@ export default {
         weight_flag: true,
         pos: "None",
         selezioneMezziEdges: "None"
-      };
-      this.requestToServer();
+      }
+      this.requestToServer()
     },
     requestToServer() {
-      this.spinnerStart(true);
+      this.spinnerStart(true)
       this.$store
         .dispatch(
           this.isIntra ? "graph/postGraphIntra" : "graph/postGraphExtra",
@@ -213,51 +207,51 @@ export default {
             trimester: this.isTrimester
           }
         )
-        .then(status => {
+        .then((status) => {
           if (status == Status.wide) {
             this.$store.dispatch(
               "message/error",
               this.$t("graph.message.graph_wide")
-            );
+            )
           } else if (status == Status.empty) {
             this.$store.dispatch(
               "message/error",
               this.$t("graph.message.graph_empty")
-            );
+            )
           }
-          this.spinnerStart(false);
-        });
+          this.spinnerStart(false)
+        })
     },
     showMainModal() {
-      this.isMainModal = true;
-      this.isHelpModal = true;
+      this.isMainModal = true
+      this.isHelpModal = true
     },
     showInfoModal() {
-      this.isMainModal = false;
-      this.isHelpModal = true;
+      this.isMainModal = false
+      this.isHelpModal = true
     },
     closeModal() {
-      this.isMainModal = false;
-      this.isHelpModal = false;
+      this.isMainModal = false
+      this.isHelpModal = false
     },
     spinnerStart(bool) {
-      this.spinner = bool;
+      this.spinner = bool
     },
     getData(data, id) {
       if (data != null) {
-        return [data, id];
+        return [data, id]
       }
-      return null;
+      return null
     }
   },
   created() {
     this.$store.dispatch(
       "coreui/setContext",
       this.isIntra ? Context.GraphIntra : Context.Graph
-    );
-    this.$store.dispatch("graph/clear");
+    )
+    this.$store.dispatch("graph/clear")
   }
-};
+}
 </script>
 
 <style scoped>

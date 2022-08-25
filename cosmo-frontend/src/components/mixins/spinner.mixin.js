@@ -4,4 +4,4 @@ export default {
     size: "15px",
     margin: "5px"
   })
-};
+}

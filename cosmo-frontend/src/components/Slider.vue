@@ -7,12 +7,11 @@
       v-model="selectedPeriod"
       :data="interval"
       :data-value="'id'"
-      :data-label="'name'"
-    />
+      :data-label="'name'" />
   </div>
 </template>
 <script>
-import VueSlider from "vue-slider-component";
+import VueSlider from "vue-slider-component"
 
 export default {
   name: "Slider",
@@ -30,19 +29,19 @@ export default {
   computed: {
     selectedPeriod: {
       get() {
-        return this.currentTime ? this.currentTime.id : "202003";
+        return this.currentTime ? this.currentTime.id : "202003"
       },
       set(value) {
-        this.$emit("change", this.getSelectedPeriod(value));
+        this.$emit("change", this.getSelectedPeriod(value))
       }
     }
   },
   methods: {
     getSelectedPeriod(selectedId) {
-      return this.interval.find(period => period.id == selectedId);
+      return this.interval.find((period) => period.id == selectedId)
     }
   }
-};
+}
 </script>
 <style scoped>
 .vue-slider {

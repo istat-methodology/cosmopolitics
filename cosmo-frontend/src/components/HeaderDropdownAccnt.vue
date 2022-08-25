@@ -4,8 +4,7 @@
       inNav
       class="c-header-nav-items"
       placement="bottom-end"
-      add-menu-classes="pt-0"
-    >
+      add-menu-classes="pt-0">
       <template #toggler>
         <CHeaderNavLink>
           <div class="c-avatar">
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 
 export default {
   computed: {
@@ -40,10 +39,10 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("auth/logout");
+      this.$store.dispatch("auth/logout")
     }
   }
-};
+}
 </script>
 
 <style scoped>

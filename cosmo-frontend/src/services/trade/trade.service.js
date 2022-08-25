@@ -1,7 +1,7 @@
-import { axiosHack } from "@/http";
+import { axiosHack } from "@/http"
 export const tradeService = {
   findByName
-};
+}
 
 function findByName(filter) {
   const endpoint =
@@ -11,16 +11,16 @@ function findByName(filter) {
         : "exportValue"
       : filter.flow == 1
       ? "importQuantity"
-      : "exportQuantity";
+      : "exportQuantity"
 
   return axiosHack
     .get("/" + endpoint + "/" + filter.country)
-    .then(res => {
-      var data = res.data ? res.data : {};
+    .then((res) => {
+      var data = res.data ? res.data : {}
       //console.log(data);
-      return data;
+      return data
     })
-    .catch(err => {
-      throw err;
-    });
+    .catch((err) => {
+      throw err
+    })
 }

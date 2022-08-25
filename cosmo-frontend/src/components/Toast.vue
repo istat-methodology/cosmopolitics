@@ -11,19 +11,19 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 
 export default {
   computed: {
     ...mapGetters("message", ["message", "type"]),
     getMessage() {
-      return this.message.split("#").pop();
+      return this.message.split("#").pop()
     }
   },
   created() {
-    this.$store.dispatch("message/clear");
+    this.$store.dispatch("message/clear")
   }
-};
+}
 </script>
 
 <style scoped>

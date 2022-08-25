@@ -127,8 +127,8 @@ export default {
 
               ticks: {
                 // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-                callback: function(val) {
-                  return val.toLocaleString("it-IT");
+                callback: function (val) {
+                  return val.toLocaleString("it-IT")
                 }
               }
             }
@@ -146,7 +146,7 @@ export default {
             }
           ]
         }
-      };
+      }
     }
   }
-};
+}

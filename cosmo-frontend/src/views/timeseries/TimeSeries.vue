@@ -10,8 +10,7 @@
                   type="checkbox"
                   class="form-check-input c-switch-input"
                   checked
-                  @click="handleMainChart"
-                />
+                  @click="handleMainChart" />
                 <span class="c-switch-slider"></span>
               </label>
             </span>
@@ -33,8 +32,7 @@
                 class="btn sm-2 btn-sm btn-square"
                 title="Info"
                 role="button"
-                @click="helpOn(true)"
-              >
+                @click="helpOn(true)">
                 i
               </button>
             </span>
@@ -44,8 +42,7 @@
                 filename="cosmopolitics_timeseries"
                 :data="getTabularData(timeseriesCharts.diagMain, 'timeseries')"
                 :filter="getSearchFilter()"
-                source="table"
-              >
+                source="table">
               </exporter>
             </span>
           </span>
@@ -55,8 +52,7 @@
           <line-chart
             :chartData="chartDataDiagMain"
             :options="options"
-            id="timeseries"
-          />
+            id="timeseries" />
           <div class="timeseries-info">
             <span>
               <span class="text-primary" v-if="mean"> Mean: </span
@@ -76,8 +72,7 @@
                   type="checkbox"
                   class="form-check-input c-switch-input"
                   checked
-                  @click="handleDiagNorm"
-                />
+                  @click="handleDiagNorm" />
                 <span class="c-switch-slider"></span>
               </label>
             </span>
@@ -91,16 +86,14 @@
                 class="btn sm-2 btn-sm btn-square"
                 title="Info"
                 role="button"
-                @click="helpOn(true)"
-              >
+                @click="helpOn(true)">
                 i
               </button>
             </span>
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_diagnorm"
-                :data="getData(chartDataDiagNorm, 'diagnorm')"
-              >
+                :data="getData(chartDataDiagNorm, 'diagnorm')">
               </exporter>
             </span>
           </span>
@@ -109,8 +102,7 @@
           <scatter-chart
             :chartData="chartDataDiagNorm"
             :options="optionsNorm"
-            id="diagnorm"
-          />
+            id="diagnorm" />
         </CCardBody>
       </CCard>
       <CCard v-if="chartDataDiagACF">
@@ -122,8 +114,7 @@
                   type="checkbox"
                   class="form-check-input c-switch-input"
                   checked
-                  @click="handleDiagACF"
-                />
+                  @click="handleDiagACF" />
                 <span class="c-switch-slider"></span>
               </label>
             </span>
@@ -137,16 +128,14 @@
                 class="btn sm-2 btn-sm btn-square"
                 title="Info"
                 role="button"
-                @click="helpOn(true)"
-              >
+                @click="helpOn(true)">
                 i
               </button>
             </span>
             <span class="float-right">
               <exporter
                 filename="cosmopolitics_diagacf"
-                :data="getData(chartDataDiagACF, 'diagacf')"
-              >
+                :data="getData(chartDataDiagACF, 'diagacf')">
               </exporter>
             </span>
           </span>
@@ -155,8 +144,7 @@
           <line-chart
             :chartData="chartDataDiagACF"
             :options="optionsACF"
-            id="diagacf"
-          />
+            id="diagacf" />
         </CCardBody>
       </CCard>
     </div>
@@ -185,8 +173,7 @@
             v-model="dataTypeSelected"
             :class="{
               'is-invalid': $v.dataTypeSelected.$error
-            }"
-          />
+            }" />
           <label class="card-label mt-3">{{
             $t("timeseries.form.fields.varType")
           }}</label>
@@ -197,8 +184,7 @@
             v-model="varTypeSelected"
             :class="{
               'is-invalid': $v.varTypeSelected.$error
-            }"
-          />
+            }" />
           <label class="card-label mt-3">{{
             $t("timeseries.form.fields.flow")
           }}</label>
@@ -209,8 +195,7 @@
             v-model="flowSelected"
             :class="{
               'is-invalid': $v.flowSelected.$error
-            }"
-          />
+            }" />
           <label class="card-label mt-3">{{
             $t("timeseries.form.fields.country")
           }}</label>
@@ -221,8 +206,7 @@
             v-model="countrySelected"
             :class="{
               'is-invalid': $v.countrySelected.$error
-            }"
-          />
+            }" />
           <label class="card-label mt-3">{{
             $t("timeseries.form.fields.partner")
           }}</label>
@@ -233,8 +217,7 @@
             v-model="partnerSelected"
             :class="{
               'is-invalid': $v.partnerSelected.$error
-            }"
-          />
+            }" />
           <label class="card-label mt-3">{{
             $t("timeseries.form.fields.productsCPA")
           }}</label>
@@ -245,8 +228,7 @@
             v-model="productsCPASelected"
             :class="{
               'is-invalid': $v.productsCPASelected.$error
-            }"
-          />
+            }" />
           <CButton
             color="primary"
             shape="square"
@@ -261,8 +243,7 @@
     <CModal
       :title="$t('timeseries.modal.main.title')"
       :show.sync="isModalHelp"
-      size="lg"
-    >
+      size="lg">
       <p v-html="$t('timeseries.modal.main.body')"></p>
       <template #footer>
         <CButton color="primary" shape="square" size="sm" @click="helpOn(false)"
@@ -273,16 +254,16 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { Context, Status } from "@/common";
-import paletteMixin from "@/components/mixins/palette.mixin";
-import timeseriesDiagMixin from "@/components/mixins/timeseriesDiag.mixin";
-import timeseriesMixin from "@/components/mixins/timeseries.mixin";
-import ScatterChart from "@/components/charts/ScatterChart";
-import LineChart from "@/components/charts/LineChart";
-import { required } from "vuelidate/lib/validators";
-import spinnerMixin from "@/components/mixins/spinner.mixin";
-import exporter from "@/components/Exporter";
+import { mapGetters } from "vuex"
+import { Context, Status } from "@/common"
+import paletteMixin from "@/components/mixins/palette.mixin"
+import timeseriesDiagMixin from "@/components/mixins/timeseriesDiag.mixin"
+import timeseriesMixin from "@/components/mixins/timeseries.mixin"
+import ScatterChart from "@/components/charts/ScatterChart"
+import LineChart from "@/components/charts/LineChart"
+import { required } from "vuelidate/lib/validators"
+import spinnerMixin from "@/components/mixins/spinner.mixin"
+import exporter from "@/components/Exporter"
 
 export default {
   name: "TimeSeries",
@@ -329,7 +310,7 @@ export default {
       "statusNorm"
     ]),
     options() {
-      return this.getOptions(this.statusMain != "00" ? true : false);
+      return this.getOptions(this.statusMain != "00" ? true : false)
     }
   },
   validations: {
@@ -357,19 +338,19 @@ export default {
   },
   methods: {
     helpOn(showModal) {
-      this.isModalHelp = showModal;
+      this.isModalHelp = showModal
     },
     handleMainChart() {
-      this.isMainChart = !this.isMainChart;
+      this.isMainChart = !this.isMainChart
     },
     handleDiagNorm() {
-      this.isDiagNorm = !this.isDiagNorm;
+      this.isDiagNorm = !this.isDiagNorm
     },
     handleDiagACF() {
-      this.isDiagACF = !this.isDiagACF;
+      this.isDiagACF = !this.isDiagACF
     },
     handleSubmit() {
-      this.$v.$touch();
+      this.$v.$touch()
       if (
         !this.$v.dataTypeSelected.$invalid &&
         !this.$v.varTypeSelected.$invalid &&
@@ -385,8 +366,8 @@ export default {
           partner: this.partnerSelected.id,
           dataType: this.dataTypeSelected.id,
           varType: this.varTypeSelected.id
-        };
-        this.spinnerStart(true);
+        }
+        this.spinnerStart(true)
         this.$store.dispatch("timeseries/findByFilters", form).then(() => {
           if (this.statusMain == Status.success) {
             this.buildTimeseriesCharts(
@@ -395,73 +376,73 @@ export default {
               this.statusMain,
               this.statusNorm,
               this.statusACF
-            );
+            )
             this.optionsNorm.title.text =
-              "QQ-Norm Plot (in " + this.diagNormMag + ")";
+              "QQ-Norm Plot (in " + this.diagNormMag + ")"
           } else {
-            this.chartDataDiagMain = this.emptyChart();
-            this.mean = null;
-            this.std = null;
-            this.chartDataDiagNorm = null;
-            this.chartDataDiagACF = null;
+            this.chartDataDiagMain = this.emptyChart()
+            this.mean = null
+            this.std = null
+            this.chartDataDiagNorm = null
+            this.chartDataDiagACF = null
             this.$store.dispatch(
               "message/warning",
               this.$t("timeseries.message.empty")
-            );
+            )
           }
-          this.spinnerStart(false);
-        });
+          this.spinnerStart(false)
+        })
       }
     },
     removeData(chart) {
-      chart.data.labels.pop();
-      chart.data.datasets.forEach(dataset => {
-        dataset.data.pop();
-      });
-      chart.update();
+      chart.data.labels.pop()
+      chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop()
+      })
+      chart.update()
     },
     getData(data, id) {
       if (data != null) {
-        return [data, id];
+        return [data, id]
       }
-      return null;
+      return null
     },
     getSearchFilter() {
-      let data = [];
+      let data = []
       data.push({
         field: this.$t("timeseries.download.title"),
         value: ""
-      });
+      })
       data.push({
         field: this.$t("timeseries.form.fields.dataType"),
         value: this.dataTypeSelected ? this.dataTypeSelected.descr : ""
-      });
+      })
       data.push({
         field: this.$t("timeseries.form.fields.varType"),
         value: this.varTypeSelected ? this.varTypeSelected.descr : ""
-      });
+      })
       data.push({
         field: this.$t("timeseries.form.fields.flow"),
         value: this.flowSelected ? this.flowSelected.descr : ""
-      });
+      })
       data.push({
         field: this.$t("timeseries.form.fields.country"),
         value: this.countrySelected ? this.countrySelected.name : ""
-      });
+      })
       data.push({
         field: this.$t("timeseries.form.fields.partner"),
         value: this.partnerSelected ? this.partnerSelected.descr : ""
-      });
+      })
       data.push({
         field: this.$t("timeseries.form.fields.productsCPA"),
         value: this.productsCPASelected ? this.productsCPASelected.descr : ""
-      });
+      })
       data.push({
         field: this.$t("common.start_date"),
         value: this.timeseriesCharts
           ? this.timeseriesCharts.diagMain.date[0]
           : ""
-      });
+      })
       data.push({
         field: this.$t("common.end_date"),
         value: this.timeseriesCharts
@@ -469,40 +450,40 @@ export default {
               this.timeseriesCharts.diagMain.date.length - 1
             ]
           : ""
-      });
-      return data;
+      })
+      return data
     },
     getTabularData(data, id) {
       if (data != null) {
-        const table = [];
-        const timePoints = data.date;
-        const values = data.series;
+        const table = []
+        const timePoints = data.date
+        const values = data.series
         if (timePoints)
           timePoints.forEach((tp, index) => {
-            const dt = new Date(tp);
-            const year = dt.getFullYear();
-            const month = dt.getMonth() + 1;
+            const dt = new Date(tp)
+            const year = dt.getFullYear()
+            const month = dt.getMonth() + 1
             table.push({
               field: year + "-" + month,
               value: values[index]
-            });
+            })
             //console.log(year + "-" + month + "," + values[index]);
-          });
-        return [table, id];
+          })
+        return [table, id]
       }
-      return null;
+      return null
     },
     spinnerStart(bool) {
-      this.spinner = bool;
+      this.spinner = bool
     },
     clearChart() {
-      document.getElementById("timeseries").removeChild("canvas");
+      document.getElementById("timeseries").removeChild("canvas")
     }
   },
   created() {
-    this.$store.dispatch("coreui/setContext", Context.Policy);
+    this.$store.dispatch("coreui/setContext", Context.Policy)
   }
-};
+}
 </script>
 <style>
 .align-right {

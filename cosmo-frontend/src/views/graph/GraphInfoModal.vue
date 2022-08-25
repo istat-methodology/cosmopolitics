@@ -7,8 +7,7 @@
     "
     :show="isHelpModal"
     @update:show="closeModal"
-    size="lg"
-  >
+    size="lg">
     <p
       v-html="
         isMainModal
@@ -18,8 +17,7 @@
             $t('graph.modal.metrics.body') +
             $t('graph.modal.metrics.keywords')
           : $t('graph.modal.filter.body') + $t('graph.modal.filter.keywords')
-      "
-    ></p>
+      "></p>
     <template #footer>
       <CButton color="primary" shape="square" size="sm" @click="closeModal">{{
         $t("common.close")
@@ -43,25 +41,25 @@ export default {
   computed: {
     isHelpModal: {
       get() {
-        return this.isHelp;
+        return this.isHelp
       },
       set(value) {
-        this.$emit("showHelp", value);
+        this.$emit("showHelp", value)
       }
     },
     isMainModal: {
       get() {
-        return this.isMain;
+        return this.isMain
       },
       set(value) {
-        this.$emit("showMain", value);
+        this.$emit("showMain", value)
       }
     }
   },
   methods: {
     closeModal() {
-      this.$emit("closeModal");
+      this.$emit("closeModal")
     }
   }
-};
+}
 </script>

@@ -10,8 +10,7 @@
     :items-per-page="10"
     sorter
     hover
-    pagination
-  />
+    pagination />
 </template>
 <script>
 export default {
@@ -30,5 +29,5 @@ export default {
       default: () => ({ column: null, asc: true })
     }
   }
-};
+}
 </script>

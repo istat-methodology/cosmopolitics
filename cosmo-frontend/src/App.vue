@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Sidebar from "@/components/Sidebar";
-import Toast from "@/components/Toast";
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
+import Sidebar from "@/components/Sidebar"
+import Toast from "@/components/Toast"
 export default {
   name: "App",
   components: {
@@ -35,20 +35,20 @@ export default {
   },
   created() {
     //Clear messages
-    this.$store.dispatch("message/clear");
-    this.$store.dispatch("coreui/clearContext");
+    this.$store.dispatch("message/clear")
+    this.$store.dispatch("coreui/clearContext")
     // load metadata
     this.$store.dispatch("metadata/getMetadata").then(() => {
       // load classifications
-      this.$store.dispatch("classification/getTransports");
-      this.$store.dispatch("classification/getCountries");
-      this.$store.dispatch("classification/getPartners");
-      this.$store.dispatch("classification/getProductsCPA");
-      this.$store.dispatch("classification/getProductsIntra");
-      this.$store.dispatch("classification/getProductsExtra");
-    });
+      this.$store.dispatch("classification/getTransports")
+      this.$store.dispatch("classification/getCountries")
+      this.$store.dispatch("classification/getPartners")
+      this.$store.dispatch("classification/getProductsCPA")
+      this.$store.dispatch("classification/getProductsIntra")
+      this.$store.dispatch("classification/getProductsExtra")
+    })
   }
-};
+}
 </script>
 <style lang="scss">
 // Import Main styles for this application

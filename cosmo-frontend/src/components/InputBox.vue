@@ -12,8 +12,7 @@
           class="form-control"
           id="InputBox"
           v-bind:value="value"
-          v-on:input="$emit('input', $event.target.value)"
-        />
+          v-on:input="$emit('input', $event.target.value)" />
         {{ value }}
       </div>
     </form>
@@ -23,5 +22,5 @@
 <script>
 export default {
   props: ["value", "label"]
-};
+}
 </script>

@@ -31,41 +31,41 @@ export default {
           ]
         }
       ]
-    };
+    }
   },
   methods: {
     getBreadcrumbs(route) {
-      let crumb = this.breadcrumbMap.find(crumb => {
-        return crumb.route == route.name;
-      });
+      let crumb = this.breadcrumbMap.find((crumb) => {
+        return crumb.route == route.name
+      })
       return crumb == undefined
         ? this.createBreadcrumbs(route)
-        : crumb.breadCrumbs;
+        : crumb.breadCrumbs
     },
     createBreadcrumbs(route) {
-      let pathArray = route.path.split("/");
-      pathArray.shift();
+      let pathArray = route.path.split("/")
+      pathArray.shift()
       //console.log(route.params);
       if (Object.keys(route.params).length > 0) {
         //if route has a parameter remove it from array
-        pathArray.pop();
+        pathArray.pop()
       }
       let breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) => {
-        var to = "/";
+        var to = "/"
         if (idx > 0) {
           for (var i = 0; i < idx; i++) {
-            to += breadcrumbArray[i].path + "/";
+            to += breadcrumbArray[i].path + "/"
           }
         }
-        to += path;
+        to += path
         //console.log(to);
         breadcrumbArray.push({
           path: path,
           to: to
-        });
-        return breadcrumbArray;
-      }, []);
-      return breadcrumbs;
+        })
+        return breadcrumbArray
+      }, [])
+      return breadcrumbs
     }
   }
-};
+}
