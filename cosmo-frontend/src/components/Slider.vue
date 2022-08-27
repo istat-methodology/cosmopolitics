@@ -16,6 +16,9 @@ import VueSlider from "vue-slider-component"
 export default {
   name: "Slider",
   components: { VueSlider },
+  data: () => ({
+    timeout: null
+  }),
   props: {
     interval: {
       type: Array,
@@ -32,7 +35,12 @@ export default {
         return this.currentTime ? this.currentTime.id : "202003"
       },
       set(value) {
-        this.$emit("change", this.getSelectedPeriod(value))
+        //debounce
+        if (this.timeout) clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => {
+          console.log("Changed!")
+          this.$emit("change", this.getSelectedPeriod(value))
+        }, 300)
       }
     }
   },
