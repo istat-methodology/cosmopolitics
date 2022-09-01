@@ -305,7 +305,7 @@ def annualProcessing():
 
     logger.info('loading.. '+ANNUAL_UNEMPLOYEMENT_FILE_CSV)
     #ANNUAL_UNEMPLOYEMENT_FILE_CSV
-    annual_unemployement=pd.read_csv(ANNUAL_UNEMPLOYEMENT_FILE_CSV,sep=",",keep_default_na=False, na_values=[''])
+    annual_unemployement=pd.read_csv(ANNUAL_UNEMPLOYEMENT_FILE_CSV,sep=",",keep_default_na=False, na_values=[''], engine="python")
     # FIX Greece code EL in GR
     annual_unemployement["geo"]=annual_unemployement["geo"].replace(['EL'],'GR')
     
