@@ -681,10 +681,15 @@ def monthlyProcessing():
     cur.execute('DROP TABLE IF EXISTS aggr_cpa3;')
     cur.execute("create table aggr_cpa3 as select declarant_iso, partner_iso, flow, cpa3 as cpa, period, sum(value_in_euros) as val_cpa, sum(quantity_in_kg) as q_kg from comext_full  WHERE IS_PRODUCT==1 group by declarant_iso, partner_iso, flow, cpa3, period order by declarant_iso, partner_iso, flow, cpa3, period;")
 
+    #/* aggrego per cpa TOTAL 00 */
+    logger.info('Creating table aggr_cpa_tot ')
+    cur.execute('DROP TABLE IF EXISTS aggr_cpa_tot;')
+    cur.execute("create table aggr_cpa_tot as select declarant_iso, partner_iso, flow, '00' as cpa, period, sum(value_in_euros) as val_cpa, sum(quantity_in_kg) as q_kg from comext_full WHERE product_nc= 'TOTAL' group by declarant_iso, partner_iso, flow,  cpa, period;")
+
     #/*  view */
     logger.info('Creating table base_grafi_cpa ')
     cur.execute('DROP TABLE IF EXISTS base_grafi_cpa;')
-    cur.execute("create table base_grafi_cpa as select * from  aggr_cpa2 where (1* substr(cpa,1,2) >0 and 1* substr(cpa,1,2) <37) union select * from  aggr_cpa3 where (1* substr(cpa,1,3) >0 and 1* substr(cpa,1,3) <370) union  select declarant_iso, partner_iso, flow, '00' as cpa, period, value_in_euros as val_cpa, quantity_in_kg as q_kg from comext_full  WHERE product_nc= 'TOTAL'  ;")
+    cur.execute("create table base_grafi_cpa as select * from  aggr_cpa2 where (1* substr(cpa,1,2) >0 and 1* substr(cpa,1,2) <37) union select * from  aggr_cpa3 where (1* substr(cpa,1,3) >0 and 1* substr(cpa,1,3) <370) union  select * from aggr_cpa_tot;")
 
     #/*  create table WORLD for all partners * add ALL COUNTRIES AC
     logger.info('Creating table base_grafi_cpa_wo ')
