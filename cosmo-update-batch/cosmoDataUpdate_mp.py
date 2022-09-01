@@ -374,7 +374,7 @@ def annualProcessing():
     previous_filename=DATA_FOLDER_ANNUAL_DATS+os.sep+PREFIX_FULL+str(annual_previous_year)+"52.dat"
 
     logger.info('loading.. '+CLS_PRODUCTS_FILE)
-    cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''])
+    cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''],encoding="latin-1")
 
     logger.info('loading.. '+ANNUAL_POPULATION_CSV)
     #ANNUAL_POPULATION_CSV
@@ -1151,20 +1151,20 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        """ 
+         
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
-        #repo+=downloadAndExtractComextAnnualDATAParallel()  
+        repo+=downloadAndExtractComextAnnualDATAParallel()  
         repo+='<!-- 2 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
-        #repo+=downloadAndExtractComextMonthlyDATAParallel(URL_COMEXT_PRODUCTS, PREFIX_FULL,start_data_PAGE_TIME_SERIES,end_data_load)
+        repo+=downloadAndExtractComextMonthlyDATAParallel(URL_COMEXT_PRODUCTS, PREFIX_FULL,start_data_PAGE_TIME_SERIES,end_data_load)
         repo+='<!-- 3 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
-        #repo+=downloadAndExtractComextMonthlyDATAParallel(URL_COMEXT_TR, PREFIX_TRANSPORT,start_data_PAGE_GRAPH_EXTRA_UE,end_data_load)
+        repo+=downloadAndExtractComextMonthlyDATAParallel(URL_COMEXT_TR, PREFIX_TRANSPORT,start_data_PAGE_GRAPH_EXTRA_UE,end_data_load)
         repo+='<!-- 4 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
@@ -1186,7 +1186,7 @@ def executeUpdate():
         repo+=annualProcessing()
         repo+='<!-- 8 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-        """
+        
         repo+=createMonthlyFULLtable()
         repo+='<!-- 9 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'

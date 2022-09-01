@@ -289,7 +289,7 @@ def annualProcessing():
     previous_filename=DATA_FOLDER_ANNUAL_DATS+os.sep+PREFIX_FULL+str(annual_previous_year)+"52.dat"
 
     logger.info('loading.. '+CLS_PRODUCTS_FILE)
-    cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''])
+    cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''] ,encoding="latin-1")
 
     logger.info('loading.. '+ANNUAL_POPULATION_CSV)
     #ANNUAL_POPULATION_CSV
