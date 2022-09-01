@@ -25,7 +25,7 @@ from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
-from utility import *
+from cosmoUtility import *
 
 import multiprocessing as mp
 from functools import partial
