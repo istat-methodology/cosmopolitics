@@ -41,6 +41,7 @@ PREFIX_FULL="full"
 PREFIX_TRANSPORT="tr"
 FLOW_IMPORT=1
 FLOW_EXPORT=2
+COLS_CLS_PRODUCTS=4
 
 KEY_VAULT_NAME="statlab-key-vault"
 SECRETNAME_ACCOUNTKEY="cosmostoragekey"
@@ -348,14 +349,14 @@ def downloadfile(url_file,filename):
     return 'File loaded: '+filename
 
 
-def getClsProduct(clsRow,codeProduct,position=4):
+def getClsProduct(clsRow,codeProduct,position=(COLS_CLS_PRODUCTS-1)):
     if ((len(clsRow)>0) & (len(clsRow.columns)>=position)):
         return clsRow.iat[0,position]
     else:
         return codeProduct
 
 
-def getClsProductByCode(cls_products, product,position=4):
+def getClsProductByCode(cls_products, product,position=(COLS_CLS_PRODUCTS-1)):
     return getClsProduct(cls_products[cls_products[0]==product],product,position)
 
 
@@ -374,7 +375,9 @@ def annualProcessing():
     previous_filename=DATA_FOLDER_ANNUAL_DATS+os.sep+PREFIX_FULL+str(annual_previous_year)+"52.dat"
 
     logger.info('loading.. '+CLS_PRODUCTS_FILE)
-    cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''],encoding="latin-1")
+    cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''] ,encoding="latin-1")
+    logger.info('cls_products.head() ')
+    logger.info(cls_products.head())
 
     logger.info('loading.. '+ANNUAL_POPULATION_CSV)
     #ANNUAL_POPULATION_CSV
@@ -1151,7 +1154,7 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-         
+        """ 
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
@@ -1182,7 +1185,7 @@ def executeUpdate():
         repo+='<!-- 7.2 --><br/>\n'
         repo+=downloadfile(ANNUAL_UNEMPLOYEMENT_URL,ANNUAL_UNEMPLOYEMENT_FILE_CSV)
         repo+='<!-- 7.3 --><br/>\n'
-       
+        """
         repo+=annualProcessing()
         repo+='<!-- 8 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'

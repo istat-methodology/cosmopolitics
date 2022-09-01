@@ -47,6 +47,7 @@ PREFIX_FULL="full"
 PREFIX_TRANSPORT="tr"
 FLOW_IMPORT=1
 FLOW_EXPORT=2
+COLS_CLS_PRODUCTS=4
 
 KEY_VAULT_NAME="statlab-key-vault"
 SECRETNAME_ACCOUNTKEY="cosmostoragekey"
@@ -263,14 +264,14 @@ def downloadfile(url_file,filename):
     return 'File loaded: '+filename
 
 
-def getClsProduct(clsRow,codeProduct,position=4):
+def getClsProduct(clsRow,codeProduct,position=(COLS_CLS_PRODUCTS-1)):
     if ((len(clsRow)>0) & (len(clsRow.columns)>=position)):
         return clsRow.iat[0,position]
     else:
         return codeProduct
 
 
-def getClsProductByCode(cls_products, product,position=4):
+def getClsProductByCode(cls_products, product,position=(COLS_CLS_PRODUCTS-1)):
     return getClsProduct(cls_products[cls_products[0]==product],product,position)
 
 
