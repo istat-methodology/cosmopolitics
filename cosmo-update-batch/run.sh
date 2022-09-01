@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MIN_WORKING_FOLDER_SPACE_GB=125
+MIN_WORKING_FOLDER_SPACE_GB=115
 
 pip install -r requirements.txt
 if [ -z "$WORKING_FOLDER" ]; then
