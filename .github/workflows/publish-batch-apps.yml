@@ -47,7 +47,7 @@ jobs:
              $Version = "$($matches[1]).$($matches[2]).$($matches[3])"
           }
           $Pkg = "cosmoDataUpdate_$Version.zip"
-          Compress-Archive -Update -Path cosmoDataUpdate.py, run.sh, requirements.txt -DestinationPath $Pkg
+          Compress-Archive -Update -Path cosmoDataUpdate.py, cosmoUtility.py, run.sh, requirements.txt -DestinationPath $Pkg
           dir $Pkg | ft Name,Length,LastWriteTime
          
           az batch application package create `
