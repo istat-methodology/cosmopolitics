@@ -30,6 +30,7 @@ from cosmoUtility import *
 import multiprocessing as mp
 from functools import partial
 
+
 def is_application_insight_configured():
     return os.getenv('APPINSIGHTS_INSTRUMENTATIONKEY')!=None or os.getenv('APPLICATIONINSIGHTS_CONNECTION_STRING')!=None
 
