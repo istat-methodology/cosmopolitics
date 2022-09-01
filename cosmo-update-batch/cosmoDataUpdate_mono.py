@@ -17,7 +17,7 @@ from sqlite3 import Error
 from dataclasses import dataclass
 from pathlib import Path
 from re import S
-
+from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta
 
 from azure.storage.file import FileService
@@ -25,14 +25,20 @@ from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
-from utility import *
-
-import multiprocessing as mp
-from functools import partial
-
 
 def is_application_insight_configured():
     return os.getenv('APPINSIGHTS_INSTRUMENTATIONKEY')!=None or os.getenv('APPLICATIONINSIGHTS_CONNECTION_STRING')!=None
+
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return super(NpEncoder, self).default(obj)
 
 SEP=","
 DATA_EXTENTION=".dat"
@@ -89,7 +95,7 @@ else:
     logger.warning('Application insights is not configured.')
 
 
-#logger.info('Environment: ' + str(os.environ))
+logger.info('Environment: ' + str(os.environ))
 
 job_id=os.getenv('AZ_BATCH_JOB_ID','').replace(':','_')
 DATA_FOLDER_PARENT=WORKING_FOLDER+os.sep+"data"+(('__' + job_id) if (job_id != '') else '')
@@ -159,72 +165,16 @@ URL_CLS_CPA="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownlo
 CLS_PRODUCTS_CPA_FILE=DATA_FOLDER+os.sep+"cls_products_CPA21.txt"
 
 
+def month_iter(start_month, start_year, end_month, end_year):
+    start = datetime.datetime(start_year, start_month, 1)
+    end = datetime.datetime(end_year, end_month, 1)
+    return (('%02d' %d.month, d.year) for d in rrule(MONTHLY, dtstart=start, until=end))
 
 
-def downloadAndExtractFile(param,extract_path):
-    url_file=param[0]
-    file_zip=param[1]
-    count_downloaded=0
-    count_extracted=0
-    count_error=0
-    
-    logger.info('File: '+url_file)
-    logger.info('File zip: '+file_zip)
-    logger.info('extract path: '+extract_path)
-    logger.info('Downloading....')  
+def createFolder(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
 
-    try:
-        urllib.request.urlretrieve(url_file,file_zip)
-        count_downloaded+= 1
-        with py7zr.SevenZipFile(file_zip) as z:
-            z.extractall(path=extract_path)
-            count_extracted+= 1
-    except BaseException as err:
-        logger.error("Unexpected "+str(err)+" ; type: "+str(type(err)))
-        count_error+= 1
-    else:
-        logger.info('File loaded and extracted: '+file_zip)  
-        
-    return (count_downloaded,count_extracted,count_error)   
-
-def downloadAndExtractComextMonthlyDATAParallel(url_download,prefix_file,start_data,end_data):
-    DATA_FOLDER_WORKING=DATA_FOLDER_MONTHLY+os.sep+prefix_file
-    DATA_FOLDER_MONTHLY_DATS=DATA_FOLDER_WORKING+os.sep+"files"
-    DATA_FOLDER_MONTHLY_ZIPS=DATA_FOLDER_WORKING+os.sep+"zips"
-    createFolder(DATA_FOLDER_MONTHLY_DATS)
-    createFolder(DATA_FOLDER_MONTHLY_ZIPS)
-
-    logger.info('Path: '+DATA_FOLDER_WORKING)
-
-    count_downloaded=0
-    count_extracted=0
-    count_error=0
-    urls = []
-    for current_month in month_iter(start_data.month, start_data.year, end_data.month, end_data.year):
-
-        current_month_month=current_month[0]
-        current_month_year=current_month[1]
-        
-        filenameZip=prefix_file+str(current_month_year)+str(current_month_month)+".7z"
-        url_file=url_download+filenameZip
-        fileMonthlyZip=DATA_FOLDER_MONTHLY_ZIPS+os.sep+filenameZip
-        urls.append((url_file,fileMonthlyZip))
-    
-    #spark
-    #spark = SparkSession.builder.getOrCreate()     
-    #listing = spark.sparkContext.parallelize(urls)
-    #ris=listing.map(lambda url: downloadAndExtractFile(url[0],url[1], DATA_FOLDER_MONTHLY_DATS)).collect()
-    
-    #mp
-    logger.info("Number of processors: ", mp.cpu_count())
-    pool = mp.Pool(mp.cpu_count())
-    ris=pool.map(partial(downloadAndExtractFile,extract_path=DATA_FOLDER_MONTHLY_DATS),urls)
-   
-    count_downloaded,count_extracted,count_error=map(sum, zip(*ris))
-        
-    logger.info('Monthly files repo: '+str(count_downloaded)+' downloaded, '+str(count_extracted)+' extracted '+str(count_error)+' error')
-
-    return 'Monthly files repo: '+str(count_downloaded)+' downloaded, '+str(count_extracted)+' extracted '+str(count_error)+' error '
 
 def downloadAndExtractComextMonthlyDATA(url_download,prefix_file,start_data,end_data):
     DATA_FOLDER_WORKING=DATA_FOLDER_MONTHLY+os.sep+prefix_file
@@ -302,41 +252,6 @@ def downloadAndExtractComextAnnualDATA():
     
     return 'Annual files repo: '+str(count_downloaded)+' downloaded, '+str(count_extracted)+' extracted '+str(count_error)+' error '
 
-def downloadAndExtractComextAnnualDATAParallel():
-    createFolder(DATA_FOLDER_ANNUAL_DATS)
-    createFolder(DATA_FOLDER_ANNUAL_ZIPS)
-
-    count_downloaded=0
-    count_extracted=0
-    count_error=0
-    urls = []
-    for current_year in [annual_previous_year,annual_current_year]:
-        filenameZip="full"+str(current_year)+"52.7z"
-        
-        url_file=URL_COMEXT_PRODUCTS+filenameZip
-        fileAnnualZip=DATA_FOLDER_ANNUAL_ZIPS+os.sep+filenameZip
-
-        logger.info('File: '+url_file)
-        logger.info('Downloading....')
-        urls.append((url_file,fileAnnualZip))
-    
-    #spark version
-    #spark = SparkSession.builder.getOrCreate()     
-    #listing = spark.sparkContext.parallelize(urls)
-    #ris=listing.map(lambda url: downloadAndExtractFile(url, DATA_FOLDER_ANNUAL_DATS)).collect()
-
-    #mp<
-    logger.info("Number of processors: ", mp.cpu_count())
-    pool = mp.Pool(mp.cpu_count())
-    
-    ris=pool.map(partial(downloadAndExtractFile,extract_path=DATA_FOLDER_ANNUAL_DATS),urls)
-    count_downloaded,count_extracted,count_error=map(sum, zip(*ris))
-    
-    
-    logger.info('Annual files repo: '+str(count_downloaded)+' downloaded, '+str(count_extracted)+' extracted '+str(count_error)+' error')
-    
-    return 'Annual files repo: '+str(count_downloaded)+' downloaded, '+str(count_extracted)+' extracted '+str(count_error)+' error '
-
 
 def downloadfile(url_file,filename):
     createFolder(os.path.dirname(filename))
@@ -376,8 +291,6 @@ def annualProcessing():
 
     logger.info('loading.. '+CLS_PRODUCTS_FILE)
     cls_products=pd.read_csv(CLS_PRODUCTS_FILE,sep="\t",low_memory=True,header=None,keep_default_na=False, na_values=[''] ,encoding="latin-1")
-    logger.info('cls_products.head() ')
-    logger.info(cls_products.head())
 
     logger.info('loading.. '+ANNUAL_POPULATION_CSV)
     #ANNUAL_POPULATION_CSV
@@ -393,7 +306,7 @@ def annualProcessing():
 
     logger.info('loading.. '+ANNUAL_UNEMPLOYEMENT_FILE_CSV)
     #ANNUAL_UNEMPLOYEMENT_FILE_CSV
-    annual_unemployement=pd.read_csv(ANNUAL_UNEMPLOYEMENT_FILE_CSV,sep=",",keep_default_na=False, na_values=[''])
+    annual_unemployement=pd.read_csv(ANNUAL_UNEMPLOYEMENT_FILE_CSV,sep=",",keep_default_na=False, na_values=[''], engine="python")
     # FIX Greece code EL in GR
     annual_unemployement["geo"]=annual_unemployement["geo"].replace(['EL'],'GR')
     
@@ -683,7 +596,7 @@ def monthlyProcessing():
     logger.info('Creating table aggr_cpa3 ')
     cur.execute('DROP TABLE IF EXISTS aggr_cpa3;')
     cur.execute("create table aggr_cpa3 as select declarant_iso, partner_iso, flow, cpa3 as cpa, period, sum(value_in_euros) as val_cpa, sum(quantity_in_kg) as q_kg from comext_full  WHERE IS_PRODUCT==1 group by declarant_iso, partner_iso, flow, cpa3, period order by declarant_iso, partner_iso, flow, cpa3, period;")
-
+    
     #/* aggrego per cpa TOTAL 00 */
     logger.info('Creating table aggr_cpa_tot ')
     cur.execute('DROP TABLE IF EXISTS aggr_cpa_tot;')
@@ -692,7 +605,7 @@ def monthlyProcessing():
     #/*  view */
     logger.info('Creating table base_grafi_cpa ')
     cur.execute('DROP TABLE IF EXISTS base_grafi_cpa;')
-    cur.execute("create table base_grafi_cpa as select * from  aggr_cpa2 where (1* substr(cpa,1,2) >0 and 1* substr(cpa,1,2) <37) union select * from  aggr_cpa3 where (1* substr(cpa,1,3) >0 and 1* substr(cpa,1,3) <370) union  select * from aggr_cpa_tot;")
+    cur.execute("create table base_grafi_cpa as select * from  aggr_cpa2 where (1* substr(cpa,1,2) >0 and 1* substr(cpa,1,2) <37) union select * from  aggr_cpa3 where (1* substr(cpa,1,3) >0 and 1* substr(cpa,1,3) <370) union select * from aggr_cpa_tot;")
 
     #/*  create table WORLD for all partners * add ALL COUNTRIES AC
     logger.info('Creating table base_grafi_cpa_wo ')
@@ -1124,7 +1037,7 @@ def checkUPMicroservices():
 def sendEmailRepo(report_text):
     logger.info('sendEmailRepo START')
     url_Email_service="https://prod-190.westeurope.logic.azure.com:443/workflows/52cafc0d0f2d4dd08ee290a5d367f109/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PFatjXjc32cpXZqX-KFBkn0a7ZKgT1q5iR2hI07NR4w"
-    body_msg={"to":"framato@istat.it","subject":"Repo from cosmo update","body":report_text}
+    body_msg={"to":"framato@istat.it,mbruno@istat.it","subject":"Repo from cosmo update","body":report_text}
 
     req = urllib.request.Request(url_Email_service, method="POST")
     req.add_header('Content-Type', 'application/json')
@@ -1154,23 +1067,22 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        """ 
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
-        repo+=downloadAndExtractComextAnnualDATAParallel()  
+        repo+=downloadAndExtractComextAnnualDATA()  
         repo+='<!-- 2 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
-        repo+=downloadAndExtractComextMonthlyDATAParallel(URL_COMEXT_PRODUCTS, PREFIX_FULL,start_data_PAGE_TIME_SERIES,end_data_load)
+        repo+=downloadAndExtractComextMonthlyDATA(URL_COMEXT_PRODUCTS, PREFIX_FULL,start_data_PAGE_TIME_SERIES,end_data_load)
         repo+='<!-- 3 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-        
-        repo+=downloadAndExtractComextMonthlyDATAParallel(URL_COMEXT_TR, PREFIX_TRANSPORT,start_data_PAGE_GRAPH_EXTRA_UE,end_data_load)
+
+        repo+=downloadAndExtractComextMonthlyDATA(URL_COMEXT_TR, PREFIX_TRANSPORT,start_data_PAGE_GRAPH_EXTRA_UE,end_data_load)
         repo+='<!-- 4 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-        
+         
         repo+=downloadfile(URL_COMEXT_CLS_PRODUCTS,CLS_PRODUCTS_FILE)
         repo+='<!-- 5 --><br/>\n'
          
@@ -1185,11 +1097,10 @@ def executeUpdate():
         repo+='<!-- 7.2 --><br/>\n'
         repo+=downloadfile(ANNUAL_UNEMPLOYEMENT_URL,ANNUAL_UNEMPLOYEMENT_FILE_CSV)
         repo+='<!-- 7.3 --><br/>\n'
-        """
+       
         repo+=annualProcessing()
         repo+='<!-- 8 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-        
         repo+=createMonthlyFULLtable()
         repo+='<!-- 9 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
@@ -1224,13 +1135,13 @@ def executeUpdate():
         repo+='<!-- 20 --><br/>\n'
         repo+=createClsNOTEmptyProducts(3,CLS_NSTR_FILE,"GraphExtraNSTR",999999,TR_PRODUCT_CODE_CSV)
         repo+='<!-- 21 --><br/>\n'
-        #repo+=exportOutputs()
+        repo+=exportOutputs()
         repo+='<!-- 22 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-        #repo+=deleteFolder(DATA_FOLDER)
+        repo+=deleteFolder(DATA_FOLDER)
         repo+='<!-- 23 --><br/>\n'
         
-        #repo+=refreshMicroservicesDATA()
+        repo+=refreshMicroservicesDATA()
         repo+='<!-- 24 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
