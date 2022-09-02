@@ -1224,13 +1224,13 @@ def executeUpdate():
         repo+='<!-- 20 --><br/>\n'
         repo+=createClsNOTEmptyProducts(3,CLS_NSTR_FILE,"GraphExtraNSTR",999999,TR_PRODUCT_CODE_CSV)
         repo+='<!-- 21 --><br/>\n'
-        #repo+=exportOutputs()
+        repo+=exportOutputs()
         repo+='<!-- 22 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
-        #repo+=deleteFolder(DATA_FOLDER)
+        repo+=deleteFolder(DATA_FOLDER)
         repo+='<!-- 23 --><br/>\n'
         
-        #repo+=refreshMicroservicesDATA()
+        repo+=refreshMicroservicesDATA()
         repo+='<!-- 24 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
         
