@@ -1154,7 +1154,7 @@ def executeUpdate():
     repo='start time: '+start_time.strftime("%H:%M:%S")+'<br/>\n'
 
     try:
-        """ 
+        
         repo+=createGeneralInfoOutput()
         repo+='<!-- 1 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
@@ -1185,7 +1185,7 @@ def executeUpdate():
         repo+='<!-- 7.2 --><br/>\n'
         repo+=downloadfile(ANNUAL_UNEMPLOYEMENT_URL,ANNUAL_UNEMPLOYEMENT_FILE_CSV)
         repo+='<!-- 7.3 --><br/>\n'
-        """
+        
         repo+=annualProcessing()
         repo+='<!-- 8 --><br/>\n'
         repo+='time: '+getPassedTime(start_time)+'<br/>\n'
