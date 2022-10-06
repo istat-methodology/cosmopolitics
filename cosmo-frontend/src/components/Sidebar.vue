@@ -6,11 +6,16 @@
     @update:show="
       (value) => $store.commit('coreui/set', ['sidebarShow', 'responsive'])
     ">
-    <CSidebarBrand class="d-md-down-none" to="/">
-      <CIcon name="cil-terminal" size="lg"></CIcon>
-      <span class="brand c-sidebar-brand-full">{{ title }}</span>
+    <CSidebarBrand to="/">
+      <div class="brand c-sidebar-brand-full text-center">
+        <div class="col-1"></div>
+        <CImg src="../img/LogoCircolareSperiStat.png" class="col-8 mt-2 p-0" />
+        <div class="col-12 p-0 text-green">TERRA</div>
+        <div class="col-12 p-0 text-white-50 pb-2">
+          imporT ExpoRt netwoRk Analysis
+        </div>
+      </div>
     </CSidebarBrand>
-
     <ul class="c-sidebar-nav h-100 ps" style="position: relative">
       <li class="c-sidebar-nav-item">
         <router-link
@@ -85,10 +90,8 @@
       " />
   </CSidebar>
 </template>
-
 <script>
 import { mapGetters } from "vuex"
-
 export default {
   data() {
     return {
@@ -127,5 +130,14 @@ export default {
 }
 .c-active-danger {
   border-left: 3px solid#e55353;
+}
+.brand {
+  padding-left: 0 !important;
+}
+.text-green {
+  color: #76b729;
+  font-size: 1.6rem;
+  font-family: Verdana;
+  text-shadow: 0.05rem 0.05rem #6fb2ffb6;
 }
 </style>
