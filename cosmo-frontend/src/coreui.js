@@ -1,5 +1,4 @@
 import Vue from "vue"
-
 import {
   CContainer,
   CWrapper,
@@ -38,9 +37,9 @@ import {
   CInputCheckbox,
   CListGroup,
   CListGroupItem,
-  CSwitch
+  CSwitch,
+  CImg
 } from "@coreui/vue"
-
 Vue.component("CContainer", CContainer)
 Vue.component("CWrapper", CWrapper)
 Vue.component("CToaster", CToaster)
@@ -79,3 +78,4 @@ Vue.component("CInputCheckbox", CInputCheckbox)
 Vue.component("CListGroup", CListGroup)
 Vue.component("CListGroupItem", CListGroupItem)
 Vue.component("CSwitch", CSwitch)
+Vue.component("CImg", CImg)
