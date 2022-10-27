@@ -1,4 +1,4 @@
-name: Show Me the S3cr3tz
+name: Show Me 
 on:
   workflow_dispatch:
 
@@ -17,4 +17,4 @@ jobs:
      
       run: |
         echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
-         .
+         
