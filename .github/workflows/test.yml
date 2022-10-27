@@ -14,7 +14,7 @@ jobs:
     - name: Set up secret file
           
       run: |
-        echo '${{secrets.AZURE_CREDENTIALS}}' 
+        echo 'aaa'+ '${{secrets.AZURE_CREDENTIALS}}' 
      
 
          
