@@ -1,5 +1,6 @@
 name: Show Me the S3cr3tz
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   debug:
