@@ -16,5 +16,5 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AZURE_CREDENTIALS }}
      
       run: |
-        echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
+        echo ${{secrets.AZURE_CREDENTIALS}} | sed 's/./& /g'
          
