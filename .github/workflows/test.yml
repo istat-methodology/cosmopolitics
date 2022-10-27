@@ -16,7 +16,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AZURE_CREDENTIALS }}
      
       run: |
-        echo '${{secrets.AZURE_CREDENTIALS}} | base64'
+        echo ${{secrets.AZURE_CREDENTIALS}} 
      
 
          
