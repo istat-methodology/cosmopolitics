@@ -198,6 +198,8 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
         in_deg = nx.in_degree_centrality(Grafo)
         Metrics ={}
         vulner={}
+        Wsum=tab4graph[weight].sum()
+
         for k, v in in_deg.items():
             if v!=0:      
                 vulner[k]=1-v
@@ -208,7 +210,11 @@ def makeGraph(tab4graph,pos_ini,weight_flag,flow,AnalisiFlag):
             "density":nx.density(Grafo), #diffusione del prodotto
             "vulnerability":vulner,
             #"degree_centrality":nx.out_degree_centrality(Grafo),
-            "exportation strenght":nx.out_degree_centrality(Grafo),
+            #"exportation strenght":nx.out_degree_centrality(Grafo),
+            
+            "exportation strenght":{a:b /Wsum for a,b in G.out_degree(weight="weight")}
+
+                
             "hubness":nx.closeness_centrality(Grafo.to_undirected())
             #"hubness":nx.betweenness_centrality(Grafo) #, weight="weight")
             }
