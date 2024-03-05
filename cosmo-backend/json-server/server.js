@@ -1,9 +1,14 @@
 let appInsights = require('applicationinsights');
-appInsights.setup();
-if (process.env.CLOUD_ROLE)
-    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = process.env.CLOUD_ROLE;
-appInsights.start();
-let client = appInsights.defaultClient;
+let client = null;
+try {
+	appInsights.setup();
+	if (process.env.CLOUD_ROLE)
+		appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = process.env.CLOUD_ROLE;
+	appInsights.start();
+	client = appInsights.defaultClient;
+} catch (ex) {
+	console.error("Exception in AppInsights initialization", ex);
+}
 
 let jsonServer = require("json-server");
 let server = jsonServer.create();
