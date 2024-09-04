@@ -14,7 +14,7 @@
 				"typeProperties": {
 					"variableName": "dataRangeSP",
 					"value": {
-						"value": "@concat('EXEC raw.getYearMonthRange @StartYearMonth = ',formatDateTime(subtractFromTime(utcNow(),75,'Month'),'yyyyMM'),', @EndYearMonth = ',formatDateTime(subtractFromTime(utcNow(),3,'Month'),'yyyyMM'),';')",
+						"value": "@concat('EXEC raw.getYearMonthRange @StartYearMonth = ',formatDateTime(subtractFromTime(utcNow(),4,'Month'),'yyyyMM'),', @EndYearMonth = ',formatDateTime(subtractFromTime(utcNow(),3,'Month'),'yyyyMM'),';')",
 						"type": "Expression"
 					}
 				}
@@ -53,6 +53,87 @@
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "getDataRange",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('getDataRange').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "ProductToTable",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings",
+										"compressionProperties": {
+											"type": "ZipDeflateReadSettings"
+										}
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ProductFile",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileName": {
+											"value": "@item().YearMonth",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "productSQL",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
 				}
 			}
 		],
