@@ -3,9 +3,33 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "getExternalFiles",
-				"type": "Lookup",
+				"name": "setDataRangeSP",
+				"type": "SetVariable",
 				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "dataRangeSP",
+					"value": {
+						"value": "@concat('EXEC raw.getYearMonthRange @StartYearMonth = ',formatDateTime(subtractFromTime(utcNow(),75,'Month'),'yyyyMM'),', @EndYearMonth = ',formatDateTime(subtractFromTime(utcNow(),3,'Month'),'yyyyMM'),';')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "getDataRange",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "setDataRangeSP",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -15,29 +39,18 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "Filter1",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "getExternalFiles",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('getExternalFiles').output.value",
-						"type": "Expression"
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@variables('dataRangeSP')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
-					"condition": {
-						"value": "@startswith(item(),'<a')",
-						"type": "Expression"
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
 					}
 				}
 			}
@@ -45,6 +58,9 @@
 		"variables": {
 			"externaFiles": {
 				"type": "Array"
+			},
+			"dataRangeSP": {
+				"type": "String"
 			}
 		},
 		"annotations": []
