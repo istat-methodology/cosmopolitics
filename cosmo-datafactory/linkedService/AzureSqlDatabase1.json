@@ -1,0 +1,23 @@
+{
+	"name": "AzureSqlDatabase1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "statlab.database.windows.net",
+			"database": "db-terra",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "batch_login",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "statlabKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "pwdBatchUsr"
+			}
+		}
+	}
+}
