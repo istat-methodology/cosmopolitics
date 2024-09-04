@@ -87,15 +87,16 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "DelimitedTextSource",
+									"type": "BinarySource",
 									"storeSettings": {
 										"type": "HttpReadSettings",
 										"requestMethod": "GET"
 									},
 									"formatSettings": {
-										"type": "DelimitedTextReadSettings",
+										"type": "BinaryReadSettings",
 										"compressionProperties": {
-											"type": "ZipDeflateReadSettings"
+											"type": "ZipDeflateReadSettings",
+											"preserveZipFileNameAsFolder": false
 										}
 									}
 								},
@@ -104,26 +105,12 @@
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false
 								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
+								"enableStaging": false
 							},
 							"inputs": [
 								{
-									"referenceName": "ProductFile",
-									"type": "DatasetReference",
-									"parameters": {
-										"fileName": {
-											"value": "@item().YearMonth",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "ProductBinary",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
