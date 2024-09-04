@@ -140,7 +140,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ANNUAL_POPULATION_OK",
+						"referenceName": "ANNUAL_POPULATION",
 						"type": "DatasetReference"
 					}
 				],
