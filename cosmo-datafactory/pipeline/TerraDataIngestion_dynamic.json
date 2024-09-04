@@ -80,12 +80,7 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": [
-								{
-									"name": "item",
-									"value": "@item().name"
-								}
-							],
+							"userProperties": [],
 							"typeProperties": {
 								"source": {
 									"type": "DelimitedTextSource",
