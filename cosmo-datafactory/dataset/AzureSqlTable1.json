@@ -8,49 +8,23 @@
 		"parameters": {
 			"tableName": {
 				"type": "string"
+			},
+			"schemaName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [
-			{
-				"name": "DATAFLOW",
-				"type": "nvarchar"
-			},
-			{
-				"name": "LAST_UPDATE",
-				"type": "nvarchar"
-			},
-			{
-				"name": "freq",
-				"type": "nvarchar"
-			},
-			{
-				"name": "indic_de",
-				"type": "nvarchar"
-			},
-			{
-				"name": "geo",
-				"type": "nvarchar"
-			},
-			{
-				"name": "TIME_PERIOD",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "OBS_VALUE",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "OBS_FLAG",
-				"type": "nvarchar"
-			}
-		],
+		"schema": [],
 		"typeProperties": {
-			"schema": "raw",
-			"table": "annual_report"
+			"schema": {
+				"value": "@dataset().schemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
