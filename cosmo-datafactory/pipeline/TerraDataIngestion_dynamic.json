@@ -70,7 +70,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "FileToSQL",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
