@@ -65,7 +65,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('externalFiles').output.value",
+						"value": "@activity('getExternalFiles').output.value",
 						"type": "Expression"
 					},
 					"activities": [
