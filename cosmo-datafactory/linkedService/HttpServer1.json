@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "@{item.url()}",
+			"url": "https://ec.europa.eu/eurostat/api/dissemination/",
 			"enableServerCertificateValidation": false,
 			"authenticationType": "Anonymous"
 		}
