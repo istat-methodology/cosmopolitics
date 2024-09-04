@@ -1,0 +1,20 @@
+{
+	"name": "ProductBinary",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PRODUCT",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "@concat(dataset().fileName,'.7z')"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}
