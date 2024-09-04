@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "externalFiles",
+				"name": "getExternalFiles",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -28,11 +28,11 @@
 				}
 			},
 			{
-				"name": "externalFile",
+				"name": "setExternalFiles",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "externalFiles",
+						"activity": "getExternalFiles",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -56,7 +56,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "externalFile",
+						"activity": "setExternalFiles",
 						"dependencyConditions": [
 							"Succeeded"
 						]
