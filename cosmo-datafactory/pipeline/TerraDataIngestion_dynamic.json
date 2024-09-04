@@ -1,5 +1,5 @@
 {
-	"name": "TerraDataIngestion_dynamic_copy1",
+	"name": "TerraDataIngestion_dynamic",
 	"properties": {
 		"activities": [
 			{
@@ -28,35 +28,11 @@
 				}
 			},
 			{
-				"name": "setExternalFiles",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "getExternalFiles",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "externaFiles",
-					"value": {
-						"value": "@activity('getExternalFiles').output.value",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "ForEach1",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "setExternalFiles",
+						"activity": "getExternalFiles",
 						"dependencyConditions": [
 							"Succeeded"
 						]
