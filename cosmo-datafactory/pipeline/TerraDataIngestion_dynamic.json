@@ -89,7 +89,8 @@
 										"requestMethod": "GET"
 									},
 									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
+										"type": "DelimitedTextReadSettings",
+										"skipLineCount": 1
 									}
 								},
 								"sink": {
