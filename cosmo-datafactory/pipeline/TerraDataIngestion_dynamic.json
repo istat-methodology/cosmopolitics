@@ -46,7 +46,7 @@
 				"typeProperties": {
 					"variableName": "externaFiles",
 					"value": {
-						"value": "@activity('externalFiles').output.value",
+						"value": "@activity('getExternalFiles').output.value",
 						"type": "Expression"
 					}
 				}
