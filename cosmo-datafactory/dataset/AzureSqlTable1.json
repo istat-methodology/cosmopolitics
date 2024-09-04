@@ -1,0 +1,51 @@
+{
+	"name": "AzureSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DATAFLOW",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LAST_UPDATE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "freq",
+				"type": "nvarchar"
+			},
+			{
+				"name": "indic_de",
+				"type": "nvarchar"
+			},
+			{
+				"name": "geo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TIME_PERIOD",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OBS_VALUE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OBS_FLAG",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "annual_report"
+		}
+	}
+}

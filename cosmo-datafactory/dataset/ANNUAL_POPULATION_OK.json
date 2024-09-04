@@ -1,0 +1,21 @@
+{
+	"name": "ANNUAL_POPULATION_OK",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ANNUAL_POPULATION_OK",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
