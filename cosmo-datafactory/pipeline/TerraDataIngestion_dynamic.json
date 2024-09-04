@@ -80,7 +80,12 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": [],
+							"userProperties": [
+								{
+									"name": "item",
+									"value": "@item().name"
+								}
+							],
 							"typeProperties": {
 								"source": {
 									"type": "DelimitedTextSource",
@@ -110,13 +115,29 @@
 							"inputs": [
 								{
 									"referenceName": "dynamicCsv",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"fileName": {
+											"value": "@item().url",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
 								{
 									"referenceName": "AzureSqlTable1",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"tableName": {
+											"value": "@item().tablename",
+											"type": "Expression"
+										},
+										"schemaName": {
+											"value": "@item().schemaname",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
