@@ -3,157 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ANNUAL_POPULATION",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "HttpReadSettings",
-							"requestMethod": "GET"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"preCopyScript": "truncate table raw.annual_report",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": true,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "DATAFLOW",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "DATAFLOW",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "LAST UPDATE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "LAST_UPDATE",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "freq",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "freq",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "indic_de",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "indic_de",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "geo",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "geo",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "TIME_PERIOD",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "TIME_PERIOD",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "OBS_VALUE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OBS_VALUE",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "OBS_FLAG",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OBS_FLAG",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ANNUAL_POPULATION",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
 				"name": "externalFiles",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -201,24 +50,11 @@
 						"type": "Expression"
 					}
 				}
-			},
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "externalFile",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": []
 			}
 		],
 		"variables": {
 			"externaFiles": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
