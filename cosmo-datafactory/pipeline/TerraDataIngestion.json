@@ -27,8 +27,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table raw.annual_report",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"sqlWriterUseTableLock": true,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
