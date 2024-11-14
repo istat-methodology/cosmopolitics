@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText1",
+	"name": "TerraDelimeted",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "TerraDataLakeStorage",
