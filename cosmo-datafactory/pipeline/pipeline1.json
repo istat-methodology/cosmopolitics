@@ -39,18 +39,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "DECLARANT",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "DECLARANT",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
 									"name": "DECLARANT_ISO",
 									"type": "String",
 									"physicalType": "String"
@@ -63,168 +51,12 @@
 							},
 							{
 								"source": {
-									"name": "PARTNER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PARTNER",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
 									"name": "PARTNER_ISO",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "PARTNER_ISO",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "TRADE_TYPE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "TRADE_TYPE",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_NC",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_NC",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_SITC",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_SITC",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_CPA2002",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_CPA2002",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_CPA2008",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_CPA2008",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_CPA2_1",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_CPA2_1",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_BEC",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_BEC",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_BEC5",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_BEC5",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PRODUCT_SECTION",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PRODUCT_SECTION",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "FLOW",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "FLOW",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "STAT_REGIME",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "STAT_REGIME",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "SUPP_UNIT",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "SUPP_UNIT",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -243,14 +75,26 @@
 							},
 							{
 								"source": {
+									"name": "FLOW",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "FLOW",
+									"type": "Byte",
+									"physicalType": "tinyint"
+								}
+							},
+							{
+								"source": {
 									"name": "VALUE_IN_EUROS",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "VALUE_IN_EUROS",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"type": "Double",
+									"physicalType": "float"
 								}
 							},
 							{
@@ -261,20 +105,8 @@
 								},
 								"sink": {
 									"name": "QUANTITY_IN_KG",
-									"type": "Int64",
-									"physicalType": "bigint"
-								}
-							},
-							{
-								"source": {
-									"name": "SUP_QUANTITY",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "SUP_QUANTITY",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"type": "Double",
+									"physicalType": "float"
 								}
 							}
 						],
