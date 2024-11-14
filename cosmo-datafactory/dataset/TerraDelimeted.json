@@ -19,15 +19,7 @@
 		},
 		"schema": [
 			{
-				"name": "DECLARANT",
-				"type": "String"
-			},
-			{
 				"name": "DECLARANT_ISO",
-				"type": "String"
-			},
-			{
-				"name": "PARTNER",
 				"type": "String"
 			},
 			{
@@ -35,55 +27,11 @@
 				"type": "String"
 			},
 			{
-				"name": "TRADE_TYPE",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_NC",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_SITC",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_CPA2002",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_CPA2008",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_CPA2_1",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_BEC",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_BEC5",
-				"type": "String"
-			},
-			{
-				"name": "PRODUCT_SECTION",
+				"name": "PERIOD",
 				"type": "String"
 			},
 			{
 				"name": "FLOW",
-				"type": "String"
-			},
-			{
-				"name": "STAT_REGIME",
-				"type": "String"
-			},
-			{
-				"name": "SUPP_UNIT",
-				"type": "String"
-			},
-			{
-				"name": "PERIOD",
 				"type": "String"
 			},
 			{
@@ -92,10 +40,6 @@
 			},
 			{
 				"name": "QUANTITY_IN_KG",
-				"type": "String"
-			},
-			{
-				"name": "SUP_QUANTITY",
 				"type": "String"
 			}
 		]
