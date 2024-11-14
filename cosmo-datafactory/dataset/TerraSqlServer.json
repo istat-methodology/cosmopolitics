@@ -1,0 +1,101 @@
+{
+	"name": "TerraSqlServer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DECLARANT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DECLARANT_ISO",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PARTNER",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PARTNER_ISO",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TRADE_TYPE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_NC",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_SITC",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_CPA2002",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_CPA2008",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_CPA2_1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_BEC",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_BEC5",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRODUCT_SECTION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FLOW",
+				"type": "nvarchar"
+			},
+			{
+				"name": "STAT_REGIME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SUPP_UNIT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PERIOD",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "VALUE_IN_EUROS",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "QUANTITY_IN_KG",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "SUP_QUANTITY",
+				"type": "bigint",
+				"precision": 19
+			}
+		],
+		"typeProperties": {
+			"schema": "lab",
+			"table": "paper_energy_raw_data"
+		}
+	}
+}
