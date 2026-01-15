@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://ec.europa.eu/eurostat/api/dissemination/",
+			"url": "https://ec.europa.eu/eurostat/api/dissemination/files/?sort=1&dir=comext%2FCOMEXT_DATA%2FPRODUCTS",
 			"enableServerCertificateValidation": false,
 			"authenticationType": "Anonymous"
 		}
