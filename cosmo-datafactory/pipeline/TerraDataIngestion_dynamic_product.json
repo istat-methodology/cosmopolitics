@@ -49,7 +49,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "AzureSqlTable2",
+						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -93,29 +93,32 @@
 										"requestMethod": "GET"
 									},
 									"formatSettings": {
-										"type": "BinaryReadSettings",
-										"compressionProperties": {
-											"type": "ZipDeflateReadSettings",
-											"preserveZipFileNameAsFolder": false
-										}
+										"type": "BinaryReadSettings"
 									}
 								},
 								"sink": {
-									"type": "AzureSqlSink",
-									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									}
 								},
 								"enableStaging": false
 							},
 							"inputs": [
 								{
-									"referenceName": "ProductBinary",
-									"type": "DatasetReference"
+									"referenceName": "Binary1",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileName": {
+											"value": "@item()['']",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "productSQL",
+									"referenceName": "Binary2",
 									"type": "DatasetReference"
 								}
 							]
