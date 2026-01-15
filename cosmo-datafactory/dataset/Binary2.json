@@ -15,6 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@{concat('full_v2_',dataset().ym, '.7z')}",
+					"type": "Expression"
+				},
 				"fileSystem": "terra"
 			}
 		}
