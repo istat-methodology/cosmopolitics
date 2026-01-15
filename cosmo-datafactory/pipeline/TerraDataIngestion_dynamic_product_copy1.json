@@ -1,0 +1,88 @@
+{
+	"name": "TerraDataIngestion_dynamic_product_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "setDataRangeSP",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "dataRangeSP",
+					"value": {
+						"value": "@concat('EXEC raw.getYearMonthRange @StartYearMonth = ',formatDateTime(subtractFromTime(utcNow(),4,'Month'),'yyyyMM'),', @EndYearMonth = ',formatDateTime(subtractFromTime(utcNow(),3,'Month'),'yyyyMM'),';')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "getDataRange",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "setDataRangeSP",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@variables('dataRangeSP')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "getDataRange",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('getDataRange').output.value",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"externaFiles": {
+				"type": "Array"
+			},
+			"dataRangeSP": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
