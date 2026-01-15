@@ -20,10 +20,6 @@
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"dataset": {
-						"referenceName": "externalFiles",
-						"type": "DatasetReference"
-					},
 					"firstRowOnly": false
 				}
 			},
