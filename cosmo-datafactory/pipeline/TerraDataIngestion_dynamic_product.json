@@ -110,7 +110,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"fileName": {
-											"value": "@concat('%2Ffull_v2_',item()['YearMonth'],'.7z')",
+											"value": "@concat('%2Ffull_v2_',item()['YearMonth'],'.7z?sort=1&file=comext%2FCOMEXT_DATA%2FPRODUCTS%2Ffull_v2_',item()['YearMonth'],'.7z')",
 											"type": "Expression"
 										}
 									}
@@ -119,7 +119,13 @@
 							"outputs": [
 								{
 									"referenceName": "Binary2",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"ym": {
+											"value": "@item()['YearMonth']",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
