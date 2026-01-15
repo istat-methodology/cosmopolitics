@@ -110,7 +110,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"fileName": {
-											"value": "@item()['']",
+											"value": "@concat('%2Ffull_v2_',item()['YearMonth'],'.7z')",
 											"type": "Expression"
 										}
 									}
